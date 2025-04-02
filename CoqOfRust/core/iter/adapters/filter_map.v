@@ -171,19 +171,21 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::filter_map::FilterMap",
-                                  "iter"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::filter_map::FilterMap",
+                                    "iter"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -597,10 +599,12 @@ Module iter.
                       "core::iter::adapters::filter_map::next_chunk::Guard"
                       [
                         ("array",
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                          |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                            |)));
                         ("initialized", Value.Integer IntegerKind.Usize 0)
                       ]
                   |) in
@@ -743,23 +747,27 @@ Module iter.
                                                     "core::iter::adapters::filter_map::next_chunk::Guard",
                                                     "initialized"
                                                   |),
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| idx |),
-                                                    M.cast
-                                                      (Ty.path "usize")
-                                                      (M.call_closure (|
-                                                        Ty.path "bool",
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.read (| idx |);
+                                                      M.cast
+                                                        (Ty.path "usize")
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [ B ],
+                                                            "is_some",
+                                                            [],
                                                             []
-                                                            [ B ],
-                                                          "is_some",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, val |) ]
-                                                      |))
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, val |) ]
+                                                        |))
+                                                    ]
                                                   |)
                                                 |)
                                               |) in
@@ -983,19 +991,23 @@ Module iter.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.lt (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                guard,
-                                                                "core::iter::adapters::filter_map::next_chunk::Guard",
-                                                                "initialized"
-                                                              |)
-                                                            |),
-                                                            N
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "core::iter::adapters::filter_map::next_chunk::Guard",
+                                                                  "initialized"
+                                                                |)
+                                                              |);
+                                                              N
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in

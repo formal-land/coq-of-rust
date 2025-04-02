@@ -56,7 +56,14 @@ Module Impl_trait_incrementer_Incrementer.
                   "trait_incrementer::Incrementer",
                   "value"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| delta |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| delta |) ]
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

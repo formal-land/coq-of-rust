@@ -225,19 +225,25 @@ Module main.
                                         M.match_operator (|
                                           Some (Ty.path "u32"),
                                           M.alloc (|
-                                            BinOp.eq (|
-                                              BinOp.Wrap.rem (|
-                                                M.read (| i |),
-                                                Value.Integer IntegerKind.U32 2
-                                              |),
-                                              Value.Integer IntegerKind.U32 1
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "u32",
+                                                  BinOp.Wrap.rem,
+                                                  [ M.read (| i |); Value.Integer IntegerKind.U32 2
+                                                  ]
+                                                |);
+                                                Value.Integer IntegerKind.U32 1
+                                              ]
                                             |)
                                           |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -245,7 +251,7 @@ Module main.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool false
                                                   |) in
@@ -260,7 +266,11 @@ Module main.
                                         let β := acc in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add (| M.read (| β |), M.read (| addition |) |)
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.add,
+                                            [ M.read (| β |); M.read (| addition |) ]
+                                          |)
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))

@@ -65,7 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
@@ -159,7 +159,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 1
                   |) in
@@ -236,7 +236,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 (-1)
                   |) in
@@ -313,7 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 3
                   |) in

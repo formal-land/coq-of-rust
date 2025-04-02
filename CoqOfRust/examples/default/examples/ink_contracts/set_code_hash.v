@@ -137,7 +137,14 @@ Module Impl_set_code_hash_Incrementer.
                   "set_code_hash::Incrementer",
                   "count"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
+                |)
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             let~ _ : Ty.tuple [] :=

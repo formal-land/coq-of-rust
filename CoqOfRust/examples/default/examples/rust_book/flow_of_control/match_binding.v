@@ -84,7 +84,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ |),
                     Value.Integer IntegerKind.U32 0
                   |) in

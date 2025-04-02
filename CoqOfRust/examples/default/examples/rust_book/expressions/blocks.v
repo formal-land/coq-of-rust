@@ -32,20 +32,46 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ y : Ty.path "u32" :=
           M.copy (|
             let~ x_squared : Ty.path "u32" :=
-              M.alloc (| BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.mul,
+                  [ M.read (| x |); M.read (| x |) ]
+                |)
+              |) in
             let~ x_cube : Ty.path "u32" :=
-              M.alloc (| BinOp.Wrap.mul (| M.read (| x_squared |), M.read (| x |) |) |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.mul,
+                  [ M.read (| x_squared |); M.read (| x |) ]
+                |)
+              |) in
             M.alloc (|
-              BinOp.Wrap.add (|
-                BinOp.Wrap.add (| M.read (| x_cube |), M.read (| x_squared |) |),
-                M.read (| x |)
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.add,
+                    [ M.read (| x_cube |); M.read (| x_squared |) ]
+                  |);
+                  M.read (| x |)
+                ]
               |)
             |)
           |) in
         let~ z : Ty.tuple [] :=
           M.copy (|
             let~ _ : Ty.path "u32" :=
-              M.alloc (| BinOp.Wrap.mul (| Value.Integer IntegerKind.U32 2, M.read (| x |) |) |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.mul,
+                  [ Value.Integer IntegerKind.U32 2; M.read (| x |) ]
+                |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=

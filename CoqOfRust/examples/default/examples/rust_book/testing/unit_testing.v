@@ -12,7 +12,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+      M.call_closure (| Ty.path "i32", BinOp.Wrap.add, [ M.read (| a |); M.read (| b |) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -31,7 +31,7 @@ Definition bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.sub (| M.read (| a |), M.read (| b |) |)))
+      M.call_closure (| Ty.path "i32", BinOp.Wrap.sub, [ M.read (| a |); M.read (| b |) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -86,14 +86,18 @@ Module tests.
                               M.use
                                 (M.alloc (|
                                   UnOp.not (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (| M.deref (| M.read (| left_val |) |) |);
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -199,14 +203,18 @@ Module tests.
                               M.use
                                 (M.alloc (|
                                   UnOp.not (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (| M.deref (| M.read (| left_val |) |) |);
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|

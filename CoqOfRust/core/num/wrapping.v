@@ -680,13 +680,18 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u8", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (| "core::num::wrapping::shift_max::u8", Ty.path "u32" |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -787,13 +792,18 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u8", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (| "core::num::wrapping::shift_max::u8", Ty.path "u32" |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -894,13 +904,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u16", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u16",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1001,13 +1019,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u16", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u16",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1108,13 +1134,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u32", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u32",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1215,13 +1249,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u32", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u32",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1322,13 +1364,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u64", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u64",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1429,13 +1479,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u64", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u64",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1536,13 +1594,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u128", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u128",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1643,13 +1709,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::u128", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::u128",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1750,16 +1824,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (|
-                              "core::num::wrapping::shift_max::platform::usize",
-                              Ty.path "u32"
-                            |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::platform::usize",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1860,16 +1939,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (|
-                              "core::num::wrapping::shift_max::platform::usize",
-                              Ty.path "u32"
-                            |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::platform::usize",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -1970,13 +2054,18 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i8", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (| "core::num::wrapping::shift_max::i8", Ty.path "u32" |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2077,13 +2166,18 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i8", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (| "core::num::wrapping::shift_max::i8", Ty.path "u32" |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2184,13 +2278,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i16", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i16",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2291,13 +2393,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i16", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i16",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2398,13 +2508,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i32", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i32",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2505,13 +2623,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i32", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i32",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2612,13 +2738,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i64", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i64",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2719,13 +2853,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i64", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i64",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2826,13 +2968,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i128", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i128",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -2933,13 +3083,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (| "core::num::wrapping::shift_max::i128", Ty.path "u32" |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::i128",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -3040,16 +3198,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (|
-                              "core::num::wrapping::shift_max::platform::isize",
-                              Ty.path "u32"
-                            |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::platform::isize",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -3150,16 +3313,21 @@ Module num.
                     |);
                     M.cast
                       (Ty.path "u32")
-                      (BinOp.bit_and
-                        (M.read (| other |))
-                        (M.cast
-                          (Ty.path "usize")
-                          (M.read (|
-                            get_constant (|
-                              "core::num::wrapping::shift_max::platform::isize",
-                              Ty.path "u32"
-                            |)
-                          |))))
+                      (M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| other |);
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_constant (|
+                                "core::num::wrapping::shift_max::platform::isize",
+                                Ty.path "u32"
+                              |)
+                            |))
+                        ]
+                      |))
                   ]
                 |)
               ]))
@@ -4096,21 +4264,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4252,21 +4425,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4408,21 +4586,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5452,21 +5635,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5606,21 +5794,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5760,21 +5953,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6802,21 +7000,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6956,21 +7159,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7110,21 +7318,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8152,21 +8365,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8306,21 +8524,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8460,21 +8683,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9502,21 +9730,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9656,21 +9889,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9810,21 +10048,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10862,21 +11105,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11018,21 +11266,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11174,21 +11427,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12228,21 +12486,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12384,21 +12647,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12540,21 +12808,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13584,21 +13857,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13738,21 +14016,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13892,21 +14175,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14934,21 +15222,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15088,21 +15381,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15242,21 +15540,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16284,21 +16587,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16438,21 +16746,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16592,21 +16905,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17634,21 +17952,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17788,21 +18111,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17942,21 +18270,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18994,21 +19327,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19150,21 +19488,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19306,21 +19649,26 @@ Module num.
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::wrapping::Wrapping",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -26251,9 +26599,17 @@ Module num.
       Definition i8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U32 1, Value.Integer IntegerKind.I32 3 |),
-              Value.Integer IntegerKind.U32 1
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.shl,
+                  [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 3 ]
+                |);
+                Value.Integer IntegerKind.U32 1
+              ]
             |)
           |))).
       
@@ -26265,9 +26621,17 @@ Module num.
       Definition i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U32 1, Value.Integer IntegerKind.I32 4 |),
-              Value.Integer IntegerKind.U32 1
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.shl,
+                  [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 4 ]
+                |);
+                Value.Integer IntegerKind.U32 1
+              ]
             |)
           |))).
       
@@ -26279,9 +26643,17 @@ Module num.
       Definition i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U32 1, Value.Integer IntegerKind.I32 5 |),
-              Value.Integer IntegerKind.U32 1
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.shl,
+                  [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 5 ]
+                |);
+                Value.Integer IntegerKind.U32 1
+              ]
             |)
           |))).
       
@@ -26293,9 +26665,17 @@ Module num.
       Definition i64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U32 1, Value.Integer IntegerKind.I32 6 |),
-              Value.Integer IntegerKind.U32 1
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.shl,
+                  [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 6 ]
+                |);
+                Value.Integer IntegerKind.U32 1
+              ]
             |)
           |))).
       
@@ -26307,9 +26687,17 @@ Module num.
       Definition i128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U32 1, Value.Integer IntegerKind.I32 7 |),
-              Value.Integer IntegerKind.U32 1
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.shl,
+                  [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 7 ]
+                |);
+                Value.Integer IntegerKind.U32 1
+              ]
             |)
           |))).
       

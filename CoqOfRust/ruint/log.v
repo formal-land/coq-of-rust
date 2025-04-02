@@ -97,7 +97,7 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -328,7 +328,7 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -385,7 +385,7 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -440,23 +440,27 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  BinOp.Wrap.sub (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                        "bit_len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "bit_len",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
                                   |)
                                 |)
                               |)
@@ -493,7 +497,7 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (| M.return_ (| Value.Integer IntegerKind.Usize 0 |) |)
@@ -504,27 +508,31 @@ Module log.
                   |) in
                 let~ result : Ty.path "f64" :=
                   M.alloc (|
-                    BinOp.Wrap.div (|
-                      M.call_closure (|
-                        Ty.path "f64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          "approx_log2",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |),
-                      M.call_closure (|
-                        Ty.path "f64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          "approx_log2",
-                          [],
-                          []
-                        |),
-                        [ M.read (| base |) ]
-                      |)
+                    M.call_closure (|
+                      Ty.path "f64",
+                      BinOp.Wrap.div,
+                      [
+                        M.call_closure (|
+                          Ty.path "f64",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "approx_log2",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.call_closure (|
+                          Ty.path "f64",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "approx_log2",
+                            [],
+                            []
+                          |),
+                          [ M.read (| base |) ]
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -551,7 +559,7 @@ Module log.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -678,7 +686,7 @@ Module log.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -739,7 +747,7 @@ Module log.
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -976,7 +984,7 @@ Module log.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -1155,22 +1163,26 @@ Module log.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let base := M.alloc (| base |) in
-          BinOp.Wrap.div (|
-            M.call_closure (|
-              Ty.path "f64",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                "approx_log2",
-                [],
-                []
-              |),
-              [ M.read (| self |) ]
-            |),
-            M.call_closure (|
-              Ty.path "f64",
-              M.get_associated_function (| Ty.path "f64", "log2", [], [] |),
-              [ M.read (| base |) ]
-            |)
+          M.call_closure (|
+            Ty.path "f64",
+            BinOp.Wrap.div,
+            [
+              M.call_closure (|
+                Ty.path "f64",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "approx_log2",
+                  [],
+                  []
+                |),
+                [ M.read (| self |) ]
+              |);
+              M.call_closure (|
+                Ty.path "f64",
+                M.get_associated_function (| Ty.path "f64", "log2", [], [] |),
+                [ M.read (| base |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1232,13 +1244,17 @@ Module log.
                     let~ exp : Ty.path "f64" :=
                       M.alloc (| M.cast (Ty.path "f64") (M.read (| exp |)) |) in
                     M.alloc (|
-                      BinOp.Wrap.add (|
-                        M.call_closure (|
-                          Ty.path "f64",
-                          M.get_associated_function (| Ty.path "f64", "log2", [], [] |),
-                          [ M.read (| bits |) ]
-                        |),
-                        M.read (| exp |)
+                      M.call_closure (|
+                        Ty.path "f64",
+                        BinOp.Wrap.add,
+                        [
+                          M.call_closure (|
+                            Ty.path "f64",
+                            M.get_associated_function (| Ty.path "f64", "log2", [], [] |),
+                            [ M.read (| bits |) ]
+                          |);
+                          M.read (| exp |)
+                        ]
                       |)
                     |)))
               ]
@@ -1269,18 +1285,22 @@ Module log.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.div (|
-            M.call_closure (|
-              Ty.path "f64",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                "approx_log2",
-                [],
-                []
-              |),
-              [ M.read (| self |) ]
-            |),
-            M.read (| get_constant (| "core::f64::consts::LOG2_10", Ty.path "f64" |) |)
+          M.call_closure (|
+            Ty.path "f64",
+            BinOp.Wrap.div,
+            [
+              M.call_closure (|
+                Ty.path "f64",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "approx_log2",
+                  [],
+                  []
+                |),
+                [ M.read (| self |) ]
+              |);
+              M.read (| get_constant (| "core::f64::consts::LOG2_10", Ty.path "f64" |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

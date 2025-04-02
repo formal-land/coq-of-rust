@@ -193,7 +193,13 @@ Module Impl_core_cmp_PartialEq_move_bytecode_verifier_meter_Scope_for_move_bytec
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -393,10 +399,13 @@ Module Meter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (| M.read (| items |), Value.Integer IntegerKind.Usize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| items |); Value.Integer IntegerKind.Usize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -469,10 +478,13 @@ Module Meter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (| M.read (| items |), Value.Integer IntegerKind.Usize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| items |); Value.Integer IntegerKind.Usize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|

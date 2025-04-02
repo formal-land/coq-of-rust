@@ -19,8 +19,42 @@ Module algorithms.
           M.read (|
             let~ result : Ty.path "u128" :=
               M.alloc (|
-                BinOp.Wrap.add (|
-                  BinOp.Wrap.add (|
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.add,
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      BinOp.Wrap.add,
+                      [
+                        M.call_closure (|
+                          Ty.path "u128",
+                          M.get_trait_method (|
+                            "core::convert::From",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u64" ],
+                            "from",
+                            [],
+                            []
+                          |),
+                          [ M.read (| lhs |) ]
+                        |);
+                        M.call_closure (|
+                          Ty.path "u128",
+                          M.get_trait_method (|
+                            "core::convert::From",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u64" ],
+                            "from",
+                            [],
+                            []
+                          |),
+                          [ M.read (| rhs |) ]
+                        |)
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.path "u128",
                       M.get_trait_method (|
@@ -32,35 +66,9 @@ Module algorithms.
                         [],
                         []
                       |),
-                      [ M.read (| lhs |) ]
-                    |),
-                    M.call_closure (|
-                      Ty.path "u128",
-                      M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "u128",
-                        [],
-                        [ Ty.path "u64" ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [ M.read (| rhs |) ]
+                      [ M.read (| carry |) ]
                     |)
-                  |),
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_trait_method (|
-                      "core::convert::From",
-                      Ty.path "u128",
-                      [],
-                      [ Ty.path "u64" ],
-                      "from",
-                      [],
-                      []
-                    |),
-                    [ M.read (| carry |) ]
-                  |)
+                  ]
                 |)
               |) in
             M.alloc (|

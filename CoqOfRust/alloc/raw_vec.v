@@ -114,7 +114,7 @@ Module raw_vec.
                           "core::mem::SizedTypeProperties::IS_ZST",
                           Ty.path "bool"
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     get_associated_constant (|
                       Ty.path "alloc::raw_vec::Cap",
                       "ZERO",
@@ -415,9 +415,13 @@ Module raw_vec.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.eq (| M.read (| size |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [ M.read (| size |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.Integer IntegerKind.Usize 8 |)));
               fun γ =>
                 ltac:(M.monadic
@@ -430,13 +434,14 @@ Module raw_vec.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.read (| size |),
-                                  Value.Integer IntegerKind.Usize 1024
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [ M.read (| size |); Value.Integer IntegerKind.Usize 1024 ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (| Value.Integer IntegerKind.Usize 4 |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1 |)))
                     ]
@@ -760,7 +765,7 @@ Module raw_vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -772,26 +777,30 @@ Module raw_vec.
                                   M.use
                                     (M.alloc (|
                                       UnOp.not (|
-                                        BinOp.le (|
-                                          M.read (| len |),
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::raw_vec::RawVec")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.le,
+                                          [
+                                            M.read (| len |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::raw_vec::RawVec")
+                                                  []
+                                                  [ T; A ],
+                                                "capacity",
+                                                [],
                                                 []
-                                                [ T; A ],
-                                              "capacity",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                                          |)
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2139,22 +2148,26 @@ Module raw_vec.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "size",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "size",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2658,9 +2671,13 @@ Module raw_vec.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (| M.read (| elem_size |), Value.Integer IntegerKind.Usize 0 |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| elem_size |); Value.Integer IntegerKind.Usize 0 ]
+                          |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2768,37 +2785,45 @@ Module raw_vec.
                       M.use
                         (M.alloc (|
                           LogicalOp.or (|
-                            BinOp.eq (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "size",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                              |),
-                              Value.Integer IntegerKind.Usize 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "size",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |),
                             ltac:(M.monadic
-                              (BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::raw_vec::RawVecInner",
-                                      "cap"
-                                    |),
-                                    "alloc::raw_vec::Cap",
-                                    0
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::raw_vec::RawVecInner",
+                                        "cap"
+                                      |),
+                                      "alloc::raw_vec::Cap",
+                                      0
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)))
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2969,7 +2994,7 @@ Module raw_vec.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
@@ -3138,7 +3163,7 @@ Module raw_vec.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -3436,7 +3461,7 @@ Module raw_vec.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -3682,37 +3707,41 @@ Module raw_vec.
           let len := M.alloc (| len |) in
           let additional := M.alloc (| additional |) in
           let elem_layout := M.alloc (| elem_layout |) in
-          BinOp.gt (|
-            M.read (| additional |),
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
-              [
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
-                    "capacity",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::alloc::layout::Layout",
-                        "size",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                    |)
-                  ]
-                |);
-                M.read (| len |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.gt,
+            [
+              M.read (| additional |);
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
+                      "capacity",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.path "core::alloc::layout::Layout",
+                          "size",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                      |)
+                    ]
+                  |);
+                  M.read (| len |)
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3864,7 +3893,7 @@ Module raw_vec.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -3876,14 +3905,18 @@ Module raw_vec.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.gt (|
-                                              M.read (| additional |),
-                                              Value.Integer IntegerKind.Usize 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.gt,
+                                              [
+                                                M.read (| additional |);
+                                                Value.Integer IntegerKind.Usize 0
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -3913,22 +3946,26 @@ Module raw_vec.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "size",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "size",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -4093,19 +4130,23 @@ Module raw_vec.
                       Ty.path "usize",
                       M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
-                        BinOp.Wrap.mul (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::raw_vec::RawVecInner",
-                                "cap"
-                              |),
-                              "alloc::raw_vec::Cap",
-                              0
-                            |)
-                          |),
-                          Value.Integer IntegerKind.Usize 2
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.mul,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::raw_vec::RawVecInner",
+                                  "cap"
+                                |),
+                                "alloc::raw_vec::Cap",
+                                0
+                              |)
+                            |);
+                            Value.Integer IntegerKind.Usize 2
+                          ]
                         |);
                         M.read (| required_cap |)
                       ]
@@ -4494,22 +4535,26 @@ Module raw_vec.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "size",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "size",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5008,37 +5053,41 @@ Module raw_vec.
                         M.use
                           (M.alloc (|
                             UnOp.not (|
-                              BinOp.le (|
-                                M.read (| cap |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
-                                    "capacity",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| self |) |)
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "size",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                                    |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.read (| cap |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
+                                      "capacity",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.path "core::alloc::layout::Layout",
+                                          "size",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -5234,13 +5283,14 @@ Module raw_vec.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.eq (|
-                                          M.read (| cap |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| cap |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -5980,7 +6030,7 @@ Module raw_vec.
                                   ltac:(M.monadic
                                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -6040,22 +6090,26 @@ Module raw_vec.
                                                         M.use
                                                           (M.alloc (|
                                                             UnOp.not (|
-                                                              BinOp.eq (|
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| left_val |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
-                                                                |),
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| right_val |)
-                                                                  |)
-                                                                |)
+                                                                ]
                                                               |)
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -6128,27 +6182,31 @@ Module raw_vec.
                                 Ty.tuple [],
                                 M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                 [
-                                  BinOp.eq (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "align",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "align",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.path "core::alloc::layout::Layout",
+                                          "align",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.path "core::alloc::layout::Layout",
+                                          "align",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -6399,28 +6457,36 @@ Module raw_vec.
                     M.use
                       (M.alloc (|
                         LogicalOp.and (|
-                          BinOp.lt (|
-                            M.read (|
-                              get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
-                            |),
-                            Value.Integer IntegerKind.U32 64
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.lt,
+                            [
+                              M.read (|
+                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                              |);
+                              Value.Integer IntegerKind.U32 64
+                            ]
                           |),
                           ltac:(M.monadic
-                            (BinOp.gt (|
-                              M.read (| alloc_size |),
-                              M.cast
-                                (Ty.path "usize")
-                                (M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "isize",
-                                    "MAX",
-                                    Ty.path "isize"
-                                  |)
-                                |))
+                            (M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| alloc_size |);
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "isize",
+                                      "MAX",
+                                      Ty.path "isize"
+                                    |)
+                                  |))
+                              ]
                             |)))
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"

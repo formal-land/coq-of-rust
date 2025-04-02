@@ -111,10 +111,12 @@ Module bits.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Hex" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |))
                           ]
                         |)
                       |)));
@@ -228,7 +230,11 @@ Module bits.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |) ]
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |))
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -549,7 +555,7 @@ Module bits.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -1422,7 +1428,14 @@ Module bits.
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| buf |) |)
+                                  |))
+                              ]
                             |)
                           |)
                         |)
@@ -1985,69 +1998,118 @@ Module bits.
                                       let out := M.copy (| γ1_1 |) in
                                       let~ hash_nibble : Ty.path "u8" :=
                                         M.alloc (|
-                                          BinOp.bit_and
-                                            (BinOp.Wrap.shr (|
-                                              M.read (|
-                                                M.deref (|
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.bit_and,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u8",
+                                                BinOp.Wrap.shr,
+                                                [
+                                                  M.read (|
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                                        M.get_trait_method (|
+                                                          "core::ops::index::Index",
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [],
+                                                          [],
+                                                          [ Ty.path "usize" ],
+                                                          "index",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (| Pointer.Kind.Ref, hash |);
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.div,
+                                                            [
+                                                              M.read (| i |);
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |);
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::index::Index",
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer IntegerKind.Usize 32 ]
-                                                        [],
-                                                      [],
-                                                      [ Ty.path "usize" ],
-                                                      "index",
-                                                      [],
-                                                      []
-                                                    |),
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.mul,
                                                     [
-                                                      M.borrow (| Pointer.Kind.Ref, hash |);
-                                                      BinOp.Wrap.div (|
-                                                        M.read (| i |),
-                                                        Value.Integer IntegerKind.Usize 2
+                                                      Value.Integer IntegerKind.Usize 4;
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 1;
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.rem,
+                                                            [
+                                                              M.read (| i |);
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
-                                                |)
-                                              |),
-                                              BinOp.Wrap.mul (|
-                                                Value.Integer IntegerKind.Usize 4,
-                                                BinOp.Wrap.sub (|
-                                                  Value.Integer IntegerKind.Usize 1,
-                                                  BinOp.Wrap.rem (|
-                                                    M.read (| i |),
-                                                    Value.Integer IntegerKind.Usize 2
-                                                  |)
-                                                |)
-                                              |)
-                                            |))
-                                            (Value.Integer IntegerKind.U8 15)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.U8 15
+                                            ]
+                                          |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           let β := M.deref (| M.read (| out |) |) in
                                           M.write (|
                                             β,
-                                            BinOp.bit_xor
-                                              (M.read (| β |))
-                                              (BinOp.Wrap.mul (|
-                                                Value.Integer IntegerKind.U8 32,
-                                                M.cast
-                                                  (Ty.path "u8")
-                                                  (BinOp.bit_and
-                                                    (BinOp.ge (|
-                                                      M.read (| M.deref (| M.read (| out |) |) |),
-                                                      M.read (| UnsupportedLiteral |)
-                                                    |))
-                                                    (BinOp.ge (|
-                                                      M.read (| hash_nibble |),
-                                                      Value.Integer IntegerKind.U8 8
-                                                    |)))
-                                              |))
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.bit_xor,
+                                              [
+                                                M.read (| β |);
+                                                M.call_closure (|
+                                                  Ty.path "u8",
+                                                  BinOp.Wrap.mul,
+                                                  [
+                                                    Value.Integer IntegerKind.U8 32;
+                                                    M.cast
+                                                      (Ty.path "u8")
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.Wrap.bit_and,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [
+                                                              M.read (|
+                                                                M.deref (| M.read (| out |) |)
+                                                              |);
+                                                              M.read (| UnsupportedLiteral |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [
+                                                              M.read (| hash_nibble |);
+                                                              Value.Integer IntegerKind.U8 8
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |))
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -2460,7 +2522,9 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| salt |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| salt |) |) |))
                     ]
                   |)
                 |) in
@@ -2508,7 +2572,9 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init_code_hash |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init_code_hash |) |) |))
                     ]
                   |)
                 |) in
@@ -2614,14 +2680,18 @@ Module bits.
                                   M.use
                                     (M.alloc (|
                                       UnOp.not (|
-                                        BinOp.eq (|
-                                          M.read (| M.deref (| M.read (| left_val |) |) |),
-                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.read (| M.deref (| M.read (| left_val |) |) |);
+                                            M.read (| M.deref (| M.read (| right_val |) |) |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -3139,22 +3209,14 @@ Module bits.
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 42 ]
-                                [ Ty.path "u8" ]
-                            ],
-                          M.get_associated_function (|
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                              (Ty.path "&")
                               []
                               [
                                 Ty.apply
@@ -3162,23 +3224,33 @@ Module bits.
                                   [ Value.Integer IntegerKind.Usize 42 ]
                                   [ Ty.path "u8" ]
                               ],
-                            "assume_init_ref",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloy_primitives::bits::address::AddressChecksumBuffer",
-                                0
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 42 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              "assume_init_ref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloy_primitives::bits::address::AddressChecksumBuffer",
+                                  0
+                                |)
                               |)
-                            |)
-                          ]
+                            ]
+                          |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |)
@@ -3217,22 +3289,14 @@ Module bits.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 42 ]
-                                        [ Ty.path "u8" ]
-                                    ],
-                                  M.get_associated_function (|
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "&mut")
                                       []
                                       [
                                         Ty.apply
@@ -3240,23 +3304,33 @@ Module bits.
                                           [ Value.Integer IntegerKind.Usize 42 ]
                                           [ Ty.path "u8" ]
                                       ],
-                                    "assume_init_mut",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloy_primitives::bits::address::AddressChecksumBuffer",
-                                        0
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 42 ]
+                                            [ Ty.path "u8" ]
+                                        ],
+                                      "assume_init_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloy_primitives::bits::address::AddressChecksumBuffer",
+                                          0
+                                        |)
                                       |)
-                                    |)
-                                  ]
+                                    ]
+                                  |)
                                 |)
-                              |)
-                            |)
+                              |))
                           ]
                         |)
                       |)

@@ -172,7 +172,7 @@ Module iter.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -200,9 +200,13 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Wrap.sub (|
-                                                                        M.read (| n |),
-                                                                        M.read (| i |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "usize",
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.read (| n |);
+                                                                          M.read (| i |)
+                                                                        ]
                                                                       |)
                                                                     ]
                                                                   |)
@@ -311,10 +315,7 @@ Module iter.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|

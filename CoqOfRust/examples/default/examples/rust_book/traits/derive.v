@@ -31,21 +31,25 @@ Module Impl_core_cmp_PartialEq_derive_Centimeters_for_derive_Centimeters.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "derive::Centimeters",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "derive::Centimeters",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "derive::Centimeters",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "derive::Centimeters",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -150,24 +154,26 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Inches" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "derive::Inches",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "derive::Inches",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -211,9 +217,13 @@ Module Impl_derive_Inches.
                     Value.StructTuple
                       "derive::Centimeters"
                       [
-                        BinOp.Wrap.mul (|
-                          M.cast (Ty.path "f64") (M.read (| inches |)),
-                          M.read (| UnsupportedLiteral |)
+                        M.call_closure (|
+                          Ty.path "f64",
+                          BinOp.Wrap.mul,
+                          [
+                            M.cast (Ty.path "f64") (M.read (| inches |));
+                            M.read (| UnsupportedLiteral |)
+                          ]
                         |)
                       ]
                   |)))
@@ -381,7 +391,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| mk_str (| "smaller" |) |)));
                 fun γ =>
                   ltac:(M.monadic

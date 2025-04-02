@@ -347,21 +347,25 @@ Module Impl_core_cmp_PartialEq_erc1155_AccountId_for_erc1155_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "erc1155::AccountId",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "erc1155::AccountId",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "erc1155::AccountId",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "erc1155::AccountId",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -586,7 +590,13 @@ Module Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -997,7 +1007,14 @@ Module Impl_erc1155_Contract.
                   "erc1155::Contract",
                   "token_id_nonce"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U128 1 |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); Value.Integer IntegerKind.U128 1 ]
+                |)
+              |)
             |) in
           let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
             M.alloc (|
@@ -1076,13 +1093,15 @@ Module Impl_erc1155_Contract.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.eq (|
-                                              M.read (| value |),
-                                              Value.Integer IntegerKind.U128 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [ M.read (| value |); Value.Integer IntegerKind.U128 0
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1166,20 +1185,23 @@ Module Impl_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               UnOp.not (|
-                                BinOp.le (|
-                                  M.read (| token_id |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "erc1155::Contract",
-                                      "token_id_nonce"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| token_id |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "erc1155::Contract",
+                                        "token_id_nonce"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1407,7 +1429,14 @@ Module Impl_erc1155_Contract.
           let~ _ : Ty.tuple [] :=
             M.alloc (|
               let β := sender_balance in
-              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| value |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.sub,
+                  [ M.read (| β |); M.read (| value |) ]
+                |)
+              |)
             |) in
           let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
             M.alloc (|
@@ -1486,7 +1515,14 @@ Module Impl_erc1155_Contract.
           let~ _ : Ty.tuple [] :=
             M.alloc (|
               let β := recipient_balance in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| value |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| value |) ]
+                |)
+              |)
             |) in
           let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
             M.alloc (|
@@ -1870,8 +1906,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1906,7 +1941,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1981,8 +2016,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2041,10 +2075,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (| BinOp.ge (| M.read (| balance |), M.read (| value |) |) |)
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [ M.read (| balance |); M.read (| value |) ]
+                                |)
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2221,8 +2260,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -2257,7 +2295,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -2332,8 +2370,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2390,8 +2427,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2432,38 +2468,41 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               UnOp.not (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
-                                  |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, values |) ]
-                                  |)
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, values |) ]
+                                    |)
+                                  ]
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2760,14 +2799,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                     M.use
                                                       (M.alloc (|
                                                         UnOp.not (|
-                                                          BinOp.ge (|
-                                                            M.read (| balance |),
-                                                            M.read (| v |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [ M.read (| balance |); M.read (| v |) ]
                                                           |)
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -3393,8 +3433,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -3431,8 +3470,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use approved in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                           M.alloc (|
                             M.call_closure (|

@@ -37,38 +37,42 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineReturnFrame" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "idx" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                        "idx"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                          "idx"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pc" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                            "pc"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                              "pc"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -203,38 +207,46 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                    "idx"
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                    "idx"
-                  |)
-                |)
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                      "pc"
+                      "idx"
                     |)
-                  |),
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| other |) |),
                       "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                      "pc"
+                      "idx"
                     |)
                   |)
+                ]
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                        "pc"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                        "pc"
+                      |)
+                    |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -537,38 +549,42 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineImpl" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_stack" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                        "return_stack"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                          "return_stack"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_code_idx" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                            "current_code_idx"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                              "current_code_idx"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -722,21 +738,25 @@ Module interpreter.
                 ]
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                      "current_code_idx"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                        "current_code_idx"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                        "current_code_idx"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                      "current_code_idx"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1108,38 +1128,42 @@ Module interpreter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ge (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                                            "return_stack"
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                              "return_stack"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1024
+                                        ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1024
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                             |)));

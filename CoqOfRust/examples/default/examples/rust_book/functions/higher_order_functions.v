@@ -11,9 +11,17 @@ Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
-      BinOp.eq (|
-        BinOp.Wrap.rem (| M.read (| n |), Value.Integer IntegerKind.U32 2 |),
-        Value.Integer IntegerKind.U32 1
+      M.call_closure (|
+        Ty.path "bool",
+        BinOp.eq,
+        [
+          M.call_closure (|
+            Ty.path "u32",
+            BinOp.Wrap.rem,
+            [ M.read (| n |); Value.Integer IntegerKind.U32 2 ]
+          |);
+          Value.Integer IntegerKind.U32 1
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -173,7 +181,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let n := M.copy (| γ0_0 |) in
                                   let~ n_squared : Ty.path "u32" :=
                                     M.alloc (|
-                                      BinOp.Wrap.mul (| M.read (| n |), M.read (| n |) |)
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.mul,
+                                        [ M.read (| n |); M.read (| n |) ]
+                                      |)
                                     |) in
                                   M.match_operator (|
                                     Some (Ty.tuple []),
@@ -184,13 +196,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.ge (|
-                                                  M.read (| n_squared |),
-                                                  M.read (| upper |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [ M.read (| n_squared |); M.read (| upper |) ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -219,7 +232,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -228,9 +241,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       let β := acc in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add (|
-                                                          M.read (| β |),
-                                                          M.read (| n_squared |)
+                                                        M.call_closure (|
+                                                          Ty.path "u32",
+                                                          BinOp.Wrap.add,
+                                                          [ M.read (| β |); M.read (| n_squared |) ]
                                                         |)
                                                       |)
                                                     |) in
@@ -473,7 +487,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let n := M.copy (| γ |) in
-                                              BinOp.Wrap.mul (| M.read (| n |), M.read (| n |) |)))
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.mul,
+                                                [ M.read (| n |); M.read (| n |) ]
+                                              |)))
                                         ]
                                       |)))
                                   | _ => M.impossible "wrong number of arguments"
@@ -497,9 +515,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ltac:(M.monadic
                                           (let γ := M.read (| γ |) in
                                           let n_squared := M.copy (| γ |) in
-                                          BinOp.lt (|
-                                            M.read (| n_squared |),
-                                            M.read (| upper |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.lt,
+                                            [ M.read (| n_squared |); M.read (| upper |) ]
                                           |)))
                                     ]
                                   |)))

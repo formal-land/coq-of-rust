@@ -5,7 +5,11 @@ Module eip4844.
   Definition value_GAS_PER_BLOB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 17 |)
+        M.call_closure (|
+          Ty.path "u64",
+          BinOp.Wrap.shl,
+          [ Value.Integer IntegerKind.U64 1; Value.Integer IntegerKind.I32 17 ]
+        |)
       |))).
   
   Global Instance Instance_IsConstant_value_GAS_PER_BLOB :
@@ -34,14 +38,18 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.mul (|
-          Value.Integer IntegerKind.U64 2,
-          M.read (|
-            get_constant (|
-              "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
-              Ty.path "u64"
+        M.call_closure (|
+          Ty.path "u64",
+          BinOp.Wrap.mul,
+          [
+            Value.Integer IntegerKind.U64 2;
+            M.read (|
+              get_constant (|
+                "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
+                Ty.path "u64"
+              |)
             |)
-          |)
+          ]
         |)
       |))).
   
@@ -59,14 +67,20 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.mul (|
-          M.read (|
-            get_constant (|
-              "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK",
-              Ty.path "u64"
+        M.call_closure (|
+          Ty.path "u64",
+          BinOp.Wrap.mul,
+          [
+            M.read (|
+              get_constant (|
+                "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK",
+                Ty.path "u64"
+              |)
+            |);
+            M.read (|
+              get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |)
             |)
-          |),
-          M.read (| get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |) |)
+          ]
         |)
       |))).
   
@@ -84,14 +98,20 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.mul (|
-          M.read (|
-            get_constant (|
-              "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
-              Ty.path "u64"
+        M.call_closure (|
+          Ty.path "u64",
+          BinOp.Wrap.mul,
+          [
+            M.read (|
+              get_constant (|
+                "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
+                Ty.path "u64"
+              |)
+            |);
+            M.read (|
+              get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |)
             |)
-          |),
-          M.read (| get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |) |)
+          ]
         |)
       |))).
   

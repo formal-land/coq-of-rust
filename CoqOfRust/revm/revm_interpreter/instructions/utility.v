@@ -98,7 +98,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                           |)));
@@ -116,28 +116,32 @@ Module instructions.
                             M.use
                               (M.alloc (|
                                 UnOp.not (|
-                                  BinOp.le (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| slice |) |)
-                                        |)
-                                      ]
-                                    |),
-                                    Value.Integer IntegerKind.Usize 32
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| slice |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 32
+                                    ]
                                   |)
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -175,21 +179,29 @@ Module instructions.
                   |) in
                 let~ n_words : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.div (|
-                      BinOp.Wrap.add (|
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.div,
+                      [
                         M.call_closure (|
                           Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                        |),
-                        Value.Integer IntegerKind.Usize 31
-                      |),
-                      Value.Integer IntegerKind.Usize 32
+                          BinOp.Wrap.add,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                            |);
+                            Value.Integer IntegerKind.Usize 31
+                          ]
+                        |);
+                        Value.Integer IntegerKind.Usize 32
+                      ]
                     |)
                   |) in
                 let~ dst : Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ] :=
@@ -203,36 +215,42 @@ Module instructions.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                    [ Ty.path "u64" ]
-                                ],
-                              M.get_associated_function (|
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "ruint::Uint")
+                                  (Ty.path "&mut")
+                                  []
                                   [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "u64" ]
+                                  ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [],
+                                  "as_limbs_mut",
                                   [],
-                                "as_limbs_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
-                              ]
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| dest |) |)
+                                  |)
+                                ]
+                              |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -625,11 +643,15 @@ Module instructions.
                                                                       let β := i in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| β |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.add,
+                                                                          [
+                                                                            M.read (| β |);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
                                                                         |)
                                                                       |)
                                                                     |) in
@@ -673,7 +695,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                           |)));
@@ -914,9 +936,13 @@ Module instructions.
                                               let β := i in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |) in
@@ -956,7 +982,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ tmp :
                               Ty.apply
                                 (Ty.path "array")
@@ -1010,26 +1036,32 @@ Module instructions.
                                             "core::ops::range::RangeFrom"
                                             [
                                               ("start",
-                                                BinOp.Wrap.sub (|
-                                                  Value.Integer IntegerKind.Usize 8,
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 8;
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "len",
+                                                        [],
                                                         []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| partial_last_limb |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (| partial_last_limb |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |))
                                             ]
                                         ]
@@ -1082,9 +1114,10 @@ Module instructions.
                               let β := i in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.Usize 1
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               |)
                             |) in
@@ -1101,7 +1134,7 @@ Module instructions.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -1111,12 +1144,17 @@ Module instructions.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        BinOp.Wrap.div (|
-                                          BinOp.Wrap.add (|
-                                            M.read (| i |),
-                                            Value.Integer IntegerKind.Usize 3
-                                          |),
-                                          Value.Integer IntegerKind.Usize 4
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.div,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| i |); Value.Integer IntegerKind.Usize 3 ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                         |)
                                       |)
                                     |);
@@ -1140,18 +1178,22 @@ Module instructions.
                                               M.use
                                                 (M.alloc (|
                                                   UnOp.not (|
-                                                    BinOp.eq (|
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |),
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -1242,7 +1284,11 @@ Module instructions.
                   |) in
                 let~ m : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.rem (| M.read (| i |), Value.Integer IntegerKind.Usize 4 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.rem,
+                      [ M.read (| i |); Value.Integer IntegerKind.Usize 4 ]
+                    |)
                   |) in
                 M.match_operator (|
                   Some (Ty.tuple []),
@@ -1253,10 +1299,13 @@ Module instructions.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (| M.read (| m |), Value.Integer IntegerKind.Usize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [ M.read (| m |); Value.Integer IntegerKind.Usize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1279,9 +1328,10 @@ Module instructions.
                                   [ M.read (| dst |); M.read (| i |) ]
                                 |);
                                 Value.Integer IntegerKind.U8 0;
-                                BinOp.Wrap.sub (|
-                                  Value.Integer IntegerKind.Usize 4,
-                                  M.read (| m |)
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ Value.Integer IntegerKind.Usize 4; M.read (| m |) ]
                                 |)
                               ]
                             |)

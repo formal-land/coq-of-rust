@@ -98,7 +98,14 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
         let~ _ : Ty.tuple [] :=
           M.alloc (|
             let β := M.deref (| M.read (| x |) |) in
-            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |)
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.add,
+                [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
+              |)
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

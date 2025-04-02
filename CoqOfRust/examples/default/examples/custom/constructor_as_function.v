@@ -24,12 +24,12 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_1 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
@@ -79,24 +79,26 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Constructor" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "constructor_as_function::Constructor",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "constructor_as_function::Constructor",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -216,19 +218,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            M.read (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 3 ]
-                                      [ Ty.path "i32" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                M.get_associated_function (|
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.read (|
+                                M.call_closure (|
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
                                     []
@@ -239,22 +232,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [ Ty.path "i32" ];
                                       Ty.path "alloc::alloc::Global"
                                     ],
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    Value.Array
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
-                                        Value.Integer IntegerKind.I32 1;
-                                        Value.Integer IntegerKind.I32 2;
-                                        Value.Integer IntegerKind.I32 3
-                                      ]
-                                  |)
-                                ]
-                              |)
-                            |)
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.path "i32" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "new",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          Value.Integer IntegerKind.I32 1;
+                                          Value.Integer IntegerKind.I32 2;
+                                          Value.Integer IntegerKind.I32 3
+                                        ]
+                                    |)
+                                  ]
+                                |)
+                              |))
                           ]
                         |)
                       ]

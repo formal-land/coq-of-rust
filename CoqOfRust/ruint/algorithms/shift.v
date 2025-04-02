@@ -30,7 +30,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -42,14 +42,16 @@ Module algorithms.
                                   M.use
                                     (M.alloc (|
                                       UnOp.not (|
-                                        BinOp.lt (|
-                                          M.read (| amount |),
-                                          Value.Integer IntegerKind.Usize 64
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.lt,
+                                          [ M.read (| amount |); Value.Integer IntegerKind.Usize 64
+                                          ]
                                         |)
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -147,23 +149,40 @@ Module algorithms.
                                       let limb := M.copy (| γ0_0 |) in
                                       let~ value : Ty.path "u64" :=
                                         M.alloc (|
-                                          BinOp.bit_or
-                                            (BinOp.Wrap.shl (|
-                                              M.read (| M.deref (| M.read (| limb |) |) |),
-                                              M.read (| amount |)
-                                            |))
-                                            (M.read (| overflow |))
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.bit_or,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.shl,
+                                                [
+                                                  M.read (| M.deref (| M.read (| limb |) |) |);
+                                                  M.read (| amount |)
+                                                ]
+                                              |);
+                                              M.read (| overflow |)
+                                            ]
+                                          |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.write (|
                                             overflow,
-                                            BinOp.Wrap.shr (|
-                                              M.read (| M.deref (| M.read (| limb |) |) |),
-                                              BinOp.Wrap.sub (|
-                                                Value.Integer IntegerKind.Usize 64,
-                                                M.read (| amount |)
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.shr,
+                                              [
+                                                M.read (| M.deref (| M.read (| limb |) |) |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 64;
+                                                    M.read (| amount |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -219,7 +238,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -231,14 +250,16 @@ Module algorithms.
                                   M.use
                                     (M.alloc (|
                                       UnOp.not (|
-                                        BinOp.lt (|
-                                          M.read (| amount |),
-                                          Value.Integer IntegerKind.Usize 64
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.lt,
+                                          [ M.read (| amount |); Value.Integer IntegerKind.Usize 64
+                                          ]
                                         |)
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -374,23 +395,40 @@ Module algorithms.
                                       let limb := M.copy (| γ0_0 |) in
                                       let~ value : Ty.path "u64" :=
                                         M.alloc (|
-                                          BinOp.bit_or
-                                            (BinOp.Wrap.shr (|
-                                              M.read (| M.deref (| M.read (| limb |) |) |),
-                                              M.read (| amount |)
-                                            |))
-                                            (M.read (| overflow |))
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.bit_or,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.shr,
+                                                [
+                                                  M.read (| M.deref (| M.read (| limb |) |) |);
+                                                  M.read (| amount |)
+                                                ]
+                                              |);
+                                              M.read (| overflow |)
+                                            ]
+                                          |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.write (|
                                             overflow,
-                                            BinOp.Wrap.shl (|
-                                              M.read (| M.deref (| M.read (| limb |) |) |),
-                                              BinOp.Wrap.sub (|
-                                                Value.Integer IntegerKind.Usize 64,
-                                                M.read (| amount |)
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.shl,
+                                              [
+                                                M.read (| M.deref (| M.read (| limb |) |) |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 64;
+                                                    M.read (| amount |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |) in

@@ -115,7 +115,7 @@ Module vec.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -224,10 +224,14 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| M.read (| elem |), Value.Integer IntegerKind.I8 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| elem |); Value.Integer IntegerKind.I8 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -365,10 +369,14 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| M.read (| elem |), Value.Integer IntegerKind.U8 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| elem |); Value.Integer IntegerKind.U8 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|

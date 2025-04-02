@@ -127,34 +127,41 @@ Module bound.
               M.alloc (|
                 M.cast
                   (Ty.path "u128")
-                  (BinOp.Wrap.mul (|
-                    M.cast
-                      (Ty.path "f32")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
-                              M.get_associated_function (|
-                                Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
-                                "get_bounds_mut",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.read (| from |)
-                              ]
-                            |)
-                          |),
-                          "move_bytecode_verifier_meter::bound::Bounds",
-                          "units"
-                        |)
-                      |)),
-                    M.read (| factor |)
+                  (M.call_closure (|
+                    Ty.path "f32",
+                    BinOp.Wrap.mul,
+                    [
+                      M.cast
+                        (Ty.path "f32")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
+                                M.get_associated_function (|
+                                  Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
+                                  "get_bounds_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |);
+                                  M.read (| from |)
+                                ]
+                              |)
+                            |),
+                            "move_bytecode_verifier_meter::bound::Bounds",
+                            "units"
+                          |)
+                        |));
+                      M.read (| factor |)
+                    ]
                   |))
               |) in
             M.alloc (|
@@ -330,10 +337,14 @@ Module bound.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (| M.read (| new_units |), M.read (| max |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [ M.read (| new_units |); M.read (| max |) ]
+                                          |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in

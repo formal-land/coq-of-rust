@@ -162,9 +162,21 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               Ty.path "f64",
                               M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                               [
-                                BinOp.Wrap.mul (|
-                                  BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |),
-                                  BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |)
+                                M.call_closure (|
+                                  Ty.path "f64",
+                                  BinOp.Wrap.mul,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "f64",
+                                      BinOp.Wrap.sub,
+                                      [ M.read (| x1 |); M.read (| x2 |) ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "f64",
+                                      BinOp.Wrap.sub,
+                                      [ M.read (| y1 |); M.read (| y2 |) ]
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -244,20 +256,40 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           let x2 := M.copy (| γ0_0 |) in
                           let y2 := M.copy (| γ0_1 |) in
                           M.alloc (|
-                            BinOp.Wrap.mul (|
-                              M.read (| UnsupportedLiteral |),
-                              BinOp.Wrap.add (|
+                            M.call_closure (|
+                              Ty.path "f64",
+                              BinOp.Wrap.mul,
+                              [
+                                M.read (| UnsupportedLiteral |);
                                 M.call_closure (|
                                   Ty.path "f64",
-                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
-                                  [ BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |) ]
-                                |),
-                                M.call_closure (|
-                                  Ty.path "f64",
-                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
-                                  [ BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |) ]
+                                  BinOp.Wrap.add,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "f64",
+                                      M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "f64",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| x1 |); M.read (| x2 |) ]
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "f64",
+                                      M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "f64",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| y1 |); M.read (| y2 |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
-                              |)
+                              ]
                             |)
                           |)))
                     ]
@@ -302,7 +334,14 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "associated_functions_and_methods::Point",
                   "x"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "f64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| x |) ]
+                |)
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -316,7 +355,14 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "associated_functions_and_methods::Point",
                   "x"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "f64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| x |) ]
+                |)
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -330,7 +376,14 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "associated_functions_and_methods::Point",
                   "y"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "f64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| y |) ]
+                |)
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -344,7 +397,14 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "associated_functions_and_methods::Point",
                   "y"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "f64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| y |) ]
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

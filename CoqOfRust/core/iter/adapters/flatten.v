@@ -350,19 +350,21 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::flatten::FlatMap",
-                                  "inner"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::flatten::FlatMap",
+                                    "inner"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -1759,19 +1761,21 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::flatten::Flatten",
-                                  "inner"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::flatten::Flatten",
+                                    "inner"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -2766,52 +2770,58 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FlattenCompat" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::flatten::FlattenCompat",
-                          "iter"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::flatten::FlattenCompat",
+                            "iter"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "frontiter" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::flatten::FlattenCompat",
-                          "frontiter"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::flatten::FlattenCompat",
+                            "frontiter"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "backiter" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::flatten::FlattenCompat",
-                              "backiter"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::flatten::FlattenCompat",
+                                "backiter"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -5577,7 +5587,7 @@ Module iter.
                                             let γ1_1 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
                                                 Value.Integer IntegerKind.Usize 0
                                               |) in
@@ -5588,7 +5598,7 @@ Module iter.
                                                 0
                                               |) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ2_0 |),
                                                 Value.Integer IntegerKind.Usize 0
                                               |) in
@@ -7098,7 +7108,7 @@ Module iter.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -7861,21 +7871,25 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.sub (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    "get",
+                                    [],
                                     []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| n |) ]
-                              |),
-                              Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  [ M.read (| n |) ]
+                                |);
+                                Value.Integer IntegerKind.Usize 1
+                              ]
                             |)
                           ]
                         |)
@@ -8164,7 +8178,7 @@ Module iter.
                                     0
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ0_0 |),
                                     Value.Integer IntegerKind.Usize 0
                                   |) in
@@ -8186,7 +8200,7 @@ Module iter.
                                     0
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ0_0 |),
                                     Value.Integer IntegerKind.Usize 1
                                   |) in

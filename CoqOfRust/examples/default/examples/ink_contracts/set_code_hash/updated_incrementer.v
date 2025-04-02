@@ -263,7 +263,14 @@ Module Impl_updated_incrementer_Incrementer.
                   "updated_incrementer::Incrementer",
                   "count"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); Value.Integer IntegerKind.U32 4 ]
+                |)
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             let~ _ : Ty.tuple [] :=

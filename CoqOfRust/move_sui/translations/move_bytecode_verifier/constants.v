@@ -652,7 +652,7 @@ Module constants.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| type_ |) |) |) ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
               fun γ =>
                 ltac:(M.monadic

@@ -347,21 +347,25 @@ Module Impl_core_cmp_PartialEq_erc721_AccountId_for_erc721_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "erc721::AccountId",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "erc721::AccountId",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "erc721::AccountId",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "erc721::AccountId",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -645,7 +649,13 @@ Module Impl_core_cmp_PartialEq_erc721_Error_for_erc721_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1547,8 +1557,7 @@ Module Impl_erc721_Erc721.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1601,8 +1610,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use approved in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1965,8 +1973,7 @@ Module Impl_erc721_Erc721.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2035,8 +2042,7 @@ Module Impl_erc721_Erc721.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2088,8 +2094,7 @@ Module Impl_erc721_Erc721.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2397,7 +2402,7 @@ Module Impl_erc721_Erc721.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2521,14 +2526,20 @@ Module Impl_erc721_Erc721.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let c := M.copy (| γ |) in
-                                                            BinOp.Wrap.sub (|
-                                                              M.read (| c |),
-                                                              M.read (|
-                                                                M.use
-                                                                  (M.alloc (|
-                                                                    Value.Integer IntegerKind.U32 1
-                                                                  |))
-                                                              |)
+                                                            M.call_closure (|
+                                                              Ty.path "u32",
+                                                              BinOp.Wrap.sub,
+                                                              [
+                                                                M.read (| c |);
+                                                                M.read (|
+                                                                  M.use
+                                                                    (M.alloc (|
+                                                                      Value.Integer
+                                                                        IntegerKind.U32
+                                                                        1
+                                                                    |))
+                                                                |)
+                                                              ]
                                                             |)))
                                                       ]
                                                     |)))

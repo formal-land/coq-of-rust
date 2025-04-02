@@ -79,10 +79,14 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 8 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| len |); Value.Integer IntegerKind.Usize 8 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -110,7 +114,11 @@ Module slice.
                   |) in
                 let~ len_div_8 : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 8 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.div,
+                      [ M.read (| len |); Value.Integer IntegerKind.Usize 8 ]
+                    |)
                   |) in
                 let~ a : Ty.apply (Ty.path "*const") [] [ T ] := M.copy (| v_base |) in
                 let~ b : Ty.apply (Ty.path "*const") [] [ T ] :=
@@ -125,9 +133,10 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        BinOp.Wrap.mul (|
-                          M.read (| len_div_8 |),
-                          Value.Integer IntegerKind.Usize 4
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.mul,
+                          [ M.read (| len_div_8 |); Value.Integer IntegerKind.Usize 4 ]
                         |)
                       ]
                     |)
@@ -144,9 +153,10 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        BinOp.Wrap.mul (|
-                          M.read (| len_div_8 |),
-                          Value.Integer IntegerKind.Usize 7
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.mul,
+                          [ M.read (| len_div_8 |); Value.Integer IntegerKind.Usize 7 ]
                         |)
                       ]
                     |)
@@ -160,18 +170,21 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| len |),
-                                M.read (|
-                                  get_constant (|
-                                    "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
-                                    Ty.path "usize"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.read (| len |);
+                                  M.read (|
+                                    get_constant (|
+                                      "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
+                                      Ty.path "usize"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "usize",
@@ -304,24 +317,33 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  BinOp.Wrap.mul (|
-                                    M.read (| n |),
-                                    Value.Integer IntegerKind.Usize 8
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
-                                      Ty.path "usize"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.mul,
+                                      [ M.read (| n |); Value.Integer IntegerKind.Usize 8 ]
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
+                                        Ty.path "usize"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ n8 : Ty.path "usize" :=
                             M.alloc (|
-                              BinOp.Wrap.div (| M.read (| n |), Value.Integer IntegerKind.Usize 8 |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.div,
+                                [ M.read (| n |); Value.Integer IntegerKind.Usize 8 ]
+                              |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
@@ -346,9 +368,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| a |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 4
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 4 ]
                                         |)
                                       ]
                                     |);
@@ -362,9 +385,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| a |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 7
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 7 ]
                                         |)
                                       ]
                                     |);
@@ -400,9 +424,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| b |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 4
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 4 ]
                                         |)
                                       ]
                                     |);
@@ -416,9 +441,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| b |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 7
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 7 ]
                                         |)
                                       ]
                                     |);
@@ -454,9 +480,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| c |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 4
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 4 ]
                                         |)
                                       ]
                                     |);
@@ -470,9 +497,10 @@ Module slice.
                                       |),
                                       [
                                         M.read (| c |);
-                                        BinOp.Wrap.mul (|
-                                          M.read (| n8 |),
-                                          Value.Integer IntegerKind.Usize 7
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n8 |); Value.Integer IntegerKind.Usize 7 ]
                                         |)
                                       ]
                                     |);
@@ -605,9 +633,15 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.eq (| M.read (| x |), M.read (| y |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| x |); M.read (| y |) ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ z : Ty.path "bool" :=
                           M.alloc (|
                             M.call_closure (|
@@ -649,10 +683,14 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.bit_xor (M.read (| z |)) (M.read (| x |))
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.Wrap.bit_xor,
+                                        [ M.read (| z |); M.read (| x |) ]
+                                      |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in

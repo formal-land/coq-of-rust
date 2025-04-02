@@ -77,7 +77,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let β := count in
                 M.write (|
                   β,
-                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
+                  |)
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
@@ -90,9 +94,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.U32 3 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [ M.read (| count |); Value.Integer IntegerKind.U32 3 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.read (|
@@ -204,9 +212,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.U32 5 |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| count |); Value.Integer IntegerKind.U32 5 ]
+                          |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.read (|

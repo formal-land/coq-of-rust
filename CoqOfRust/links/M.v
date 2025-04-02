@@ -828,30 +828,6 @@ Module Run.
       LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) index) k 🔽
       R, Output
     }}
-  | CallPrimitiveAreEqualBool
-      (x y : bool) (x' y' : Value.t)
-      (k : Value.t -> M) :
-    x' = φ x ->
-    y' = φ y ->
-    (forall (b : bool),
-      {{ k (φ b) 🔽 R, Output }}
-    ) ->
-    {{
-      LowM.CallPrimitive (Primitive.AreEqual x' y') k 🔽
-      R, Output
-    }}
-  | CallPrimitiveAreEqualInteger {kind : IntegerKind.t}
-      (x y : Integer.t kind) (x' y' : Value.t)
-      (k : Value.t -> M) :
-    x' = φ x ->
-    y' = φ y ->
-    (forall (b : bool),
-      {{ k (φ b) 🔽 R, Output }}
-    ) ->
-    {{
-      LowM.CallPrimitive (Primitive.AreEqual x' y') k 🔽
-      R, Output
-    }}
   | CallPrimitiveGetFunction
       (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
       (function : PolymorphicFunction.t)
@@ -981,8 +957,7 @@ Module Primitive.
   | GetSubPointer {A : Set} `{Link A} {index : Pointer.Index.t}
     (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A index) :
     let _ := runner.(SubPointer.Runner.H_Sub_A) in
-    t (Ref.Core.t runner.(SubPointer.Runner.Sub_A))
-  | AreEqual {A : Set} `{Link A} (x y : A) : t bool.
+    t (Ref.Core.t runner.(SubPointer.Runner.Sub_A)).
 End Primitive.
 
 Module LowM.
@@ -1070,18 +1045,6 @@ Proof.
     eapply evaluate.
     match goal with
     | H : forall _, _ |- _ => apply (H {| Ref.core := sub_ref_core |})
-    end.
-  }
-  { (* AreEqualBool *)
-    eapply evaluate.
-    match goal with
-    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
-    end.
-  }
-  { (* AreEqualInteger *)
-    eapply evaluate.
-    match goal with
-    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
     end.
   }
   { (* CallPrimitiveGetFunction *)
@@ -1248,6 +1211,12 @@ Ltac run_symbolic_closure_auto :=
     now repeat smpl of_ty |
     try prepare_call;
     (
+      (
+        unshelve eapply Run.run_f;
+        typeclasses eauto
+      ) ||
+      (* Can solve the case of operators *)
+      run_symbolic_pure ||
       match goal with
       | H : _ |- _ => now apply H
       end ||
@@ -1344,14 +1313,6 @@ Ltac rewrite_cast_integer :=
 Ltac run_symbolic_let :=
   unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
 
-Ltac run_symbolic_are_equal_bool :=
-  eapply Run.CallPrimitiveAreEqualBool;
-    [now repeat smpl of_value | now repeat smpl of_value | intros []].
-
-Ltac run_symbolic_are_equal_integer :=
-  eapply Run.CallPrimitiveAreEqualInteger;
-    [now repeat smpl of_value | now repeat smpl of_value | intros []].
-
 Ltac run_symbolic_loop :=
   unshelve eapply Run.Loop; [
     smpl of_ty |
@@ -1376,8 +1337,6 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_closure_auto ||
     run_symbolic_let ||
     run_sub_pointer ||
-    run_symbolic_are_equal_bool ||
-    run_symbolic_are_equal_integer ||
     run_symbolic_loop ||
     fold @LowM.let_
   end.
@@ -1392,6 +1351,13 @@ Ltac run_symbolic :=
     match goal with
     | |- context[match Output.Exception.to_exception ?exception with _ => _ end] =>
       destruct exception; run_symbolic
+    end ||
+    match goal with
+    | |- {{ ?expression 🔽 _, _ }} =>
+      match expression with
+      | context [match ?expression with _ => _ end] =>
+        destruct expression; run_symbolic
+      end
     end
   )).
 
@@ -1639,80 +1605,6 @@ Module Pair.
     Smpl Add apply get_index_1_is_valid : run_sub_pointer.
   End SubPointer.
 End Pair.
-
-Module BinOp.
-  Lemma make_comparison_eq (kind : IntegerKind.t)
-      (cmp : Z -> Z -> bool) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
-    v1' = φ v1 ->
-    v2' = φ v2 ->
-    BinOp.make_comparison cmp v1' v2' =
-    M.pure (φ (cmp v1.(Integer.value) v2.(Integer.value))).
-  Proof.
-    intros -> ->.
-    now destruct kind.
-  Qed.
-
-  Ltac rewrite_make_comparison :=
-    match goal with
-    | |- context[BinOp.make_comparison _ _ _] =>
-      eapply Run.Rewrite; [
-        (
-          (erewrite (make_comparison_eq IntegerKind.U8) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.U16) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.U32) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.U64) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.U128) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.Usize) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.I8) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.I16) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.I32) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.I64) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.I128) by smpl of_value) ||
-          (erewrite (make_comparison_eq IntegerKind.Isize) by smpl of_value)
-        );
-        reflexivity
-      |]
-    end.
-  Smpl Add rewrite_make_comparison : run_symbolic.
-
-  Module Wrap.
-    Lemma make_arithmetic_eq (kind : IntegerKind.t)
-        (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
-      v1' = φ v1 ->
-      v2' = φ v2 ->
-      BinOp.Wrap.make_arithmetic bin_op v1' v2' =
-      M.pure (φ (Integer.Build_t kind (
-        Integer.normalize_wrap kind (bin_op v1.(Integer.value) v2.(Integer.value))
-      ))).
-    Proof.
-      intros -> ->.
-      now destruct kind.
-    Qed.
-
-    Ltac rewrite_make_arithmetic :=
-      match goal with
-      | |- context[BinOp.Wrap.make_arithmetic _ _ _] =>
-        eapply Run.Rewrite; [
-          (
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U8) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U16) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U32) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U128) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Usize) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I8) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I16) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I32) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I64) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I128) by smpl of_value) ||
-            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Isize) by smpl of_value)
-          );
-          reflexivity
-        |]
-      end.
-    Smpl Add rewrite_make_arithmetic : run_symbolic.
-  End Wrap.
-End BinOp.
 
 Ltac rewrite_cast :=
   change_cast_integer;

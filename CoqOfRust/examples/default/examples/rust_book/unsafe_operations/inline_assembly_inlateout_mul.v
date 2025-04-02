@@ -68,12 +68,17 @@ Module main.
             let~ _ : Ty.tuple [] := InlineAssembly in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (|
-            BinOp.Wrap.add (|
-              BinOp.Wrap.shl (|
-                M.cast (Ty.path "u128") (M.read (| hi |)),
-                Value.Integer IntegerKind.I32 64
-              |),
-              M.cast (Ty.path "u128") (M.read (| lo |))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.add,
+              [
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.shl,
+                  [ M.cast (Ty.path "u128") (M.read (| hi |)); Value.Integer IntegerKind.I32 64 ]
+                |);
+                M.cast (Ty.path "u128") (M.read (| lo |))
+              ]
             |)
           |)
         |)))

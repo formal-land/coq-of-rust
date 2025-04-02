@@ -119,46 +119,50 @@ Module fmt.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let buf := M.copy (| γ |) in
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                        M.get_associated_function (|
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.call_closure (|
                                           Ty.apply
-                                            (Ty.path "core::option::Option")
+                                            (Ty.path "&mut")
                                             []
                                             [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                          "insert",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| slot |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::fmt::builders::PadAdapter"
-                                            [
-                                              ("buf",
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| buf |) |)
-                                                |));
-                                              ("state",
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| state |) |)
-                                                |))
-                                            ]
-                                        ]
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::fmt::builders::PadAdapter" ],
+                                            "insert",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| slot |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::fmt::builders::PadAdapter"
+                                              [
+                                                ("buf",
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| buf |) |)
+                                                    |)));
+                                                ("state",
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| state |) |)
+                                                  |))
+                                              ]
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)))
+                                    |))))
                             ]
                           |)))
                       | _ => M.impossible "wrong number of arguments"
@@ -320,7 +324,7 @@ Module fmt.
                                                             "on_newline"
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -705,7 +709,7 @@ Module fmt.
                                   "on_newline"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -850,7 +854,11 @@ Module fmt.
                           "core::fmt::builders::PadAdapterState",
                           "on_newline"
                         |),
-                        BinOp.eq (| M.read (| c |), Value.UnicodeChar 10 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [ M.read (| c |); Value.UnicodeChar 10 ]
+                        |)
                       |)
                     |) in
                   M.alloc (|
@@ -1217,7 +1225,7 @@ Module fmt.
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -1244,7 +1252,7 @@ Module fmt.
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -1996,7 +2004,7 @@ Module fmt.
                                                                           "has_fields"
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -2655,7 +2663,7 @@ Module fmt.
                                                           "has_fields"
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -2693,7 +2701,7 @@ Module fmt.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -3097,8 +3105,7 @@ Module fmt.
                               "core::fmt::builders::DebugStruct",
                               "has_fields"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
@@ -3192,7 +3199,7 @@ Module fmt.
                                                                     |)
                                                                   |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -3653,7 +3660,7 @@ Module fmt.
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -3667,23 +3674,27 @@ Module fmt.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.eq (|
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.deref (|
-                                                                                M.read (| self |)
-                                                                              |),
-                                                                              "core::fmt::builders::DebugTuple",
-                                                                              "fields"
-                                                                            |)
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            0
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.eq,
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::fmt::builders::DebugTuple",
+                                                                                "fields"
+                                                                              |)
+                                                                            |);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -4146,23 +4157,29 @@ Module fmt.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.eq (|
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |),
-                                                                                "core::fmt::builders::DebugTuple",
-                                                                                "fields"
-                                                                              |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.eq,
+                                                                            [
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
+                                                                                  "core::fmt::builders::DebugTuple",
+                                                                                  "fields"
+                                                                                |)
+                                                                              |);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                0
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -4405,7 +4422,11 @@ Module fmt.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.add,
+                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |)
                     |) in
                   M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
@@ -4516,19 +4537,23 @@ Module fmt.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.gt (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.deref (| M.read (| self |) |),
-                                                                "core::fmt::builders::DebugTuple",
-                                                                "fields"
-                                                              |)
-                                                            |),
-                                                            Value.Integer IntegerKind.Usize 0
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.gt,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "core::fmt::builders::DebugTuple",
+                                                                  "fields"
+                                                                |)
+                                                              |);
+                                                              Value.Integer IntegerKind.Usize 0
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -4566,7 +4591,7 @@ Module fmt.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -4969,19 +4994,22 @@ Module fmt.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::fmt::builders::DebugTuple",
-                                    "fields"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::fmt::builders::DebugTuple",
+                                      "fields"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
@@ -5051,19 +5079,25 @@ Module fmt.
                                                                     (M.alloc (|
                                                                       LogicalOp.and (|
                                                                         LogicalOp.and (|
-                                                                          BinOp.eq (|
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |),
-                                                                                "core::fmt::builders::DebugTuple",
-                                                                                "fields"
-                                                                              |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.eq,
+                                                                            [
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
+                                                                                  "core::fmt::builders::DebugTuple",
+                                                                                  "fields"
+                                                                                |)
+                                                                              |);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
                                                                           |),
                                                                           ltac:(M.monadic
                                                                             (M.read (|
@@ -5102,7 +5136,7 @@ Module fmt.
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -5513,7 +5547,7 @@ Module fmt.
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -5540,7 +5574,7 @@ Module fmt.
                                                                     |)
                                                                   |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -5986,7 +6020,7 @@ Module fmt.
                                                                     "has_fields"
                                                                   |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -6631,12 +6665,14 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, entry |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, entry |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in
@@ -6771,7 +6807,7 @@ Module fmt.
                                                           "has_fields"
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -6813,7 +6849,7 @@ Module fmt.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -7705,12 +7741,14 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, entry |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, entry |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in
@@ -7831,7 +7869,7 @@ Module fmt.
                                                   "has_fields"
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -7870,7 +7908,7 @@ Module fmt.
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -8495,12 +8533,16 @@ Module fmt.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
                       ]
                     |)
                   |)
@@ -8748,7 +8790,7 @@ Module fmt.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -8833,7 +8875,7 @@ Module fmt.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -8860,7 +8902,7 @@ Module fmt.
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -9454,7 +9496,7 @@ Module fmt.
                                                                           "has_fields"
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -10211,7 +10253,7 @@ Module fmt.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -10296,7 +10338,7 @@ Module fmt.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -11028,18 +11070,22 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, k |)
-                                                      |)
-                                                    |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, v |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, k |)
+                                                        |)
+                                                      |));
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, v |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in
@@ -11169,7 +11215,7 @@ Module fmt.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -11240,7 +11286,7 @@ Module fmt.
                                                           "has_fields"
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -11278,7 +11324,7 @@ Module fmt.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -11748,7 +11794,7 @@ Module fmt.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in

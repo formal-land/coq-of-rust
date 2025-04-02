@@ -134,38 +134,46 @@ Module vec.
                                   LogicalOp.or (|
                                     UnOp.not (| M.read (| has_advanced |) |),
                                     ltac:(M.monadic
-                                      (BinOp.ge (|
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_trait_method (|
-                                            "core::iter::traits::exact_size::ExactSizeIterator",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_trait_method (|
+                                              "core::iter::traits::exact_size::ExactSizeIterator",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [ T; Ty.path "alloc::alloc::Global" ],
+                                              [],
+                                              [],
+                                              "len",
+                                              [],
                                               []
-                                              [ T; Ty.path "alloc::alloc::Global" ],
-                                            [],
-                                            [],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
-                                        |),
-                                        BinOp.Wrap.div (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              iterator,
-                                              "alloc::vec::into_iter::IntoIter",
-                                              "cap"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.Usize 2
-                                        |)
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.div,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  iterator,
+                                                  "alloc::vec::into_iter::IntoIter",
+                                                  "cap"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.Usize 2
+                                            ]
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -216,7 +224,7 @@ Module vec.
                                           ltac:(M.monadic
                                             (let γ := M.use has_advanced in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in

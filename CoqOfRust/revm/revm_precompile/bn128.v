@@ -1150,7 +1150,11 @@ Module bn128.
   Definition value_ADD_INPUT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 64 |)
+        M.call_closure (|
+          Ty.path "usize",
+          BinOp.Wrap.add,
+          [ Value.Integer IntegerKind.Usize 64; Value.Integer IntegerKind.Usize 64 ]
+        |)
       |))).
   
   Global Instance Instance_IsConstant_value_ADD_INPUT_LEN :
@@ -1161,7 +1165,11 @@ Module bn128.
   Definition value_MUL_INPUT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 32 |)
+        M.call_closure (|
+          Ty.path "usize",
+          BinOp.Wrap.add,
+          [ Value.Integer IntegerKind.Usize 64; Value.Integer IntegerKind.Usize 32 ]
+        |)
       |))).
   
   Global Instance Instance_IsConstant_value_MUL_INPUT_LEN :
@@ -1172,7 +1180,11 @@ Module bn128.
   Definition value_PAIR_ELEMENT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 128 |)
+        M.call_closure (|
+          Ty.path "usize",
+          BinOp.Wrap.add,
+          [ Value.Integer IntegerKind.Usize 64; Value.Integer IntegerKind.Usize 128 ]
+        |)
       |))).
   
   Global Instance Instance_IsConstant_value_PAIR_ELEMENT_LEN :
@@ -1729,7 +1741,7 @@ Module bn128.
                             |)))
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
@@ -1900,10 +1912,13 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (| M.read (| gas_cost |), M.read (| gas_limit |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| gas_cost |); M.read (| gas_limit |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2648,10 +2663,13 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (| M.read (| gas_cost |), M.read (| gas_limit |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| gas_cost |); M.read (| gas_limit |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -3353,31 +3371,48 @@ Module bn128.
             (M.read (|
               let~ gas_used : Ty.path "u64" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    BinOp.Wrap.mul (|
-                      M.cast
-                        (Ty.path "u64")
-                        (BinOp.Wrap.div (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
-                          |),
-                          M.read (|
-                            get_constant (|
-                              "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                              Ty.path "usize"
-                            |)
-                          |)
-                        |)),
-                      M.read (| pair_per_point_cost |)
-                    |),
-                    M.read (| pair_base_cost |)
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.cast
+                            (Ty.path "u64")
+                            (M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.div,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
+                                    |)
+                                  ]
+                                |);
+                                M.read (|
+                                  get_constant (|
+                                    "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                    Ty.path "usize"
+                                  |)
+                                |)
+                              ]
+                            |));
+                          M.read (| pair_per_point_cost |)
+                        ]
+                      |);
+                      M.read (| pair_base_cost |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -3390,10 +3425,13 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -3436,35 +3474,42 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (|
-                                BinOp.Wrap.rem (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [
                                   M.call_closure (|
                                     Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
+                                    BinOp.Wrap.rem,
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| input |) |)
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     ]
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -3525,34 +3570,38 @@ Module bn128.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (| Value.Bool true |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let~ elements : Ty.path "usize" :=
                             M.alloc (|
-                              BinOp.Wrap.div (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| input |) |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.div,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                      Ty.path "usize"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  get_constant (|
-                                    "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                                    Ty.path "usize"
                                   |)
-                                |)
+                                ]
                               |)
                             |) in
                           let~ points :
@@ -3738,7 +3787,7 @@ Module bn128.
                                                                                               true
                                                                                           |)) in
                                                                                       let _ :=
-                                                                                        M.is_constant_or_break_match (|
+                                                                                        is_constant_or_break_match (|
                                                                                           M.read (|
                                                                                             γ
                                                                                           |),
@@ -3764,28 +3813,38 @@ Module bn128.
                                                                                                   M.use
                                                                                                     (M.alloc (|
                                                                                                       UnOp.not (|
-                                                                                                        BinOp.lt (|
-                                                                                                          M.read (|
-                                                                                                            n
-                                                                                                          |),
-                                                                                                          BinOp.Wrap.div (|
+                                                                                                        M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "bool",
+                                                                                                          BinOp.lt,
+                                                                                                          [
                                                                                                             M.read (|
-                                                                                                              get_constant (|
-                                                                                                                "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                                                                                                                Ty.path
-                                                                                                                  "usize"
-                                                                                                              |)
-                                                                                                            |),
-                                                                                                            Value.Integer
-                                                                                                              IntegerKind.Usize
-                                                                                                              32
-                                                                                                          |)
+                                                                                                              n
+                                                                                                            |);
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "usize",
+                                                                                                              BinOp.Wrap.div,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  get_constant (|
+                                                                                                                    "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                                                                                                    Ty.path
+                                                                                                                      "usize"
+                                                                                                                  |)
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  32
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          ]
                                                                                                         |)
                                                                                                       |)
                                                                                                     |)) in
                                                                                                 let
                                                                                                       _ :=
-                                                                                                  M.is_constant_or_break_match (|
+                                                                                                  is_constant_or_break_match (|
                                                                                                     M.read (|
                                                                                                       γ
                                                                                                     |),
@@ -3833,25 +3892,41 @@ Module bn128.
                                                                             let~ start :
                                                                                 Ty.path "usize" :=
                                                                               M.alloc (|
-                                                                                BinOp.Wrap.add (|
-                                                                                  BinOp.Wrap.mul (|
-                                                                                    M.read (|
-                                                                                      idx
-                                                                                    |),
-                                                                                    M.read (|
-                                                                                      get_constant (|
-                                                                                        "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      |)
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  BinOp.Wrap.add,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      BinOp.Wrap.mul,
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          idx
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          get_constant (|
+                                                                                            "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      BinOp.Wrap.mul,
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          n
+                                                                                        |);
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          32
+                                                                                      ]
                                                                                     |)
-                                                                                  |),
-                                                                                  BinOp.Wrap.mul (|
-                                                                                    M.read (| n |),
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      32
-                                                                                  |)
+                                                                                  ]
                                                                                 |)
                                                                               |) in
                                                                             let~ slice :
@@ -3918,13 +3993,18 @@ Module bn128.
                                                                                             start
                                                                                           |));
                                                                                         ("end_",
-                                                                                          BinOp.Wrap.add (|
-                                                                                            M.read (|
-                                                                                              start
-                                                                                            |),
-                                                                                            Value.Integer
-                                                                                              IntegerKind.Usize
-                                                                                              32
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "usize",
+                                                                                            BinOp.Wrap.add,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                start
+                                                                                              |);
+                                                                                              Value.Integer
+                                                                                                IntegerKind.Usize
+                                                                                                32
+                                                                                            ]
                                                                                           |))
                                                                                       ]
                                                                                   ]
@@ -5205,7 +5285,7 @@ Module bn128.
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in

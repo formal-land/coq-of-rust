@@ -306,24 +306,26 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountId" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "multisig::AccountId",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "multisig::AccountId",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -400,21 +402,25 @@ Module Impl_core_cmp_PartialEq_multisig_AccountId_for_multisig_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "multisig::AccountId",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "multisig::AccountId",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "multisig::AccountId",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "multisig::AccountId",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1445,24 +1451,33 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                         UnOp.not (|
                           LogicalOp.and (|
                             LogicalOp.and (|
-                              BinOp.lt (|
-                                Value.Integer IntegerKind.U32 0,
-                                M.read (| requirement |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ Value.Integer IntegerKind.U32 0; M.read (| requirement |) ]
                               |),
                               ltac:(M.monadic
-                                (BinOp.le (| M.read (| requirement |), M.read (| owners |) |)))
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [ M.read (| requirement |); M.read (| owners |) ]
+                                |)))
                             |),
                             ltac:(M.monadic
-                              (BinOp.le (|
-                                M.read (| owners |),
-                                M.read (|
-                                  get_constant (| "multisig::MAX_OWNERS", Ty.path "u32" |)
-                                |)
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.read (| owners |);
+                                  M.read (|
+                                    get_constant (| "multisig::MAX_OWNERS", Ty.path "u32" |)
+                                  |)
+                                ]
                               |)))
                           |)
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
@@ -1856,66 +1871,73 @@ Module Impl_multisig_Multisig.
                       M.use
                         (M.alloc (|
                           UnOp.not (|
-                            BinOp.ge (|
-                              M.call_closure (|
-                                Ty.path "u32",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                  "expect",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                    M.get_associated_function (|
+                                    "expect",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "multisig::Mapping")
+                                        (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.path "u32"; Ty.path "u32" ],
-                                      "get",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "multisig::Multisig",
-                                          "confirmation_count"
+                                        [ Ty.path "u32" ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "multisig::Mapping")
+                                          []
+                                          [ Ty.path "u32"; Ty.path "u32" ],
+                                        "get",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "multisig::Multisig",
+                                            "confirmation_count"
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
                                         |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, trans_id |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        get_constant (|
-                                          "multisig::WRONG_TRANSACTION_ID",
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                      ]
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          get_constant (|
+                                            "multisig::WRONG_TRANSACTION_ID",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                          |)
                                         |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "multisig::Multisig",
+                                    "requirement"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "multisig::Multisig",
-                                  "requirement"
                                 |)
-                              |)
+                              ]
                             |)
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -2069,7 +2091,7 @@ Module Impl_multisig_Multisig.
                             |)
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -2289,7 +2311,7 @@ Module Impl_multisig_Multisig.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2400,7 +2422,7 @@ Module Impl_multisig_Multisig.
                             |)
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -2479,32 +2501,36 @@ Module Impl_multisig_Multisig.
                 Ty.tuple [],
                 M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
-                  BinOp.Wrap.add (|
-                    M.cast
-                      (Ty.path "u32")
-                      (M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.add,
+                    [
+                      M.cast
+                        (Ty.path "u32")
+                        (M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+                            "len",
+                            [],
                             []
-                            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "multisig::Multisig",
-                              "owners"
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "multisig::Multisig",
+                                "owners"
+                              |)
                             |)
-                          |)
-                        ]
-                      |)),
-                    Value.Integer IntegerKind.U32 1
+                          ]
+                        |));
+                      Value.Integer IntegerKind.U32 1
+                    ]
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -2929,7 +2955,7 @@ Module Impl_multisig_Multisig.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -3023,9 +3049,11 @@ Module Impl_multisig_Multisig.
                                               let β := count in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.sub (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.U32 1
+                                                M.call_closure (|
+                                                  Ty.path "u32",
+                                                  BinOp.Wrap.sub,
+                                                  [ M.read (| β |); Value.Integer IntegerKind.U32 1
+                                                  ]
                                                 |)
                                               |)
                                             |) in
@@ -3139,32 +3167,36 @@ Module Impl_multisig_Multisig.
             |) in
           let~ len : Ty.path "u32" :=
             M.alloc (|
-              BinOp.Wrap.sub (|
-                M.cast
-                  (Ty.path "u32")
-                  (M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.sub,
+                [
+                  M.cast
+                    (Ty.path "u32")
+                    (M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+                        "len",
+                        [],
                         []
-                        [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "multisig::Multisig",
-                          "owners"
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "multisig::Multisig",
+                            "owners"
+                          |)
                         |)
-                      |)
-                    ]
-                  |)),
-                Value.Integer IntegerKind.U32 1
+                      ]
+                    |));
+                  Value.Integer IntegerKind.U32 1
+                ]
               |)
             |) in
           let~ requirement : Ty.path "u32" :=
@@ -3818,13 +3850,17 @@ Module Impl_multisig_Multisig.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use new_confirmation in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         let β := count in
                         M.write (|
                           β,
-                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
+                          M.call_closure (|
+                            Ty.path "u32",
+                            BinOp.Wrap.add,
+                            [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
+                          |)
                         |)
                       |) in
                     let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
@@ -3899,18 +3935,22 @@ Module Impl_multisig_Multisig.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (|
-                              M.read (| count |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "multisig::Multisig",
-                                  "requirement"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [
+                                M.read (| count |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "multisig::Multisig",
+                                    "requirement"
+                                  |)
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple "multisig::ConfirmationStatus::Confirmed" []
                       |)));
@@ -3920,15 +3960,19 @@ Module Impl_multisig_Multisig.
                         Value.StructTuple
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
                           [
-                            BinOp.Wrap.sub (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "multisig::Multisig",
-                                  "requirement"
-                                |)
-                              |),
-                              M.read (| count |)
+                            M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.sub,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "multisig::Multisig",
+                                    "requirement"
+                                  |)
+                                |);
+                                M.read (| count |)
+                              ]
                             |)
                           ]
                       |)))
@@ -3943,7 +3987,7 @@ Module Impl_multisig_Multisig.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use new_confirmation in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
@@ -4302,7 +4346,7 @@ Module Impl_multisig_Multisig.
                             [ M.borrow (| Pointer.Kind.Ref, transaction |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
@@ -4808,7 +4852,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
@@ -5051,7 +5095,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
@@ -5132,7 +5176,11 @@ Module Impl_multisig_Multisig.
                       let β := confirmation_count in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.sub,
+                          [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
+                        |)
                       |)
                     |) in
                   let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
@@ -5316,49 +5364,53 @@ Module Impl_multisig_Multisig.
                       M.use
                         (M.alloc (|
                           UnOp.not (|
-                            BinOp.eq (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_associated_function (|
-                                  Ty.path "multisig::Env",
-                                  "transferred_value",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "multisig::Env",
-                                        M.get_associated_function (|
-                                          Ty.path "multisig::Multisig",
-                                          "env",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
-                                        ]
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Env",
+                                    "transferred_value",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "multisig::Env",
+                                          M.get_associated_function (|
+                                            Ty.path "multisig::Multisig",
+                                            "env",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    t,
+                                    "multisig::Transaction",
+                                    "transferred_value"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  t,
-                                  "multisig::Transaction",
-                                  "transferred_value"
                                 |)
-                              |)
+                              ]
                             |)
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|

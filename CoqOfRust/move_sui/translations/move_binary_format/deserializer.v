@@ -541,52 +541,58 @@ Module deserializer.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Table" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_binary_format::deserializer::Table",
-                      "kind"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::deserializer::Table",
+                        "kind"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "offset" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_binary_format::deserializer::Table",
-                      "offset"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::deserializer::Table",
+                        "offset"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -730,10 +736,12 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u16_bytes |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u16_bytes |) |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -955,10 +963,12 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u32_bytes |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u32_bytes |) |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -1180,10 +1190,12 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u64_bytes |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u64_bytes |) |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -1405,10 +1417,12 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u128_bytes |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u128_bytes |) |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -1632,10 +1646,12 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, u256_bytes |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u256_bytes |) |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -2010,9 +2026,15 @@ Module deserializer.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.gt (| M.read (| x |), M.read (| max |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| x |); M.read (| max |) ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -5204,18 +5226,22 @@ Module deserializer.
                 |) in
               let~ had_remaining_bytes : Ty.path "bool" :=
                 M.alloc (|
-                  BinOp.lt (|
-                    M.read (| end_pos |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.lt,
+                    [
+                      M.read (| end_pos |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| binary |) |) |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -5239,8 +5265,7 @@ Module deserializer.
                                 ltac:(M.monadic (M.read (| had_remaining_bytes |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -6388,19 +6413,23 @@ Module deserializer.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.ne (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| table |) |),
-                                                              "move_binary_format::deserializer::Table",
-                                                              "offset"
-                                                            |)
-                                                          |),
-                                                          M.read (| current_offset |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ne,
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| table |) |),
+                                                                "move_binary_format::deserializer::Table",
+                                                                "offset"
+                                                              |)
+                                                            |);
+                                                            M.read (| current_offset |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6446,19 +6475,23 @@ Module deserializer.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.eq (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| table |) |),
-                                                              "move_binary_format::deserializer::Table",
-                                                              "count"
-                                                            |)
-                                                          |),
-                                                          Value.Integer IntegerKind.U32 0
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.eq,
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| table |) |),
+                                                                "move_binary_format::deserializer::Table",
+                                                                "count"
+                                                              |)
+                                                            |);
+                                                            Value.Integer IntegerKind.U32 0
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6619,7 +6652,7 @@ Module deserializer.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6664,15 +6697,19 @@ Module deserializer.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.gt (|
-                                                        M.cast
-                                                          (Ty.path "usize")
-                                                          (M.read (| current_offset |)),
-                                                        M.read (| binary_len |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.gt,
+                                                        [
+                                                          M.cast
+                                                            (Ty.path "usize")
+                                                            (M.read (| current_offset |));
+                                                          M.read (| binary_len |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -7853,48 +7890,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::ModuleHandle";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::ModuleHandle";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    module_handles
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      module_handles
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  module_handles_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    module_handles_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -8365,48 +8406,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructHandle";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::StructHandle";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    struct_handles
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      struct_handles
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  struct_handles_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    struct_handles_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -8877,48 +8922,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FunctionHandle";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::FunctionHandle";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    function_handles
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      function_handles
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  function_handles_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_handles_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -9389,48 +9438,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FunctionInstantiation";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::FunctionInstantiation";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    function_instantiations
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      function_instantiations
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  function_instantiations_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_instantiations_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -9899,48 +9952,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::Signature";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::Signature";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    signatures
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      signatures
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  signatures_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    signatures_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -10409,48 +10466,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::Constant";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::Constant";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    constant_pool
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      constant_pool
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  constant_pool_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    constant_pool_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -10745,38 +10806,42 @@ Module deserializer.
                                                                             ]
                                                                           |),
                                                                           ltac:(M.monadic
-                                                                            (BinOp.lt (|
-                                                                              M.call_closure (|
-                                                                                Ty.path "u32",
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_binary_format::deserializer::VersionedBinary",
-                                                                                  "version",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        binary
+                                                                            (M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.lt,
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  Ty.path "u32",
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::deserializer::VersionedBinary",
+                                                                                    "version",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          binary
+                                                                                        |)
                                                                                       |)
                                                                                     |)
+                                                                                  ]
+                                                                                |);
+                                                                                M.read (|
+                                                                                  get_constant (|
+                                                                                    "move_binary_format::file_format_common::VERSION_5",
+                                                                                    Ty.path "u32"
                                                                                   |)
-                                                                                ]
-                                                                              |),
-                                                                              M.read (|
-                                                                                get_constant (|
-                                                                                  "move_binary_format::file_format_common::VERSION_5",
-                                                                                  Ty.path "u32"
                                                                                 |)
-                                                                              |)
+                                                                              ]
                                                                             |)))
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -11354,48 +11419,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::identifier::Identifier";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_core_types::identifier::Identifier";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    identifiers
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      identifiers
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  identifiers_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    identifiers_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -11866,48 +11935,52 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::account_address::AccountAddress";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_core_types::account_address::AccountAddress";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    address_identifiers
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      address_identifiers
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  address_identifiers_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    address_identifiers_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -12236,35 +12309,41 @@ Module deserializer.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.lt (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "u32",
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::deserializer::VersionedBinary",
-                                                                            "version",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.read (| binary |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.lt,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u32",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::deserializer::VersionedBinary",
+                                                                              "version",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    binary
+                                                                                  |)
+                                                                                |)
                                                                               |)
+                                                                            ]
+                                                                          |);
+                                                                          M.read (|
+                                                                            get_constant (|
+                                                                              "move_binary_format::file_format_common::VERSION_2",
+                                                                              Ty.path "u32"
                                                                             |)
-                                                                          ]
-                                                                        |),
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "move_binary_format::file_format_common::VERSION_2",
-                                                                            Ty.path "u32"
                                                                           |)
-                                                                        |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -12850,57 +12929,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructDefinition";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::StructDefinition";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "struct_defs"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "struct_defs"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  struct_defs_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    struct_defs_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -13341,57 +13424,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructDefInstantiation";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::StructDefInstantiation";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "struct_def_instantiations"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "struct_def_instantiations"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  struct_def_instantiations_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    struct_def_instantiations_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -13832,57 +13919,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FunctionDefinition";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::FunctionDefinition";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "function_defs"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "function_defs"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  function_defs_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    function_defs_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -14323,57 +14414,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FieldHandle";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::FieldHandle";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "field_handles"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "field_handles"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  field_handles_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    field_handles_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -14814,57 +14909,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FieldInstantiation";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::FieldInstantiation";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "field_instantiations"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "field_instantiations"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  field_instantiations_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    field_instantiations_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -15305,57 +15404,61 @@ Module deserializer.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.gt (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::ModuleHandle";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::ModuleHandle";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          module
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                                      "friend_decls"
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            module
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                                        "friend_decls"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          M.cast
-                                                                            (Ty.path "usize")
-                                                                            (M.read (|
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  friend_decls_max
+                                                                              ]
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    friend_decls_max
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            |))
+                                                                              |))
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -15773,17 +15876,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -15816,30 +15923,35 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.cast
-                                      (Ty.path "u64")
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| table |) |),
-                                          "move_binary_format::deserializer::Table",
-                                          "count"
-                                        |)
-                                      |))
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.cast
+                                        (Ty.path "u64")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |))
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ address :
                                 Ty.path "move_binary_format::file_format::AddressIdentifierIndex" :=
                               M.copy (|
@@ -16207,17 +16319,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -16250,30 +16366,35 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.cast
-                                      (Ty.path "u64")
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| table |) |),
-                                          "move_binary_format::deserializer::Table",
-                                          "count"
-                                        |)
-                                      |))
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.cast
+                                        (Ty.path "u64")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |))
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ module :
                                 Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
                               M.copy (|
@@ -16940,17 +17061,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -16983,30 +17108,35 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.cast
-                                      (Ty.path "u64")
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| table |) |),
-                                          "move_binary_format::deserializer::Table",
-                                          "count"
-                                        |)
-                                      |))
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.cast
+                                        (Ty.path "u64")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |))
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ module :
                                 Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
                               M.copy (|
@@ -17797,17 +17927,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -17840,30 +17974,35 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.cast
-                                      (Ty.path "u64")
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| table |) |),
-                                          "move_binary_format::deserializer::Table",
-                                          "count"
-                                        |)
-                                      |))
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.cast
+                                        (Ty.path "u64")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |))
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ def :
                                 Ty.path "move_binary_format::file_format::StructDefinitionIndex" :=
                               M.copy (|
@@ -18234,17 +18373,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -18277,30 +18420,35 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.cast
-                                      (Ty.path "u64")
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| table |) |),
-                                          "move_binary_format::deserializer::Table",
-                                          "count"
-                                        |)
-                                      |))
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.cast
+                                        (Ty.path "u64")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |))
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ handle :
                                 Ty.path "move_binary_format::file_format::FunctionHandleIndex" :=
                               M.copy (|
@@ -18674,17 +18822,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -18717,42 +18869,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ size : Ty.path "usize" :=
                               M.copy (|
                                 M.match_operator (|
@@ -18977,13 +19134,14 @@ Module deserializer.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.ne (|
-                                                      M.read (| count |),
-                                                      M.read (| size |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [ M.read (| count |); M.read (| size |) ]
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -19400,30 +19558,38 @@ Module deserializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (|
-                                BinOp.Wrap.rem (|
-                                  M.cast
-                                    (Ty.path "usize")
-                                    (M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| table |) |),
-                                        "move_binary_format::deserializer::Table",
-                                        "count"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.rem,
+                                    [
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| table |) |),
+                                            "move_binary_format::deserializer::Table",
+                                            "count"
+                                          |)
+                                        |));
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path
+                                            "move_core_types::account_address::AccountAddress",
+                                          "LENGTH",
+                                          Ty.path "usize"
+                                        |)
                                       |)
-                                    |)),
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "move_core_types::account_address::AccountAddress",
-                                      "LENGTH",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -19506,23 +19672,27 @@ Module deserializer.
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
-                                BinOp.Wrap.div (|
-                                  M.cast
-                                    (Ty.path "usize")
-                                    (M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| table |) |),
-                                        "move_binary_format::deserializer::Table",
-                                        "count"
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.div,
+                                  [
+                                    M.cast
+                                      (Ty.path "usize")
+                                      (M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| table |) |),
+                                          "move_binary_format::deserializer::Table",
+                                          "count"
+                                        |)
+                                      |));
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "move_core_types::account_address::AccountAddress",
+                                        "LENGTH",
+                                        Ty.path "usize"
                                       |)
-                                    |)),
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "move_core_types::account_address::AccountAddress",
-                                      "LENGTH",
-                                      Ty.path "usize"
                                     |)
-                                  |)
+                                  ]
                                 |))
                             ]
                         ]
@@ -19583,16 +19753,20 @@ Module deserializer.
                                         let _i := M.copy (| γ0_0 |) in
                                         let~ end_addr : Ty.path "usize" :=
                                           M.alloc (|
-                                            BinOp.Wrap.add (|
-                                              M.read (| start |),
-                                              M.read (|
-                                                get_associated_constant (|
-                                                  Ty.path
-                                                    "move_core_types::account_address::AccountAddress",
-                                                  "LENGTH",
-                                                  Ty.path "usize"
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (| start |);
+                                                M.read (|
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "move_core_types::account_address::AccountAddress",
+                                                    "LENGTH",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           |) in
                                         let~ address :
@@ -19698,7 +19872,7 @@ Module deserializer.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -19876,17 +20050,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -19919,42 +20097,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],
@@ -20480,17 +20663,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -20523,42 +20710,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],
@@ -21529,9 +21721,14 @@ Module deserializer.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.ne (| M.read (| count |), M.read (| size |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [ M.read (| count |); M.read (| size |) ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -21640,17 +21837,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -21683,42 +21884,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
@@ -22801,35 +23007,41 @@ Module deserializer.
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.alloc (|
-                                                                      BinOp.lt (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "u32",
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::deserializer::VersionedCursor",
-                                                                            "version",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.read (| cursor |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.lt,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u32",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::deserializer::VersionedCursor",
+                                                                              "version",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    cursor
+                                                                                  |)
+                                                                                |)
                                                                               |)
+                                                                            ]
+                                                                          |);
+                                                                          M.read (|
+                                                                            get_constant (|
+                                                                              "move_binary_format::file_format_common::VERSION_6",
+                                                                              Ty.path "u32"
                                                                             |)
-                                                                          ]
-                                                                        |),
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "move_binary_format::file_format_common::VERSION_6",
-                                                                            Ty.path "u32"
                                                                           |)
-                                                                        |)
+                                                                        ]
                                                                       |)
                                                                     |) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -23832,15 +24044,21 @@ Module deserializer.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.eq (|
-                                                                                M.read (| arity |),
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  0
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.eq,
+                                                                                [
+                                                                                  M.read (|
+                                                                                    arity
+                                                                                  |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0
+                                                                                ]
                                                                               |)
                                                                             |)) in
                                                                         let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.Bool true
                                                                           |) in
@@ -24385,22 +24603,10 @@ Module deserializer.
                                 [ Ty.path "alloc::alloc::Global" ]
                               |),
                               [
-                                M.read (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 1 ]
-                                          [
-                                            Ty.path
-                                              "move_binary_format::deserializer::load_signature_token::TypeBuilder"
-                                          ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    M.get_associated_function (|
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.read (|
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
                                         []
@@ -24414,13 +24620,27 @@ Module deserializer.
                                             ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.alloc (| Value.Array [ M.read (| t |) ] |) ]
-                                  |)
-                                |)
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                              ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.alloc (| Value.Array [ M.read (| t |) ] |) ]
+                                    |)
+                                  |))
                               ]
                             |)
                           |)))
@@ -24443,34 +24663,38 @@ Module deserializer.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "len",
+                                                [],
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, stack |) ]
-                                          |),
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX",
-                                              Ty.path "usize"
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, stack |) ]
+                                            |);
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX",
+                                                Ty.path "usize"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -24661,7 +24885,7 @@ Module deserializer.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -25277,32 +25501,33 @@ Module deserializer.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.ge (|
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ge,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "len",
+                                            [],
                                             []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, ty_args |) ]
-                                      |),
-                                      M.read (| arity |)
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, ty_args |) ]
+                                        |);
+                                        M.read (| arity |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 Value.StructTuple
                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
@@ -25749,22 +25974,30 @@ Module deserializer.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "u32",
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                  "version",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cursor |) |) |)
-                                ]
-                              |),
-                              Value.Integer IntegerKind.U32 2
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::deserializer::VersionedCursor",
+                                    "version",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| cursor |) |)
+                                    |)
+                                  ]
+                                |);
+                                Value.Integer IntegerKind.U32 2
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ byte : Ty.path "u8" :=
                         M.copy (|
                           M.match_operator (|
@@ -27854,32 +28087,36 @@ Module deserializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (|
-                                  M.call_closure (|
-                                    Ty.path "u32",
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                      "version",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| cursor |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "u32",
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
+                                        "version",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| cursor |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "move_binary_format::file_format_common::VERSION_3",
+                                        Ty.path "u32"
                                       |)
-                                    ]
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "move_binary_format::file_format_common::VERSION_3",
-                                      Ty.path "u32"
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (| Value.Bool false |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -28012,7 +28249,11 @@ Module deserializer.
                               |)
                             |) in
                           M.alloc (|
-                            BinOp.ne (| M.read (| byte |), Value.Integer IntegerKind.U8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ne,
+                              [ M.read (| byte |); Value.Integer IntegerKind.U8 0 ]
+                            |)
                           |)))
                     ]
                   |)
@@ -28098,17 +28339,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -28141,42 +28386,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ struct_handle :
                                 Ty.path "move_binary_format::file_format::StructHandleIndex" :=
                               M.copy (|
@@ -29578,17 +29828,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -29621,42 +29875,47 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u64",
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| table |) |),
-                                            "move_binary_format::deserializer::Table",
-                                            "count"
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_binary_format::deserializer::VersionedCursor",
+                                          "position",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u64",
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| table |) |),
+                                              "move_binary_format::deserializer::Table",
+                                              "count"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ func_def :
                                 Ty.path "move_binary_format::file_format::FunctionDefinition" :=
                               M.copy (|
@@ -29888,17 +30147,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -29932,46 +30195,47 @@ Module deserializer.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_binary_format::deserializer::VersionedCursor",
-                                          "position",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                      |),
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        M.get_trait_method (|
-                                          "core::convert::From",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.call_closure (|
                                           Ty.path "u64",
-                                          [],
-                                          [ Ty.path "u32" ],
-                                          "from",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| table |) |),
-                                              "move_binary_format::deserializer::Table",
-                                              "count"
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::deserializer::VersionedCursor",
+                                            "position",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.path "u64",
+                                            [],
+                                            [ Ty.path "u32" ],
+                                            "from",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| table |) |),
+                                                "move_binary_format::deserializer::Table",
+                                                "count"
+                                              |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
@@ -30312,17 +30576,21 @@ Module deserializer.
                 |) in
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| start |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| table |) |),
-                          "move_binary_format::deserializer::Table",
-                          "count"
-                        |)
-                      |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| start |);
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| table |) |),
+                            "move_binary_format::deserializer::Table",
+                            "count"
+                          |)
+                        |))
+                    ]
                   |)
                 |) in
               let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
@@ -30356,46 +30624,47 @@ Module deserializer.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_binary_format::deserializer::VersionedCursor",
-                                          "position",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
-                                      |),
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        M.get_trait_method (|
-                                          "core::convert::From",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.call_closure (|
                                           Ty.path "u64",
-                                          [],
-                                          [ Ty.path "u32" ],
-                                          "from",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| table |) |),
-                                              "move_binary_format::deserializer::Table",
-                                              "count"
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::deserializer::VersionedCursor",
+                                            "position",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, cursor |) ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.path "u64",
+                                            [],
+                                            [ Ty.path "u32" ],
+                                            "from",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| table |) |),
+                                                "move_binary_format::deserializer::Table",
+                                                "count"
+                                              |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
@@ -31123,32 +31392,35 @@ Module deserializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                    "version",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| cursor |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::deserializer::VersionedCursor",
+                                      "version",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| cursor |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::VERSION_1",
+                                      Ty.path "u32"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_1",
-                                    Ty.path "u32"
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ vis : Ty.path "move_binary_format::file_format::Visibility" :=
                           M.copy (|
                             M.match_operator (|
@@ -31160,22 +31432,31 @@ Module deserializer.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.ne (|
-                                            BinOp.bit_and
-                                              (M.read (| flags |))
-                                              (M.read (|
-                                                get_associated_constant (|
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinition",
-                                                  "DEPRECATED_PUBLIC_BIT",
-                                                  Ty.path "u8"
-                                                |)
-                                              |)),
-                                            Value.Integer IntegerKind.U8 0
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ne,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u8",
+                                                BinOp.Wrap.bit_and,
+                                                [
+                                                  M.read (| flags |);
+                                                  M.read (|
+                                                    get_associated_constant (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionDefinition",
+                                                      "DEPRECATED_PUBLIC_BIT",
+                                                      Ty.path "u8"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -31184,16 +31465,21 @@ Module deserializer.
                                         let β := flags in
                                         M.write (|
                                           β,
-                                          BinOp.bit_xor
-                                            (M.read (| β |))
-                                            (M.read (|
-                                              get_associated_constant (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::FunctionDefinition",
-                                                "DEPRECATED_PUBLIC_BIT",
-                                                Ty.path "u8"
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.bit_xor,
+                                            [
+                                              M.read (| β |);
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition",
+                                                  "DEPRECATED_PUBLIC_BIT",
+                                                  Ty.path "u8"
+                                                |)
                                               |)
-                                            |))
+                                            ]
+                                          |)
                                         |)
                                       |) in
                                     M.alloc (|
@@ -31231,33 +31517,37 @@ Module deserializer.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.lt (|
-                                        M.call_closure (|
-                                          Ty.path "u32",
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::deserializer::VersionedCursor",
-                                            "version",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| cursor |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_binary_format::deserializer::VersionedCursor",
+                                              "version",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| cursor |) |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_5",
+                                              Ty.path "u32"
                                             |)
-                                          ]
-                                        |),
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_5",
-                                            Ty.path "u32"
                                           |)
-                                        |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -31277,20 +31567,24 @@ Module deserializer.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.eq (|
-                                                  M.read (| flags |),
-                                                  M.read (|
-                                                    get_associated_constant (|
-                                                      Ty.path
-                                                        "move_binary_format::file_format::Visibility",
-                                                      "DEPRECATED_SCRIPT",
-                                                      Ty.path "u8"
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (| flags |);
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Visibility",
+                                                        "DEPRECATED_SCRIPT",
+                                                        Ty.path "u8"
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -32287,18 +32581,27 @@ Module deserializer.
                                   |) in
                                 let~ is_entry : Ty.path "bool" :=
                                   M.alloc (|
-                                    BinOp.ne (|
-                                      BinOp.bit_and
-                                        (M.read (| extra_flags |))
-                                        (M.read (|
-                                          get_associated_constant (|
-                                            Ty.path
-                                              "move_binary_format::file_format::FunctionDefinition",
-                                            "ENTRY",
-                                            Ty.path "u8"
-                                          |)
-                                        |)),
-                                      Value.Integer IntegerKind.U8 0
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.bit_and,
+                                          [
+                                            M.read (| extra_flags |);
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                "ENTRY",
+                                                Ty.path "u8"
+                                              |)
+                                            |)
+                                          ]
+                                        |);
+                                        Value.Integer IntegerKind.U8 0
+                                      ]
                                     |)
                                   |) in
                                 let~ _ : Ty.tuple [] :=
@@ -32310,7 +32613,7 @@ Module deserializer.
                                         ltac:(M.monadic
                                           (let γ := M.use is_entry in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -32319,16 +32622,21 @@ Module deserializer.
                                               let β := extra_flags in
                                               M.write (|
                                                 β,
-                                                BinOp.bit_xor
-                                                  (M.read (| β |))
-                                                  (M.read (|
-                                                    get_associated_constant (|
-                                                      Ty.path
-                                                        "move_binary_format::file_format::FunctionDefinition",
-                                                      "ENTRY",
-                                                      Ty.path "u8"
+                                                M.call_closure (|
+                                                  Ty.path "u8",
+                                                  BinOp.Wrap.bit_xor,
+                                                  [
+                                                    M.read (| β |);
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinition",
+                                                        "ENTRY",
+                                                        Ty.path "u8"
+                                                      |)
                                                     |)
-                                                  |))
+                                                  ]
+                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
@@ -32536,22 +32844,31 @@ Module deserializer.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          BinOp.bit_and
-                                            (M.read (| extra_flags |))
-                                            (M.read (|
-                                              get_associated_constant (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::FunctionDefinition",
-                                                "NATIVE",
-                                                Ty.path "u8"
-                                              |)
-                                            |)),
-                                          Value.Integer IntegerKind.U8 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.bit_and,
+                                              [
+                                                M.read (| extra_flags |);
+                                                M.read (|
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition",
+                                                    "NATIVE",
+                                                    Ty.path "u8"
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -32560,16 +32877,21 @@ Module deserializer.
                                       let β := extra_flags in
                                       M.write (|
                                         β,
-                                        BinOp.bit_xor
-                                          (M.read (| β |))
-                                          (M.read (|
-                                            get_associated_constant (|
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition",
-                                              "NATIVE",
-                                              Ty.path "u8"
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.bit_xor,
+                                          [
+                                            M.read (| β |);
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                "NATIVE",
+                                                Ty.path "u8"
+                                              |)
                                             |)
-                                          |))
+                                          ]
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -32728,13 +33050,14 @@ Module deserializer.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.ne (|
-                                        M.read (| extra_flags |),
-                                        Value.Integer IntegerKind.U8 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
+                                        [ M.read (| extra_flags |); Value.Integer IntegerKind.U8 0 ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -33880,33 +34203,37 @@ Module deserializer.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::file_format::Bytecode";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path "move_binary_format::file_format::Bytecode";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| code |) |)
-                                        |)
-                                      ]
-                                    |),
-                                    M.read (| bytecode_count |)
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| code |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| bytecode_count |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ byte : Ty.path "u8" :=
                               M.copy (|
                                 M.match_operator (|
@@ -34342,35 +34669,39 @@ Module deserializer.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.lt (|
-                                                                M.call_closure (|
-                                                                  Ty.path "u32",
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::deserializer::VersionedCursor",
-                                                                    "version",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| cursor |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.lt,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "u32",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_binary_format::deserializer::VersionedCursor",
+                                                                      "version",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| cursor |)
+                                                                        |)
                                                                       |)
+                                                                    ]
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "move_binary_format::file_format_common::VERSION_4",
+                                                                      Ty.path "u32"
                                                                     |)
-                                                                  ]
-                                                                |),
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "move_binary_format::file_format_common::VERSION_4",
-                                                                    Ty.path "u32"
                                                                   |)
-                                                                |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -34603,33 +34934,37 @@ Module deserializer.
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.alloc (|
-                                                    BinOp.lt (|
-                                                      M.call_closure (|
-                                                        Ty.path "u32",
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::deserializer::VersionedCursor",
-                                                          "version",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| cursor |) |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.lt,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "u32",
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::deserializer::VersionedCursor",
+                                                            "version",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| cursor |) |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "move_binary_format::file_format_common::VERSION_6",
+                                                            Ty.path "u32"
                                                           |)
-                                                        ]
-                                                      |),
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "move_binary_format::file_format_common::VERSION_6",
-                                                          Ty.path "u32"
                                                         |)
-                                                      |)
+                                                      ]
                                                     |)
                                                   |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -42051,7 +42386,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -42067,7 +42402,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -42083,7 +42418,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 3
                       |) in
@@ -42099,7 +42434,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 4
                       |) in
@@ -42115,7 +42450,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 5
                       |) in
@@ -42131,7 +42466,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 6
                       |) in
@@ -42147,7 +42482,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 7
                       |) in
@@ -42163,7 +42498,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 8
                       |) in
@@ -42179,7 +42514,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 10
                       |) in
@@ -42195,7 +42530,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 11
                       |) in
@@ -42211,7 +42546,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 12
                       |) in
@@ -42227,7 +42562,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 13
                       |) in
@@ -42243,7 +42578,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 14
                       |) in
@@ -42259,7 +42594,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 15
                       |) in
@@ -42275,7 +42610,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 16
                       |) in
@@ -42366,7 +42701,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -42382,7 +42717,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -42398,7 +42733,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 3
                       |) in
@@ -42414,7 +42749,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 4
                       |) in
@@ -42430,7 +42765,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 5
                       |) in
@@ -42446,7 +42781,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 6
                       |) in
@@ -42462,7 +42797,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 7
                       |) in
@@ -42478,7 +42813,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 8
                       |) in
@@ -42494,7 +42829,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 9
                       |) in
@@ -42510,7 +42845,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 10
                       |) in
@@ -42526,7 +42861,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 11
                       |) in
@@ -42542,7 +42877,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 12
                       |) in
@@ -42558,7 +42893,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 13
                       |) in
@@ -42574,7 +42909,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 14
                       |) in
@@ -42590,7 +42925,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 15
                       |) in
@@ -42802,7 +43137,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -42818,7 +43153,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -42927,7 +43262,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -42943,7 +43278,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -42959,7 +43294,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 3
                       |) in
@@ -43038,7 +43373,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -43054,7 +43389,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -43207,7 +43542,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -43223,7 +43558,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -43239,7 +43574,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 3
                       |) in
@@ -43255,7 +43590,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 4
                       |) in
@@ -43271,7 +43606,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 5
                       |) in
@@ -43287,7 +43622,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 6
                       |) in
@@ -43303,7 +43638,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 7
                       |) in
@@ -43319,7 +43654,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 8
                       |) in
@@ -43335,7 +43670,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 9
                       |) in
@@ -43351,7 +43686,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 10
                       |) in
@@ -43367,7 +43702,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 11
                       |) in
@@ -43383,7 +43718,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 12
                       |) in
@@ -43399,7 +43734,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 13
                       |) in
@@ -43415,7 +43750,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 14
                       |) in
@@ -43431,7 +43766,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 15
                       |) in
@@ -43447,7 +43782,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 16
                       |) in
@@ -43463,7 +43798,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 17
                       |) in
@@ -43479,7 +43814,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 18
                       |) in
@@ -43495,7 +43830,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 19
                       |) in
@@ -43511,7 +43846,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 20
                       |) in
@@ -43527,7 +43862,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 21
                       |) in
@@ -43543,7 +43878,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 22
                       |) in
@@ -43559,7 +43894,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 23
                       |) in
@@ -43575,7 +43910,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 24
                       |) in
@@ -43591,7 +43926,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 25
                       |) in
@@ -43607,7 +43942,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 26
                       |) in
@@ -43623,7 +43958,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 27
                       |) in
@@ -43639,7 +43974,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 28
                       |) in
@@ -43655,7 +43990,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 29
                       |) in
@@ -43671,7 +44006,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 30
                       |) in
@@ -43684,7 +44019,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 31
                       |) in
@@ -43700,7 +44035,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 32
                       |) in
@@ -43716,7 +44051,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 33
                       |) in
@@ -43729,7 +44064,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 34
                       |) in
@@ -43745,7 +44080,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 35
                       |) in
@@ -43758,7 +44093,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 36
                       |) in
@@ -43771,7 +44106,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 37
                       |) in
@@ -43784,7 +44119,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 38
                       |) in
@@ -43797,7 +44132,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 39
                       |) in
@@ -43813,7 +44148,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 40
                       |) in
@@ -43829,7 +44164,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 41
                       |) in
@@ -43845,7 +44180,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 42
                       |) in
@@ -43861,7 +44196,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 43
                       |) in
@@ -43877,7 +44212,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 44
                       |) in
@@ -43893,7 +44228,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 45
                       |) in
@@ -43909,7 +44244,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 46
                       |) in
@@ -43925,7 +44260,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 47
                       |) in
@@ -43941,7 +44276,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 48
                       |) in
@@ -43957,7 +44292,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 49
                       |) in
@@ -43973,7 +44308,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 50
                       |) in
@@ -43989,7 +44324,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 51
                       |) in
@@ -44005,7 +44340,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 52
                       |) in
@@ -44021,7 +44356,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 53
                       |) in
@@ -44037,7 +44372,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 54
                       |) in
@@ -44053,7 +44388,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 55
                       |) in
@@ -44069,7 +44404,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 56
                       |) in
@@ -44085,7 +44420,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 57
                       |) in
@@ -44101,7 +44436,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 58
                       |) in
@@ -44117,7 +44452,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 59
                       |) in
@@ -44133,7 +44468,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 60
                       |) in
@@ -44149,7 +44484,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 61
                       |) in
@@ -44165,7 +44500,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 62
                       |) in
@@ -44181,7 +44516,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 63
                       |) in
@@ -44197,7 +44532,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 64
                       |) in
@@ -44213,7 +44548,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 65
                       |) in
@@ -44229,7 +44564,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 66
                       |) in
@@ -44245,7 +44580,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 67
                       |) in
@@ -44261,7 +44596,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 68
                       |) in
@@ -44277,7 +44612,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 69
                       |) in
@@ -44293,7 +44628,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 70
                       |) in
@@ -44309,7 +44644,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 71
                       |) in
@@ -44325,7 +44660,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 72
                       |) in
@@ -44341,7 +44676,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 73
                       |) in
@@ -44357,7 +44692,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 74
                       |) in
@@ -44373,7 +44708,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 75
                       |) in
@@ -44389,7 +44724,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 76
                       |) in
@@ -44405,7 +44740,7 @@ Module deserializer.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 77
                       |) in
@@ -44540,115 +44875,131 @@ Module deserializer.
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
               M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "binary_config"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "binary"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "version"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "tables"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "module_idx"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::deserializer::VersionedBinary",
-                                    "data_offset"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
+                                  M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
                                         "move_binary_format::deserializer::VersionedBinary",
-                                        "binary_end_offset"
+                                        "binary_config"
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)
-                            |)
-                          ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "binary"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "version"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "tables"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "module_idx"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::deserializer::VersionedBinary",
+                                        "data_offset"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::deserializer::VersionedBinary",
+                                            "binary_end_offset"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |))
+                            ]
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -44665,7 +45016,9 @@ Module deserializer.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedBinary" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -44724,38 +45077,42 @@ Module deserializer.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedCursor" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_binary_format::deserializer::VersionedCursor",
-                      "version"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::deserializer::VersionedCursor",
+                        "version"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "cursor" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_binary_format::deserializer::VersionedCursor",
-                          "cursor"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::deserializer::VersionedCursor",
+                            "cursor"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44936,10 +45293,12 @@ Module deserializer.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, cursor |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, magic |) |)
-                                  |)
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, magic |) |)
+                                    |))
                                 ]
                               |)
                             |) in
@@ -44960,16 +45319,20 @@ Module deserializer.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.or (|
-                                          BinOp.ne (|
-                                            M.read (| count |),
-                                            M.read (|
-                                              get_associated_constant (|
-                                                Ty.path
-                                                  "move_binary_format::file_format_common::BinaryConstants",
-                                                "MOVE_MAGIC_SIZE",
-                                                Ty.path "usize"
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ne,
+                                            [
+                                              M.read (| count |);
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format_common::BinaryConstants",
+                                                  "MOVE_MAGIC_SIZE",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
-                                            |)
+                                            ]
                                           |),
                                           ltac:(M.monadic
                                             (M.call_closure (|
@@ -45010,7 +45373,7 @@ Module deserializer.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -45216,45 +45579,50 @@ Module deserializer.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.eq (|
-                                    M.read (| version |),
-                                    Value.Integer IntegerKind.U32 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| version |); Value.Integer IntegerKind.U32 0 ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.gt (|
-                                      M.read (| version |),
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        M.get_trait_method (|
-                                          "core::cmp::Ord",
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (| version |);
+                                        M.call_closure (|
                                           Ty.path "u32",
-                                          [],
-                                          [],
-                                          "min",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| binary_config |) |),
-                                              "move_binary_format::binary_config::BinaryConfig",
-                                              "max_binary_format_version"
+                                          M.get_trait_method (|
+                                            "core::cmp::Ord",
+                                            Ty.path "u32",
+                                            [],
+                                            [],
+                                            "min",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| binary_config |) |),
+                                                "move_binary_format::binary_config::BinaryConfig",
+                                                "max_binary_format_version"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::VERSION_MAX",
+                                                Ty.path "u32"
+                                              |)
                                             |)
-                                          |);
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::VERSION_MAX",
-                                              Ty.path "u32"
-                                            |)
-                                          |)
-                                        ]
-                                      |)
+                                          ]
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -45696,25 +46064,34 @@ Module deserializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (|
-                                  BinOp.Wrap.add (|
-                                    M.cast (Ty.path "u64") (M.read (| table_size |)),
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [
                                     M.call_closure (|
                                       Ty.path "u64",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::deserializer::VersionedCursor",
-                                        "position",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
-                                    |)
-                                  |),
-                                  M.cast (Ty.path "u64") (M.read (| binary_len |))
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.cast (Ty.path "u64") (M.read (| table_size |));
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::deserializer::VersionedCursor",
+                                            "position",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
+                                        |)
+                                      ]
+                                    |);
+                                    M.cast (Ty.path "u64") (M.read (| binary_len |))
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -45798,7 +46175,7 @@ Module deserializer.
                           ltac:(M.monadic
                             (let γ := M.use load_module_idx in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
@@ -45813,9 +46190,13 @@ Module deserializer.
                                     M.borrow (| Pointer.Kind.MutRef, versioned_cursor |);
                                     M.cast
                                       (Ty.path "u64")
-                                      (BinOp.Wrap.add (|
-                                        M.read (| data_offset |),
-                                        M.cast (Ty.path "usize") (M.read (| table_size |))
+                                      (M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (| data_offset |);
+                                          M.cast (Ty.path "usize") (M.read (| table_size |))
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -46152,26 +46533,34 @@ Module deserializer.
                                   "core::ops::range::Range"
                                   [
                                     ("start",
-                                      BinOp.Wrap.add (|
-                                        M.read (| start |),
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_binary_format::deserializer::VersionedBinary",
-                                            "data_offset"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (| start |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_binary_format::deserializer::VersionedBinary",
+                                              "data_offset"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |));
                                     ("end_",
-                                      BinOp.Wrap.add (|
-                                        M.read (| end_ |),
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_binary_format::deserializer::VersionedBinary",
-                                            "data_offset"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (| end_ |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_binary_format::deserializer::VersionedBinary",
+                                              "data_offset"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |))
                                   ]
                               ]
@@ -46248,26 +46637,34 @@ Module deserializer.
                         "core::ops::range::Range"
                         [
                           ("start",
-                            BinOp.Wrap.add (|
-                              M.read (| start |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "move_binary_format::deserializer::VersionedBinary",
-                                  "data_offset"
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.read (| start |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "data_offset"
+                                  |)
                                 |)
-                              |)
+                              ]
                             |));
                           ("end_",
-                            BinOp.Wrap.add (|
-                              M.read (| end_ |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "move_binary_format::deserializer::VersionedBinary",
-                                  "data_offset"
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.read (| end_ |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::deserializer::VersionedBinary",
+                                    "data_offset"
+                                  |)
                                 |)
-                              |)
+                              ]
                             |))
                         ]
                     ]

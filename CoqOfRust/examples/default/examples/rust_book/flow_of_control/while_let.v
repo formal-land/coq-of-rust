@@ -58,10 +58,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.gt (| M.read (| i |), Value.Integer IntegerKind.I32 9 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| i |); Value.Integer IntegerKind.I32 9 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
@@ -185,9 +189,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Value.StructTuple
                                     "core::option::Option::Some"
                                     [
-                                      BinOp.Wrap.add (|
-                                        M.read (| i |),
-                                        Value.Integer IntegerKind.I32 1
+                                      M.call_closure (|
+                                        Ty.path "i32",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| i |); Value.Integer IntegerKind.I32 1 ]
                                       |)
                                     ]
                                 |)

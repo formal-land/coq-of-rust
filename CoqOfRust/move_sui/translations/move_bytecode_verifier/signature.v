@@ -1916,7 +1916,7 @@ Module signature.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6759,42 +6759,47 @@ Module signature.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.ne (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "usize",
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::vec::Vec")
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.ne,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::vec::Vec")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_binary_format::file_format::SignatureToken";
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        "len",
+                                                                                        [],
                                                                                         []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "move_binary_format::file_format::SignatureToken";
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ],
-                                                                                      "len",
-                                                                                      [],
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            type_arguments
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              type_arguments
+                                                                                            |)
                                                                                           |)
                                                                                         |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |),
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    1
+                                                                                      ]
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -8715,7 +8720,7 @@ Module signature.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -10223,7 +10228,7 @@ Module signature.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -10752,40 +10757,43 @@ Module signature.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (|
-                                M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "version",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_bytecode_verifier::signature::SignatureChecker",
-                                            "module"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "version",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::signature::SignatureChecker",
+                                              "module"
+                                            |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::VERSION_6",
+                                      Ty.path "u32"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_6",
-                                    Ty.path "u32"
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.use
                             (M.match_operator (|
@@ -11485,43 +11493,49 @@ Module signature.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| type_arguments |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_trait_method (|
-                                      "core::iter::traits::exact_size::ExactSizeIterator",
-                                      impl_ExactSizeIterator_Item___AbilitySet_,
-                                      [],
-                                      [],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, constraints |) ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| type_arguments |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_trait_method (|
+                                        "core::iter::traits::exact_size::ExactSizeIterator",
+                                        impl_ExactSizeIterator_Item___AbilitySet_,
+                                        [],
+                                        [],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, constraints |) ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -12076,7 +12090,7 @@ Module signature.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in

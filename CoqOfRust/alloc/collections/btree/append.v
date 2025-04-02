@@ -382,43 +382,47 @@ Module collections.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.lt (|
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::NodeRef")
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::node::NodeRef")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::Mut";
+                                                                      K;
+                                                                      V;
+                                                                      Ty.path
+                                                                        "alloc::collections::btree::node::marker::Leaf"
+                                                                    ],
+                                                                  "len",
+                                                                  [],
                                                                   []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Mut";
-                                                                    K;
-                                                                    V;
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Leaf"
-                                                                  ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  cur_node
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    cur_node
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.read (|
+                                                                get_constant (|
+                                                                  "alloc::collections::btree::node::CAPACITY",
+                                                                  Ty.path "usize"
                                                                 |)
-                                                              ]
-                                                            |),
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "alloc::collections::btree::node::CAPACITY",
-                                                                Ty.path "usize"
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -644,44 +648,49 @@ Module collections.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.lt (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "usize",
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::collections::btree::node::NodeRef")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "alloc::collections::btree::node::marker::Mut";
-                                                                                          K;
-                                                                                          V;
-                                                                                          Ty.path
-                                                                                            "alloc::collections::btree::node::marker::Internal"
-                                                                                        ],
-                                                                                      "len",
-                                                                                      [],
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        parent
-                                                                                      |)
-                                                                                    ]
-                                                                                  |),
-                                                                                  M.read (|
-                                                                                    get_constant (|
-                                                                                      "alloc::collections::btree::node::CAPACITY",
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.lt,
+                                                                                  [
+                                                                                    M.call_closure (|
                                                                                       Ty.path
-                                                                                        "usize"
+                                                                                        "usize",
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::collections::btree::node::NodeRef")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "alloc::collections::btree::node::marker::Mut";
+                                                                                            K;
+                                                                                            V;
+                                                                                            Ty.path
+                                                                                              "alloc::collections::btree::node::marker::Internal"
+                                                                                          ],
+                                                                                        "len",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          parent
+                                                                                        |)
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.read (|
+                                                                                      get_constant (|
+                                                                                        "alloc::collections::btree::node::CAPACITY",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
-                                                                                  |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -836,34 +845,38 @@ Module collections.
                                                       |) in
                                                     let~ tree_height : Ty.path "usize" :=
                                                       M.alloc (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.call_closure (|
-                                                            Ty.path "usize",
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::collections::btree::node::NodeRef")
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.sub,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::node::NodeRef")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "alloc::collections::btree::node::marker::Mut";
+                                                                    K;
+                                                                    V;
+                                                                    Ty.path
+                                                                      "alloc::collections::btree::node::marker::Internal"
+                                                                  ],
+                                                                "height",
+                                                                [],
                                                                 []
-                                                                [
-                                                                  Ty.path
-                                                                    "alloc::collections::btree::node::marker::Mut";
-                                                                  K;
-                                                                  V;
-                                                                  Ty.path
-                                                                    "alloc::collections::btree::node::marker::Internal"
-                                                                ],
-                                                              "height",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                open_node
-                                                              |)
-                                                            ]
-                                                          |),
-                                                          Value.Integer IntegerKind.Usize 1
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  open_node
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          ]
                                                         |)
                                                       |) in
                                                     let~ right_tree :
@@ -1274,9 +1287,13 @@ Module collections.
                                               let β := M.deref (| M.read (| length |) |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |) in

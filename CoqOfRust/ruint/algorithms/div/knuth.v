@@ -75,8 +75,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -88,28 +87,32 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| divisor |) |)
-                                                |)
-                                              ]
-                                            |),
-                                            Value.Integer IntegerKind.Usize 2
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| divisor |) |)
+                                                  |)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.Usize 2
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -137,8 +140,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -150,42 +152,46 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| numerator |) |)
-                                                |)
-                                              ]
-                                            |),
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| divisor |) |)
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| numerator |) |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| divisor |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -217,8 +223,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -230,23 +235,15 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.read (|
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                                      ],
-                                                    "unwrap",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.read (|
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                                    M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
@@ -256,35 +253,55 @@ Module algorithms.
                                                             []
                                                             [ Ty.path "u64" ]
                                                         ],
-                                                      M.get_associated_function (|
+                                                      "unwrap",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "slice")
+                                                          (Ty.path "core::option::Option")
                                                           []
-                                                          [ Ty.path "u64" ],
-                                                        "last",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| divisor |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u64" ]
+                                                          ],
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u64" ],
+                                                          "last",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| divisor |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.shl,
+                                                [
+                                                  Value.Integer IntegerKind.U64 1;
+                                                  Value.Integer IntegerKind.I32 63
+                                                ]
                                               |)
-                                            |),
-                                            BinOp.Wrap.shl (|
-                                              Value.Integer IntegerKind.U64 1,
-                                              Value.Integer IntegerKind.I32 63
-                                            |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -323,21 +340,30 @@ Module algorithms.
                 |) in
               let~ m : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    BinOp.Wrap.sub (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
                       M.call_closure (|
                         Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| numerator |) |) |) ]
-                      |),
-                      M.read (| n |)
-                    |),
-                    Value.Integer IntegerKind.Usize 1
+                        BinOp.Wrap.sub,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| numerator |) |) |)
+                            ]
+                          |);
+                          M.read (| n |)
+                        ]
+                      |);
+                      Value.Integer IntegerKind.Usize 1
+                    ]
                   |)
                 |) in
               let~ d : Ty.path "u128" :=
@@ -357,13 +383,21 @@ Module algorithms.
                       M.read (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| divisor |) |),
-                          BinOp.Wrap.sub (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
                         |)
                       |);
                       M.read (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| divisor |) |),
-                          BinOp.Wrap.sub (| M.read (| n |), Value.Integer IntegerKind.Usize 2 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| n |); Value.Integer IntegerKind.Usize 2 ]
+                          |)
                         |)
                       |)
                     ]
@@ -532,21 +566,27 @@ Module algorithms.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| numerator |) |),
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| j |),
-                                                    M.read (| n |)
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [ M.read (| j |); M.read (| n |) ]
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| numerator |) |),
-                                                  BinOp.Wrap.sub (|
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| j |),
-                                                      M.read (| n |)
-                                                    |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.sub,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.add,
+                                                        [ M.read (| j |); M.read (| n |) ]
+                                                      |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
                                                   |)
                                                 |)
                                               |)
@@ -557,9 +597,17 @@ Module algorithms.
                                         M.copy (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| numerator |) |),
-                                            BinOp.Wrap.sub (|
-                                              BinOp.Wrap.add (| M.read (| j |), M.read (| n |) |),
-                                              Value.Integer IntegerKind.Usize 2
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [ M.read (| j |); M.read (| n |) ]
+                                                |);
+                                                Value.Integer IntegerKind.Usize 2
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -572,7 +620,7 @@ Module algorithms.
                                               ltac:(M.monadic
                                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -587,14 +635,18 @@ Module algorithms.
                                                             M.use
                                                               (M.alloc (|
                                                                 UnOp.not (|
-                                                                  BinOp.le (|
-                                                                    M.read (| n21 |),
-                                                                    M.read (| d |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.le,
+                                                                    [
+                                                                      M.read (| n21 |);
+                                                                      M.read (| d |)
+                                                                    ]
                                                                   |)
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -642,15 +694,16 @@ Module algorithms.
                                                           [ Ty.path "bool" ]
                                                         |),
                                                         [
-                                                          BinOp.eq (|
-                                                            M.read (| n21 |),
-                                                            M.read (| d |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.eq,
+                                                            [ M.read (| n21 |); M.read (| d |) ]
                                                           |)
                                                         ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -722,9 +775,13 @@ Module algorithms.
                                                                               ("start",
                                                                                 M.read (| j |));
                                                                               ("end_",
-                                                                                BinOp.Wrap.add (|
-                                                                                  M.read (| j |),
-                                                                                  M.read (| n |)
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  BinOp.Wrap.add,
+                                                                                  [
+                                                                                    M.read (| j |);
+                                                                                    M.read (| n |)
+                                                                                  ]
                                                                                 |))
                                                                             ]
                                                                         ]
@@ -746,9 +803,10 @@ Module algorithms.
                                                           M.write (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| numerator |) |),
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| j |),
-                                                                M.read (| n |)
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [ M.read (| j |); M.read (| n |) ]
                                                               |)
                                                             |),
                                                             M.read (| q |)
@@ -843,14 +901,22 @@ Module algorithms.
                                                                     [
                                                                       ("start", M.read (| j |));
                                                                       ("end_",
-                                                                        BinOp.Wrap.sub (|
-                                                                          BinOp.Wrap.add (|
-                                                                            M.read (| j |),
-                                                                            M.read (| n |)
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              BinOp.Wrap.add,
+                                                                              [
+                                                                                M.read (| j |);
+                                                                                M.read (| n |)
+                                                                              ]
+                                                                            |);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
                                                                         |))
                                                                     ]
                                                                 ]
@@ -904,11 +970,15 @@ Module algorithms.
                                                                     "core::ops::range::RangeTo"
                                                                     [
                                                                       ("end_",
-                                                                        BinOp.Wrap.sub (|
-                                                                          M.read (| n |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            M.read (| n |);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
                                                                         |))
                                                                     ]
                                                                 ]
@@ -964,12 +1034,18 @@ Module algorithms.
                                                           M.write (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| numerator |) |),
-                                                              BinOp.Wrap.sub (|
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| j |),
-                                                                  M.read (| n |)
-                                                                |),
-                                                                Value.Integer IntegerKind.Usize 2
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.sub,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [ M.read (| j |); M.read (| n |)
+                                                                    ]
+                                                                  |);
+                                                                  Value.Integer IntegerKind.Usize 2
+                                                                ]
                                                               |)
                                                             |),
                                                             M.call_closure (|
@@ -992,12 +1068,18 @@ Module algorithms.
                                                           M.write (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| numerator |) |),
-                                                              BinOp.Wrap.sub (|
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| j |),
-                                                                  M.read (| n |)
-                                                                |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.sub,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [ M.read (| j |); M.read (| n |)
+                                                                    ]
+                                                                  |);
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                ]
                                                               |)
                                                             |),
                                                             M.call_closure (|
@@ -1036,7 +1118,7 @@ Module algorithms.
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -1133,13 +1215,18 @@ Module algorithms.
                                                                                             j
                                                                                           |));
                                                                                         ("end_",
-                                                                                          BinOp.Wrap.add (|
-                                                                                            M.read (|
-                                                                                              j
-                                                                                            |),
-                                                                                            M.read (|
-                                                                                              n
-                                                                                            |)
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "usize",
+                                                                                            BinOp.Wrap.add,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                j
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                n
+                                                                                              |)
+                                                                                            ]
                                                                                           |))
                                                                                       ]
                                                                                   ]
@@ -1235,7 +1322,7 @@ Module algorithms.
                                                                                 Value.Bool true
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -1296,26 +1383,31 @@ Module algorithms.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   UnOp.not (|
-                                                                                                    BinOp.eq (|
-                                                                                                      M.read (|
-                                                                                                        M.deref (|
-                                                                                                          M.read (|
-                                                                                                            left_val
+                                                                                                    M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "bool",
+                                                                                                      BinOp.eq,
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          M.deref (|
+                                                                                                            M.read (|
+                                                                                                              left_val
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          M.deref (|
+                                                                                                            M.read (|
+                                                                                                              right_val
+                                                                                                            |)
                                                                                                           |)
                                                                                                         |)
-                                                                                                      |),
-                                                                                                      M.read (|
-                                                                                                        M.deref (|
-                                                                                                          M.read (|
-                                                                                                            right_val
-                                                                                                          |)
-                                                                                                        |)
-                                                                                                      |)
+                                                                                                      ]
                                                                                                     |)
                                                                                                   |)
                                                                                                 |)) in
                                                                                             let _ :=
-                                                                                              M.is_constant_or_break_match (|
+                                                                                              is_constant_or_break_match (|
                                                                                                 M.read (|
                                                                                                   γ
                                                                                                 |),
@@ -1418,9 +1510,10 @@ Module algorithms.
                                                           M.write (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| numerator |) |),
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| j |),
-                                                                M.read (| n |)
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [ M.read (| j |); M.read (| n |) ]
                                                               |)
                                                             |),
                                                             M.read (| q |)
@@ -1565,8 +1658,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1578,28 +1670,32 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| divisor |) |)
-                                                |)
-                                              ]
-                                            |),
-                                            Value.Integer IntegerKind.Usize 3
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| divisor |) |)
+                                                  |)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.Usize 3
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1627,8 +1723,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1640,42 +1735,46 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| numerator |) |)
-                                                |)
-                                              ]
-                                            |),
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| divisor |) |)
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| numerator |) |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| divisor |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1707,8 +1806,7 @@ Module algorithms.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1720,23 +1818,15 @@ Module algorithms.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.ge (|
-                                            M.read (|
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                                      ],
-                                                    "unwrap",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.read (|
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                                    M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
@@ -1746,32 +1836,48 @@ Module algorithms.
                                                             []
                                                             [ Ty.path "u64" ]
                                                         ],
-                                                      M.get_associated_function (|
+                                                      "unwrap",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "slice")
+                                                          (Ty.path "core::option::Option")
                                                           []
-                                                          [ Ty.path "u64" ],
-                                                        "last",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| divisor |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u64" ]
+                                                          ],
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u64" ],
+                                                          "last",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| divisor |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U64 1
+                                              |);
+                                              Value.Integer IntegerKind.U64 1
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1810,18 +1916,22 @@ Module algorithms.
                 |) in
               let~ m : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| numerator |) |) |) ]
-                    |),
-                    M.read (| n |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| numerator |) |) |) ]
+                      |);
+                      M.read (| n |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -1843,13 +1953,21 @@ Module algorithms.
                         M.read (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| divisor |) |),
-                            BinOp.Wrap.sub (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| divisor |) |),
-                            BinOp.Wrap.sub (| M.read (| n |), Value.Integer IntegerKind.Usize 2 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| n |); Value.Integer IntegerKind.Usize 2 ]
+                            |)
                           |)
                         |)
                       ]
@@ -1890,13 +2008,14 @@ Module algorithms.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.eq (|
-                                        M.read (| shift |),
-                                        Value.Integer IntegerKind.U32 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| shift |); Value.Integer IntegerKind.U32 0 ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1904,37 +2023,58 @@ Module algorithms.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  BinOp.bit_or
-                                    (BinOp.Wrap.shl (| M.read (| d |), M.read (| shift |) |))
-                                    (M.call_closure (|
-                                      Ty.path "u128",
-                                      M.get_trait_method (|
-                                        "core::convert::From",
+                                  M.call_closure (|
+                                    Ty.path "u128",
+                                    BinOp.Wrap.bit_or,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "u128",
-                                        [],
-                                        [ Ty.path "u64" ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        BinOp.Wrap.shr (|
-                                          M.read (|
-                                            M.SubPointer.get_array_field (|
-                                              M.deref (| M.read (| divisor |) |),
-                                              BinOp.Wrap.sub (|
-                                                M.read (| n |),
-                                                Value.Integer IntegerKind.Usize 3
+                                        BinOp.Wrap.shl,
+                                        [ M.read (| d |); M.read (| shift |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "u128",
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "u128",
+                                          [],
+                                          [ Ty.path "u64" ],
+                                          "from",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.shr,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_array_field (|
+                                                  M.deref (| M.read (| divisor |) |),
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.sub,
+                                                    [
+                                                      M.read (| n |);
+                                                      Value.Integer IntegerKind.Usize 3
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  Value.Integer IntegerKind.U32 64;
+                                                  M.read (| shift |)
+                                                ]
                                               |)
-                                            |)
-                                          |),
-                                          BinOp.Wrap.sub (|
-                                            Value.Integer IntegerKind.U32 64,
-                                            M.read (| shift |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
-                                    |))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
                                 |)))
                           ]
                         |)
@@ -1958,7 +2098,7 @@ Module algorithms.
                               ltac:(M.monadic
                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1973,17 +2113,25 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 UnOp.not (|
-                                                  BinOp.ge (|
-                                                    M.read (| d |),
-                                                    BinOp.Wrap.shl (|
-                                                      Value.Integer IntegerKind.U128 1,
-                                                      Value.Integer IntegerKind.I32 127
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ge,
+                                                    [
+                                                      M.read (| d |);
+                                                      M.call_closure (|
+                                                        Ty.path "u128",
+                                                        BinOp.Wrap.shl,
+                                                        [
+                                                          Value.Integer IntegerKind.U128 1;
+                                                          Value.Integer IntegerKind.I32 127
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -2223,9 +2371,11 @@ Module algorithms.
                                                                       M.read (| numerator |)
                                                                     |)
                                                                   |);
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| j |),
-                                                                    M.read (| n |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [ M.read (| j |); M.read (| n |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |)
@@ -2252,12 +2402,18 @@ Module algorithms.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| numerator |) |),
-                                                              BinOp.Wrap.sub (|
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| j |),
-                                                                  M.read (| n |)
-                                                                |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.sub,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [ M.read (| j |); M.read (| n |)
+                                                                    ]
+                                                                  |);
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                ]
                                                               |)
                                                             |)
                                                           |)
@@ -2268,12 +2424,17 @@ Module algorithms.
                                                     M.copy (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| numerator |) |),
-                                                        BinOp.Wrap.sub (|
-                                                          BinOp.Wrap.add (|
-                                                            M.read (| j |),
-                                                            M.read (| n |)
-                                                          |),
-                                                          Value.Integer IntegerKind.Usize 2
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.sub,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [ M.read (| j |); M.read (| n |) ]
+                                                            |);
+                                                            Value.Integer IntegerKind.Usize 2
+                                                          ]
                                                         |)
                                                       |)
                                                     |) in
@@ -2287,13 +2448,17 @@ Module algorithms.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.eq (|
-                                                                  M.read (| shift |),
-                                                                  Value.Integer IntegerKind.U32 0
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.eq,
+                                                                  [
+                                                                    M.read (| shift |);
+                                                                    Value.Integer IntegerKind.U32 0
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -2306,63 +2471,105 @@ Module algorithms.
                                                           (M.alloc (|
                                                             Value.Tuple
                                                               [
-                                                                BinOp.bit_or
-                                                                  (BinOp.Wrap.shl (|
-                                                                    M.read (| n21 |),
-                                                                    M.read (| shift |)
-                                                                  |))
-                                                                  (M.call_closure (|
-                                                                    Ty.path "u128",
-                                                                    M.get_trait_method (|
-                                                                      "core::convert::From",
+                                                                M.call_closure (|
+                                                                  Ty.path "u128",
+                                                                  BinOp.Wrap.bit_or,
+                                                                  [
+                                                                    M.call_closure (|
                                                                       Ty.path "u128",
-                                                                      [],
-                                                                      [ Ty.path "u64" ],
-                                                                      "from",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      BinOp.Wrap.shr (|
-                                                                        M.read (| n0 |),
-                                                                        BinOp.Wrap.sub (|
-                                                                          Value.Integer
-                                                                            IntegerKind.U32
-                                                                            64,
-                                                                          M.read (| shift |)
+                                                                      BinOp.Wrap.shl,
+                                                                      [
+                                                                        M.read (| n21 |);
+                                                                        M.read (| shift |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "u128",
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::From",
+                                                                        Ty.path "u128",
+                                                                        [],
+                                                                        [ Ty.path "u64" ],
+                                                                        "from",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "u64",
+                                                                          BinOp.Wrap.shr,
+                                                                          [
+                                                                            M.read (| n0 |);
+                                                                            M.call_closure (|
+                                                                              Ty.path "u32",
+                                                                              BinOp.Wrap.sub,
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.U32
+                                                                                  64;
+                                                                                M.read (| shift |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |));
-                                                                BinOp.bit_or
-                                                                  (BinOp.Wrap.shl (|
-                                                                    M.read (| n0 |),
-                                                                    M.read (| shift |)
-                                                                  |))
-                                                                  (BinOp.Wrap.shr (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_array_field (|
-                                                                        M.deref (|
-                                                                          M.read (| numerator |)
-                                                                        |),
-                                                                        BinOp.Wrap.sub (|
-                                                                          BinOp.Wrap.add (|
-                                                                            M.read (| j |),
-                                                                            M.read (| n |)
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            3
-                                                                        |)
-                                                                      |)
-                                                                    |),
-                                                                    BinOp.Wrap.sub (|
-                                                                      Value.Integer
-                                                                        IntegerKind.U32
-                                                                        64,
-                                                                      M.read (| shift |)
+                                                                      ]
                                                                     |)
-                                                                  |))
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "u64",
+                                                                  BinOp.Wrap.bit_or,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      BinOp.Wrap.shl,
+                                                                      [
+                                                                        M.read (| n0 |);
+                                                                        M.read (| shift |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      BinOp.Wrap.shr,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_array_field (|
+                                                                            M.deref (|
+                                                                              M.read (| numerator |)
+                                                                            |),
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              BinOp.Wrap.sub,
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  BinOp.Wrap.add,
+                                                                                  [
+                                                                                    M.read (| j |);
+                                                                                    M.read (| n |)
+                                                                                  ]
+                                                                                |);
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  3
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          Ty.path "u32",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              64;
+                                                                            M.read (| shift |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               ]
                                                           |)))
                                                     ]
@@ -2389,7 +2596,7 @@ Module algorithms.
                                                                         Value.Bool true
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -2404,16 +2611,23 @@ Module algorithms.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   UnOp.not (|
-                                                                                    BinOp.le (|
-                                                                                      M.read (|
-                                                                                        n21
-                                                                                      |),
-                                                                                      M.read (| d |)
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      BinOp.le,
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          n21
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          d
+                                                                                        |)
+                                                                                      ]
                                                                                     |)
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=
-                                                                              M.is_constant_or_break_match (|
+                                                                              is_constant_or_break_match (|
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
@@ -2466,15 +2680,19 @@ Module algorithms.
                                                                               [ Ty.path "bool" ]
                                                                             |),
                                                                             [
-                                                                              BinOp.lt (|
-                                                                                M.read (| n21 |),
-                                                                                M.read (| d |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.lt,
+                                                                                [
+                                                                                  M.read (| n21 |);
+                                                                                  M.read (| d |)
+                                                                                ]
                                                                               |)
                                                                             ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -2529,17 +2747,22 @@ Module algorithms.
                                                                                       (let γ :=
                                                                                         M.use
                                                                                           (M.alloc (|
-                                                                                            BinOp.ne (|
-                                                                                              M.read (|
-                                                                                                q
-                                                                                              |),
-                                                                                              Value.Integer
-                                                                                                IntegerKind.U64
-                                                                                                0
+                                                                                            M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "bool",
+                                                                                              BinOp.ne,
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  q
+                                                                                                |);
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.U64
+                                                                                                  0
+                                                                                              ]
                                                                                             |)
                                                                                           |)) in
                                                                                       let _ :=
-                                                                                        M.is_constant_or_break_match (|
+                                                                                        is_constant_or_break_match (|
                                                                                           M.read (|
                                                                                             γ
                                                                                           |),
@@ -2566,18 +2789,23 @@ Module algorithms.
                                                                                                         γ :=
                                                                                                     M.use
                                                                                                       (M.alloc (|
-                                                                                                        BinOp.eq (|
-                                                                                                          M.read (|
-                                                                                                            shift
-                                                                                                          |),
-                                                                                                          Value.Integer
-                                                                                                            IntegerKind.U32
-                                                                                                            0
+                                                                                                        M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "bool",
+                                                                                                          BinOp.eq,
+                                                                                                          [
+                                                                                                            M.read (|
+                                                                                                              shift
+                                                                                                            |);
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.U32
+                                                                                                              0
+                                                                                                          ]
                                                                                                         |)
                                                                                                       |)) in
                                                                                                   let
                                                                                                         _ :=
-                                                                                                    M.is_constant_or_break_match (|
+                                                                                                    is_constant_or_break_match (|
                                                                                                       M.read (|
                                                                                                         γ
                                                                                                       |),
@@ -2661,18 +2889,28 @@ Module algorithms.
                                                                                                                               j
                                                                                                                             |));
                                                                                                                           ("end_",
-                                                                                                                            BinOp.Wrap.sub (|
-                                                                                                                              BinOp.Wrap.add (|
-                                                                                                                                M.read (|
-                                                                                                                                  j
-                                                                                                                                |),
-                                                                                                                                M.read (|
-                                                                                                                                  n
-                                                                                                                                |)
-                                                                                                                              |),
-                                                                                                                              Value.Integer
-                                                                                                                                IntegerKind.Usize
-                                                                                                                                2
+                                                                                                                            M.call_closure (|
+                                                                                                                              Ty.path
+                                                                                                                                "usize",
+                                                                                                                              BinOp.Wrap.sub,
+                                                                                                                              [
+                                                                                                                                M.call_closure (|
+                                                                                                                                  Ty.path
+                                                                                                                                    "usize",
+                                                                                                                                  BinOp.Wrap.add,
+                                                                                                                                  [
+                                                                                                                                    M.read (|
+                                                                                                                                      j
+                                                                                                                                    |);
+                                                                                                                                    M.read (|
+                                                                                                                                      n
+                                                                                                                                    |)
+                                                                                                                                  ]
+                                                                                                                                |);
+                                                                                                                                Value.Integer
+                                                                                                                                  IntegerKind.Usize
+                                                                                                                                  2
+                                                                                                                              ]
                                                                                                                             |))
                                                                                                                         ]
                                                                                                                     ]
@@ -2740,13 +2978,18 @@ Module algorithms.
                                                                                                                         "core::ops::range::RangeTo"
                                                                                                                         [
                                                                                                                           ("end_",
-                                                                                                                            BinOp.Wrap.sub (|
-                                                                                                                              M.read (|
-                                                                                                                                n
-                                                                                                                              |),
-                                                                                                                              Value.Integer
-                                                                                                                                IntegerKind.Usize
-                                                                                                                                2
+                                                                                                                            M.call_closure (|
+                                                                                                                              Ty.path
+                                                                                                                                "usize",
+                                                                                                                              BinOp.Wrap.sub,
+                                                                                                                              [
+                                                                                                                                M.read (|
+                                                                                                                                  n
+                                                                                                                                |);
+                                                                                                                                Value.Integer
+                                                                                                                                  IntegerKind.Usize
+                                                                                                                                  2
+                                                                                                                              ]
                                                                                                                             |))
                                                                                                                         ]
                                                                                                                     ]
@@ -2846,18 +3089,28 @@ Module algorithms.
                                                                                                                       numerator
                                                                                                                     |)
                                                                                                                   |),
-                                                                                                                  BinOp.Wrap.sub (|
-                                                                                                                    BinOp.Wrap.add (|
-                                                                                                                      M.read (|
-                                                                                                                        j
-                                                                                                                      |),
-                                                                                                                      M.read (|
-                                                                                                                        n
-                                                                                                                      |)
-                                                                                                                    |),
-                                                                                                                    Value.Integer
-                                                                                                                      IntegerKind.Usize
-                                                                                                                      2
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "usize",
+                                                                                                                    BinOp.Wrap.sub,
+                                                                                                                    [
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "usize",
+                                                                                                                        BinOp.Wrap.add,
+                                                                                                                        [
+                                                                                                                          M.read (|
+                                                                                                                            j
+                                                                                                                          |);
+                                                                                                                          M.read (|
+                                                                                                                            n
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                      |);
+                                                                                                                      Value.Integer
+                                                                                                                        IntegerKind.Usize
+                                                                                                                        2
+                                                                                                                    ]
                                                                                                                   |)
                                                                                                                 |),
                                                                                                                 M.call_closure (|
@@ -2896,18 +3149,28 @@ Module algorithms.
                                                                                                                       numerator
                                                                                                                     |)
                                                                                                                   |),
-                                                                                                                  BinOp.Wrap.sub (|
-                                                                                                                    BinOp.Wrap.add (|
-                                                                                                                      M.read (|
-                                                                                                                        j
-                                                                                                                      |),
-                                                                                                                      M.read (|
-                                                                                                                        n
-                                                                                                                      |)
-                                                                                                                    |),
-                                                                                                                    Value.Integer
-                                                                                                                      IntegerKind.Usize
-                                                                                                                      1
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "usize",
+                                                                                                                    BinOp.Wrap.sub,
+                                                                                                                    [
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "usize",
+                                                                                                                        BinOp.Wrap.add,
+                                                                                                                        [
+                                                                                                                          M.read (|
+                                                                                                                            j
+                                                                                                                          |);
+                                                                                                                          M.read (|
+                                                                                                                            n
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                      |);
+                                                                                                                      Value.Integer
+                                                                                                                        IntegerKind.Usize
+                                                                                                                        1
+                                                                                                                    ]
                                                                                                                   |)
                                                                                                                 |),
                                                                                                                 M.call_closure (|
@@ -3017,13 +3280,18 @@ Module algorithms.
                                                                                                                               j
                                                                                                                             |));
                                                                                                                           ("end_",
-                                                                                                                            BinOp.Wrap.add (|
-                                                                                                                              M.read (|
-                                                                                                                                j
-                                                                                                                              |),
-                                                                                                                              M.read (|
-                                                                                                                                n
-                                                                                                                              |)
+                                                                                                                            M.call_closure (|
+                                                                                                                              Ty.path
+                                                                                                                                "usize",
+                                                                                                                              BinOp.Wrap.add,
+                                                                                                                              [
+                                                                                                                                M.read (|
+                                                                                                                                  j
+                                                                                                                                |);
+                                                                                                                                M.read (|
+                                                                                                                                  n
+                                                                                                                                |)
+                                                                                                                              ]
                                                                                                                             |))
                                                                                                                         ]
                                                                                                                     ]
@@ -3137,13 +3405,18 @@ Module algorithms.
                                                                                                                       |)
                                                                                                                     |)
                                                                                                                   |);
-                                                                                                                  BinOp.Wrap.add (|
-                                                                                                                    M.read (|
-                                                                                                                      j
-                                                                                                                    |),
-                                                                                                                    M.read (|
-                                                                                                                      n
-                                                                                                                    |)
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "usize",
+                                                                                                                    BinOp.Wrap.add,
+                                                                                                                    [
+                                                                                                                      M.read (|
+                                                                                                                        j
+                                                                                                                      |);
+                                                                                                                      M.read (|
+                                                                                                                        n
+                                                                                                                      |)
+                                                                                                                    ]
                                                                                                                   |)
                                                                                                                 ]
                                                                                                               |)
@@ -3153,13 +3426,18 @@ Module algorithms.
                                                                                                       |)
                                                                                                     |) in
                                                                                                   M.alloc (|
-                                                                                                    BinOp.ne (|
-                                                                                                      M.read (|
-                                                                                                        borrow
-                                                                                                      |),
-                                                                                                      M.read (|
-                                                                                                        n2
-                                                                                                      |)
+                                                                                                    M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "bool",
+                                                                                                      BinOp.ne,
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          borrow
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          n2
+                                                                                                        |)
+                                                                                                      ]
                                                                                                     |)
                                                                                                   |)))
                                                                                             ]
@@ -3200,7 +3478,7 @@ Module algorithms.
                                                                                                   |)) in
                                                                                               let
                                                                                                     _ :=
-                                                                                                M.is_constant_or_break_match (|
+                                                                                                is_constant_or_break_match (|
                                                                                                   M.read (|
                                                                                                     γ
                                                                                                   |),
@@ -3312,13 +3590,18 @@ Module algorithms.
                                                                                                                           j
                                                                                                                         |));
                                                                                                                       ("end_",
-                                                                                                                        BinOp.Wrap.add (|
-                                                                                                                          M.read (|
-                                                                                                                            j
-                                                                                                                          |),
-                                                                                                                          M.read (|
-                                                                                                                            n
-                                                                                                                          |)
+                                                                                                                        M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "usize",
+                                                                                                                          BinOp.Wrap.add,
+                                                                                                                          [
+                                                                                                                            M.read (|
+                                                                                                                              j
+                                                                                                                            |);
+                                                                                                                            M.read (|
+                                                                                                                              n
+                                                                                                                            |)
+                                                                                                                          ]
                                                                                                                         |))
                                                                                                                     ]
                                                                                                                 ]
@@ -3427,7 +3710,7 @@ Module algorithms.
                                                                                                             |)) in
                                                                                                         let
                                                                                                               _ :=
-                                                                                                          M.is_constant_or_break_match (|
+                                                                                                          is_constant_or_break_match (|
                                                                                                             M.read (|
                                                                                                               γ
                                                                                                             |),
@@ -3502,27 +3785,32 @@ Module algorithms.
                                                                                                                             M.use
                                                                                                                               (M.alloc (|
                                                                                                                                 UnOp.not (|
-                                                                                                                                  BinOp.eq (|
-                                                                                                                                    M.read (|
-                                                                                                                                      M.deref (|
-                                                                                                                                        M.read (|
-                                                                                                                                          left_val
+                                                                                                                                  M.call_closure (|
+                                                                                                                                    Ty.path
+                                                                                                                                      "bool",
+                                                                                                                                    BinOp.eq,
+                                                                                                                                    [
+                                                                                                                                      M.read (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            left_val
+                                                                                                                                          |)
+                                                                                                                                        |)
+                                                                                                                                      |);
+                                                                                                                                      M.read (|
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.read (|
+                                                                                                                                            right_val
+                                                                                                                                          |)
                                                                                                                                         |)
                                                                                                                                       |)
-                                                                                                                                    |),
-                                                                                                                                    M.read (|
-                                                                                                                                      M.deref (|
-                                                                                                                                        M.read (|
-                                                                                                                                          right_val
-                                                                                                                                        |)
-                                                                                                                                      |)
-                                                                                                                                    |)
+                                                                                                                                    ]
                                                                                                                                   |)
                                                                                                                                 |)
                                                                                                                               |)) in
                                                                                                                           let
                                                                                                                                 _ :=
-                                                                                                                            M.is_constant_or_break_match (|
+                                                                                                                            is_constant_or_break_match (|
                                                                                                                               M.read (|
                                                                                                                                 γ
                                                                                                                               |),
@@ -3724,13 +4012,18 @@ Module algorithms.
                                                                                                 j
                                                                                               |));
                                                                                             ("end_",
-                                                                                              BinOp.Wrap.add (|
-                                                                                                M.read (|
-                                                                                                  j
-                                                                                                |),
-                                                                                                M.read (|
-                                                                                                  n
-                                                                                                |)
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                BinOp.Wrap.add,
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    j
+                                                                                                  |);
+                                                                                                  M.read (|
+                                                                                                    n
+                                                                                                  |)
+                                                                                                ]
                                                                                               |))
                                                                                           ]
                                                                                       ]
@@ -3762,37 +4055,45 @@ Module algorithms.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.lt (|
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| j |),
-                                                                          M.read (| n |)
-                                                                        |),
-                                                                        M.call_closure (|
-                                                                          Ty.path "usize",
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.lt,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "usize",
+                                                                            BinOp.Wrap.add,
+                                                                            [
+                                                                              M.read (| j |);
+                                                                              M.read (| n |)
+                                                                            ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path "usize",
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [ Ty.path "u64" ],
+                                                                              "len",
+                                                                              [],
                                                                               []
-                                                                              [ Ty.path "u64" ],
-                                                                            "len",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  numerator
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    numerator
+                                                                                  |)
                                                                                 |)
                                                                               |)
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -3803,9 +4104,13 @@ Module algorithms.
                                                                         M.deref (|
                                                                           M.read (| numerator |)
                                                                         |),
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| j |),
-                                                                          M.read (| n |)
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.add,
+                                                                          [
+                                                                            M.read (| j |);
+                                                                            M.read (| n |)
+                                                                          ]
                                                                         |)
                                                                       |),
                                                                       M.read (| q |)
@@ -3968,9 +4273,10 @@ Module algorithms.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| m |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| m |); Value.Integer IntegerKind.Usize 1 ]
                                             |))
                                         ]
                                     ]

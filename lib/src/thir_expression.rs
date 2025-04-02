@@ -12,25 +12,25 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::{Const, ConstKind, TyKind};
 use std::rc::Rc;
 
-fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
+fn path_and_ty_of_bin_op(bin_op: &BinOp, ty_lhs: Rc<CoqType>) -> (&'static str, Rc<CoqType>) {
     match bin_op {
-        BinOp::Add => ("BinOp.Wrap.add", CallKind::Effectful),
-        BinOp::Sub => ("BinOp.Wrap.sub", CallKind::Effectful),
-        BinOp::Mul => ("BinOp.Wrap.mul", CallKind::Effectful),
-        BinOp::Div => ("BinOp.Wrap.div", CallKind::Effectful),
-        BinOp::Rem => ("BinOp.Wrap.rem", CallKind::Effectful),
-        BinOp::BitXor => ("BinOp.bit_xor", CallKind::Pure),
-        BinOp::BitAnd => ("BinOp.bit_and", CallKind::Pure),
-        BinOp::BitOr => ("BinOp.bit_or", CallKind::Pure),
-        BinOp::Shl => ("BinOp.Wrap.shl", CallKind::Effectful),
-        BinOp::Shr => ("BinOp.Wrap.shr", CallKind::Effectful),
-        BinOp::Eq => ("BinOp.eq", CallKind::Effectful),
-        BinOp::Ne => ("BinOp.ne", CallKind::Effectful),
-        BinOp::Lt => ("BinOp.lt", CallKind::Effectful),
-        BinOp::Le => ("BinOp.le", CallKind::Effectful),
-        BinOp::Ge => ("BinOp.ge", CallKind::Effectful),
-        BinOp::Gt => ("BinOp.gt", CallKind::Effectful),
-        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure),
+        BinOp::Add => ("BinOp.Wrap.add", ty_lhs),
+        BinOp::Sub => ("BinOp.Wrap.sub", ty_lhs),
+        BinOp::Mul => ("BinOp.Wrap.mul", ty_lhs),
+        BinOp::Div => ("BinOp.Wrap.div", ty_lhs),
+        BinOp::Rem => ("BinOp.Wrap.rem", ty_lhs),
+        BinOp::BitXor => ("BinOp.Wrap.bit_xor", ty_lhs),
+        BinOp::BitAnd => ("BinOp.Wrap.bit_and", ty_lhs),
+        BinOp::BitOr => ("BinOp.Wrap.bit_or", ty_lhs),
+        BinOp::Shl => ("BinOp.Wrap.shl", ty_lhs),
+        BinOp::Shr => ("BinOp.Wrap.shr", ty_lhs),
+        BinOp::Eq => ("BinOp.eq", CoqType::path(&["bool"])),
+        BinOp::Ne => ("BinOp.ne", CoqType::path(&["bool"])),
+        BinOp::Lt => ("BinOp.lt", CoqType::path(&["bool"])),
+        BinOp::Le => ("BinOp.le", CoqType::path(&["bool"])),
+        BinOp::Ge => ("BinOp.ge", CoqType::path(&["bool"])),
+        BinOp::Gt => ("BinOp.gt", CoqType::path(&["bool"])),
+        BinOp::Offset => ("BinOp.Pure.offset", ty_lhs),
         _ => todo!(),
     }
 }
@@ -243,7 +243,7 @@ fn build_inner_match(
                 name: None,
                 ty: None,
                 init: Rc::new(Expr::Call {
-                    func: Expr::local_var("M.is_constant_or_break_match"),
+                    func: Expr::local_var("is_constant_or_break_match"),
                     args: vec![
                         Expr::local_var(&scrutinee).read(),
                         Rc::new(Expr::Literal(literal.clone())),
@@ -541,14 +541,16 @@ pub(crate) fn compile_expr<'a>(
             kind: CallKind::Effectful,
         }),
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let (path, kind) = path_of_bin_op(op);
+            let lhs_expr = thir.exprs.get(*lhs).unwrap();
+            let ty_lhs = compile_type(env, &lhs_expr.span, generics, &lhs_expr.ty);
+            let (path, ty) = path_and_ty_of_bin_op(op, ty_lhs);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
                 args: vec![lhs.read(), rhs.read()],
-                kind,
+                kind: CallKind::Closure(ty),
             })
             .alloc()
         }
@@ -611,10 +613,6 @@ pub(crate) fn compile_expr<'a>(
         } => {
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
-
-            if let rustc_middle::ty::adjustment::PointerCoercion::Unsize = cast {
-                return source.alloc();
-            }
 
             Rc::new(Expr::Comment(
                 format!("{cast:?}"),
@@ -684,7 +682,9 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let (path, kind) = path_of_bin_op(op);
+            let lhs_expr = thir.exprs.get(*lhs).unwrap();
+            let ty_lhs = compile_type(env, &lhs_expr.span, generics, &lhs_expr.ty);
+            let (path, ty) = path_and_ty_of_bin_op(op, ty_lhs);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
@@ -699,7 +699,7 @@ pub(crate) fn compile_expr<'a>(
                         Rc::new(Expr::Call {
                             func: Expr::local_var(path),
                             args: vec![Expr::local_var("β").read(), rhs.read()],
-                            kind,
+                            kind: CallKind::Closure(ty),
                         }),
                     ],
                     kind: CallKind::Effectful,

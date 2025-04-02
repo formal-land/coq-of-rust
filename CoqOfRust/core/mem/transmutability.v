@@ -110,74 +110,90 @@ Module mem.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::mem::transmutability::Assume",
-                        "alignment"
-                      |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "core::mem::transmutability::Assume",
-                        "alignment"
-                      |)
-                    |)
-                  |),
-                  ltac:(M.monadic
-                    (BinOp.eq (|
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
                           "core::mem::transmutability::Assume",
-                          "lifetimes"
+                          "alignment"
                         |)
-                      |),
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::mem::transmutability::Assume",
-                          "lifetimes"
+                          "alignment"
                         |)
                       |)
+                    ]
+                  |),
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::mem::transmutability::Assume",
+                            "lifetimes"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::mem::transmutability::Assume",
+                            "lifetimes"
+                          |)
+                        |)
+                      ]
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.eq (|
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::mem::transmutability::Assume",
+                          "safety"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::mem::transmutability::Assume",
+                          "safety"
+                        |)
+                      |)
+                    ]
+                  |)))
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::mem::transmutability::Assume",
-                        "safety"
+                        "validity"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "core::mem::transmutability::Assume",
-                        "safety"
+                        "validity"
                       |)
                     |)
-                  |)))
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::mem::transmutability::Assume",
-                      "validity"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "core::mem::transmutability::Assume",
-                      "validity"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -290,66 +306,74 @@ Module mem.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Assume" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alignment" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::mem::transmutability::Assume",
-                        "alignment"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::mem::transmutability::Assume",
+                          "alignment"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "lifetimes" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::mem::transmutability::Assume",
-                        "lifetimes"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::mem::transmutability::Assume",
+                          "lifetimes"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "safety" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::mem::transmutability::Assume",
-                        "safety"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::mem::transmutability::Assume",
+                          "safety"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "validity" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::mem::transmutability::Assume",
-                            "validity"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::mem::transmutability::Assume",
+                              "validity"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

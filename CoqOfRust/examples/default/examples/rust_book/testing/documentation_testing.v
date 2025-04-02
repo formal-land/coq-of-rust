@@ -12,7 +12,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+      M.call_closure (| Ty.path "i32", BinOp.Wrap.add, [ M.read (| a |); M.read (| b |) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -46,9 +46,13 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.eq (| M.read (| b |), Value.Integer IntegerKind.I32 0 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [ M.read (| b |); Value.Integer IntegerKind.I32 0 ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
@@ -65,7 +69,9 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        M.alloc (| BinOp.Wrap.div (| M.read (| a |), M.read (| b |) |) |)
+        M.alloc (|
+          M.call_closure (| Ty.path "i32", BinOp.Wrap.div, [ M.read (| a |); M.read (| b |) ] |)
+        |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

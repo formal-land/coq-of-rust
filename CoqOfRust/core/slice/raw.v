@@ -46,7 +46,7 @@ Module slice.
                               []
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -158,10 +158,7 @@ Module slice.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
@@ -240,19 +237,21 @@ Module slice.
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "&")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
-                M.get_function (| "core::array::from_ref", [], [ T ] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+          (* Unsize *)
+          M.pointer_coercion
+            (M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
+                  M.get_function (| "core::array::from_ref", [], [ T ] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                |)
               |)
-            |)
-          |)))
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -274,19 +273,21 @@ Module slice.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              M.borrow (|
-                Pointer.Kind.MutRef,
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
-                    M.get_function (| "core::array::from_mut", [], [ T ] |),
-                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
+                      M.get_function (| "core::array::from_mut", [], [ T ] |),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
+                    |)
                   |)
-                |)
-              |)
+                |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

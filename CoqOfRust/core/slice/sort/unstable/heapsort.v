@@ -92,12 +92,17 @@ Module slice.
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_",
-                                    BinOp.Wrap.add (|
-                                      M.read (| len |),
-                                      BinOp.Wrap.div (|
-                                        M.read (| len |),
-                                        Value.Integer IntegerKind.Usize 2
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| len |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.div,
+                                          [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                                        |)
+                                      ]
                                     |))
                                 ]
                             ]
@@ -174,20 +179,22 @@ Module slice.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.ge (|
-                                                            M.read (| i |),
-                                                            M.read (| len |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [ M.read (| i |); M.read (| len |) ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
                                                     M.alloc (|
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| i |),
-                                                        M.read (| len |)
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [ M.read (| i |); M.read (| len |) ]
                                                       |)
                                                     |)));
                                                 fun γ =>
@@ -364,18 +371,22 @@ Module slice.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::assume", [], [] |),
                         [
-                          BinOp.le (|
-                            M.read (| node |),
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.le,
+                            [
+                              M.read (| node |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -412,9 +423,17 @@ Module slice.
                   ltac:(M.monadic
                     (let~ child : Ty.path "usize" :=
                       M.alloc (|
-                        BinOp.Wrap.add (|
-                          BinOp.Wrap.mul (| Value.Integer IntegerKind.Usize 2, M.read (| node |) |),
-                          Value.Integer IntegerKind.Usize 1
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.add,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.mul,
+                              [ Value.Integer IntegerKind.Usize 2; M.read (| node |) ]
+                            |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -427,13 +446,14 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.ge (| M.read (| child |), M.read (| len |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ge,
+                                      [ M.read (| child |); M.read (| len |) ]
+                                    |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
@@ -449,16 +469,22 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.lt (|
-                                        BinOp.Wrap.add (|
-                                          M.read (| child |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        M.read (| len |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [ M.read (| child |); Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |);
+                                          M.read (| len |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -467,86 +493,96 @@ Module slice.
                                     let β := child in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        M.cast
-                                          (Ty.path "usize")
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              F,
-                                              [],
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply (Ty.path "&") [] [ T ];
-                                                    Ty.apply (Ty.path "&") [] [ T ]
-                                                  ]
-                                              ],
-                                              "call_mut",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| is_less |) |)
-                                              |);
-                                              Value.Tuple
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (| β |);
+                                          M.cast
+                                            (Ty.path "usize")
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                F,
+                                                [],
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                                            M.get_associated_function (|
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply (Ty.path "&") [] [ T ];
+                                                      Ty.apply (Ty.path "&") [] [ T ]
+                                                    ]
+                                                ],
+                                                "call_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| is_less |) |)
+                                                |);
+                                                Value.Tuple
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
                                                               Ty.apply (Ty.path "*mut") [] [ T ],
-                                                              "add",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| v_base |);
-                                                              M.read (| child |)
-                                                            ]
+                                                              M.get_associated_function (|
+                                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                                "add",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| v_base |);
+                                                                M.read (| child |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              Ty.apply (Ty.path "*mut") [] [ T ],
+                                                              M.get_associated_function (|
+                                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                                "add",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| v_base |);
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.add,
+                                                                  [
+                                                                    M.read (| child |);
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                                            M.get_associated_function (|
-                                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                                              "add",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| v_base |);
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| child |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                ]
-                                            ]
-                                          |))
+                                                  ]
+                                              ]
+                                            |))
+                                        ]
                                       |)
                                     |)
                                   |) in
@@ -636,7 +672,7 @@ Module slice.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in

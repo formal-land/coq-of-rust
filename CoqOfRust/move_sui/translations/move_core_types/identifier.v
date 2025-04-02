@@ -25,10 +25,7 @@ Module identifier.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.UnicodeChar 95
-                            |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 95 |) in
                           Value.Tuple []));
                       fun γ => ltac:(M.monadic (Value.Tuple []));
                       fun γ => ltac:(M.monadic (Value.Tuple []));
@@ -89,27 +86,31 @@ Module identifier.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| i |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| b |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.read (| i |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| b |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -142,7 +143,7 @@ Module identifier.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -159,9 +160,10 @@ Module identifier.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -233,32 +235,32 @@ Module identifier.
                   let γ1_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
                   let γ1_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_0 |),
                       Value.Integer IntegerKind.U8 60
                     |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_1 |),
                       Value.Integer IntegerKind.U8 83
                     |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_2 |),
                       Value.Integer IntegerKind.U8 69
                     |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_3 |),
                       Value.Integer IntegerKind.U8 76
                     |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_4 |),
                       Value.Integer IntegerKind.U8 70
                     |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_5 |),
                       Value.Integer IntegerKind.U8 62
                     |) in
@@ -309,27 +311,31 @@ Module identifier.
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                   let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ1_0 |),
                       Value.Integer IntegerKind.U8 95
                     |) in
                   let γ :=
                     M.alloc (|
-                      BinOp.gt (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
-                        |),
-                        Value.Integer IntegerKind.Usize 1
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.gt,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                          |);
+                          Value.Integer IntegerKind.Usize 1
+                        ]
                       |)
                     |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "bool",
@@ -448,24 +454,26 @@ Module identifier.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Identifier" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::identifier::Identifier",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::identifier::Identifier",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -970,8 +978,7 @@ Module identifier.
                                 [ M.borrow (| Pointer.Kind.Ref, s |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -1811,24 +1818,26 @@ Module identifier.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IdentStr" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::identifier::IdentStr",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::identifier::IdentStr",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2320,8 +2329,7 @@ Module identifier.
                                 [ M.read (| s |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"

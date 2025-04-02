@@ -701,13 +701,17 @@ Module iter.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.gt (|
-                                        M.read (| lower_bound |),
-                                        Value.Integer IntegerKind.Usize 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [
+                                          M.read (| lower_bound |);
+                                          Value.Integer IntegerKind.Usize 0
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1068,7 +1072,7 @@ Module iter.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1114,13 +1118,17 @@ Module iter.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.gt (|
-                                              M.read (| lower_bound |),
-                                              Value.Integer IntegerKind.Usize 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.gt,
+                                              [
+                                                M.read (| lower_bound |);
+                                                Value.Integer IntegerKind.Usize 0
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in

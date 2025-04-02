@@ -1672,7 +1672,7 @@ Module absint.
                                                                                       |)
                                                                                     |)) in
                                                                                 let _ :=
-                                                                                  M.is_constant_or_break_match (|
+                                                                                  is_constant_or_break_match (|
                                                                                     M.read (| γ |),
                                                                                     Value.Bool true
                                                                                   |) in
