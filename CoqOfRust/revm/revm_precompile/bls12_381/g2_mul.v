@@ -3,48 +3,55 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module g2_mul.
-    Definition value_PRECOMPILE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.call_closure (|
-                  Ty.path "alloy_primitives::bits::address::Address",
-                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant "revm_precompile::bls12_381::g2_mul::ADDRESS" |) ]
-                |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::g2_mul::g2_mul", [], [] |))
-              ]
-          |))).
+    Definition value_PRECOMPILE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+                [
+                  M.read (|
+                    get_constant (| "revm_precompile::bls12_381::g2_mul::ADDRESS", Ty.path "u64" |)
+                  |)
+                ]
+              |);
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::bls12_381::g2_mul::g2_mul", [], [] |))
+            ]
+        |))).
     
-    Axiom Constant_value_PRECOMPILE :
-      (M.get_constant "revm_precompile::bls12_381::g2_mul::PRECOMPILE") = value_PRECOMPILE.
-    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PRECOMPILE :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_mul::PRECOMPILE" value_PRECOMPILE.
+    Admitted.
+    Global Typeclasses Opaque value_PRECOMPILE.
     
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bls12_381::g2_mul::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_mul::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_BASE_GAS_FEE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+    Definition value_BASE_GAS_FEE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
     
-    Axiom Constant_value_BASE_GAS_FEE :
-      (M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE") = value_BASE_GAS_FEE.
-    Global Hint Rewrite Constant_value_BASE_GAS_FEE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BASE_GAS_FEE :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE" value_BASE_GAS_FEE.
+    Admitted.
+    Global Typeclasses Opaque value_BASE_GAS_FEE.
     
-    Definition value_INPUT_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 288 |))).
+    Definition value_INPUT_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 288 |))).
     
-    Axiom Constant_value_INPUT_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH") = value_INPUT_LENGTH.
-    Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_INPUT_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH" value_INPUT_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_INPUT_LENGTH.
     
     (*
     pub(super) fn g2_mul(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -101,8 +108,10 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE",
+                                      Ty.path "u64"
+                                    |)
                                   |),
                                   M.read (| gas_limit |)
                                 |)
@@ -191,8 +200,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -346,8 +357,10 @@ Module bls12_381.
                                                                               |);
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
-                                                                                M.get_constant
-                                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                                get_constant (|
+                                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                                  Ty.path "usize"
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                         |),
@@ -576,8 +589,10 @@ Module bls12_381.
                                                 [
                                                   ("end_",
                                                     M.read (|
-                                                      M.get_constant
-                                                        "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                      get_constant (|
+                                                        "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |))
                                                 ]
                                             ]
@@ -819,8 +834,10 @@ Module bls12_381.
                                               [
                                                 ("start",
                                                   M.read (|
-                                                    M.get_constant
-                                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                    get_constant (|
+                                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -947,7 +964,12 @@ Module bls12_381.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "revm_precompile::bls12_381::utils::NBITS" |)
+                        M.read (|
+                          get_constant (|
+                            "revm_precompile::bls12_381::utils::NBITS",
+                            Ty.path "usize"
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1015,7 +1037,10 @@ Module bls12_381.
                         |),
                         [
                           M.read (|
-                            M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE"
+                            get_constant (|
+                              "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE",
+                              Ty.path "u64"
+                            |)
                           |);
                           M.read (| out |)
                         ]
@@ -1028,7 +1053,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_g2_mul :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2_mul::g2_mul" g2_mul.
+      M.IsFunction.C "revm_precompile::bls12_381::g2_mul::g2_mul" g2_mul.
     Admitted.
     Global Typeclasses Opaque g2_mul.
   End g2_mul.

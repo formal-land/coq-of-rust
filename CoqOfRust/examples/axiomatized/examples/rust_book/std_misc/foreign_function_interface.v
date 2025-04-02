@@ -4,24 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter csqrtf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_csqrtf :
-  M.IsFunction.Trait "foreign_function_interface::csqrtf" csqrtf.
+  M.IsFunction.C "foreign_function_interface::csqrtf" csqrtf.
 Admitted.
 
 Parameter ccosf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_ccosf :
-  M.IsFunction.Trait "foreign_function_interface::ccosf" ccosf.
+  M.IsFunction.C "foreign_function_interface::ccosf" ccosf.
 Admitted.
 
 Parameter cos : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_cos : M.IsFunction.Trait "foreign_function_interface::cos" cos.
+Global Instance Instance_IsFunction_cos : M.IsFunction.C "foreign_function_interface::cos" cos.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "foreign_function_interface::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "foreign_function_interface::main" main.
 Admitted.
 
 (* StructRecord

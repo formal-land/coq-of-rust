@@ -2220,7 +2220,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -2649,7 +2652,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -3078,7 +3084,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -3507,7 +3516,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -3936,7 +3948,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -4365,7 +4380,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -4794,7 +4812,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -5223,7 +5244,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -5658,7 +5682,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)
@@ -6099,7 +6126,10 @@ Module slice.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| arr |) |) |);
                             M.read (|
-                              M.get_constant "core::slice::cmp::slice_contains::LANE_COUNT"
+                              get_constant (|
+                                "core::slice::cmp::slice_contains::LANE_COUNT",
+                                Ty.path "usize"
+                              |)
                             |)
                           ]
                         |)

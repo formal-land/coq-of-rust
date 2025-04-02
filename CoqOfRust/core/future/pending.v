@@ -28,7 +28,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_pending :
-      M.IsFunction.Trait "core::future::pending::pending" pending.
+      M.IsFunction.C "core::future::pending::pending" pending.
     Admitted.
     Global Typeclasses Opaque pending.
     

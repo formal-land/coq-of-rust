@@ -1158,8 +1158,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_u8 :
-        M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+      Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
       Admitted.
       Global Typeclasses Opaque from_u8.
       
@@ -1187,7 +1186,7 @@ Module ascii.
         end.
       
       Global Instance AssociatedFunction_from_u8_unchecked :
-        M.IsAssociatedFunction.Trait Self "from_u8_unchecked" from_u8_unchecked.
+        M.IsAssociatedFunction.C Self "from_u8_unchecked" from_u8_unchecked.
       Admitted.
       Global Typeclasses Opaque from_u8_unchecked.
       
@@ -1248,7 +1247,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_digit : M.IsAssociatedFunction.Trait Self "digit" digit.
+      Global Instance AssociatedFunction_digit : M.IsAssociatedFunction.C Self "digit" digit.
       Admitted.
       Global Typeclasses Opaque digit.
       
@@ -1335,7 +1334,7 @@ Module ascii.
         end.
       
       Global Instance AssociatedFunction_digit_unchecked :
-        M.IsAssociatedFunction.Trait Self "digit_unchecked" digit_unchecked.
+        M.IsAssociatedFunction.C Self "digit_unchecked" digit_unchecked.
       Admitted.
       Global Typeclasses Opaque digit_unchecked.
       
@@ -1353,7 +1352,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_u8 : M.IsAssociatedFunction.Trait Self "to_u8" to_u8.
+      Global Instance AssociatedFunction_to_u8 : M.IsAssociatedFunction.C Self "to_u8" to_u8.
       Admitted.
       Global Typeclasses Opaque to_u8.
       
@@ -1371,8 +1370,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_char :
-        M.IsAssociatedFunction.Trait Self "to_char" to_char.
+      Global Instance AssociatedFunction_to_char : M.IsAssociatedFunction.C Self "to_char" to_char.
       Admitted.
       Global Typeclasses Opaque to_char.
       
@@ -1427,7 +1425,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
     End Impl_core_ascii_ascii_char_AsciiChar.
@@ -1630,7 +1628,7 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
       
@@ -1677,7 +1675,7 @@ Module ascii.
         end.
       
       Global Instance AssociatedFunction_as_bytes :
-        M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+        M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
       Admitted.
       Global Typeclasses Opaque as_bytes.
     End Impl_slice_core_ascii_ascii_char_AsciiChar.
@@ -1969,7 +1967,13 @@ Module ascii.
                         let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
-                              M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                              get_constant (|
+                                "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 16 ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              |),
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_trait_method (|
@@ -1993,7 +1997,13 @@ Module ascii.
                         let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
-                              M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                              get_constant (|
+                                "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 16 ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              |),
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_trait_method (|

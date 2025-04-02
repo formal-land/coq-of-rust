@@ -23,7 +23,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_utf8_chunks :
-        M.IsAssociatedFunction.Trait Self "utf8_chunks" utf8_chunks.
+        M.IsAssociatedFunction.C Self "utf8_chunks" utf8_chunks.
       Admitted.
       Global Typeclasses Opaque utf8_chunks.
     End Impl_slice_u8.
@@ -371,7 +371,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_valid : M.IsAssociatedFunction.Trait Self "valid" valid.
+      Global Instance AssociatedFunction_valid : M.IsAssociatedFunction.C Self "valid" valid.
       Admitted.
       Global Typeclasses Opaque valid.
       
@@ -395,8 +395,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_invalid :
-        M.IsAssociatedFunction.Trait Self "invalid" invalid.
+      Global Instance AssociatedFunction_invalid : M.IsAssociatedFunction.C Self "invalid" invalid.
       Admitted.
       Global Typeclasses Opaque invalid.
     End Impl_core_str_lossy_Utf8Chunk.
@@ -2129,7 +2128,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_debug : M.IsAssociatedFunction.Trait Self "debug" debug.
+      Global Instance AssociatedFunction_debug : M.IsAssociatedFunction.C Self "debug" debug.
       Admitted.
       Global Typeclasses Opaque debug.
     End Impl_core_str_lossy_Utf8Chunks.
@@ -2467,8 +2466,10 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "core::str::lossy::next::TAG_CONT_U8"
+                                                                      get_constant (|
+                                                                        "core::str::lossy::next::TAG_CONT_U8",
+                                                                        Ty.path "u8"
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2668,8 +2669,10 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "core::str::lossy::next::TAG_CONT_U8"
+                                                                      get_constant (|
+                                                                        "core::str::lossy::next::TAG_CONT_U8",
+                                                                        Ty.path "u8"
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2856,8 +2859,10 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "core::str::lossy::next::TAG_CONT_U8"
+                                                                      get_constant (|
+                                                                        "core::str::lossy::next::TAG_CONT_U8",
+                                                                        Ty.path "u8"
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2931,8 +2936,10 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "core::str::lossy::next::TAG_CONT_U8"
+                                                                      get_constant (|
+                                                                        "core::str::lossy::next::TAG_CONT_U8",
+                                                                        Ty.path "u8"
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in

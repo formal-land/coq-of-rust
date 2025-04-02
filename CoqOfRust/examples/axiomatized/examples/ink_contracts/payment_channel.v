@@ -257,42 +257,41 @@ Module Impl_payment_channel_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
   
   Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_terminate_contract :
-    M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
+    M.IsAssociatedFunction.C Self "terminate_contract" terminate_contract.
   Admitted.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
   
   Parameter block_timestamp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_block_timestamp :
-    M.IsAssociatedFunction.Trait Self "block_timestamp" block_timestamp.
+    M.IsAssociatedFunction.C Self "block_timestamp" block_timestamp.
   Admitted.
   
   Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.C Self "balance" balance.
   Admitted.
   
   Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_account_id :
-    M.IsAssociatedFunction.Trait Self "account_id" account_id.
+    M.IsAssociatedFunction.C Self "account_id" account_id.
   Admitted.
 End Impl_payment_channel_Env.
 
@@ -305,13 +304,13 @@ End Impl_payment_channel_Env.
 Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_hash_encoded :
-  M.IsFunction.Trait "payment_channel::hash_encoded" hash_encoded.
+  M.IsFunction.C "payment_channel::hash_encoded" hash_encoded.
 Admitted.
 
 Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_ecdsa_recover :
-  M.IsFunction.Trait "payment_channel::ecdsa_recover" ecdsa_recover.
+  M.IsFunction.C "payment_channel::ecdsa_recover" ecdsa_recover.
 Admitted.
 
 (*
@@ -475,88 +474,86 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter is_signature_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_is_signature_valid :
-    M.IsAssociatedFunction.Trait Self "is_signature_valid" is_signature_valid.
+    M.IsAssociatedFunction.C Self "is_signature_valid" is_signature_valid.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter close_inner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_close_inner :
-    M.IsAssociatedFunction.Trait Self "close_inner" close_inner.
+    M.IsAssociatedFunction.C Self "close_inner" close_inner.
   Admitted.
   
   Parameter close : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_close : M.IsAssociatedFunction.Trait Self "close" close.
+  Global Instance AssociatedFunction_close : M.IsAssociatedFunction.C Self "close" close.
   Admitted.
   
   Parameter start_sender_close : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_start_sender_close :
-    M.IsAssociatedFunction.Trait Self "start_sender_close" start_sender_close.
+    M.IsAssociatedFunction.C Self "start_sender_close" start_sender_close.
   Admitted.
   
   Parameter claim_timeout : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_claim_timeout :
-    M.IsAssociatedFunction.Trait Self "claim_timeout" claim_timeout.
+    M.IsAssociatedFunction.C Self "claim_timeout" claim_timeout.
   Admitted.
   
   Parameter withdraw : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_withdraw :
-    M.IsAssociatedFunction.Trait Self "withdraw" withdraw.
+  Global Instance AssociatedFunction_withdraw : M.IsAssociatedFunction.C Self "withdraw" withdraw.
   Admitted.
   
   Parameter get_sender : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_sender :
-    M.IsAssociatedFunction.Trait Self "get_sender" get_sender.
+    M.IsAssociatedFunction.C Self "get_sender" get_sender.
   Admitted.
   
   Parameter get_recipient : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_recipient :
-    M.IsAssociatedFunction.Trait Self "get_recipient" get_recipient.
+    M.IsAssociatedFunction.C Self "get_recipient" get_recipient.
   Admitted.
   
   Parameter get_expiration : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_expiration :
-    M.IsAssociatedFunction.Trait Self "get_expiration" get_expiration.
+    M.IsAssociatedFunction.C Self "get_expiration" get_expiration.
   Admitted.
   
   Parameter get_withdrawn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_withdrawn :
-    M.IsAssociatedFunction.Trait Self "get_withdrawn" get_withdrawn.
+    M.IsAssociatedFunction.C Self "get_withdrawn" get_withdrawn.
   Admitted.
   
   Parameter get_close_duration : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_close_duration :
-    M.IsAssociatedFunction.Trait Self "get_close_duration" get_close_duration.
+    M.IsAssociatedFunction.C Self "get_close_duration" get_close_duration.
   Admitted.
   
   Parameter get_balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_balance :
-    M.IsAssociatedFunction.Trait Self "get_balance" get_balance.
+    M.IsAssociatedFunction.C Self "get_balance" get_balance.
   Admitted.
 End Impl_payment_channel_PaymentChannel.

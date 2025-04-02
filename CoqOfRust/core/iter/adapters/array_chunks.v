@@ -257,14 +257,7 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      M.get_constant "core::iter::adapters::array_chunks::N"
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
-                                |)
+                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -318,7 +311,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "new" (new N I).
+          M.IsAssociatedFunction.C (Self N I) "new" (new N I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -471,7 +464,7 @@ Module iter.
         
         Global Instance AssociatedFunction_into_remainder :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "into_remainder" (into_remainder N I).
+          M.IsAssociatedFunction.C (Self N I) "into_remainder" (into_remainder N I).
         Admitted.
         Global Typeclasses Opaque into_remainder.
         (*
@@ -592,7 +585,7 @@ Module iter.
                               |)
                             ]
                           |),
-                          M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
+                          N
                         |)
                       |) in
                     let~ remainder :
@@ -862,7 +855,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_back_remainder :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "next_back_remainder" (next_back_remainder N I).
+          M.IsAssociatedFunction.C (Self N I) "next_back_remainder" (next_back_remainder N I).
         Admitted.
         Global Typeclasses Opaque next_back_remainder.
       End Impl_core_iter_adapters_array_chunks_ArrayChunks_N_I.
@@ -1084,10 +1077,7 @@ Module iter.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.div (|
-                                M.read (| lower |),
-                                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
-                              |);
+                              BinOp.Wrap.div (| M.read (| lower |), N |);
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
@@ -1117,13 +1107,7 @@ Module iter.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let n := M.copy (| γ |) in
-                                                    BinOp.Wrap.div (|
-                                                      M.read (| n |),
-                                                      M.read (|
-                                                        M.get_constant
-                                                          "core::iter::adapters::array_chunks::N"
-                                                      |)
-                                                    |)))
+                                                    BinOp.Wrap.div (| M.read (| n |), N |)))
                                               ]
                                             |)))
                                         | _ => M.impossible "wrong number of arguments"
@@ -1177,7 +1161,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
+                N
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2339,7 +2323,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
+                N
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2384,7 +2368,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
+                N
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2591,9 +2575,7 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.ge (|
                                       BinOp.Wrap.sub (| M.read (| inner_len |), M.read (| i |) |),
-                                      M.read (|
-                                        M.get_constant "core::iter::adapters::array_chunks::N"
-                                      |)
+                                      N
                                     |)
                                   |)) in
                               let _ :=
@@ -2755,15 +2737,7 @@ Module iter.
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   let β := i in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      M.read (|
-                                        M.get_constant "core::iter::adapters::array_chunks::N"
-                                      |)
-                                    |)
-                                  |)
+                                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), N |) |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -2901,11 +2875,22 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (N : Value.t) (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self N I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*
             const MERGE_BY: Option<NonZero<usize>> = const {
@@ -2919,11 +2904,22 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (N : Value.t) (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self N I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::array_chunks::MERGE_BY_discriminant")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::array_chunks::MERGE_BY_discriminant",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (N : Value.t) (I : Ty.t),
@@ -2934,8 +2930,8 @@ Module iter.
             (Self N I)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY N I));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY N I))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY N I));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY N I))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
     End array_chunks.

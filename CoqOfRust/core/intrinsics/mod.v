@@ -79,7 +79,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_runtime :
-        M.IsFunction.Trait "core::num::from_str_radix_panic::do_panic::runtime" runtime.
+        M.IsFunction.C "core::num::from_str_radix_panic::do_panic::runtime" runtime.
       Admitted.
       Global Typeclasses Opaque runtime.
       
@@ -145,7 +145,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_compiletime :
-        M.IsFunction.Trait "core::num::from_str_radix_panic::do_panic::compiletime" compiletime.
+        M.IsFunction.C "core::num::from_str_radix_panic::do_panic::compiletime" compiletime.
       Admitted.
       Global Typeclasses Opaque compiletime.
     End do_panic.
@@ -173,7 +173,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_drop_in_place :
-    M.IsFunction.Trait "core::intrinsics::drop_in_place" drop_in_place.
+    M.IsFunction.C "core::intrinsics::drop_in_place" drop_in_place.
   Admitted.
   Global Typeclasses Opaque drop_in_place.
   
@@ -204,9 +204,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_relaxed_relaxed :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_relaxed_relaxed"
-      atomic_cxchg_relaxed_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_relaxed_relaxed" atomic_cxchg_relaxed_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_relaxed_relaxed.
   
@@ -237,9 +235,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_relaxed_acquire :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_relaxed_acquire"
-      atomic_cxchg_relaxed_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_relaxed_acquire" atomic_cxchg_relaxed_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_relaxed_acquire.
   
@@ -270,7 +266,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_relaxed_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_relaxed_seqcst.
   
@@ -301,9 +297,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acquire_relaxed :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_acquire_relaxed"
-      atomic_cxchg_acquire_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acquire_relaxed" atomic_cxchg_acquire_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acquire_relaxed.
   
@@ -334,9 +328,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acquire_acquire :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_acquire_acquire"
-      atomic_cxchg_acquire_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acquire_acquire" atomic_cxchg_acquire_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acquire_acquire.
   
@@ -367,7 +359,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acquire_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acquire_seqcst.
   
@@ -398,9 +390,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_release_relaxed :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_release_relaxed"
-      atomic_cxchg_release_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_release_relaxed" atomic_cxchg_release_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_release_relaxed.
   
@@ -431,9 +421,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_release_acquire :
-    M.IsFunction.Trait
-      "core::intrinsics::atomic_cxchg_release_acquire"
-      atomic_cxchg_release_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_release_acquire" atomic_cxchg_release_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_release_acquire.
   
@@ -464,7 +452,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_release_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_release_seqcst.
   
@@ -495,7 +483,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acqrel_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acqrel_relaxed.
   
@@ -526,7 +514,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acqrel_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acqrel_acquire.
   
@@ -553,7 +541,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_acqrel_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_acqrel_seqcst.
   
@@ -584,7 +572,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_seqcst_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_seqcst_relaxed.
   
@@ -615,7 +603,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_seqcst_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_seqcst_acquire.
   
@@ -642,7 +630,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchg_seqcst_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_cxchg_seqcst_seqcst.
   
@@ -677,7 +665,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_relaxed :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_relaxed_relaxed"
       atomic_cxchgweak_relaxed_relaxed.
   Admitted.
@@ -714,7 +702,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_relaxed_acquire"
       atomic_cxchgweak_relaxed_acquire.
   Admitted.
@@ -751,7 +739,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_relaxed_seqcst"
       atomic_cxchgweak_relaxed_seqcst.
   Admitted.
@@ -788,7 +776,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_relaxed :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acquire_relaxed"
       atomic_cxchgweak_acquire_relaxed.
   Admitted.
@@ -825,7 +813,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acquire_acquire"
       atomic_cxchgweak_acquire_acquire.
   Admitted.
@@ -862,7 +850,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acquire_seqcst"
       atomic_cxchgweak_acquire_seqcst.
   Admitted.
@@ -899,7 +887,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_release_relaxed :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_release_relaxed"
       atomic_cxchgweak_release_relaxed.
   Admitted.
@@ -936,7 +924,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_release_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_release_acquire"
       atomic_cxchgweak_release_acquire.
   Admitted.
@@ -973,7 +961,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_release_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_release_seqcst"
       atomic_cxchgweak_release_seqcst.
   Admitted.
@@ -1010,7 +998,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_relaxed :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acqrel_relaxed"
       atomic_cxchgweak_acqrel_relaxed.
   Admitted.
@@ -1047,7 +1035,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acqrel_acquire"
       atomic_cxchgweak_acqrel_acquire.
   Admitted.
@@ -1080,7 +1068,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_acqrel_seqcst"
       atomic_cxchgweak_acqrel_seqcst.
   Admitted.
@@ -1117,7 +1105,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_relaxed :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_seqcst_relaxed"
       atomic_cxchgweak_seqcst_relaxed.
   Admitted.
@@ -1154,7 +1142,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_seqcst_acquire"
       atomic_cxchgweak_seqcst_acquire.
   Admitted.
@@ -1187,7 +1175,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_cxchgweak_seqcst_seqcst"
       atomic_cxchgweak_seqcst_seqcst.
   Admitted.
@@ -1214,7 +1202,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_load_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_load_seqcst.
   
@@ -1239,7 +1227,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_load_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_load_acquire.
   
@@ -1264,7 +1252,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_load_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_load_relaxed.
   
@@ -1289,7 +1277,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_load_unordered :
-    M.IsFunction.Trait "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
+    M.IsFunction.C "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
   Admitted.
   Global Typeclasses Opaque atomic_load_unordered.
   
@@ -1315,7 +1303,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_store_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_store_seqcst.
   
@@ -1341,7 +1329,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_store_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_store_release" atomic_store_release.
+    M.IsFunction.C "core::intrinsics::atomic_store_release" atomic_store_release.
   Admitted.
   Global Typeclasses Opaque atomic_store_release.
   
@@ -1367,7 +1355,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_store_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_store_relaxed.
   
@@ -1393,7 +1381,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_store_unordered :
-    M.IsFunction.Trait "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
+    M.IsFunction.C "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
   Admitted.
   Global Typeclasses Opaque atomic_store_unordered.
   
@@ -1419,7 +1407,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xchg_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_xchg_seqcst.
   
@@ -1445,7 +1433,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xchg_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_xchg_acquire.
   
@@ -1471,7 +1459,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xchg_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
+    M.IsFunction.C "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
   Admitted.
   Global Typeclasses Opaque atomic_xchg_release.
   
@@ -1497,7 +1485,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xchg_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_xchg_acqrel.
   
@@ -1523,7 +1511,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xchg_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_xchg_relaxed.
   
@@ -1549,7 +1537,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xadd_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_xadd_seqcst.
   
@@ -1575,7 +1563,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xadd_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_xadd_acquire.
   
@@ -1601,7 +1589,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xadd_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
+    M.IsFunction.C "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
   Admitted.
   Global Typeclasses Opaque atomic_xadd_release.
   
@@ -1627,7 +1615,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xadd_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_xadd_acqrel.
   
@@ -1653,7 +1641,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xadd_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_xadd_relaxed.
   
@@ -1679,7 +1667,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xsub_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_xsub_seqcst.
   
@@ -1705,7 +1693,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xsub_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_xsub_acquire.
   
@@ -1731,7 +1719,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xsub_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
+    M.IsFunction.C "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
   Admitted.
   Global Typeclasses Opaque atomic_xsub_release.
   
@@ -1757,7 +1745,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xsub_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_xsub_acqrel.
   
@@ -1783,7 +1771,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xsub_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_xsub_relaxed.
   
@@ -1809,7 +1797,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_and_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_and_seqcst.
   
@@ -1835,7 +1823,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_and_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_and_acquire.
   
@@ -1861,7 +1849,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_and_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_and_release" atomic_and_release.
+    M.IsFunction.C "core::intrinsics::atomic_and_release" atomic_and_release.
   Admitted.
   Global Typeclasses Opaque atomic_and_release.
   
@@ -1887,7 +1875,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_and_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_and_acqrel.
   
@@ -1913,7 +1901,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_and_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_and_relaxed.
   
@@ -1939,7 +1927,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_nand_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_nand_seqcst.
   
@@ -1965,7 +1953,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_nand_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_nand_acquire.
   
@@ -1991,7 +1979,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_nand_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_nand_release" atomic_nand_release.
+    M.IsFunction.C "core::intrinsics::atomic_nand_release" atomic_nand_release.
   Admitted.
   Global Typeclasses Opaque atomic_nand_release.
   
@@ -2017,7 +2005,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_nand_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_nand_acqrel.
   
@@ -2043,7 +2031,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_nand_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_nand_relaxed.
   
@@ -2069,7 +2057,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_or_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_or_seqcst.
   
@@ -2095,7 +2083,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_or_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_or_acquire.
   
@@ -2121,7 +2109,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_or_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_or_release" atomic_or_release.
+    M.IsFunction.C "core::intrinsics::atomic_or_release" atomic_or_release.
   Admitted.
   Global Typeclasses Opaque atomic_or_release.
   
@@ -2147,7 +2135,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_or_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_or_acqrel.
   
@@ -2173,7 +2161,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_or_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_or_relaxed.
   
@@ -2199,7 +2187,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xor_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_xor_seqcst.
   
@@ -2225,7 +2213,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xor_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_xor_acquire.
   
@@ -2251,7 +2239,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xor_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_xor_release" atomic_xor_release.
+    M.IsFunction.C "core::intrinsics::atomic_xor_release" atomic_xor_release.
   Admitted.
   Global Typeclasses Opaque atomic_xor_release.
   
@@ -2277,7 +2265,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xor_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_xor_acqrel.
   
@@ -2303,7 +2291,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_xor_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_xor_relaxed.
   
@@ -2329,7 +2317,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_max_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_max_seqcst.
   
@@ -2355,7 +2343,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_max_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_max_acquire.
   
@@ -2381,7 +2369,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_max_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_max_release" atomic_max_release.
+    M.IsFunction.C "core::intrinsics::atomic_max_release" atomic_max_release.
   Admitted.
   Global Typeclasses Opaque atomic_max_release.
   
@@ -2407,7 +2395,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_max_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_max_acqrel.
   
@@ -2433,7 +2421,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_max_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_max_relaxed.
   
@@ -2459,7 +2447,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_min_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_min_seqcst.
   
@@ -2485,7 +2473,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_min_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_min_acquire.
   
@@ -2511,7 +2499,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_min_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_min_release" atomic_min_release.
+    M.IsFunction.C "core::intrinsics::atomic_min_release" atomic_min_release.
   Admitted.
   Global Typeclasses Opaque atomic_min_release.
   
@@ -2537,7 +2525,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_min_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_min_acqrel.
   
@@ -2563,7 +2551,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_min_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_min_relaxed.
   
@@ -2589,7 +2577,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umin_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_umin_seqcst.
   
@@ -2615,7 +2603,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umin_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_umin_acquire.
   
@@ -2641,7 +2629,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umin_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_umin_release" atomic_umin_release.
+    M.IsFunction.C "core::intrinsics::atomic_umin_release" atomic_umin_release.
   Admitted.
   Global Typeclasses Opaque atomic_umin_release.
   
@@ -2667,7 +2655,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umin_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_umin_acqrel.
   
@@ -2693,7 +2681,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umin_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_umin_relaxed.
   
@@ -2719,7 +2707,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umax_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_umax_seqcst.
   
@@ -2745,7 +2733,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umax_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_umax_acquire.
   
@@ -2771,7 +2759,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umax_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_umax_release" atomic_umax_release.
+    M.IsFunction.C "core::intrinsics::atomic_umax_release" atomic_umax_release.
   Admitted.
   Global Typeclasses Opaque atomic_umax_release.
   
@@ -2797,7 +2785,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umax_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_umax_acqrel.
   
@@ -2823,7 +2811,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_umax_relaxed :
-    M.IsFunction.Trait "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
+    M.IsFunction.C "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
   Admitted.
   Global Typeclasses Opaque atomic_umax_relaxed.
   
@@ -2847,7 +2835,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_fence_seqcst :
-    M.IsFunction.Trait "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
+    M.IsFunction.C "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
   Admitted.
   Global Typeclasses Opaque atomic_fence_seqcst.
   
@@ -2871,7 +2859,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_fence_acquire :
-    M.IsFunction.Trait "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
+    M.IsFunction.C "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
   Admitted.
   Global Typeclasses Opaque atomic_fence_acquire.
   
@@ -2895,7 +2883,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_fence_release :
-    M.IsFunction.Trait "core::intrinsics::atomic_fence_release" atomic_fence_release.
+    M.IsFunction.C "core::intrinsics::atomic_fence_release" atomic_fence_release.
   Admitted.
   Global Typeclasses Opaque atomic_fence_release.
   
@@ -2919,7 +2907,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_fence_acqrel :
-    M.IsFunction.Trait "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
+    M.IsFunction.C "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
   Admitted.
   Global Typeclasses Opaque atomic_fence_acqrel.
   
@@ -2947,7 +2935,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_singlethreadfence_seqcst :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_singlethreadfence_seqcst"
       atomic_singlethreadfence_seqcst.
   Admitted.
@@ -2977,7 +2965,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_singlethreadfence_acquire :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_singlethreadfence_acquire"
       atomic_singlethreadfence_acquire.
   Admitted.
@@ -3007,7 +2995,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_singlethreadfence_release :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_singlethreadfence_release"
       atomic_singlethreadfence_release.
   Admitted.
@@ -3037,7 +3025,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_atomic_singlethreadfence_acqrel :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::atomic_singlethreadfence_acqrel"
       atomic_singlethreadfence_acqrel.
   Admitted.
@@ -3065,7 +3053,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_prefetch_read_data :
-    M.IsFunction.Trait "core::intrinsics::prefetch_read_data" prefetch_read_data.
+    M.IsFunction.C "core::intrinsics::prefetch_read_data" prefetch_read_data.
   Admitted.
   Global Typeclasses Opaque prefetch_read_data.
   
@@ -3091,7 +3079,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_prefetch_write_data :
-    M.IsFunction.Trait "core::intrinsics::prefetch_write_data" prefetch_write_data.
+    M.IsFunction.C "core::intrinsics::prefetch_write_data" prefetch_write_data.
   Admitted.
   Global Typeclasses Opaque prefetch_write_data.
   
@@ -3117,7 +3105,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_prefetch_read_instruction :
-    M.IsFunction.Trait "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
+    M.IsFunction.C "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
   Admitted.
   Global Typeclasses Opaque prefetch_read_instruction.
   
@@ -3143,7 +3131,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_prefetch_write_instruction :
-    M.IsFunction.Trait "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
+    M.IsFunction.C "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
   Admitted.
   Global Typeclasses Opaque prefetch_write_instruction.
   
@@ -3167,7 +3155,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_breakpoint :
-    M.IsFunction.Trait "core::intrinsics::breakpoint" breakpoint.
+    M.IsFunction.C "core::intrinsics::breakpoint" breakpoint.
   Admitted.
   Global Typeclasses Opaque breakpoint.
   
@@ -3200,7 +3188,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_rustc_peek :
-    M.IsFunction.Trait "core::intrinsics::rustc_peek" rustc_peek.
+    M.IsFunction.C "core::intrinsics::rustc_peek" rustc_peek.
   Admitted.
   Global Typeclasses Opaque rustc_peek.
   
@@ -3221,7 +3209,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_abort : M.IsFunction.Trait "core::intrinsics::abort" abort.
+  Global Instance Instance_IsFunction_abort : M.IsFunction.C "core::intrinsics::abort" abort.
   Admitted.
   Global Typeclasses Opaque abort.
   
@@ -3243,7 +3231,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unreachable :
-    M.IsFunction.Trait "core::intrinsics::unreachable" unreachable.
+    M.IsFunction.C "core::intrinsics::unreachable" unreachable.
   Admitted.
   Global Typeclasses Opaque unreachable.
   
@@ -3285,7 +3273,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_assume : M.IsFunction.Trait "core::intrinsics::assume" assume.
+  Global Instance Instance_IsFunction_assume : M.IsFunction.C "core::intrinsics::assume" assume.
   Admitted.
   Global Typeclasses Opaque assume.
   
@@ -3297,7 +3285,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_cold_path :
-    M.IsFunction.Trait "core::intrinsics::cold_path" cold_path.
+    M.IsFunction.C "core::intrinsics::cold_path" cold_path.
   Admitted.
   Global Typeclasses Opaque cold_path.
   
@@ -3343,7 +3331,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_likely : M.IsFunction.Trait "core::intrinsics::likely" likely.
+  Global Instance Instance_IsFunction_likely : M.IsFunction.C "core::intrinsics::likely" likely.
   Admitted.
   Global Typeclasses Opaque likely.
   
@@ -3388,7 +3376,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unlikely :
-    M.IsFunction.Trait "core::intrinsics::unlikely" unlikely.
+    M.IsFunction.C "core::intrinsics::unlikely" unlikely.
   Admitted.
   Global Typeclasses Opaque unlikely.
   
@@ -3422,7 +3410,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_select_unpredictable :
-    M.IsFunction.Trait "core::intrinsics::select_unpredictable" select_unpredictable.
+    M.IsFunction.C "core::intrinsics::select_unpredictable" select_unpredictable.
   Admitted.
   Global Typeclasses Opaque select_unpredictable.
   
@@ -3446,7 +3434,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_assert_inhabited :
-    M.IsFunction.Trait "core::intrinsics::assert_inhabited" assert_inhabited.
+    M.IsFunction.C "core::intrinsics::assert_inhabited" assert_inhabited.
   Admitted.
   Global Typeclasses Opaque assert_inhabited.
   
@@ -3470,7 +3458,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_assert_zero_valid :
-    M.IsFunction.Trait "core::intrinsics::assert_zero_valid" assert_zero_valid.
+    M.IsFunction.C "core::intrinsics::assert_zero_valid" assert_zero_valid.
   Admitted.
   Global Typeclasses Opaque assert_zero_valid.
   
@@ -3498,7 +3486,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_assert_mem_uninitialized_valid :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::assert_mem_uninitialized_valid"
       assert_mem_uninitialized_valid.
   Admitted.
@@ -3524,7 +3512,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_caller_location :
-    M.IsFunction.Trait "core::intrinsics::caller_location" caller_location.
+    M.IsFunction.C "core::intrinsics::caller_location" caller_location.
   Admitted.
   Global Typeclasses Opaque caller_location.
   
@@ -3556,7 +3544,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_forget : M.IsFunction.Trait "core::intrinsics::forget" forget.
+  Global Instance Instance_IsFunction_forget : M.IsFunction.C "core::intrinsics::forget" forget.
   Admitted.
   Global Typeclasses Opaque forget.
   
@@ -3581,7 +3569,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_transmute :
-    M.IsFunction.Trait "core::intrinsics::transmute" transmute.
+    M.IsFunction.C "core::intrinsics::transmute" transmute.
   Admitted.
   Global Typeclasses Opaque transmute.
   
@@ -3606,7 +3594,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_transmute_unchecked :
-    M.IsFunction.Trait "core::intrinsics::transmute_unchecked" transmute_unchecked.
+    M.IsFunction.C "core::intrinsics::transmute_unchecked" transmute_unchecked.
   Admitted.
   Global Typeclasses Opaque transmute_unchecked.
   
@@ -3630,7 +3618,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_needs_drop :
-    M.IsFunction.Trait "core::intrinsics::needs_drop" needs_drop.
+    M.IsFunction.C "core::intrinsics::needs_drop" needs_drop.
   Admitted.
   Global Typeclasses Opaque needs_drop.
   
@@ -3655,7 +3643,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_offset : M.IsFunction.Trait "core::intrinsics::offset" offset.
+  Global Instance Instance_IsFunction_offset : M.IsFunction.C "core::intrinsics::offset" offset.
   Admitted.
   Global Typeclasses Opaque offset.
   
@@ -3681,7 +3669,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_arith_offset :
-    M.IsFunction.Trait "core::intrinsics::arith_offset" arith_offset.
+    M.IsFunction.C "core::intrinsics::arith_offset" arith_offset.
   Admitted.
   Global Typeclasses Opaque arith_offset.
   
@@ -3707,7 +3695,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ptr_mask :
-    M.IsFunction.Trait "core::intrinsics::ptr_mask" ptr_mask.
+    M.IsFunction.C "core::intrinsics::ptr_mask" ptr_mask.
   Admitted.
   Global Typeclasses Opaque ptr_mask.
   
@@ -3738,7 +3726,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_volatile_copy_nonoverlapping_memory :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::intrinsics::volatile_copy_nonoverlapping_memory"
       volatile_copy_nonoverlapping_memory.
   Admitted.
@@ -3767,7 +3755,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_volatile_copy_memory :
-    M.IsFunction.Trait "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
+    M.IsFunction.C "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
   Admitted.
   Global Typeclasses Opaque volatile_copy_memory.
   
@@ -3794,7 +3782,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_volatile_set_memory :
-    M.IsFunction.Trait "core::intrinsics::volatile_set_memory" volatile_set_memory.
+    M.IsFunction.C "core::intrinsics::volatile_set_memory" volatile_set_memory.
   Admitted.
   Global Typeclasses Opaque volatile_set_memory.
   
@@ -3819,7 +3807,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_volatile_load :
-    M.IsFunction.Trait "core::intrinsics::volatile_load" volatile_load.
+    M.IsFunction.C "core::intrinsics::volatile_load" volatile_load.
   Admitted.
   Global Typeclasses Opaque volatile_load.
   
@@ -3845,7 +3833,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_volatile_store :
-    M.IsFunction.Trait "core::intrinsics::volatile_store" volatile_store.
+    M.IsFunction.C "core::intrinsics::volatile_store" volatile_store.
   Admitted.
   Global Typeclasses Opaque volatile_store.
   
@@ -3870,7 +3858,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unaligned_volatile_load :
-    M.IsFunction.Trait "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
+    M.IsFunction.C "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
   Admitted.
   Global Typeclasses Opaque unaligned_volatile_load.
   
@@ -3896,7 +3884,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unaligned_volatile_store :
-    M.IsFunction.Trait "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
+    M.IsFunction.C "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
   Admitted.
   Global Typeclasses Opaque unaligned_volatile_store.
   
@@ -3920,8 +3908,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sqrtf16 :
-    M.IsFunction.Trait "core::intrinsics::sqrtf16" sqrtf16.
+  Global Instance Instance_IsFunction_sqrtf16 : M.IsFunction.C "core::intrinsics::sqrtf16" sqrtf16.
   Admitted.
   Global Typeclasses Opaque sqrtf16.
   
@@ -3945,8 +3932,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sqrtf32 :
-    M.IsFunction.Trait "core::intrinsics::sqrtf32" sqrtf32.
+  Global Instance Instance_IsFunction_sqrtf32 : M.IsFunction.C "core::intrinsics::sqrtf32" sqrtf32.
   Admitted.
   Global Typeclasses Opaque sqrtf32.
   
@@ -3970,8 +3956,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sqrtf64 :
-    M.IsFunction.Trait "core::intrinsics::sqrtf64" sqrtf64.
+  Global Instance Instance_IsFunction_sqrtf64 : M.IsFunction.C "core::intrinsics::sqrtf64" sqrtf64.
   Admitted.
   Global Typeclasses Opaque sqrtf64.
   
@@ -3996,7 +3981,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_sqrtf128 :
-    M.IsFunction.Trait "core::intrinsics::sqrtf128" sqrtf128.
+    M.IsFunction.C "core::intrinsics::sqrtf128" sqrtf128.
   Admitted.
   Global Typeclasses Opaque sqrtf128.
   
@@ -4021,8 +4006,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powif16 :
-    M.IsFunction.Trait "core::intrinsics::powif16" powif16.
+  Global Instance Instance_IsFunction_powif16 : M.IsFunction.C "core::intrinsics::powif16" powif16.
   Admitted.
   Global Typeclasses Opaque powif16.
   
@@ -4047,8 +4031,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powif32 :
-    M.IsFunction.Trait "core::intrinsics::powif32" powif32.
+  Global Instance Instance_IsFunction_powif32 : M.IsFunction.C "core::intrinsics::powif32" powif32.
   Admitted.
   Global Typeclasses Opaque powif32.
   
@@ -4073,8 +4056,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powif64 :
-    M.IsFunction.Trait "core::intrinsics::powif64" powif64.
+  Global Instance Instance_IsFunction_powif64 : M.IsFunction.C "core::intrinsics::powif64" powif64.
   Admitted.
   Global Typeclasses Opaque powif64.
   
@@ -4100,7 +4082,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_powif128 :
-    M.IsFunction.Trait "core::intrinsics::powif128" powif128.
+    M.IsFunction.C "core::intrinsics::powif128" powif128.
   Admitted.
   Global Typeclasses Opaque powif128.
   
@@ -4124,7 +4106,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sinf16 : M.IsFunction.Trait "core::intrinsics::sinf16" sinf16.
+  Global Instance Instance_IsFunction_sinf16 : M.IsFunction.C "core::intrinsics::sinf16" sinf16.
   Admitted.
   Global Typeclasses Opaque sinf16.
   
@@ -4148,7 +4130,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sinf32 : M.IsFunction.Trait "core::intrinsics::sinf32" sinf32.
+  Global Instance Instance_IsFunction_sinf32 : M.IsFunction.C "core::intrinsics::sinf32" sinf32.
   Admitted.
   Global Typeclasses Opaque sinf32.
   
@@ -4172,7 +4154,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sinf64 : M.IsFunction.Trait "core::intrinsics::sinf64" sinf64.
+  Global Instance Instance_IsFunction_sinf64 : M.IsFunction.C "core::intrinsics::sinf64" sinf64.
   Admitted.
   Global Typeclasses Opaque sinf64.
   
@@ -4196,8 +4178,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sinf128 :
-    M.IsFunction.Trait "core::intrinsics::sinf128" sinf128.
+  Global Instance Instance_IsFunction_sinf128 : M.IsFunction.C "core::intrinsics::sinf128" sinf128.
   Admitted.
   Global Typeclasses Opaque sinf128.
   
@@ -4221,7 +4202,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cosf16 : M.IsFunction.Trait "core::intrinsics::cosf16" cosf16.
+  Global Instance Instance_IsFunction_cosf16 : M.IsFunction.C "core::intrinsics::cosf16" cosf16.
   Admitted.
   Global Typeclasses Opaque cosf16.
   
@@ -4245,7 +4226,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cosf32 : M.IsFunction.Trait "core::intrinsics::cosf32" cosf32.
+  Global Instance Instance_IsFunction_cosf32 : M.IsFunction.C "core::intrinsics::cosf32" cosf32.
   Admitted.
   Global Typeclasses Opaque cosf32.
   
@@ -4269,7 +4250,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cosf64 : M.IsFunction.Trait "core::intrinsics::cosf64" cosf64.
+  Global Instance Instance_IsFunction_cosf64 : M.IsFunction.C "core::intrinsics::cosf64" cosf64.
   Admitted.
   Global Typeclasses Opaque cosf64.
   
@@ -4293,8 +4274,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cosf128 :
-    M.IsFunction.Trait "core::intrinsics::cosf128" cosf128.
+  Global Instance Instance_IsFunction_cosf128 : M.IsFunction.C "core::intrinsics::cosf128" cosf128.
   Admitted.
   Global Typeclasses Opaque cosf128.
   
@@ -4319,7 +4299,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powf16 : M.IsFunction.Trait "core::intrinsics::powf16" powf16.
+  Global Instance Instance_IsFunction_powf16 : M.IsFunction.C "core::intrinsics::powf16" powf16.
   Admitted.
   Global Typeclasses Opaque powf16.
   
@@ -4344,7 +4324,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powf32 : M.IsFunction.Trait "core::intrinsics::powf32" powf32.
+  Global Instance Instance_IsFunction_powf32 : M.IsFunction.C "core::intrinsics::powf32" powf32.
   Admitted.
   Global Typeclasses Opaque powf32.
   
@@ -4369,7 +4349,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powf64 : M.IsFunction.Trait "core::intrinsics::powf64" powf64.
+  Global Instance Instance_IsFunction_powf64 : M.IsFunction.C "core::intrinsics::powf64" powf64.
   Admitted.
   Global Typeclasses Opaque powf64.
   
@@ -4394,8 +4374,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_powf128 :
-    M.IsFunction.Trait "core::intrinsics::powf128" powf128.
+  Global Instance Instance_IsFunction_powf128 : M.IsFunction.C "core::intrinsics::powf128" powf128.
   Admitted.
   Global Typeclasses Opaque powf128.
   
@@ -4419,7 +4398,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_expf16 : M.IsFunction.Trait "core::intrinsics::expf16" expf16.
+  Global Instance Instance_IsFunction_expf16 : M.IsFunction.C "core::intrinsics::expf16" expf16.
   Admitted.
   Global Typeclasses Opaque expf16.
   
@@ -4443,7 +4422,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_expf32 : M.IsFunction.Trait "core::intrinsics::expf32" expf32.
+  Global Instance Instance_IsFunction_expf32 : M.IsFunction.C "core::intrinsics::expf32" expf32.
   Admitted.
   Global Typeclasses Opaque expf32.
   
@@ -4467,7 +4446,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_expf64 : M.IsFunction.Trait "core::intrinsics::expf64" expf64.
+  Global Instance Instance_IsFunction_expf64 : M.IsFunction.C "core::intrinsics::expf64" expf64.
   Admitted.
   Global Typeclasses Opaque expf64.
   
@@ -4491,8 +4470,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_expf128 :
-    M.IsFunction.Trait "core::intrinsics::expf128" expf128.
+  Global Instance Instance_IsFunction_expf128 : M.IsFunction.C "core::intrinsics::expf128" expf128.
   Admitted.
   Global Typeclasses Opaque expf128.
   
@@ -4516,8 +4494,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_exp2f16 :
-    M.IsFunction.Trait "core::intrinsics::exp2f16" exp2f16.
+  Global Instance Instance_IsFunction_exp2f16 : M.IsFunction.C "core::intrinsics::exp2f16" exp2f16.
   Admitted.
   Global Typeclasses Opaque exp2f16.
   
@@ -4541,8 +4518,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_exp2f32 :
-    M.IsFunction.Trait "core::intrinsics::exp2f32" exp2f32.
+  Global Instance Instance_IsFunction_exp2f32 : M.IsFunction.C "core::intrinsics::exp2f32" exp2f32.
   Admitted.
   Global Typeclasses Opaque exp2f32.
   
@@ -4566,8 +4542,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_exp2f64 :
-    M.IsFunction.Trait "core::intrinsics::exp2f64" exp2f64.
+  Global Instance Instance_IsFunction_exp2f64 : M.IsFunction.C "core::intrinsics::exp2f64" exp2f64.
   Admitted.
   Global Typeclasses Opaque exp2f64.
   
@@ -4592,7 +4567,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_exp2f128 :
-    M.IsFunction.Trait "core::intrinsics::exp2f128" exp2f128.
+    M.IsFunction.C "core::intrinsics::exp2f128" exp2f128.
   Admitted.
   Global Typeclasses Opaque exp2f128.
   
@@ -4616,7 +4591,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_logf16 : M.IsFunction.Trait "core::intrinsics::logf16" logf16.
+  Global Instance Instance_IsFunction_logf16 : M.IsFunction.C "core::intrinsics::logf16" logf16.
   Admitted.
   Global Typeclasses Opaque logf16.
   
@@ -4640,7 +4615,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_logf32 : M.IsFunction.Trait "core::intrinsics::logf32" logf32.
+  Global Instance Instance_IsFunction_logf32 : M.IsFunction.C "core::intrinsics::logf32" logf32.
   Admitted.
   Global Typeclasses Opaque logf32.
   
@@ -4664,7 +4639,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_logf64 : M.IsFunction.Trait "core::intrinsics::logf64" logf64.
+  Global Instance Instance_IsFunction_logf64 : M.IsFunction.C "core::intrinsics::logf64" logf64.
   Admitted.
   Global Typeclasses Opaque logf64.
   
@@ -4688,8 +4663,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_logf128 :
-    M.IsFunction.Trait "core::intrinsics::logf128" logf128.
+  Global Instance Instance_IsFunction_logf128 : M.IsFunction.C "core::intrinsics::logf128" logf128.
   Admitted.
   Global Typeclasses Opaque logf128.
   
@@ -4714,7 +4688,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_log10f16 :
-    M.IsFunction.Trait "core::intrinsics::log10f16" log10f16.
+    M.IsFunction.C "core::intrinsics::log10f16" log10f16.
   Admitted.
   Global Typeclasses Opaque log10f16.
   
@@ -4739,7 +4713,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_log10f32 :
-    M.IsFunction.Trait "core::intrinsics::log10f32" log10f32.
+    M.IsFunction.C "core::intrinsics::log10f32" log10f32.
   Admitted.
   Global Typeclasses Opaque log10f32.
   
@@ -4764,7 +4738,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_log10f64 :
-    M.IsFunction.Trait "core::intrinsics::log10f64" log10f64.
+    M.IsFunction.C "core::intrinsics::log10f64" log10f64.
   Admitted.
   Global Typeclasses Opaque log10f64.
   
@@ -4789,7 +4763,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_log10f128 :
-    M.IsFunction.Trait "core::intrinsics::log10f128" log10f128.
+    M.IsFunction.C "core::intrinsics::log10f128" log10f128.
   Admitted.
   Global Typeclasses Opaque log10f128.
   
@@ -4813,8 +4787,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_log2f16 :
-    M.IsFunction.Trait "core::intrinsics::log2f16" log2f16.
+  Global Instance Instance_IsFunction_log2f16 : M.IsFunction.C "core::intrinsics::log2f16" log2f16.
   Admitted.
   Global Typeclasses Opaque log2f16.
   
@@ -4838,8 +4811,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_log2f32 :
-    M.IsFunction.Trait "core::intrinsics::log2f32" log2f32.
+  Global Instance Instance_IsFunction_log2f32 : M.IsFunction.C "core::intrinsics::log2f32" log2f32.
   Admitted.
   Global Typeclasses Opaque log2f32.
   
@@ -4863,8 +4835,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_log2f64 :
-    M.IsFunction.Trait "core::intrinsics::log2f64" log2f64.
+  Global Instance Instance_IsFunction_log2f64 : M.IsFunction.C "core::intrinsics::log2f64" log2f64.
   Admitted.
   Global Typeclasses Opaque log2f64.
   
@@ -4889,7 +4860,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_log2f128 :
-    M.IsFunction.Trait "core::intrinsics::log2f128" log2f128.
+    M.IsFunction.C "core::intrinsics::log2f128" log2f128.
   Admitted.
   Global Typeclasses Opaque log2f128.
   
@@ -4915,7 +4886,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fmaf16 : M.IsFunction.Trait "core::intrinsics::fmaf16" fmaf16.
+  Global Instance Instance_IsFunction_fmaf16 : M.IsFunction.C "core::intrinsics::fmaf16" fmaf16.
   Admitted.
   Global Typeclasses Opaque fmaf16.
   
@@ -4941,7 +4912,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fmaf32 : M.IsFunction.Trait "core::intrinsics::fmaf32" fmaf32.
+  Global Instance Instance_IsFunction_fmaf32 : M.IsFunction.C "core::intrinsics::fmaf32" fmaf32.
   Admitted.
   Global Typeclasses Opaque fmaf32.
   
@@ -4967,7 +4938,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fmaf64 : M.IsFunction.Trait "core::intrinsics::fmaf64" fmaf64.
+  Global Instance Instance_IsFunction_fmaf64 : M.IsFunction.C "core::intrinsics::fmaf64" fmaf64.
   Admitted.
   Global Typeclasses Opaque fmaf64.
   
@@ -4993,8 +4964,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fmaf128 :
-    M.IsFunction.Trait "core::intrinsics::fmaf128" fmaf128.
+  Global Instance Instance_IsFunction_fmaf128 : M.IsFunction.C "core::intrinsics::fmaf128" fmaf128.
   Admitted.
   Global Typeclasses Opaque fmaf128.
   
@@ -5021,7 +4991,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmuladdf16 :
-    M.IsFunction.Trait "core::intrinsics::fmuladdf16" fmuladdf16.
+    M.IsFunction.C "core::intrinsics::fmuladdf16" fmuladdf16.
   Admitted.
   Global Typeclasses Opaque fmuladdf16.
   
@@ -5048,7 +5018,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmuladdf32 :
-    M.IsFunction.Trait "core::intrinsics::fmuladdf32" fmuladdf32.
+    M.IsFunction.C "core::intrinsics::fmuladdf32" fmuladdf32.
   Admitted.
   Global Typeclasses Opaque fmuladdf32.
   
@@ -5075,7 +5045,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmuladdf64 :
-    M.IsFunction.Trait "core::intrinsics::fmuladdf64" fmuladdf64.
+    M.IsFunction.C "core::intrinsics::fmuladdf64" fmuladdf64.
   Admitted.
   Global Typeclasses Opaque fmuladdf64.
   
@@ -5102,7 +5072,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmuladdf128 :
-    M.IsFunction.Trait "core::intrinsics::fmuladdf128" fmuladdf128.
+    M.IsFunction.C "core::intrinsics::fmuladdf128" fmuladdf128.
   Admitted.
   Global Typeclasses Opaque fmuladdf128.
   
@@ -5127,7 +5097,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_floorf16 :
-    M.IsFunction.Trait "core::intrinsics::floorf16" floorf16.
+    M.IsFunction.C "core::intrinsics::floorf16" floorf16.
   Admitted.
   Global Typeclasses Opaque floorf16.
   
@@ -5152,7 +5122,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_floorf32 :
-    M.IsFunction.Trait "core::intrinsics::floorf32" floorf32.
+    M.IsFunction.C "core::intrinsics::floorf32" floorf32.
   Admitted.
   Global Typeclasses Opaque floorf32.
   
@@ -5177,7 +5147,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_floorf64 :
-    M.IsFunction.Trait "core::intrinsics::floorf64" floorf64.
+    M.IsFunction.C "core::intrinsics::floorf64" floorf64.
   Admitted.
   Global Typeclasses Opaque floorf64.
   
@@ -5202,7 +5172,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_floorf128 :
-    M.IsFunction.Trait "core::intrinsics::floorf128" floorf128.
+    M.IsFunction.C "core::intrinsics::floorf128" floorf128.
   Admitted.
   Global Typeclasses Opaque floorf128.
   
@@ -5226,8 +5196,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ceilf16 :
-    M.IsFunction.Trait "core::intrinsics::ceilf16" ceilf16.
+  Global Instance Instance_IsFunction_ceilf16 : M.IsFunction.C "core::intrinsics::ceilf16" ceilf16.
   Admitted.
   Global Typeclasses Opaque ceilf16.
   
@@ -5251,8 +5220,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ceilf32 :
-    M.IsFunction.Trait "core::intrinsics::ceilf32" ceilf32.
+  Global Instance Instance_IsFunction_ceilf32 : M.IsFunction.C "core::intrinsics::ceilf32" ceilf32.
   Admitted.
   Global Typeclasses Opaque ceilf32.
   
@@ -5276,8 +5244,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ceilf64 :
-    M.IsFunction.Trait "core::intrinsics::ceilf64" ceilf64.
+  Global Instance Instance_IsFunction_ceilf64 : M.IsFunction.C "core::intrinsics::ceilf64" ceilf64.
   Admitted.
   Global Typeclasses Opaque ceilf64.
   
@@ -5302,7 +5269,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ceilf128 :
-    M.IsFunction.Trait "core::intrinsics::ceilf128" ceilf128.
+    M.IsFunction.C "core::intrinsics::ceilf128" ceilf128.
   Admitted.
   Global Typeclasses Opaque ceilf128.
   
@@ -5327,7 +5294,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_truncf16 :
-    M.IsFunction.Trait "core::intrinsics::truncf16" truncf16.
+    M.IsFunction.C "core::intrinsics::truncf16" truncf16.
   Admitted.
   Global Typeclasses Opaque truncf16.
   
@@ -5352,7 +5319,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_truncf32 :
-    M.IsFunction.Trait "core::intrinsics::truncf32" truncf32.
+    M.IsFunction.C "core::intrinsics::truncf32" truncf32.
   Admitted.
   Global Typeclasses Opaque truncf32.
   
@@ -5377,7 +5344,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_truncf64 :
-    M.IsFunction.Trait "core::intrinsics::truncf64" truncf64.
+    M.IsFunction.C "core::intrinsics::truncf64" truncf64.
   Admitted.
   Global Typeclasses Opaque truncf64.
   
@@ -5402,7 +5369,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_truncf128 :
-    M.IsFunction.Trait "core::intrinsics::truncf128" truncf128.
+    M.IsFunction.C "core::intrinsics::truncf128" truncf128.
   Admitted.
   Global Typeclasses Opaque truncf128.
   
@@ -5426,8 +5393,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_rintf16 :
-    M.IsFunction.Trait "core::intrinsics::rintf16" rintf16.
+  Global Instance Instance_IsFunction_rintf16 : M.IsFunction.C "core::intrinsics::rintf16" rintf16.
   Admitted.
   Global Typeclasses Opaque rintf16.
   
@@ -5451,8 +5417,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_rintf32 :
-    M.IsFunction.Trait "core::intrinsics::rintf32" rintf32.
+  Global Instance Instance_IsFunction_rintf32 : M.IsFunction.C "core::intrinsics::rintf32" rintf32.
   Admitted.
   Global Typeclasses Opaque rintf32.
   
@@ -5476,8 +5441,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_rintf64 :
-    M.IsFunction.Trait "core::intrinsics::rintf64" rintf64.
+  Global Instance Instance_IsFunction_rintf64 : M.IsFunction.C "core::intrinsics::rintf64" rintf64.
   Admitted.
   Global Typeclasses Opaque rintf64.
   
@@ -5502,7 +5466,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_rintf128 :
-    M.IsFunction.Trait "core::intrinsics::rintf128" rintf128.
+    M.IsFunction.C "core::intrinsics::rintf128" rintf128.
   Admitted.
   Global Typeclasses Opaque rintf128.
   
@@ -5527,7 +5491,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_nearbyintf16 :
-    M.IsFunction.Trait "core::intrinsics::nearbyintf16" nearbyintf16.
+    M.IsFunction.C "core::intrinsics::nearbyintf16" nearbyintf16.
   Admitted.
   Global Typeclasses Opaque nearbyintf16.
   
@@ -5552,7 +5516,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_nearbyintf32 :
-    M.IsFunction.Trait "core::intrinsics::nearbyintf32" nearbyintf32.
+    M.IsFunction.C "core::intrinsics::nearbyintf32" nearbyintf32.
   Admitted.
   Global Typeclasses Opaque nearbyintf32.
   
@@ -5577,7 +5541,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_nearbyintf64 :
-    M.IsFunction.Trait "core::intrinsics::nearbyintf64" nearbyintf64.
+    M.IsFunction.C "core::intrinsics::nearbyintf64" nearbyintf64.
   Admitted.
   Global Typeclasses Opaque nearbyintf64.
   
@@ -5602,7 +5566,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_nearbyintf128 :
-    M.IsFunction.Trait "core::intrinsics::nearbyintf128" nearbyintf128.
+    M.IsFunction.C "core::intrinsics::nearbyintf128" nearbyintf128.
   Admitted.
   Global Typeclasses Opaque nearbyintf128.
   
@@ -5627,7 +5591,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundf16 :
-    M.IsFunction.Trait "core::intrinsics::roundf16" roundf16.
+    M.IsFunction.C "core::intrinsics::roundf16" roundf16.
   Admitted.
   Global Typeclasses Opaque roundf16.
   
@@ -5652,7 +5616,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundf32 :
-    M.IsFunction.Trait "core::intrinsics::roundf32" roundf32.
+    M.IsFunction.C "core::intrinsics::roundf32" roundf32.
   Admitted.
   Global Typeclasses Opaque roundf32.
   
@@ -5677,7 +5641,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundf64 :
-    M.IsFunction.Trait "core::intrinsics::roundf64" roundf64.
+    M.IsFunction.C "core::intrinsics::roundf64" roundf64.
   Admitted.
   Global Typeclasses Opaque roundf64.
   
@@ -5702,7 +5666,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundf128 :
-    M.IsFunction.Trait "core::intrinsics::roundf128" roundf128.
+    M.IsFunction.C "core::intrinsics::roundf128" roundf128.
   Admitted.
   Global Typeclasses Opaque roundf128.
   
@@ -5727,7 +5691,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundevenf16 :
-    M.IsFunction.Trait "core::intrinsics::roundevenf16" roundevenf16.
+    M.IsFunction.C "core::intrinsics::roundevenf16" roundevenf16.
   Admitted.
   Global Typeclasses Opaque roundevenf16.
   
@@ -5752,7 +5716,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundevenf32 :
-    M.IsFunction.Trait "core::intrinsics::roundevenf32" roundevenf32.
+    M.IsFunction.C "core::intrinsics::roundevenf32" roundevenf32.
   Admitted.
   Global Typeclasses Opaque roundevenf32.
   
@@ -5777,7 +5741,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundevenf64 :
-    M.IsFunction.Trait "core::intrinsics::roundevenf64" roundevenf64.
+    M.IsFunction.C "core::intrinsics::roundevenf64" roundevenf64.
   Admitted.
   Global Typeclasses Opaque roundevenf64.
   
@@ -5802,7 +5766,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_roundevenf128 :
-    M.IsFunction.Trait "core::intrinsics::roundevenf128" roundevenf128.
+    M.IsFunction.C "core::intrinsics::roundevenf128" roundevenf128.
   Admitted.
   Global Typeclasses Opaque roundevenf128.
   
@@ -5828,7 +5792,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fadd_fast :
-    M.IsFunction.Trait "core::intrinsics::fadd_fast" fadd_fast.
+    M.IsFunction.C "core::intrinsics::fadd_fast" fadd_fast.
   Admitted.
   Global Typeclasses Opaque fadd_fast.
   
@@ -5854,7 +5818,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fsub_fast :
-    M.IsFunction.Trait "core::intrinsics::fsub_fast" fsub_fast.
+    M.IsFunction.C "core::intrinsics::fsub_fast" fsub_fast.
   Admitted.
   Global Typeclasses Opaque fsub_fast.
   
@@ -5880,7 +5844,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmul_fast :
-    M.IsFunction.Trait "core::intrinsics::fmul_fast" fmul_fast.
+    M.IsFunction.C "core::intrinsics::fmul_fast" fmul_fast.
   Admitted.
   Global Typeclasses Opaque fmul_fast.
   
@@ -5906,7 +5870,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fdiv_fast :
-    M.IsFunction.Trait "core::intrinsics::fdiv_fast" fdiv_fast.
+    M.IsFunction.C "core::intrinsics::fdiv_fast" fdiv_fast.
   Admitted.
   Global Typeclasses Opaque fdiv_fast.
   
@@ -5932,7 +5896,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_frem_fast :
-    M.IsFunction.Trait "core::intrinsics::frem_fast" frem_fast.
+    M.IsFunction.C "core::intrinsics::frem_fast" frem_fast.
   Admitted.
   Global Typeclasses Opaque frem_fast.
   
@@ -5957,7 +5921,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_float_to_int_unchecked :
-    M.IsFunction.Trait "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
+    M.IsFunction.C "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
   Admitted.
   Global Typeclasses Opaque float_to_int_unchecked.
   
@@ -5983,7 +5947,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fadd_algebraic :
-    M.IsFunction.Trait "core::intrinsics::fadd_algebraic" fadd_algebraic.
+    M.IsFunction.C "core::intrinsics::fadd_algebraic" fadd_algebraic.
   Admitted.
   Global Typeclasses Opaque fadd_algebraic.
   
@@ -6009,7 +5973,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fsub_algebraic :
-    M.IsFunction.Trait "core::intrinsics::fsub_algebraic" fsub_algebraic.
+    M.IsFunction.C "core::intrinsics::fsub_algebraic" fsub_algebraic.
   Admitted.
   Global Typeclasses Opaque fsub_algebraic.
   
@@ -6035,7 +5999,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fmul_algebraic :
-    M.IsFunction.Trait "core::intrinsics::fmul_algebraic" fmul_algebraic.
+    M.IsFunction.C "core::intrinsics::fmul_algebraic" fmul_algebraic.
   Admitted.
   Global Typeclasses Opaque fmul_algebraic.
   
@@ -6061,7 +6025,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fdiv_algebraic :
-    M.IsFunction.Trait "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
+    M.IsFunction.C "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
   Admitted.
   Global Typeclasses Opaque fdiv_algebraic.
   
@@ -6087,7 +6051,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_frem_algebraic :
-    M.IsFunction.Trait "core::intrinsics::frem_algebraic" frem_algebraic.
+    M.IsFunction.C "core::intrinsics::frem_algebraic" frem_algebraic.
   Admitted.
   Global Typeclasses Opaque frem_algebraic.
   
@@ -6111,7 +6075,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ctpop : M.IsFunction.Trait "core::intrinsics::ctpop" ctpop.
+  Global Instance Instance_IsFunction_ctpop : M.IsFunction.C "core::intrinsics::ctpop" ctpop.
   Admitted.
   Global Typeclasses Opaque ctpop.
   
@@ -6135,7 +6099,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ctlz : M.IsFunction.Trait "core::intrinsics::ctlz" ctlz.
+  Global Instance Instance_IsFunction_ctlz : M.IsFunction.C "core::intrinsics::ctlz" ctlz.
   Admitted.
   Global Typeclasses Opaque ctlz.
   
@@ -6160,7 +6124,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ctlz_nonzero :
-    M.IsFunction.Trait "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
+    M.IsFunction.C "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
   Admitted.
   Global Typeclasses Opaque ctlz_nonzero.
   
@@ -6184,7 +6148,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cttz : M.IsFunction.Trait "core::intrinsics::cttz" cttz.
+  Global Instance Instance_IsFunction_cttz : M.IsFunction.C "core::intrinsics::cttz" cttz.
   Admitted.
   Global Typeclasses Opaque cttz.
   
@@ -6209,7 +6173,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_cttz_nonzero :
-    M.IsFunction.Trait "core::intrinsics::cttz_nonzero" cttz_nonzero.
+    M.IsFunction.C "core::intrinsics::cttz_nonzero" cttz_nonzero.
   Admitted.
   Global Typeclasses Opaque cttz_nonzero.
   
@@ -6233,7 +6197,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_bswap : M.IsFunction.Trait "core::intrinsics::bswap" bswap.
+  Global Instance Instance_IsFunction_bswap : M.IsFunction.C "core::intrinsics::bswap" bswap.
   Admitted.
   Global Typeclasses Opaque bswap.
   
@@ -6258,7 +6222,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_bitreverse :
-    M.IsFunction.Trait "core::intrinsics::bitreverse" bitreverse.
+    M.IsFunction.C "core::intrinsics::bitreverse" bitreverse.
   Admitted.
   Global Typeclasses Opaque bitreverse.
   
@@ -6284,7 +6248,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_three_way_compare :
-    M.IsFunction.Trait "core::intrinsics::three_way_compare" three_way_compare.
+    M.IsFunction.C "core::intrinsics::three_way_compare" three_way_compare.
   Admitted.
   Global Typeclasses Opaque three_way_compare.
   
@@ -6310,7 +6274,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_add_with_overflow :
-    M.IsFunction.Trait "core::intrinsics::add_with_overflow" add_with_overflow.
+    M.IsFunction.C "core::intrinsics::add_with_overflow" add_with_overflow.
   Admitted.
   Global Typeclasses Opaque add_with_overflow.
   
@@ -6336,7 +6300,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_sub_with_overflow :
-    M.IsFunction.Trait "core::intrinsics::sub_with_overflow" sub_with_overflow.
+    M.IsFunction.C "core::intrinsics::sub_with_overflow" sub_with_overflow.
   Admitted.
   Global Typeclasses Opaque sub_with_overflow.
   
@@ -6362,7 +6326,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_mul_with_overflow :
-    M.IsFunction.Trait "core::intrinsics::mul_with_overflow" mul_with_overflow.
+    M.IsFunction.C "core::intrinsics::mul_with_overflow" mul_with_overflow.
   Admitted.
   Global Typeclasses Opaque mul_with_overflow.
   
@@ -6388,7 +6352,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_exact_div :
-    M.IsFunction.Trait "core::intrinsics::exact_div" exact_div.
+    M.IsFunction.C "core::intrinsics::exact_div" exact_div.
   Admitted.
   Global Typeclasses Opaque exact_div.
   
@@ -6414,7 +6378,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_div :
-    M.IsFunction.Trait "core::intrinsics::unchecked_div" unchecked_div.
+    M.IsFunction.C "core::intrinsics::unchecked_div" unchecked_div.
   Admitted.
   Global Typeclasses Opaque unchecked_div.
   
@@ -6440,7 +6404,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_rem :
-    M.IsFunction.Trait "core::intrinsics::unchecked_rem" unchecked_rem.
+    M.IsFunction.C "core::intrinsics::unchecked_rem" unchecked_rem.
   Admitted.
   Global Typeclasses Opaque unchecked_rem.
   
@@ -6466,7 +6430,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_shl :
-    M.IsFunction.Trait "core::intrinsics::unchecked_shl" unchecked_shl.
+    M.IsFunction.C "core::intrinsics::unchecked_shl" unchecked_shl.
   Admitted.
   Global Typeclasses Opaque unchecked_shl.
   
@@ -6492,7 +6456,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_shr :
-    M.IsFunction.Trait "core::intrinsics::unchecked_shr" unchecked_shr.
+    M.IsFunction.C "core::intrinsics::unchecked_shr" unchecked_shr.
   Admitted.
   Global Typeclasses Opaque unchecked_shr.
   
@@ -6518,7 +6482,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_add :
-    M.IsFunction.Trait "core::intrinsics::unchecked_add" unchecked_add.
+    M.IsFunction.C "core::intrinsics::unchecked_add" unchecked_add.
   Admitted.
   Global Typeclasses Opaque unchecked_add.
   
@@ -6544,7 +6508,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_sub :
-    M.IsFunction.Trait "core::intrinsics::unchecked_sub" unchecked_sub.
+    M.IsFunction.C "core::intrinsics::unchecked_sub" unchecked_sub.
   Admitted.
   Global Typeclasses Opaque unchecked_sub.
   
@@ -6570,7 +6534,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_unchecked_mul :
-    M.IsFunction.Trait "core::intrinsics::unchecked_mul" unchecked_mul.
+    M.IsFunction.C "core::intrinsics::unchecked_mul" unchecked_mul.
   Admitted.
   Global Typeclasses Opaque unchecked_mul.
   
@@ -6596,7 +6560,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_rotate_left :
-    M.IsFunction.Trait "core::intrinsics::rotate_left" rotate_left.
+    M.IsFunction.C "core::intrinsics::rotate_left" rotate_left.
   Admitted.
   Global Typeclasses Opaque rotate_left.
   
@@ -6622,7 +6586,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_rotate_right :
-    M.IsFunction.Trait "core::intrinsics::rotate_right" rotate_right.
+    M.IsFunction.C "core::intrinsics::rotate_right" rotate_right.
   Admitted.
   Global Typeclasses Opaque rotate_right.
   
@@ -6648,7 +6612,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_wrapping_add :
-    M.IsFunction.Trait "core::intrinsics::wrapping_add" wrapping_add.
+    M.IsFunction.C "core::intrinsics::wrapping_add" wrapping_add.
   Admitted.
   Global Typeclasses Opaque wrapping_add.
   
@@ -6674,7 +6638,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_wrapping_sub :
-    M.IsFunction.Trait "core::intrinsics::wrapping_sub" wrapping_sub.
+    M.IsFunction.C "core::intrinsics::wrapping_sub" wrapping_sub.
   Admitted.
   Global Typeclasses Opaque wrapping_sub.
   
@@ -6700,7 +6664,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_wrapping_mul :
-    M.IsFunction.Trait "core::intrinsics::wrapping_mul" wrapping_mul.
+    M.IsFunction.C "core::intrinsics::wrapping_mul" wrapping_mul.
   Admitted.
   Global Typeclasses Opaque wrapping_mul.
   
@@ -6726,7 +6690,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_saturating_add :
-    M.IsFunction.Trait "core::intrinsics::saturating_add" saturating_add.
+    M.IsFunction.C "core::intrinsics::saturating_add" saturating_add.
   Admitted.
   Global Typeclasses Opaque saturating_add.
   
@@ -6752,7 +6716,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_saturating_sub :
-    M.IsFunction.Trait "core::intrinsics::saturating_sub" saturating_sub.
+    M.IsFunction.C "core::intrinsics::saturating_sub" saturating_sub.
   Admitted.
   Global Typeclasses Opaque saturating_sub.
   
@@ -6777,7 +6741,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_read_via_copy :
-    M.IsFunction.Trait "core::intrinsics::read_via_copy" read_via_copy.
+    M.IsFunction.C "core::intrinsics::read_via_copy" read_via_copy.
   Admitted.
   Global Typeclasses Opaque read_via_copy.
   
@@ -6803,7 +6767,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_write_via_move :
-    M.IsFunction.Trait "core::intrinsics::write_via_move" write_via_move.
+    M.IsFunction.C "core::intrinsics::write_via_move" write_via_move.
   Admitted.
   Global Typeclasses Opaque write_via_move.
   
@@ -6828,20 +6792,20 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_discriminant_value :
-    M.IsFunction.Trait "core::intrinsics::discriminant_value" discriminant_value.
+    M.IsFunction.C "core::intrinsics::discriminant_value" discriminant_value.
   Admitted.
   Global Typeclasses Opaque discriminant_value.
   
   Parameter catch_unwind : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_catch_unwind :
-    M.IsFunction.Trait "core::intrinsics::catch_unwind" catch_unwind.
+    M.IsFunction.C "core::intrinsics::catch_unwind" catch_unwind.
   Admitted.
   
   Parameter nontemporal_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_nontemporal_store :
-    M.IsFunction.Trait "core::intrinsics::nontemporal_store" nontemporal_store.
+    M.IsFunction.C "core::intrinsics::nontemporal_store" nontemporal_store.
   Admitted.
   
   (*
@@ -6866,7 +6830,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ptr_offset_from :
-    M.IsFunction.Trait "core::intrinsics::ptr_offset_from" ptr_offset_from.
+    M.IsFunction.C "core::intrinsics::ptr_offset_from" ptr_offset_from.
   Admitted.
   Global Typeclasses Opaque ptr_offset_from.
   
@@ -6892,7 +6856,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ptr_offset_from_unsigned :
-    M.IsFunction.Trait "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
+    M.IsFunction.C "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
   Admitted.
   Global Typeclasses Opaque ptr_offset_from_unsigned.
   
@@ -6912,7 +6876,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ptr_guaranteed_cmp :
-    M.IsFunction.Trait "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
+    M.IsFunction.C "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
   Admitted.
   Global Typeclasses Opaque ptr_guaranteed_cmp.
   
@@ -6937,7 +6901,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_raw_eq : M.IsFunction.Trait "core::intrinsics::raw_eq" raw_eq.
+  Global Instance Instance_IsFunction_raw_eq : M.IsFunction.C "core::intrinsics::raw_eq" raw_eq.
   Admitted.
   Global Typeclasses Opaque raw_eq.
   
@@ -6964,7 +6928,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_compare_bytes :
-    M.IsFunction.Trait "core::intrinsics::compare_bytes" compare_bytes.
+    M.IsFunction.C "core::intrinsics::compare_bytes" compare_bytes.
   Admitted.
   Global Typeclasses Opaque compare_bytes.
   
@@ -6989,7 +6953,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_black_box :
-    M.IsFunction.Trait "core::intrinsics::black_box" black_box.
+    M.IsFunction.C "core::intrinsics::black_box" black_box.
   Admitted.
   Global Typeclasses Opaque black_box.
   
@@ -7024,7 +6988,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_const_eval_select :
-    M.IsFunction.Trait "core::intrinsics::const_eval_select" const_eval_select.
+    M.IsFunction.C "core::intrinsics::const_eval_select" const_eval_select.
   Admitted.
   Global Typeclasses Opaque const_eval_select.
   
@@ -7043,7 +7007,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_is_val_statically_known :
-    M.IsFunction.Trait "core::intrinsics::is_val_statically_known" is_val_statically_known.
+    M.IsFunction.C "core::intrinsics::is_val_statically_known" is_val_statically_known.
   Admitted.
   Global Typeclasses Opaque is_val_statically_known.
   
@@ -7075,7 +7039,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_typed_swap :
-    M.IsFunction.Trait "core::intrinsics::typed_swap" typed_swap.
+    M.IsFunction.C "core::intrinsics::typed_swap" typed_swap.
   Admitted.
   Global Typeclasses Opaque typed_swap.
   
@@ -7091,7 +7055,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ub_checks :
-    M.IsFunction.Trait "core::intrinsics::ub_checks" ub_checks.
+    M.IsFunction.C "core::intrinsics::ub_checks" ub_checks.
   Admitted.
   Global Typeclasses Opaque ub_checks.
   
@@ -7117,7 +7081,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_const_allocate :
-    M.IsFunction.Trait "core::intrinsics::const_allocate" const_allocate.
+    M.IsFunction.C "core::intrinsics::const_allocate" const_allocate.
   Admitted.
   Global Typeclasses Opaque const_allocate.
   
@@ -7138,7 +7102,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_const_deallocate :
-    M.IsFunction.Trait "core::intrinsics::const_deallocate" const_deallocate.
+    M.IsFunction.C "core::intrinsics::const_deallocate" const_deallocate.
   Admitted.
   Global Typeclasses Opaque const_deallocate.
   
@@ -7163,7 +7127,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_vtable_size :
-    M.IsFunction.Trait "core::intrinsics::vtable_size" vtable_size.
+    M.IsFunction.C "core::intrinsics::vtable_size" vtable_size.
   Admitted.
   Global Typeclasses Opaque vtable_size.
   
@@ -7188,7 +7152,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_vtable_align :
-    M.IsFunction.Trait "core::intrinsics::vtable_align" vtable_align.
+    M.IsFunction.C "core::intrinsics::vtable_align" vtable_align.
   Admitted.
   Global Typeclasses Opaque vtable_align.
   
@@ -7211,8 +7175,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_size_of :
-    M.IsFunction.Trait "core::intrinsics::size_of" size_of.
+  Global Instance Instance_IsFunction_size_of : M.IsFunction.C "core::intrinsics::size_of" size_of.
   Admitted.
   Global Typeclasses Opaque size_of.
   
@@ -7236,7 +7199,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_min_align_of :
-    M.IsFunction.Trait "core::intrinsics::min_align_of" min_align_of.
+    M.IsFunction.C "core::intrinsics::min_align_of" min_align_of.
   Admitted.
   Global Typeclasses Opaque min_align_of.
   
@@ -7260,7 +7223,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_pref_align_of :
-    M.IsFunction.Trait "core::intrinsics::pref_align_of" pref_align_of.
+    M.IsFunction.C "core::intrinsics::pref_align_of" pref_align_of.
   Admitted.
   Global Typeclasses Opaque pref_align_of.
   
@@ -7284,7 +7247,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_variant_count :
-    M.IsFunction.Trait "core::intrinsics::variant_count" variant_count.
+    M.IsFunction.C "core::intrinsics::variant_count" variant_count.
   Admitted.
   Global Typeclasses Opaque variant_count.
   
@@ -7309,7 +7272,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_size_of_val :
-    M.IsFunction.Trait "core::intrinsics::size_of_val" size_of_val.
+    M.IsFunction.C "core::intrinsics::size_of_val" size_of_val.
   Admitted.
   Global Typeclasses Opaque size_of_val.
   
@@ -7334,7 +7297,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_min_align_of_val :
-    M.IsFunction.Trait "core::intrinsics::min_align_of_val" min_align_of_val.
+    M.IsFunction.C "core::intrinsics::min_align_of_val" min_align_of_val.
   Admitted.
   Global Typeclasses Opaque min_align_of_val.
   
@@ -7358,7 +7321,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_type_name :
-    M.IsFunction.Trait "core::intrinsics::type_name" type_name.
+    M.IsFunction.C "core::intrinsics::type_name" type_name.
   Admitted.
   Global Typeclasses Opaque type_name.
   
@@ -7381,8 +7344,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_type_id :
-    M.IsFunction.Trait "core::intrinsics::type_id" type_id.
+  Global Instance Instance_IsFunction_type_id : M.IsFunction.C "core::intrinsics::type_id" type_id.
   Admitted.
   Global Typeclasses Opaque type_id.
   
@@ -7410,7 +7372,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_aggregate_raw_ptr :
-    M.IsFunction.Trait "core::intrinsics::aggregate_raw_ptr" aggregate_raw_ptr.
+    M.IsFunction.C "core::intrinsics::aggregate_raw_ptr" aggregate_raw_ptr.
   Admitted.
   Global Typeclasses Opaque aggregate_raw_ptr.
   
@@ -7474,7 +7436,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_ptr_metadata :
-    M.IsFunction.Trait "core::intrinsics::ptr_metadata" ptr_metadata.
+    M.IsFunction.C "core::intrinsics::ptr_metadata" ptr_metadata.
   Admitted.
   Global Typeclasses Opaque ptr_metadata.
   
@@ -7586,7 +7548,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_copy_nonoverlapping :
-    M.IsFunction.Trait "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
+    M.IsFunction.C "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
   Admitted.
   Global Typeclasses Opaque copy_nonoverlapping.
   
@@ -7614,7 +7576,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_copy_nonoverlapping :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping"
         copy_nonoverlapping.
     Admitted.
@@ -7692,7 +7654,12 @@ Module intrinsics.
                               []
                             |);
                             LogicalOp.or (|
-                              M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |),
+                              M.read (|
+                                get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)
+                              |),
                               ltac:(M.monadic
                                 (BinOp.eq (|
                                   M.read (| count |),
@@ -7717,7 +7684,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_copy : M.IsFunction.Trait "core::intrinsics::copy" copy.
+  Global Instance Instance_IsFunction_copy : M.IsFunction.C "core::intrinsics::copy" copy.
   Admitted.
   Global Typeclasses Opaque copy.
   
@@ -7744,8 +7711,7 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_copy :
-      M.IsFunction.Trait "core::intrinsics::copy::copy" copy.
+    Global Instance Instance_IsFunction_copy : M.IsFunction.C "core::intrinsics::copy::copy" copy.
     Admitted.
     Global Typeclasses Opaque copy.
   End copy.
@@ -7819,7 +7785,12 @@ Module intrinsics.
                               []
                             |);
                             LogicalOp.or (|
-                              M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |),
+                              M.read (|
+                                get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)
+                              |),
                               ltac:(M.monadic
                                 (BinOp.eq (|
                                   M.read (| count |),
@@ -7845,7 +7816,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_write_bytes :
-    M.IsFunction.Trait "core::intrinsics::write_bytes" write_bytes.
+    M.IsFunction.C "core::intrinsics::write_bytes" write_bytes.
   Admitted.
   Global Typeclasses Opaque write_bytes.
   
@@ -7873,7 +7844,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_write_bytes :
-      M.IsFunction.Trait "core::intrinsics::write_bytes::write_bytes" write_bytes.
+      M.IsFunction.C "core::intrinsics::write_bytes::write_bytes" write_bytes.
     Admitted.
     Global Typeclasses Opaque write_bytes.
   End write_bytes.
@@ -7900,7 +7871,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_minnumf16 :
-    M.IsFunction.Trait "core::intrinsics::minnumf16" minnumf16.
+    M.IsFunction.C "core::intrinsics::minnumf16" minnumf16.
   Admitted.
   Global Typeclasses Opaque minnumf16.
   
@@ -7926,7 +7897,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_minnumf32 :
-    M.IsFunction.Trait "core::intrinsics::minnumf32" minnumf32.
+    M.IsFunction.C "core::intrinsics::minnumf32" minnumf32.
   Admitted.
   Global Typeclasses Opaque minnumf32.
   
@@ -7952,7 +7923,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_minnumf64 :
-    M.IsFunction.Trait "core::intrinsics::minnumf64" minnumf64.
+    M.IsFunction.C "core::intrinsics::minnumf64" minnumf64.
   Admitted.
   Global Typeclasses Opaque minnumf64.
   
@@ -7978,7 +7949,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_minnumf128 :
-    M.IsFunction.Trait "core::intrinsics::minnumf128" minnumf128.
+    M.IsFunction.C "core::intrinsics::minnumf128" minnumf128.
   Admitted.
   Global Typeclasses Opaque minnumf128.
   
@@ -8004,7 +7975,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_maxnumf16 :
-    M.IsFunction.Trait "core::intrinsics::maxnumf16" maxnumf16.
+    M.IsFunction.C "core::intrinsics::maxnumf16" maxnumf16.
   Admitted.
   Global Typeclasses Opaque maxnumf16.
   
@@ -8030,7 +8001,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_maxnumf32 :
-    M.IsFunction.Trait "core::intrinsics::maxnumf32" maxnumf32.
+    M.IsFunction.C "core::intrinsics::maxnumf32" maxnumf32.
   Admitted.
   Global Typeclasses Opaque maxnumf32.
   
@@ -8056,7 +8027,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_maxnumf64 :
-    M.IsFunction.Trait "core::intrinsics::maxnumf64" maxnumf64.
+    M.IsFunction.C "core::intrinsics::maxnumf64" maxnumf64.
   Admitted.
   Global Typeclasses Opaque maxnumf64.
   
@@ -8082,7 +8053,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_maxnumf128 :
-    M.IsFunction.Trait "core::intrinsics::maxnumf128" maxnumf128.
+    M.IsFunction.C "core::intrinsics::maxnumf128" maxnumf128.
   Admitted.
   Global Typeclasses Opaque maxnumf128.
   
@@ -8106,8 +8077,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fabsf16 :
-    M.IsFunction.Trait "core::intrinsics::fabsf16" fabsf16.
+  Global Instance Instance_IsFunction_fabsf16 : M.IsFunction.C "core::intrinsics::fabsf16" fabsf16.
   Admitted.
   Global Typeclasses Opaque fabsf16.
   
@@ -8131,8 +8101,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fabsf32 :
-    M.IsFunction.Trait "core::intrinsics::fabsf32" fabsf32.
+  Global Instance Instance_IsFunction_fabsf32 : M.IsFunction.C "core::intrinsics::fabsf32" fabsf32.
   Admitted.
   Global Typeclasses Opaque fabsf32.
   
@@ -8156,8 +8125,7 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_fabsf64 :
-    M.IsFunction.Trait "core::intrinsics::fabsf64" fabsf64.
+  Global Instance Instance_IsFunction_fabsf64 : M.IsFunction.C "core::intrinsics::fabsf64" fabsf64.
   Admitted.
   Global Typeclasses Opaque fabsf64.
   
@@ -8182,7 +8150,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_fabsf128 :
-    M.IsFunction.Trait "core::intrinsics::fabsf128" fabsf128.
+    M.IsFunction.C "core::intrinsics::fabsf128" fabsf128.
   Admitted.
   Global Typeclasses Opaque fabsf128.
   
@@ -8208,7 +8176,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_copysignf16 :
-    M.IsFunction.Trait "core::intrinsics::copysignf16" copysignf16.
+    M.IsFunction.C "core::intrinsics::copysignf16" copysignf16.
   Admitted.
   Global Typeclasses Opaque copysignf16.
   
@@ -8234,7 +8202,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_copysignf32 :
-    M.IsFunction.Trait "core::intrinsics::copysignf32" copysignf32.
+    M.IsFunction.C "core::intrinsics::copysignf32" copysignf32.
   Admitted.
   Global Typeclasses Opaque copysignf32.
   
@@ -8260,7 +8228,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_copysignf64 :
-    M.IsFunction.Trait "core::intrinsics::copysignf64" copysignf64.
+    M.IsFunction.C "core::intrinsics::copysignf64" copysignf64.
   Admitted.
   Global Typeclasses Opaque copysignf64.
   
@@ -8286,7 +8254,7 @@ Module intrinsics.
     end.
   
   Global Instance Instance_IsFunction_copysignf128 :
-    M.IsFunction.Trait "core::intrinsics::copysignf128" copysignf128.
+    M.IsFunction.C "core::intrinsics::copysignf128" copysignf128.
   Admitted.
   Global Typeclasses Opaque copysignf128.
 End intrinsics.
@@ -8305,7 +8273,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::ub_checks::check_language_ub::runtime" runtime.
+      M.IsFunction.C "core::ub_checks::check_language_ub::runtime" runtime.
     Admitted.
     Global Typeclasses Opaque runtime.
     
@@ -8324,7 +8292,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_compiletime :
-      M.IsFunction.Trait "core::ub_checks::check_language_ub::compiletime" compiletime.
+      M.IsFunction.C "core::ub_checks::check_language_ub::compiletime" compiletime.
     Admitted.
     Global Typeclasses Opaque compiletime.
   End check_language_ub.
@@ -8375,7 +8343,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::ub_checks::maybe_is_aligned_and_not_null::runtime" runtime.
+      M.IsFunction.C "core::ub_checks::maybe_is_aligned_and_not_null::runtime" runtime.
     Admitted.
     Global Typeclasses Opaque runtime.
     
@@ -8442,7 +8410,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_compiletime :
-      M.IsFunction.Trait "core::ub_checks::maybe_is_aligned_and_not_null::compiletime" compiletime.
+      M.IsFunction.C "core::ub_checks::maybe_is_aligned_and_not_null::compiletime" compiletime.
     Admitted.
     Global Typeclasses Opaque compiletime.
   End maybe_is_aligned_and_not_null.
@@ -8523,7 +8491,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::ub_checks::maybe_is_nonoverlapping::runtime" runtime.
+      M.IsFunction.C "core::ub_checks::maybe_is_nonoverlapping::runtime" runtime.
     Admitted.
     Global Typeclasses Opaque runtime.
     
@@ -8578,7 +8546,7 @@ Module ub_checks.
       end.
     
     Global Instance Instance_IsFunction_compiletime :
-      M.IsFunction.Trait "core::ub_checks::maybe_is_nonoverlapping::compiletime" compiletime.
+      M.IsFunction.C "core::ub_checks::maybe_is_nonoverlapping::compiletime" compiletime.
     Admitted.
     Global Typeclasses Opaque compiletime.
   End maybe_is_nonoverlapping.
@@ -8771,7 +8739,7 @@ Module char.
           end.
         
         Global Instance Instance_IsFunction_runtime :
-          M.IsFunction.Trait "core::char::methods::encode_utf8_raw::do_panic::runtime" runtime.
+          M.IsFunction.C "core::char::methods::encode_utf8_raw::do_panic::runtime" runtime.
         Admitted.
         Global Typeclasses Opaque runtime.
         
@@ -8859,9 +8827,7 @@ Module char.
           end.
         
         Global Instance Instance_IsFunction_compiletime :
-          M.IsFunction.Trait
-            "core::char::methods::encode_utf8_raw::do_panic::compiletime"
-            compiletime.
+          M.IsFunction.C "core::char::methods::encode_utf8_raw::do_panic::compiletime" compiletime.
         Admitted.
         Global Typeclasses Opaque compiletime.
       End do_panic.
@@ -9052,7 +9018,7 @@ Module char.
           end.
         
         Global Instance Instance_IsFunction_runtime :
-          M.IsFunction.Trait "core::char::methods::encode_utf16_raw::do_panic::runtime" runtime.
+          M.IsFunction.C "core::char::methods::encode_utf16_raw::do_panic::runtime" runtime.
         Admitted.
         Global Typeclasses Opaque runtime.
         
@@ -9140,9 +9106,7 @@ Module char.
           end.
         
         Global Instance Instance_IsFunction_compiletime :
-          M.IsFunction.Trait
-            "core::char::methods::encode_utf16_raw::do_panic::compiletime"
-            compiletime.
+          M.IsFunction.C "core::char::methods::encode_utf16_raw::do_panic::compiletime" compiletime.
         Admitted.
         Global Typeclasses Opaque compiletime.
       End do_panic.
@@ -9172,7 +9136,7 @@ Module ffi.
         end.
       
       Global Instance Instance_IsFunction_runtime :
-        M.IsFunction.Trait "core::ffi::c_str::strlen::runtime" runtime.
+        M.IsFunction.C "core::ffi::c_str::strlen::runtime" runtime.
       Admitted.
       Global Typeclasses Opaque runtime.
       
@@ -9270,7 +9234,7 @@ Module ffi.
         end.
       
       Global Instance Instance_IsFunction_compiletime :
-        M.IsFunction.Trait "core::ffi::c_str::strlen::compiletime" compiletime.
+        M.IsFunction.C "core::ffi::c_str::strlen::compiletime" compiletime.
       Admitted.
       Global Typeclasses Opaque compiletime.
     End strlen.
@@ -9364,7 +9328,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime" runtime.
+      M.IsFunction.C "core::panicking::panic_nounwind_fmt::runtime" runtime.
     Admitted.
     Global Typeclasses Opaque runtime.
     
@@ -9411,7 +9375,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_compiletime :
-      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::compiletime" compiletime.
+      M.IsFunction.C "core::panicking::panic_nounwind_fmt::compiletime" compiletime.
     Admitted.
     Global Typeclasses Opaque compiletime.
   End panic_nounwind_fmt.
@@ -9472,7 +9436,9 @@ Module slice.
                         |),
                         [
                           M.read (| ptr |);
-                          M.read (| M.get_constant "core::slice::memchr::USIZE_BYTES" |)
+                          M.read (|
+                            get_constant (| "core::slice::memchr::USIZE_BYTES", Ty.path "usize" |)
+                          |)
                         ]
                       |)
                     |) in
@@ -9632,7 +9598,10 @@ Module slice.
                                           BinOp.Wrap.mul (|
                                             Value.Integer IntegerKind.Usize 2,
                                             M.read (|
-                                              M.get_constant "core::slice::memchr::USIZE_BYTES"
+                                              get_constant (|
+                                                "core::slice::memchr::USIZE_BYTES",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -9679,7 +9648,10 @@ Module slice.
                                               BinOp.Wrap.add (|
                                                 M.read (| offset |),
                                                 M.read (|
-                                                  M.get_constant "core::slice::memchr::USIZE_BYTES"
+                                                  get_constant (|
+                                                    "core::slice::memchr::USIZE_BYTES",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |)
                                               |)
                                             ]
@@ -9744,7 +9716,10 @@ Module slice.
                                         M.read (| β |),
                                         BinOp.Wrap.mul (|
                                           M.read (|
-                                            M.get_constant "core::slice::memchr::USIZE_BYTES"
+                                            get_constant (|
+                                              "core::slice::memchr::USIZE_BYTES",
+                                              Ty.path "usize"
+                                            |)
                                           |),
                                           Value.Integer IntegerKind.Usize 2
                                         |)
@@ -9863,7 +9838,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_runtime :
-        M.IsFunction.Trait "core::slice::memchr::memchr_aligned::runtime" runtime.
+        M.IsFunction.C "core::slice::memchr::memchr_aligned::runtime" runtime.
       Admitted.
       Global Typeclasses Opaque runtime.
       
@@ -9913,7 +9888,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_compiletime :
-        M.IsFunction.Trait "core::slice::memchr::memchr_aligned::compiletime" compiletime.
+        M.IsFunction.C "core::slice::memchr::memchr_aligned::compiletime" compiletime.
       Admitted.
       Global Typeclasses Opaque compiletime.
     End memchr_aligned.
@@ -9969,7 +9944,10 @@ Module slice.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                           |);
                           M.read (|
-                            M.get_constant "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                            get_constant (|
+                              "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                              Ty.path "usize"
+                            |)
                           |)
                         ]
                       |)
@@ -9989,8 +9967,10 @@ Module slice.
                                       BinOp.lt (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                          get_constant (|
+                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |),
                                       ltac:(M.monadic
@@ -10002,8 +9982,10 @@ Module slice.
                                     ltac:(M.monadic
                                       (BinOp.lt (|
                                         M.read (|
-                                          M.get_constant
-                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                          get_constant (|
+                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |),
                                         M.call_closure (|
                                           Ty.path "usize",
@@ -10065,7 +10047,10 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.get_constant "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"));
+                              get_constant (|
+                                "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                Ty.path "usize"
+                              |)));
                           fun γ => ltac:(M.monadic align_offset)
                         ]
                       |)
@@ -10286,8 +10271,10 @@ Module slice.
                                         BinOp.Wrap.sub (|
                                           M.read (| len |),
                                           M.read (|
-                                            M.get_constant
-                                              "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                            get_constant (|
+                                              "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                              Ty.path "usize"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -10325,8 +10312,10 @@ Module slice.
                                                               BinOp.Wrap.add (|
                                                                 M.read (| byte_pos |),
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                                                  get_constant (|
+                                                                    "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                                                    Ty.path "usize"
+                                                                  |)
                                                                 |)
                                                               |),
                                                               M.read (| len |)
@@ -10510,8 +10499,10 @@ Module slice.
                                       BinOp.Wrap.add (|
                                         M.read (| β |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                          get_constant (|
+                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -10582,8 +10573,10 @@ Module slice.
                                                       M.read (| byte_pos |)
                                                     |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                                      get_constant (|
+                                                        "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   |)))
                                               |)
@@ -10640,8 +10633,10 @@ Module slice.
                                 BinOp.Wrap.sub (|
                                   M.read (| len |),
                                   M.read (|
-                                    M.get_constant
-                                      "core::slice::ascii::is_ascii::runtime::USIZE_SIZE"
+                                    get_constant (|
+                                      "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               ]
@@ -10664,7 +10659,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_runtime :
-        M.IsFunction.Trait "core::slice::ascii::is_ascii::runtime" runtime.
+        M.IsFunction.C "core::slice::ascii::is_ascii::runtime" runtime.
       Admitted.
       Global Typeclasses Opaque runtime.
       
@@ -10702,7 +10697,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_compiletime :
-        M.IsFunction.Trait "core::slice::ascii::is_ascii::compiletime" compiletime.
+        M.IsFunction.C "core::slice::ascii::is_ascii::compiletime" compiletime.
       Admitted.
       Global Typeclasses Opaque compiletime.
     End is_ascii.
@@ -10801,7 +10796,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_runtime :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::index::slice_start_index_len_fail::do_panic::runtime"
             runtime.
         Admitted.
@@ -10878,7 +10873,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_compiletime :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::index::slice_start_index_len_fail::do_panic::compiletime"
             compiletime.
         Admitted.
@@ -10978,9 +10973,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_runtime :
-          M.IsFunction.Trait
-            "core::slice::index::slice_end_index_len_fail::do_panic::runtime"
-            runtime.
+          M.IsFunction.C "core::slice::index::slice_end_index_len_fail::do_panic::runtime" runtime.
         Admitted.
         Global Typeclasses Opaque runtime.
         
@@ -11055,7 +11048,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_compiletime :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::index::slice_end_index_len_fail::do_panic::compiletime"
             compiletime.
         Admitted.
@@ -11155,9 +11148,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_runtime :
-          M.IsFunction.Trait
-            "core::slice::index::slice_index_order_fail::do_panic::runtime"
-            runtime.
+          M.IsFunction.C "core::slice::index::slice_index_order_fail::do_panic::runtime" runtime.
         Admitted.
         Global Typeclasses Opaque runtime.
         
@@ -11232,7 +11223,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_compiletime :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::index::slice_index_order_fail::do_panic::compiletime"
             compiletime.
         Admitted.
@@ -11275,7 +11266,10 @@ Module str.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                 |);
                 M.read (|
-                  M.get_constant "core::str::validations::run_utf8_validation::USIZE_BYTES"
+                  get_constant (|
+                    "core::str::validations::run_utf8_validation::USIZE_BYTES",
+                    Ty.path "usize"
+                  |)
                 |)
               ]
             |)))
@@ -11283,7 +11277,7 @@ Module str.
         end.
       
       Global Instance Instance_IsFunction_runtime :
-        M.IsFunction.Trait "core::str::validations::run_utf8_validation::runtime" runtime.
+        M.IsFunction.C "core::str::validations::run_utf8_validation::runtime" runtime.
       Admitted.
       Global Typeclasses Opaque runtime.
       
@@ -11304,14 +11298,18 @@ Module str.
               M.match_operator (|
                 None,
                 v,
-                [ fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX")) ]
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)))
+                ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance Instance_IsFunction_compiletime :
-        M.IsFunction.Trait "core::str::validations::run_utf8_validation::compiletime" compiletime.
+        M.IsFunction.C "core::str::validations::run_utf8_validation::compiletime" compiletime.
       Admitted.
       Global Typeclasses Opaque compiletime.
     End run_utf8_validation.

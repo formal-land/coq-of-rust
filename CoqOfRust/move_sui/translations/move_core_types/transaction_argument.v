@@ -1674,7 +1674,18 @@ Module transaction_argument.
                 M.read (| __deserializer |);
                 mk_str (| "TransactionArgument" |);
                 M.read (|
-                  M.get_constant "move_core_types::transaction_argument::_'1::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_core_types::transaction_argument::_'1::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::transaction_argument::_'1::deserialize::__Visitor"
@@ -3815,7 +3826,7 @@ Module transaction_argument.
     end.
   
   Global Instance Instance_IsFunction_convert_txn_args :
-    M.IsFunction.Trait "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
+    M.IsFunction.C "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
   Admitted.
   Global Typeclasses Opaque convert_txn_args.
   
@@ -4216,7 +4227,7 @@ Module transaction_argument.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from : M.IsAssociatedFunction.Trait Self "from" from.
+    Global Instance AssociatedFunction_from : M.IsAssociatedFunction.C Self "from" from.
     Admitted.
     Global Typeclasses Opaque from.
     
@@ -4389,8 +4400,7 @@ Module transaction_argument.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_into_vec :
-      M.IsAssociatedFunction.Trait Self "into_vec" into_vec.
+    Global Instance AssociatedFunction_into_vec : M.IsAssociatedFunction.C Self "into_vec" into_vec.
     Admitted.
     Global Typeclasses Opaque into_vec.
   End Impl_move_core_types_transaction_argument_VecBytes.

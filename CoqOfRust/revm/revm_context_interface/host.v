@@ -1485,7 +1485,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_new_eq_present :
-      M.IsAssociatedFunction.Trait Self "is_new_eq_present" is_new_eq_present.
+      M.IsAssociatedFunction.C Self "is_new_eq_present" is_new_eq_present.
     Admitted.
     Global Typeclasses Opaque is_new_eq_present.
     
@@ -1541,7 +1541,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_eq_present :
-      M.IsAssociatedFunction.Trait Self "is_original_eq_present" is_original_eq_present.
+      M.IsAssociatedFunction.C Self "is_original_eq_present" is_original_eq_present.
     Admitted.
     Global Typeclasses Opaque is_original_eq_present.
     
@@ -1597,7 +1597,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_eq_new :
-      M.IsAssociatedFunction.Trait Self "is_original_eq_new" is_original_eq_new.
+      M.IsAssociatedFunction.C Self "is_original_eq_new" is_original_eq_new.
     Admitted.
     Global Typeclasses Opaque is_original_eq_new.
     
@@ -1637,7 +1637,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_zero :
-      M.IsAssociatedFunction.Trait Self "is_original_zero" is_original_zero.
+      M.IsAssociatedFunction.C Self "is_original_zero" is_original_zero.
     Admitted.
     Global Typeclasses Opaque is_original_zero.
     
@@ -1677,7 +1677,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_present_zero :
-      M.IsAssociatedFunction.Trait Self "is_present_zero" is_present_zero.
+      M.IsAssociatedFunction.C Self "is_present_zero" is_present_zero.
     Admitted.
     Global Typeclasses Opaque is_present_zero.
     
@@ -1717,7 +1717,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_new_zero :
-      M.IsAssociatedFunction.Trait Self "is_new_zero" is_new_zero.
+      M.IsAssociatedFunction.C Self "is_new_zero" is_new_zero.
     Admitted.
     Global Typeclasses Opaque is_new_zero.
   End Impl_revm_context_interface_host_SStoreResult.

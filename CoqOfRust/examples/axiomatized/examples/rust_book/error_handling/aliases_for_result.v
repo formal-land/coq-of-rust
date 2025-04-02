@@ -9,15 +9,15 @@ Axiom AliasedResult :
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "aliases_for_result::multiply" multiply.
+  M.IsFunction.C "aliases_for_result::multiply" multiply.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_print : M.IsFunction.Trait "aliases_for_result::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "aliases_for_result::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "aliases_for_result::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "aliases_for_result::main" main.
 Admitted.

@@ -3,380 +3,380 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import revm_interpreter.gas.constants.
 
-Lemma ZERO_eq :
-  M.get_constant "revm_interpreter::gas::constants::ZERO" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 0)).
+Instance run_ZERO :
+  Run.Trait
+    gas.constants.value_ZERO [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite ZERO_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma BASE_eq :
-  M.get_constant "revm_interpreter::gas::constants::BASE" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2)).
+Instance run_BASE :
+  Run.Trait
+    gas.constants.value_BASE [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite BASE_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma VERYLOW_eq :
-  M.get_constant "revm_interpreter::gas::constants::VERYLOW" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Instance run_VERYLOW :
+  Run.Trait
+    gas.constants.value_VERYLOW [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite VERYLOW_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma DATA_LOADN_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::DATA_LOADN_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Instance run_DATA_LOADN_GAS :
+  Run.Trait
+    gas.constants.value_DATA_LOADN_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite DATA_LOADN_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma CONDITION_JUMP_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::CONDITION_JUMP_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 4)).
+Instance run_CONDITION_JUMP_GAS :
+  Run.Trait
+    gas.constants.value_CONDITION_JUMP_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite CONDITION_JUMP_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma RETF_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::RETF_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Instance run_RETF_GAS :
+  Run.Trait
+    gas.constants.value_RETF_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite RETF_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma DATA_LOAD_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::DATA_LOAD_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 4)).
+Instance run_DATA_LOAD_GAS :
+  Run.Trait
+    gas.constants.value_DATA_LOAD_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite DATA_LOAD_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma LOW_eq :
-  M.get_constant "revm_interpreter::gas::constants::LOW" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 5)).
+Instance run_LOW :
+  Run.Trait
+    gas.constants.value_LOW [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite LOW_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma MID_eq :
-  M.get_constant "revm_interpreter::gas::constants::MID" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 8)).
+Instance run_MID :
+  Run.Trait
+    gas.constants.value_MID [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite MID_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma HIGH_eq :
-  M.get_constant "revm_interpreter::gas::constants::HIGH" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 10)).
+Instance run_HIGH :
+  Run.Trait
+    gas.constants.value_HIGH [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite HIGH_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma JUMPDEST_eq :
-  M.get_constant "revm_interpreter::gas::constants::JUMPDEST" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 1)).
+Instance run_JUMPDEST :
+  Run.Trait
+    gas.constants.value_JUMPDEST [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite JUMPDEST_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma SELFDESTRUCT_eq :
-  M.get_constant "revm_interpreter::gas::constants::SELFDESTRUCT" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.I64 24000)).
+Instance run_SELFDESTRUCT :
+  Run.Trait
+    gas.constants.value_SELFDESTRUCT [] [] []
+    (Ref.t Pointer.Kind.Raw I64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite SELFDESTRUCT_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma CREATE_eq :
-  M.get_constant "revm_interpreter::gas::constants::CREATE" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 32000)).
+Instance run_CREATE :
+  Run.Trait
+    gas.constants.value_CREATE [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite CREATE_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma CALLVALUE_eq :
-  M.get_constant "revm_interpreter::gas::constants::CALLVALUE" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 9000)).
+Instance run_CALLVALUE :
+  Run.Trait
+    gas.constants.value_CALLVALUE [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite CALLVALUE_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma NEWACCOUNT_eq :
-  M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 25000)).
+Instance run_NEWACCOUNT :
+  Run.Trait
+    gas.constants.value_NEWACCOUNT [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite NEWACCOUNT_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma EXP_eq :
-  M.get_constant "revm_interpreter::gas::constants::EXP" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 10)).
+Instance run_EXP :
+  Run.Trait
+    gas.constants.value_EXP [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite EXP_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma MEMORY_eq :
-  M.get_constant "revm_interpreter::gas::constants::MEMORY" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Instance run_MEMORY :
+  Run.Trait
+    gas.constants.value_MEMORY [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite MEMORY_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma LOG_eq :
-  M.get_constant "revm_interpreter::gas::constants::LOG" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 375)).
+Instance run_LOG :
+  Run.Trait
+    gas.constants.value_LOG [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite LOG_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma LOGDATA_eq :
-  M.get_constant "revm_interpreter::gas::constants::LOGDATA" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 8)).
+Instance run_LOGDATA :
+  Run.Trait
+    gas.constants.value_LOGDATA [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite LOGDATA_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma LOGTOPIC_eq :
-  M.get_constant "revm_interpreter::gas::constants::LOGTOPIC" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 375)).
+Instance run_LOGTOPIC :
+  Run.Trait
+    gas.constants.value_LOGTOPIC [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite LOGTOPIC_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma KECCAK256_eq :
-  M.get_constant "revm_interpreter::gas::constants::KECCAK256" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 30)).
+Instance run_KECCAK256 :
+  Run.Trait
+    gas.constants.value_KECCAK256 [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite KECCAK256_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma KECCAK256WORD_eq :
-  M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 6)).
+Instance run_KECCAK256WORD :
+  Run.Trait
+    gas.constants.value_KECCAK256WORD [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite KECCAK256WORD_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma COPY_eq :
-  M.get_constant "revm_interpreter::gas::constants::COPY" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Instance run_COPY :
+  Run.Trait
+    gas.constants.value_COPY [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite COPY_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma BLOCKHASH_eq :
-  M.get_constant "revm_interpreter::gas::constants::BLOCKHASH" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 20)).
+Instance run_BLOCKHASH :
+  Run.Trait
+    gas.constants.value_BLOCKHASH [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite BLOCKHASH_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma CODEDEPOSIT_eq :
-  M.get_constant "revm_interpreter::gas::constants::CODEDEPOSIT" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 200)).
+Instance run_CODEDEPOSIT :
+  Run.Trait
+    gas.constants.value_CODEDEPOSIT [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite CODEDEPOSIT_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma ISTANBUL_SLOAD_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 800)).
+Instance run_ISTANBUL_SLOAD_GAS :
+  Run.Trait
+    gas.constants.value_ISTANBUL_SLOAD_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite ISTANBUL_SLOAD_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma SSTORE_SET_eq :
-  M.get_constant "revm_interpreter::gas::constants::SSTORE_SET" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 20000)).
+Instance run_SSTORE_SET :
+  Run.Trait
+    gas.constants.value_SSTORE_SET [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite SSTORE_SET_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma SSTORE_RESET_eq :
-  M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 5000)).
+Instance run_SSTORE_RESET :
+  Run.Trait
+    gas.constants.value_SSTORE_RESET [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite SSTORE_RESET_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma REFUND_SSTORE_CLEARS_eq :
-  M.get_constant "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.I64 15000)).
+Instance run_REFUND_SSTORE_CLEARS :
+  Run.Trait
+    gas.constants.value_REFUND_SSTORE_CLEARS [] [] []
+    (Ref.t Pointer.Kind.Raw I64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite REFUND_SSTORE_CLEARS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma TRANSACTION_ZERO_DATA_eq :
-  M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 4)).
+Instance run_TRANSACTION_ZERO_DATA :
+  Run.Trait
+    gas.constants.value_TRANSACTION_ZERO_DATA [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite TRANSACTION_ZERO_DATA_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma TRANSACTION_NON_ZERO_DATA_INIT_eq :
-  M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_INIT" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 16)).
+Instance run_TRANSACTION_NON_ZERO_DATA_INIT :
+  Run.Trait
+    gas.constants.value_TRANSACTION_NON_ZERO_DATA_INIT [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite TRANSACTION_NON_ZERO_DATA_INIT_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma TRANSACTION_NON_ZERO_DATA_FRONTIER_eq :
-  M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_FRONTIER" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 68)).
+Instance run_TRANSACTION_NON_ZERO_DATA_FRONTIER :
+  Run.Trait
+    gas.constants.value_TRANSACTION_NON_ZERO_DATA_FRONTIER [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite TRANSACTION_NON_ZERO_DATA_FRONTIER_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma EOF_CREATE_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::EOF_CREATE_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 32000)).
+Instance run_EOF_CREATE_GAS :
+  Run.Trait
+    gas.constants.value_EOF_CREATE_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite EOF_CREATE_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma ACCESS_LIST_ADDRESS_eq :
-  M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2400)).
+Instance run_ACCESS_LIST_ADDRESS :
+  Run.Trait
+    gas.constants.value_ACCESS_LIST_ADDRESS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite ACCESS_LIST_ADDRESS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma ACCESS_LIST_STORAGE_KEY_eq :
-  M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 1900)).
+Instance run_ACCESS_LIST_STORAGE_KEY :
+  Run.Trait
+    gas.constants.value_ACCESS_LIST_STORAGE_KEY [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite ACCESS_LIST_STORAGE_KEY_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma COLD_SLOAD_COST_eq :
-  M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2100)).
+Instance run_COLD_SLOAD_COST :
+  Run.Trait
+    gas.constants.value_COLD_SLOAD_COST [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite COLD_SLOAD_COST_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma COLD_ACCOUNT_ACCESS_COST_eq :
-  M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2600)).
+Instance run_COLD_ACCOUNT_ACCESS_COST :
+  Run.Trait
+    gas.constants.value_COLD_ACCOUNT_ACCESS_COST [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite COLD_ACCOUNT_ACCESS_COST_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma WARM_STORAGE_READ_COST_eq :
-  M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 100)).
+Instance run_WARM_STORAGE_READ_COST :
+  Run.Trait
+    gas.constants.value_WARM_STORAGE_READ_COST [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite WARM_STORAGE_READ_COST_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma WARM_SSTORE_RESET_eq :
-  M.get_constant "revm_interpreter::gas::constants::WARM_SSTORE_RESET" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2900)).
+Instance run_WARM_SSTORE_RESET :
+  Run.Trait
+    gas.constants.value_WARM_SSTORE_RESET [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite WARM_SSTORE_RESET_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma INITCODE_WORD_COST_eq :
-  M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2)).
+Instance run_INITCODE_WORD_COST :
+  Run.Trait
+    gas.constants.value_INITCODE_WORD_COST [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite INITCODE_WORD_COST_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma CALL_STIPEND_eq :
-  M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2300)).
+Instance run_CALL_STIPEND :
+  Run.Trait
+    gas.constants.value_CALL_STIPEND [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite CALL_STIPEND_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
-Lemma MIN_CALLEE_GAS_eq :
-  M.get_constant "revm_interpreter::gas::constants::MIN_CALLEE_GAS" =
-  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 2300)).
+Instance run_MIN_CALLEE_GAS :
+  Run.Trait
+    gas.constants.value_MIN_CALLEE_GAS [] [] []
+    (Ref.t Pointer.Kind.Raw U64.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite MIN_CALLEE_GAS_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.

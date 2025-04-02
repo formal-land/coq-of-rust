@@ -18,7 +18,13 @@ Module log.
         (let logs := M.alloc (| logs |) in
         M.read (|
           let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
-            M.copy (| M.get_constant "alloy_primitives::bits::bloom::ZERO" |) in
+            M.copy (|
+              get_associated_constant (|
+                Ty.path "alloy_primitives::bits::bloom::Bloom",
+                "ZERO",
+                Ty.path "alloy_primitives::bits::bloom::Bloom"
+              |)
+            |) in
           let~ _ : Ty.tuple [] :=
             M.use
               (M.match_operator (|
@@ -138,7 +144,7 @@ Module log.
     end.
   
   Global Instance Instance_IsFunction_logs_bloom :
-    M.IsFunction.Trait "alloy_primitives::log::logs_bloom" logs_bloom.
+    M.IsFunction.C "alloy_primitives::log::logs_bloom" logs_bloom.
   Admitted.
   Global Typeclasses Opaque logs_bloom.
   
@@ -677,7 +683,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_new_unchecked :
-      M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
     Admitted.
     Global Typeclasses Opaque new_unchecked.
     
@@ -738,7 +744,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -798,7 +804,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.C Self "empty" empty.
     Admitted.
     Global Typeclasses Opaque empty.
     
@@ -846,8 +852,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_valid :
-      M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+    Global Instance AssociatedFunction_is_valid : M.IsAssociatedFunction.C Self "is_valid" is_valid.
     Admitted.
     Global Typeclasses Opaque is_valid.
     
@@ -918,7 +923,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_topics : M.IsAssociatedFunction.Trait Self "topics" topics.
+    Global Instance AssociatedFunction_topics : M.IsAssociatedFunction.C Self "topics" topics.
     Admitted.
     Global Typeclasses Opaque topics.
     
@@ -995,7 +1000,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_topics_mut :
-      M.IsAssociatedFunction.Trait Self "topics_mut" topics_mut.
+      M.IsAssociatedFunction.C Self "topics_mut" topics_mut.
     Admitted.
     Global Typeclasses Opaque topics_mut.
     
@@ -1031,7 +1036,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_topics_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "topics_mut_unchecked" topics_mut_unchecked.
+      M.IsAssociatedFunction.C Self "topics_mut_unchecked" topics_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque topics_mut_unchecked.
     
@@ -1064,7 +1069,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_set_topics_unchecked :
-      M.IsAssociatedFunction.Trait Self "set_topics_unchecked" set_topics_unchecked.
+      M.IsAssociatedFunction.C Self "set_topics_unchecked" set_topics_unchecked.
     Admitted.
     Global Typeclasses Opaque set_topics_unchecked.
     
@@ -1125,7 +1130,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_set_topics_truncating :
-      M.IsAssociatedFunction.Trait Self "set_topics_truncating" set_topics_truncating.
+      M.IsAssociatedFunction.C Self "set_topics_truncating" set_topics_truncating.
     Admitted.
     Global Typeclasses Opaque set_topics_truncating.
     
@@ -1159,7 +1164,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_split : M.IsAssociatedFunction.Trait Self "split" split.
+    Global Instance AssociatedFunction_split : M.IsAssociatedFunction.C Self "split" split.
     Admitted.
     Global Typeclasses Opaque split.
   End Impl_alloy_primitives_log_LogData.
@@ -1824,7 +1829,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1860,7 +1865,7 @@ Module log.
       end.
     
     Global Instance AssociatedFunction_new_unchecked :
-      M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
     Admitted.
     Global Typeclasses Opaque new_unchecked.
     
@@ -1876,7 +1881,14 @@ Module log.
           (Value.StructRecord
             "alloy_primitives::log::Log"
             [
-              ("address", M.read (| M.get_constant "alloy_primitives::bits::address::ZERO" |));
+              ("address",
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "alloy_primitives::bits::address::Address",
+                    "ZERO",
+                    Ty.path "alloy_primitives::bits::address::Address"
+                  |)
+                |));
               ("data",
                 M.call_closure (|
                   Ty.path "alloy_primitives::log::LogData",
@@ -1892,7 +1904,7 @@ Module log.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.C Self "empty" empty.
     Admitted.
     Global Typeclasses Opaque empty.
   End Impl_alloy_primitives_log_Log_alloy_primitives_log_LogData.
@@ -1925,7 +1937,7 @@ Module log.
     
     Global Instance AssociatedFunction_new_from_event_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_from_event_unchecked" (new_from_event_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "new_from_event_unchecked" (new_from_event_unchecked T).
     Admitted.
     Global Typeclasses Opaque new_from_event_unchecked.
     
@@ -2027,7 +2039,7 @@ Module log.
     
     Global Instance AssociatedFunction_new_from_event :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_from_event" (new_from_event T).
+      M.IsAssociatedFunction.C (Self T) "new_from_event" (new_from_event T).
     Admitted.
     Global Typeclasses Opaque new_from_event.
     
@@ -2087,7 +2099,7 @@ Module log.
     
     Global Instance AssociatedFunction_reserialize :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "reserialize" (reserialize T).
+      M.IsAssociatedFunction.C (Self T) "reserialize" (reserialize T).
     Admitted.
     Global Typeclasses Opaque reserialize.
   End Impl_alloy_primitives_log_Log_T.

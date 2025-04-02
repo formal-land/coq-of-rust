@@ -43,7 +43,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -78,7 +78,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_uninit" (new_uninit T).
+      M.IsAssociatedFunction.C (Self T) "new_uninit" (new_uninit T).
     Admitted.
     Global Typeclasses Opaque new_uninit.
     
@@ -113,7 +113,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_zeroed" (new_zeroed T).
+      M.IsAssociatedFunction.C (Self T) "new_zeroed" (new_zeroed T).
     Admitted.
     Global Typeclasses Opaque new_zeroed.
     
@@ -166,7 +166,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_pin :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "pin" (pin T).
+      M.IsAssociatedFunction.C (Self T) "pin" (pin T).
     Admitted.
     Global Typeclasses Opaque pin.
     
@@ -202,7 +202,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+      M.IsAssociatedFunction.C (Self T) "try_new" (try_new T).
     Admitted.
     Global Typeclasses Opaque try_new.
     
@@ -248,7 +248,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit" (try_new_uninit T).
+      M.IsAssociatedFunction.C (Self T) "try_new_uninit" (try_new_uninit T).
     Admitted.
     Global Typeclasses Opaque try_new_uninit.
     
@@ -294,7 +294,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed" (try_new_zeroed T).
+      M.IsAssociatedFunction.C (Self T) "try_new_zeroed" (try_new_zeroed T).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed.
     (*
@@ -323,7 +323,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+      M.IsAssociatedFunction.C (Self T) "from_raw" (from_raw T).
     Admitted.
     Global Typeclasses Opaque from_raw.
     
@@ -364,7 +364,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_from_non_null :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_non_null" (from_non_null T).
+      M.IsAssociatedFunction.C (Self T) "from_non_null" (from_non_null T).
     Admitted.
     Global Typeclasses Opaque from_non_null.
   End Impl_alloc_boxed_Box_T_alloc_alloc_Global.
@@ -458,7 +458,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
     Admitted.
     Global Typeclasses Opaque new_in.
     
@@ -690,7 +690,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_in" (try_new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_in" (try_new_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_in.
     
@@ -788,7 +788,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_in" (new_uninit_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_uninit_in" (new_uninit_in T A).
     Admitted.
     Global Typeclasses Opaque new_uninit_in.
     
@@ -837,7 +837,11 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1128,7 +1132,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_uninit_in.
     
@@ -1226,7 +1230,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_zeroed_in" (new_zeroed_in T A).
     Admitted.
     Global Typeclasses Opaque new_zeroed_in.
     
@@ -1275,7 +1279,11 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1566,7 +1574,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed_in.
     
@@ -1614,7 +1622,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "pin_in" (pin_in T A).
+      M.IsAssociatedFunction.C (Self T A) "pin_in" (pin_in T A).
     Admitted.
     Global Typeclasses Opaque pin_in.
     
@@ -1696,7 +1704,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_boxed_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_boxed_slice" (into_boxed_slice T A).
+      M.IsAssociatedFunction.C (Self T A) "into_boxed_slice" (into_boxed_slice T A).
     Admitted.
     Global Typeclasses Opaque into_boxed_slice.
     
@@ -1717,7 +1725,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_inner" (into_inner T A).
+      M.IsAssociatedFunction.C (Self T A) "into_inner" (into_inner T A).
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
@@ -1752,7 +1760,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_raw_in" (from_raw_in T A).
     Admitted.
     Global Typeclasses Opaque from_raw_in.
     
@@ -1801,7 +1809,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_from_non_null_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_non_null_in" (from_non_null_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_non_null_in" (from_non_null_in T A).
     Admitted.
     Global Typeclasses Opaque from_non_null_in.
     
@@ -1849,7 +1857,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw" (into_raw T A).
     Admitted.
     Global Typeclasses Opaque into_raw.
     
@@ -1896,7 +1904,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_non_null :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_non_null" (into_non_null T A).
+      M.IsAssociatedFunction.C (Self T A) "into_non_null" (into_non_null T A).
     Admitted.
     Global Typeclasses Opaque into_non_null.
     
@@ -2028,10 +2036,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "into_raw_with_allocator"
-        (into_raw_with_allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
     Admitted.
     Global Typeclasses Opaque into_raw_with_allocator.
     
@@ -2099,7 +2104,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_non_null_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "into_non_null_with_allocator"
         (into_non_null_with_allocator T A).
@@ -2167,7 +2172,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_unique :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_unique" (into_unique T A).
+      M.IsAssociatedFunction.C (Self T A) "into_unique" (into_unique T A).
     Admitted.
     Global Typeclasses Opaque into_unique.
     
@@ -2193,7 +2198,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_as_mut_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_mut_ptr" (as_mut_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_mut_ptr" (as_mut_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_mut_ptr.
     
@@ -2219,7 +2224,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_ptr" (as_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -2252,7 +2257,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -2305,7 +2310,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_leak :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "leak" (leak T A).
+      M.IsAssociatedFunction.C (Self T A) "leak" (leak T A).
     Admitted.
     Global Typeclasses Opaque leak.
     
@@ -2347,7 +2352,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_into_pin :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_pin" (into_pin T A).
+      M.IsAssociatedFunction.C (Self T A) "into_pin" (into_pin T A).
     Admitted.
     Global Typeclasses Opaque into_pin.
   End Impl_alloc_boxed_Box_T_A.
@@ -2417,7 +2422,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_uninit_slice" (new_uninit_slice T).
+      M.IsAssociatedFunction.C (Self T) "new_uninit_slice" (new_uninit_slice T).
     Admitted.
     Global Typeclasses Opaque new_uninit_slice.
     
@@ -2479,7 +2484,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+      M.IsAssociatedFunction.C (Self T) "new_zeroed_slice" (new_zeroed_slice T).
     Admitted.
     Global Typeclasses Opaque new_zeroed_slice.
     
@@ -2524,7 +2529,10 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -2868,7 +2876,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit_slice" (try_new_uninit_slice T).
+      M.IsAssociatedFunction.C (Self T) "try_new_uninit_slice" (try_new_uninit_slice T).
     Admitted.
     Global Typeclasses Opaque try_new_uninit_slice.
     
@@ -2913,7 +2921,10 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -3257,7 +3268,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed_slice" (try_new_zeroed_slice T).
+      M.IsAssociatedFunction.C (Self T) "try_new_zeroed_slice" (try_new_zeroed_slice T).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed_slice.
   End Impl_alloc_boxed_Box_slice_T_alloc_alloc_Global.
@@ -3319,7 +3330,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
     Admitted.
     Global Typeclasses Opaque new_uninit_slice_in.
     
@@ -3376,7 +3387,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
     Admitted.
     Global Typeclasses Opaque new_zeroed_slice_in.
     
@@ -3425,7 +3436,10 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -3755,10 +3769,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "try_new_uninit_slice_in"
-        (try_new_uninit_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_uninit_slice_in" (try_new_uninit_slice_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_uninit_slice_in.
     
@@ -3807,7 +3818,10 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -4137,10 +4151,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_try_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "try_new_zeroed_slice_in"
-        (try_new_zeroed_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_zeroed_slice_in" (try_new_zeroed_slice_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed_slice_in.
   End Impl_alloc_boxed_Box_slice_T_A.
@@ -4219,7 +4230,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+      M.IsAssociatedFunction.C (Self T A) "assume_init" (assume_init T A).
     Admitted.
     Global Typeclasses Opaque assume_init.
     
@@ -4276,7 +4287,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_write :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "write" (write T A).
+      M.IsAssociatedFunction.C (Self T A) "write" (write T A).
     Admitted.
     Global Typeclasses Opaque write.
   End Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -4380,7 +4391,7 @@ Module boxed.
     
     Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+      M.IsAssociatedFunction.C (Self T A) "assume_init" (assume_init T A).
     Admitted.
     Global Typeclasses Opaque assume_init.
   End Impl_alloc_boxed_Box_slice_core_mem_maybe_uninit_MaybeUninit_T_A.

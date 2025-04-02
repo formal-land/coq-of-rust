@@ -906,166 +906,210 @@ Module signed.
       
       (*     pub(crate) const MASK: u64 = ruint::mask(BITS); *)
       (* Ty.path "u64" *)
-      Definition value_MASK (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_MASK
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "u64",
-                M.get_function (| "ruint::mask", [], [] |),
-                [ M.read (| M.get_constant "alloy_primitives::signed::int::BITS" |) ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (| Ty.path "u64", M.get_function (| "ruint::mask", [], [] |), [ BITS ] |)
+          |))).
       
       Global Instance AssociatedConstant_value_MASK :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MASK" (value_MASK BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "MASK" (value_MASK BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_MASK.
       
       (*     pub(crate) const SIGN_BIT: u64 = sign_bit(BITS); *)
       (* Ty.path "u64" *)
-      Definition value_SIGN_BIT (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_SIGN_BIT
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "u64",
-                M.get_function (| "alloy_primitives::signed::utils::sign_bit", [], [] |),
-                [ M.read (| M.get_constant "alloy_primitives::signed::int::BITS" |) ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "u64",
+              M.get_function (| "alloy_primitives::signed::utils::sign_bit", [], [] |),
+              [ BITS ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_SIGN_BIT :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_SIGN_BIT" (value_SIGN_BIT BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "SIGN_BIT" (value_SIGN_BIT BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_SIGN_BIT.
       
       (*     pub const BITS: usize = BITS; *)
       (* Ty.path "usize" *)
-      Definition value_BITS (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_BITS
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::signed::int::BITS")).
+        ltac:(M.monadic (M.alloc (| BITS |))).
       
       Global Instance AssociatedConstant_value_BITS :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_BITS" (value_BITS BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "BITS" (value_BITS BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
       (*     pub const BYTES: usize = Uint::<BITS, LIMBS>::BYTES; *)
       (* Ty.path "usize" *)
-      Definition value_BYTES (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_BYTES
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run ltac:(M.monadic (M.get_constant "ruint::bytes::BYTES")).
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+            "BYTES",
+            Ty.path "usize"
+          |))).
       
       Global Instance AssociatedConstant_value_BYTES :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_BYTES" (value_BYTES BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "BYTES" (value_BYTES BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_BYTES.
       
       (*     pub const MIN: Self = min(); *)
       (* Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] *)
-      Definition value_MIN (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_MIN
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                M.get_function (| "alloy_primitives::signed::utils::min", [ BITS; LIMBS ], [] |),
-                []
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+              M.get_function (| "alloy_primitives::signed::utils::min", [ BITS; LIMBS ], [] |),
+              []
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_MIN :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MIN" (value_MIN BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "MIN" (value_MIN BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*     pub const MAX: Self = max(); *)
       (* Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] *)
-      Definition value_MAX (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_MAX
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                M.get_function (| "alloy_primitives::signed::utils::max", [ BITS; LIMBS ], [] |),
-                []
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+              M.get_function (| "alloy_primitives::signed::utils::max", [ BITS; LIMBS ], [] |),
+              []
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_MAX :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MAX" (value_MAX BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "MAX" (value_MAX BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
       (*     pub const ZERO: Self = zero(); *)
       (* Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] *)
-      Definition value_ZERO (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_ZERO
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                M.get_function (| "alloy_primitives::signed::utils::zero", [ BITS; LIMBS ], [] |),
-                []
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+              M.get_function (| "alloy_primitives::signed::utils::zero", [ BITS; LIMBS ], [] |),
+              []
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_ZERO :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_ZERO" (value_ZERO BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "ZERO" (value_ZERO BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_ZERO.
       
       (*     pub const ONE: Self = one(); *)
       (* Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] *)
-      Definition value_ONE (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_ONE
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                M.get_function (| "alloy_primitives::signed::utils::one", [ BITS; LIMBS ], [] |),
-                []
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+              M.get_function (| "alloy_primitives::signed::utils::one", [ BITS; LIMBS ], [] |),
+              []
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_ONE :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_ONE" (value_ONE BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "ONE" (value_ONE BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_ONE.
       
       (*     pub const MINUS_ONE: Self = Self(Uint::<BITS, LIMBS>::MAX); *)
       (* Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] *)
-      Definition value_MINUS_ONE (BITS LIMBS : Value.t) : Value.t :=
+      Definition value_MINUS_ONE
+          (BITS LIMBS : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "alloy_primitives::signed::int::Signed"
-                [ M.read (| M.get_constant "ruint::MAX" |) ]
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "alloy_primitives::signed::int::Signed"
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                    "MAX",
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                  |)
+                |)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_MINUS_ONE :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedConstant.Trait
-          (Self BITS LIMBS)
-          "value_MINUS_ONE"
-          (value_MINUS_ONE BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "MINUS_ONE" (value_MINUS_ONE BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque value_MINUS_ONE.
       
@@ -1091,7 +1135,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_raw :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_raw" (from_raw BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_raw" (from_raw BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_raw.
       
@@ -1177,7 +1221,7 @@ Module signed.
       
       Global Instance AssociatedFunction_unchecked_from :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "unchecked_from" (unchecked_from BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "unchecked_from" (unchecked_from BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque unchecked_from.
       
@@ -1258,7 +1302,7 @@ Module signed.
       
       Global Instance AssociatedFunction_unchecked_into :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "unchecked_into" (unchecked_into BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "unchecked_into" (unchecked_into BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque unchecked_into.
       
@@ -1290,7 +1334,7 @@ Module signed.
       
       Global Instance AssociatedFunction_into_raw :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "into_raw" (into_raw BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "into_raw" (into_raw BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque into_raw.
       
@@ -1392,8 +1436,14 @@ Module signed.
                                           BinOp.ge (|
                                             M.read (| M.deref (| M.read (| limb |) |) |),
                                             M.read (|
-                                              M.get_constant
-                                                "alloy_primitives::signed::int::SIGN_BIT"
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [],
+                                                "SIGN_BIT",
+                                                Ty.path "u64"
+                                              |)
                                             |)
                                           |)
                                         |)) in
@@ -1429,7 +1479,7 @@ Module signed.
       
       Global Instance AssociatedFunction_sign :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "sign" (sign BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "sign" (sign BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque sign.
       
@@ -1462,12 +1512,7 @@ Module signed.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.eq (|
-                              M.read (| M.get_constant "alloy_primitives::signed::int::BITS" |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)) in
+                          (M.alloc (| BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool false |)));
                   fun γ =>
@@ -1516,7 +1561,7 @@ Module signed.
       
       Global Instance AssociatedFunction_is_odd :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "is_odd" (is_odd BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "is_odd" (is_odd BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque is_odd.
       
@@ -1550,7 +1595,7 @@ Module signed.
       
       Global Instance AssociatedFunction_const_eq :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "const_eq" (const_eq BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "const_eq" (const_eq BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque const_eq.
       
@@ -1585,7 +1630,17 @@ Module signed.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.get_constant "alloy_primitives::signed::int::ZERO"
+                      get_associated_constant (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [],
+                        "ZERO",
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      |)
                     |)
                   |)
                 |)
@@ -1596,7 +1651,7 @@ Module signed.
       
       Global Instance AssociatedFunction_is_zero :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "is_zero" (is_zero BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "is_zero" (is_zero BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque is_zero.
       
@@ -1667,7 +1722,7 @@ Module signed.
       
       Global Instance AssociatedFunction_is_positive :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "is_positive" (is_positive BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "is_positive" (is_positive BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -1720,7 +1775,7 @@ Module signed.
       
       Global Instance AssociatedFunction_is_negative :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "is_negative" (is_negative BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "is_negative" (is_negative BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -1764,7 +1819,7 @@ Module signed.
       
       Global Instance AssociatedFunction_count_ones :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "count_ones" (count_ones BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "count_ones" (count_ones BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -1808,7 +1863,7 @@ Module signed.
       
       Global Instance AssociatedFunction_count_zeros :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "count_zeros" (count_zeros BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "count_zeros" (count_zeros BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque count_zeros.
       
@@ -1852,7 +1907,7 @@ Module signed.
       
       Global Instance AssociatedFunction_leading_zeros :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "leading_zeros" (leading_zeros BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "leading_zeros" (leading_zeros BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -1896,7 +1951,7 @@ Module signed.
       
       Global Instance AssociatedFunction_trailing_zeros :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "trailing_zeros" (trailing_zeros BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "trailing_zeros" (trailing_zeros BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -1940,7 +1995,7 @@ Module signed.
       
       Global Instance AssociatedFunction_trailing_ones :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "trailing_ones" (trailing_ones BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "trailing_ones" (trailing_ones BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque trailing_ones.
       
@@ -1986,7 +2041,7 @@ Module signed.
       
       Global Instance AssociatedFunction_bit :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "bit" (bit BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "bit" (bit BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque bit.
       
@@ -2032,7 +2087,7 @@ Module signed.
       
       Global Instance AssociatedFunction_byte :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "byte" (byte BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "byte" (byte BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque byte.
       
@@ -2174,7 +2229,7 @@ Module signed.
       
       Global Instance AssociatedFunction_bits :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "bits" (bits BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "bits" (bits BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque bits.
       
@@ -2305,7 +2360,17 @@ Module signed.
                             M.borrow (| Pointer.Kind.Ref, value |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.get_constant "alloy_primitives::signed::int::ZERO"
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "ZERO",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              |)
                             |)
                           ]
                         |)))
@@ -2318,7 +2383,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_from_sign_and_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "overflowing_from_sign_and_abs"
           (overflowing_from_sign_and_abs BITS LIMBS).
@@ -2415,7 +2480,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_from_sign_and_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "checked_from_sign_and_abs"
           (checked_from_sign_and_abs BITS LIMBS).
@@ -2814,7 +2879,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_dec_str :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_dec_str" (from_dec_str BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_dec_str" (from_dec_str BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_dec_str.
       
@@ -2971,7 +3036,7 @@ Module signed.
       
       Global Instance AssociatedFunction_to_dec_string :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_dec_string" (to_dec_string BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "to_dec_string" (to_dec_string BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque to_dec_string.
       
@@ -3463,7 +3528,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_hex_str :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_hex_str" (from_hex_str BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_hex_str" (from_hex_str BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_hex_str.
       
@@ -3620,7 +3685,7 @@ Module signed.
       
       Global Instance AssociatedFunction_to_hex_string :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_hex_string" (to_hex_string BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "to_hex_string" (to_hex_string BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque to_hex_string.
       
@@ -3713,7 +3778,7 @@ Module signed.
       
       Global Instance AssociatedFunction_into_sign_and_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "into_sign_and_abs"
           (into_sign_and_abs BITS LIMBS).
@@ -3760,7 +3825,7 @@ Module signed.
       
       Global Instance AssociatedFunction_to_be_bytes :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_be_bytes" (to_be_bytes BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "to_be_bytes" (to_be_bytes BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque to_be_bytes.
       
@@ -3804,7 +3869,7 @@ Module signed.
       
       Global Instance AssociatedFunction_to_le_bytes :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_le_bytes" (to_le_bytes BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "to_le_bytes" (to_le_bytes BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque to_le_bytes.
       
@@ -3843,7 +3908,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_be_bytes :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_be_bytes" (from_be_bytes BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_be_bytes" (from_be_bytes BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_be_bytes.
       
@@ -3882,7 +3947,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_le_bytes :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_le_bytes" (from_le_bytes BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_le_bytes" (from_le_bytes BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_le_bytes.
       
@@ -3943,7 +4008,7 @@ Module signed.
       
       Global Instance AssociatedFunction_try_from_be_slice :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "try_from_be_slice"
           (try_from_be_slice BITS LIMBS).
@@ -4007,7 +4072,7 @@ Module signed.
       
       Global Instance AssociatedFunction_try_from_le_slice :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "try_from_le_slice"
           (try_from_le_slice BITS LIMBS).
@@ -4062,7 +4127,7 @@ Module signed.
       
       Global Instance AssociatedFunction_as_limbs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_limbs" (as_limbs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "as_limbs" (as_limbs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque as_limbs.
       
@@ -4105,7 +4170,7 @@ Module signed.
       
       Global Instance AssociatedFunction_into_limbs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "into_limbs" (into_limbs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "into_limbs" (into_limbs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque into_limbs.
       
@@ -4144,7 +4209,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_limbs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_limbs" (from_limbs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_limbs" (from_limbs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_limbs.
       
@@ -4308,7 +4373,7 @@ Module signed.
       
       Global Instance AssociatedFunction_from_base_be :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_base_be" (from_base_be BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "from_base_be" (from_base_be BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque from_base_be.
     End Impl_alloy_primitives_signed_int_Signed_BITS_LIMBS.

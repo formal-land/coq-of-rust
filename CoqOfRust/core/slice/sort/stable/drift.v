@@ -185,12 +185,16 @@ Module slice.
                                         M.read (| len |),
                                         BinOp.Wrap.mul (|
                                           M.read (|
-                                            M.get_constant
-                                              "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
+                                            get_constant (|
+                                              "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN",
+                                              Ty.path "usize"
+                                            |)
                                           |),
                                           M.read (|
-                                            M.get_constant
-                                              "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
+                                            get_constant (|
+                                              "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN",
+                                              Ty.path "usize"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -213,8 +217,10 @@ Module slice.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
+                                        get_constant (|
+                                          "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1018,18 +1024,24 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_sort :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::sort" sort.
+          M.IsFunction.C "core::slice::sort::stable::drift::sort" sort.
         Admitted.
         Global Typeclasses Opaque sort.
         
         Module sort.
-          Definition value_MIN_SQRT_RUN_LEN : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+          Definition value_MIN_SQRT_RUN_LEN
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
           
-          Axiom Constant_value_MIN_SQRT_RUN_LEN :
-            (M.get_constant "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN") =
+          Global Instance Instance_IsConstant_value_MIN_SQRT_RUN_LEN :
+            M.IsFunction.C
+              "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
               value_MIN_SQRT_RUN_LEN.
-          Global Hint Rewrite Constant_value_MIN_SQRT_RUN_LEN : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_MIN_SQRT_RUN_LEN.
         End sort.
         
         (*
@@ -1062,8 +1074,20 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 BinOp.gt (|
-                                  M.read (| M.get_constant "core::num::BITS" |),
-                                  M.read (| M.get_constant "core::num::BITS" |)
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "usize",
+                                      "BITS",
+                                      Ty.path "u32"
+                                    |)
+                                  |),
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u64",
+                                      "BITS",
+                                      Ty.path "u32"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -1123,7 +1147,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_merge_tree_scale_factor :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::sort::stable::drift::merge_tree_scale_factor"
             merge_tree_scale_factor.
         Admitted.
@@ -1177,7 +1201,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_merge_tree_depth :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
+          M.IsFunction.C "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
         Admitted.
         Global Typeclasses Opaque merge_tree_depth.
         
@@ -1233,7 +1257,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_sqrt_approx :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
+          M.IsFunction.C "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
         Admitted.
         Global Typeclasses Opaque sqrt_approx.
         
@@ -1624,7 +1648,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_logical_merge :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::logical_merge" logical_merge.
+          M.IsFunction.C "core::slice::sort::stable::drift::logical_merge" logical_merge.
         Admitted.
         Global Typeclasses Opaque logical_merge.
         
@@ -2010,7 +2034,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_create_run :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::create_run" create_run.
+          M.IsFunction.C "core::slice::sort::stable::drift::create_run" create_run.
         Admitted.
         Global Typeclasses Opaque create_run.
         
@@ -2082,7 +2106,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_stable_quicksort :
-          M.IsFunction.Trait "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
+          M.IsFunction.C "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
         Admitted.
         Global Typeclasses Opaque stable_quicksort.
         
@@ -2158,7 +2182,7 @@ Module slice.
             end.
           
           Global Instance AssociatedFunction_new_sorted :
-            M.IsAssociatedFunction.Trait Self "new_sorted" new_sorted.
+            M.IsAssociatedFunction.C Self "new_sorted" new_sorted.
           Admitted.
           Global Typeclasses Opaque new_sorted.
           
@@ -2179,7 +2203,7 @@ Module slice.
             end.
           
           Global Instance AssociatedFunction_new_unsorted :
-            M.IsAssociatedFunction.Trait Self "new_unsorted" new_unsorted.
+            M.IsAssociatedFunction.C Self "new_unsorted" new_unsorted.
           Admitted.
           Global Typeclasses Opaque new_unsorted.
           
@@ -2208,8 +2232,7 @@ Module slice.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Global Instance AssociatedFunction_sorted :
-            M.IsAssociatedFunction.Trait Self "sorted" sorted.
+          Global Instance AssociatedFunction_sorted : M.IsAssociatedFunction.C Self "sorted" sorted.
           Admitted.
           Global Typeclasses Opaque sorted.
           
@@ -2236,7 +2259,7 @@ Module slice.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+          Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
           Admitted.
           Global Typeclasses Opaque len.
         End Impl_core_slice_sort_stable_drift_DriftsortRun.

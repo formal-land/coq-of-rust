@@ -2,21 +2,30 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module sync.
-  Definition value_MAX_REFCOUNT : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (| M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)) |))).
+  Definition value_MAX_REFCOUNT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.cast
+          (Ty.path "usize")
+          (M.read (| get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |) |))
+      |))).
   
-  Axiom Constant_value_MAX_REFCOUNT :
-    (M.get_constant "alloc::sync::MAX_REFCOUNT") = value_MAX_REFCOUNT.
-  Global Hint Rewrite Constant_value_MAX_REFCOUNT : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_REFCOUNT :
+    M.IsFunction.C "alloc::sync::MAX_REFCOUNT" value_MAX_REFCOUNT.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_REFCOUNT.
   
-  Definition value_INTERNAL_OVERFLOW_ERROR : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Arc counter overflow" |) |))).
+  Definition value_INTERNAL_OVERFLOW_ERROR
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "Arc counter overflow" |) |))).
   
-  Axiom Constant_value_INTERNAL_OVERFLOW_ERROR :
-    (M.get_constant "alloc::sync::INTERNAL_OVERFLOW_ERROR") = value_INTERNAL_OVERFLOW_ERROR.
-  Global Hint Rewrite Constant_value_INTERNAL_OVERFLOW_ERROR : constant_rewrites.
+  Global Instance Instance_IsConstant_value_INTERNAL_OVERFLOW_ERROR :
+    M.IsFunction.C "alloc::sync::INTERNAL_OVERFLOW_ERROR" value_INTERNAL_OVERFLOW_ERROR.
+  Admitted.
+  Global Typeclasses Opaque value_INTERNAL_OVERFLOW_ERROR.
   
   (* StructRecord
     {
@@ -136,7 +145,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_inner" (from_inner T).
+      M.IsAssociatedFunction.C (Self T) "from_inner" (from_inner T).
     Admitted.
     Global Typeclasses Opaque from_inner.
     
@@ -166,7 +175,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_ptr" (from_ptr T).
+      M.IsAssociatedFunction.C (Self T) "from_ptr" (from_ptr T).
     Admitted.
     Global Typeclasses Opaque from_ptr.
     (*
@@ -316,7 +325,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -349,7 +358,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_cyclic :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_cyclic" (new_cyclic T).
+      M.IsAssociatedFunction.C (Self T) "new_cyclic" (new_cyclic T).
     Admitted.
     Global Typeclasses Opaque new_cyclic.
     
@@ -524,7 +533,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_uninit" (new_uninit T).
+      M.IsAssociatedFunction.C (Self T) "new_uninit" (new_uninit T).
     Admitted.
     Global Typeclasses Opaque new_uninit.
     
@@ -699,7 +708,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_zeroed" (new_zeroed T).
+      M.IsAssociatedFunction.C (Self T) "new_zeroed" (new_zeroed T).
     Admitted.
     Global Typeclasses Opaque new_zeroed.
     
@@ -746,7 +755,7 @@ Module sync.
     
     Global Instance AssociatedFunction_pin :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "pin" (pin T).
+      M.IsAssociatedFunction.C (Self T) "pin" (pin T).
     Admitted.
     Global Typeclasses Opaque pin.
     
@@ -949,7 +958,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_pin :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_pin" (try_pin T).
+      M.IsAssociatedFunction.C (Self T) "try_pin" (try_pin T).
     Admitted.
     Global Typeclasses Opaque try_pin.
     
@@ -1243,7 +1252,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+      M.IsAssociatedFunction.C (Self T) "try_new" (try_new T).
     Admitted.
     Global Typeclasses Opaque try_new.
     
@@ -1632,7 +1641,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit" (try_new_uninit T).
+      M.IsAssociatedFunction.C (Self T) "try_new_uninit" (try_new_uninit T).
     Admitted.
     Global Typeclasses Opaque try_new_uninit.
     
@@ -2021,7 +2030,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed" (try_new_zeroed T).
+      M.IsAssociatedFunction.C (Self T) "try_new_zeroed" (try_new_zeroed T).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed.
     (*
@@ -2050,7 +2059,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+      M.IsAssociatedFunction.C (Self T) "from_raw" (from_raw T).
     Admitted.
     Global Typeclasses Opaque from_raw.
     
@@ -2085,7 +2094,7 @@ Module sync.
     
     Global Instance AssociatedFunction_increment_strong_count :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "increment_strong_count" (increment_strong_count T).
+      M.IsAssociatedFunction.C (Self T) "increment_strong_count" (increment_strong_count T).
     Admitted.
     Global Typeclasses Opaque increment_strong_count.
     
@@ -2120,7 +2129,7 @@ Module sync.
     
     Global Instance AssociatedFunction_decrement_strong_count :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "decrement_strong_count" (decrement_strong_count T).
+      M.IsAssociatedFunction.C (Self T) "decrement_strong_count" (decrement_strong_count T).
     Admitted.
     Global Typeclasses Opaque decrement_strong_count.
     (*
@@ -2276,7 +2285,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocate_for_layout :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "allocate_for_layout" (allocate_for_layout T).
+      M.IsAssociatedFunction.C (Self T) "allocate_for_layout" (allocate_for_layout T).
     Admitted.
     Global Typeclasses Opaque allocate_for_layout.
     
@@ -2500,7 +2509,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_allocate_for_layout :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_allocate_for_layout" (try_allocate_for_layout T).
+      M.IsAssociatedFunction.C (Self T) "try_allocate_for_layout" (try_allocate_for_layout T).
     Admitted.
     Global Typeclasses Opaque try_allocate_for_layout.
     
@@ -2800,7 +2809,7 @@ Module sync.
     
     Global Instance AssociatedFunction_initialize_arcinner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "initialize_arcinner" (initialize_arcinner T).
+      M.IsAssociatedFunction.C (Self T) "initialize_arcinner" (initialize_arcinner T).
     Admitted.
     Global Typeclasses Opaque initialize_arcinner.
   End Impl_alloc_sync_Arc_T_alloc_alloc_Global.
@@ -2926,7 +2935,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_inner_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "into_inner_with_allocator"
         (into_inner_with_allocator T A).
@@ -2962,7 +2971,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_inner_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_inner_in" (from_inner_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_inner_in" (from_inner_in T A).
     Admitted.
     Global Typeclasses Opaque from_inner_in.
     
@@ -3011,7 +3020,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_ptr_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_ptr_in" (from_ptr_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_ptr_in" (from_ptr_in T A).
     Admitted.
     Global Typeclasses Opaque from_ptr_in.
     (*
@@ -3167,7 +3176,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
     Admitted.
     Global Typeclasses Opaque new_in.
     
@@ -3341,7 +3350,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_in" (new_uninit_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_uninit_in" (new_uninit_in T A).
     Admitted.
     Global Typeclasses Opaque new_uninit_in.
     
@@ -3515,7 +3524,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_zeroed_in" (new_zeroed_in T A).
     Admitted.
     Global Typeclasses Opaque new_zeroed_in.
     
@@ -4112,7 +4121,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_cyclic_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_cyclic_in" (new_cyclic_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_cyclic_in" (new_cyclic_in T A).
     Admitted.
     Global Typeclasses Opaque new_cyclic_in.
     
@@ -4163,7 +4172,7 @@ Module sync.
     
     Global Instance AssociatedFunction_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "pin_in" (pin_in T A).
+      M.IsAssociatedFunction.C (Self T A) "pin_in" (pin_in T A).
     Admitted.
     Global Typeclasses Opaque pin_in.
     
@@ -4340,7 +4349,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_pin_in" (try_pin_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_pin_in" (try_pin_in T A).
     Admitted.
     Global Typeclasses Opaque try_pin_in.
     
@@ -4619,7 +4628,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_in" (try_new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_in" (try_new_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_in.
     
@@ -5000,7 +5009,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_uninit_in.
     
@@ -5381,7 +5390,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
     Admitted.
     Global Typeclasses Opaque try_new_zeroed_in.
     
@@ -5701,7 +5710,7 @@ Module sync.
     
     Global Instance AssociatedFunction_try_unwrap :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_unwrap" (try_unwrap T A).
+      M.IsAssociatedFunction.C (Self T A) "try_unwrap" (try_unwrap T A).
     Admitted.
     Global Typeclasses Opaque try_unwrap.
     
@@ -6025,7 +6034,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_inner" (into_inner T A).
+      M.IsAssociatedFunction.C (Self T A) "into_inner" (into_inner T A).
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
@@ -6057,7 +6066,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -6145,7 +6154,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw" (into_raw T A).
     Admitted.
     Global Typeclasses Opaque into_raw.
     
@@ -6285,10 +6294,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "into_raw_with_allocator"
-        (into_raw_with_allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
     Admitted.
     Global Typeclasses Opaque into_raw_with_allocator.
     
@@ -6358,7 +6364,7 @@ Module sync.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_ptr" (as_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -6430,7 +6436,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_raw_in" (from_raw_in T A).
     Admitted.
     Global Typeclasses Opaque from_raw_in.
     
@@ -6536,7 +6542,13 @@ Module sync.
                                         (M.alloc (|
                                           BinOp.eq (|
                                             M.read (| cur |),
-                                            M.read (| M.get_constant "core::num::MAX" |)
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "usize",
+                                                "MAX",
+                                                Ty.path "usize"
+                                              |)
+                                            |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -6635,7 +6647,10 @@ Module sync.
                                             BinOp.le (|
                                               M.read (| cur |),
                                               M.read (|
-                                                M.get_constant "alloc::sync::MAX_REFCOUNT"
+                                                get_constant (|
+                                                  "alloc::sync::MAX_REFCOUNT",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -6661,8 +6676,10 @@ Module sync.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant
-                                                    "alloc::sync::INTERNAL_OVERFLOW_ERROR"
+                                                  get_constant (|
+                                                    "alloc::sync::INTERNAL_OVERFLOW_ERROR",
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -6919,7 +6936,7 @@ Module sync.
     
     Global Instance AssociatedFunction_downgrade :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "downgrade" (downgrade T A).
+      M.IsAssociatedFunction.C (Self T A) "downgrade" (downgrade T A).
     Admitted.
     Global Typeclasses Opaque downgrade.
     
@@ -6986,7 +7003,9 @@ Module sync.
                         (M.alloc (|
                           BinOp.eq (|
                             M.read (| cnt |),
-                            M.read (| M.get_constant "core::num::MAX" |)
+                            M.read (|
+                              get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                            |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7004,7 +7023,7 @@ Module sync.
     
     Global Instance AssociatedFunction_weak_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "weak_count" (weak_count T A).
+      M.IsAssociatedFunction.C (Self T A) "weak_count" (weak_count T A).
     Admitted.
     Global Typeclasses Opaque weak_count.
     
@@ -7063,7 +7082,7 @@ Module sync.
     
     Global Instance AssociatedFunction_strong_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "strong_count" (strong_count T A).
+      M.IsAssociatedFunction.C (Self T A) "strong_count" (strong_count T A).
     Admitted.
     Global Typeclasses Opaque strong_count.
     
@@ -7158,7 +7177,7 @@ Module sync.
     
     Global Instance AssociatedFunction_increment_strong_count_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "increment_strong_count_in"
         (increment_strong_count_in T A).
@@ -7213,7 +7232,7 @@ Module sync.
     
     Global Instance AssociatedFunction_decrement_strong_count_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "decrement_strong_count_in"
         (decrement_strong_count_in T A).
@@ -7268,7 +7287,7 @@ Module sync.
     
     Global Instance AssociatedFunction_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "inner" (inner T A).
+      M.IsAssociatedFunction.C (Self T A) "inner" (inner T A).
     Admitted.
     Global Typeclasses Opaque inner.
     
@@ -7373,7 +7392,7 @@ Module sync.
     
     Global Instance AssociatedFunction_drop_slow :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "drop_slow" (drop_slow T A).
+      M.IsAssociatedFunction.C (Self T A) "drop_slow" (drop_slow T A).
     Admitted.
     Global Typeclasses Opaque drop_slow.
     
@@ -7459,7 +7478,7 @@ Module sync.
     
     Global Instance AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "ptr_eq" (ptr_eq T A).
+      M.IsAssociatedFunction.C (Self T A) "ptr_eq" (ptr_eq T A).
     Admitted.
     Global Typeclasses Opaque ptr_eq.
     (*
@@ -7632,7 +7651,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocate_for_ptr_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocate_for_ptr_in" (allocate_for_ptr_in T A).
+      M.IsAssociatedFunction.C (Self T A) "allocate_for_ptr_in" (allocate_for_ptr_in T A).
     Admitted.
     Global Typeclasses Opaque allocate_for_ptr_in.
     
@@ -7874,7 +7893,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_box_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_box_in" (from_box_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_box_in" (from_box_in T A).
     Admitted.
     Global Typeclasses Opaque from_box_in.
     (*
@@ -8618,7 +8637,7 @@ Module sync.
     
     Global Instance AssociatedFunction_make_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "make_mut" (make_mut T A).
+      M.IsAssociatedFunction.C (Self T A) "make_mut" (make_mut T A).
     Admitted.
     Global Typeclasses Opaque make_mut.
     (*
@@ -8721,7 +8740,7 @@ Module sync.
     
     Global Instance AssociatedFunction_unwrap_or_clone :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "unwrap_or_clone" (unwrap_or_clone T A).
+      M.IsAssociatedFunction.C (Self T A) "unwrap_or_clone" (unwrap_or_clone T A).
     Admitted.
     Global Typeclasses Opaque unwrap_or_clone.
     (*
@@ -8806,7 +8825,7 @@ Module sync.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "get_mut" (get_mut T A).
+      M.IsAssociatedFunction.C (Self T A) "get_mut" (get_mut T A).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -8881,7 +8900,7 @@ Module sync.
     
     Global Instance AssociatedFunction_get_mut_unchecked :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "get_mut_unchecked" (get_mut_unchecked T A).
+      M.IsAssociatedFunction.C (Self T A) "get_mut_unchecked" (get_mut_unchecked T A).
     Admitted.
     Global Typeclasses Opaque get_mut_unchecked.
     
@@ -8986,7 +9005,13 @@ Module sync.
                                         |)
                                       |);
                                       Value.Integer IntegerKind.Usize 1;
-                                      M.read (| M.get_constant "core::num::MAX" |);
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "usize",
+                                          "MAX",
+                                          Ty.path "usize"
+                                        |)
+                                      |);
                                       Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                       Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                     ]
@@ -9095,7 +9120,7 @@ Module sync.
     
     Global Instance AssociatedFunction_is_unique :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "is_unique" (is_unique T A).
+      M.IsAssociatedFunction.C (Self T A) "is_unique" (is_unique T A).
     Admitted.
     Global Typeclasses Opaque is_unique.
   End Impl_alloc_sync_Arc_T_A.
@@ -9332,9 +9357,7 @@ Module sync.
     end.
   
   Global Instance Instance_IsFunction_arcinner_layout_for_value_layout :
-    M.IsFunction.Trait
-      "alloc::sync::arcinner_layout_for_value_layout"
-      arcinner_layout_for_value_layout.
+    M.IsFunction.C "alloc::sync::arcinner_layout_for_value_layout" arcinner_layout_for_value_layout.
   Admitted.
   Global Typeclasses Opaque arcinner_layout_for_value_layout.
   
@@ -9455,7 +9478,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_uninit_slice" (new_uninit_slice T).
+      M.IsAssociatedFunction.C (Self T) "new_uninit_slice" (new_uninit_slice T).
     Admitted.
     Global Typeclasses Opaque new_uninit_slice.
     
@@ -9746,7 +9769,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+      M.IsAssociatedFunction.C (Self T) "new_zeroed_slice" (new_zeroed_slice T).
     Admitted.
     Global Typeclasses Opaque new_zeroed_slice.
     (*
@@ -9974,7 +9997,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocate_for_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "allocate_for_slice" (allocate_for_slice T).
+      M.IsAssociatedFunction.C (Self T) "allocate_for_slice" (allocate_for_slice T).
     Admitted.
     Global Typeclasses Opaque allocate_for_slice.
     
@@ -10108,7 +10131,7 @@ Module sync.
     
     Global Instance AssociatedFunction_copy_from_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "copy_from_slice" (copy_from_slice T).
+      M.IsAssociatedFunction.C (Self T) "copy_from_slice" (copy_from_slice T).
     Admitted.
     Global Typeclasses Opaque copy_from_slice.
     
@@ -10449,7 +10472,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_iter_exact :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_iter_exact" (from_iter_exact T).
+      M.IsAssociatedFunction.C (Self T) "from_iter_exact" (from_iter_exact T).
     Admitted.
     Global Typeclasses Opaque from_iter_exact.
   End Impl_alloc_sync_Arc_slice_T_alloc_alloc_Global.
@@ -10548,7 +10571,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
     Admitted.
     Global Typeclasses Opaque new_uninit_slice_in.
     
@@ -10846,7 +10869,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
     Admitted.
     Global Typeclasses Opaque new_zeroed_slice_in.
     (*
@@ -11075,7 +11098,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocate_for_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocate_for_slice_in" (allocate_for_slice_in T A).
+      M.IsAssociatedFunction.C (Self T A) "allocate_for_slice_in" (allocate_for_slice_in T A).
     Admitted.
     Global Typeclasses Opaque allocate_for_slice_in.
   End Impl_alloc_sync_Arc_slice_T_A.
@@ -11184,7 +11207,7 @@ Module sync.
     
     Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+      M.IsAssociatedFunction.C (Self T A) "assume_init" (assume_init T A).
     Admitted.
     Global Typeclasses Opaque assume_init.
   End Impl_alloc_sync_Arc_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -11347,7 +11370,7 @@ Module sync.
     
     Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+      M.IsAssociatedFunction.C (Self T A) "assume_init" (assume_init T A).
     Admitted.
     Global Typeclasses Opaque assume_init.
   End Impl_alloc_sync_Arc_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -11590,7 +11613,9 @@ Module sync.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| old_size |),
-                              M.read (| M.get_constant "alloc::sync::MAX_REFCOUNT" |)
+                              M.read (|
+                                get_constant (| "alloc::sync::MAX_REFCOUNT", Ty.path "usize" |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11995,8 +12020,16 @@ Module sync.
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.deref (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "alloc::sync::STATIC_INNER_SLICE"
+                                                              get_constant (|
+                                                                "alloc::sync::STATIC_INNER_SLICE",
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "alloc::sync::SliceArcInnerForStatic"
+                                                                  ]
+                                                              |)
                                                             |)
                                                           |),
                                                           "alloc::sync::SliceArcInnerForStatic",
@@ -12321,7 +12354,7 @@ Module sync.
     
     Global Instance AssociatedFunction_downcast :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+      M.IsAssociatedFunction.C (Self A) "downcast" (downcast A).
     Admitted.
     Global Typeclasses Opaque downcast.
     
@@ -12449,7 +12482,7 @@ Module sync.
     
     Global Instance AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+      M.IsAssociatedFunction.C (Self A) "downcast_unchecked" (downcast_unchecked A).
     Admitted.
     Global Typeclasses Opaque downcast_unchecked.
   End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
@@ -12502,7 +12535,11 @@ Module sync.
                         [],
                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant "core::num::MAX" |) ]
+                      [
+                        M.read (|
+                          get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                        |)
+                      ]
                     |)
                   ]
                 |));
@@ -12513,7 +12550,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     (*
@@ -12542,7 +12579,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+      M.IsAssociatedFunction.C (Self T) "from_raw" (from_raw T).
     Admitted.
     Global Typeclasses Opaque from_raw.
   End Impl_alloc_sync_Weak_T_alloc_alloc_Global.
@@ -12595,7 +12632,11 @@ Module sync.
                         [],
                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant "core::num::MAX" |) ]
+                      [
+                        M.read (|
+                          get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                        |)
+                      ]
                     |)
                   ]
                 |));
@@ -12606,7 +12647,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
     Admitted.
     Global Typeclasses Opaque new_in.
     (*
@@ -12638,7 +12679,7 @@ Module sync.
     
     Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -12741,7 +12782,7 @@ Module sync.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_ptr" (as_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -12818,7 +12859,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw" (into_raw T A).
     Admitted.
     Global Typeclasses Opaque into_raw.
     
@@ -12953,10 +12994,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "into_raw_with_allocator"
-        (into_raw_with_allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
     Admitted.
     Global Typeclasses Opaque into_raw_with_allocator.
     
@@ -13083,7 +13121,7 @@ Module sync.
     
     Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_raw_in" (from_raw_in T A).
     Admitted.
     Global Typeclasses Opaque from_raw_in.
     (*
@@ -13389,7 +13427,7 @@ Module sync.
     
     Global Instance AssociatedFunction_upgrade :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "upgrade" (upgrade T A).
+      M.IsAssociatedFunction.C (Self T A) "upgrade" (upgrade T A).
     Admitted.
     Global Typeclasses Opaque upgrade.
     
@@ -13474,7 +13512,7 @@ Module sync.
     
     Global Instance AssociatedFunction_strong_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "strong_count" (strong_count T A).
+      M.IsAssociatedFunction.C (Self T A) "strong_count" (strong_count T A).
     Admitted.
     Global Typeclasses Opaque strong_count.
     
@@ -13624,7 +13662,7 @@ Module sync.
     
     Global Instance AssociatedFunction_weak_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "weak_count" (weak_count T A).
+      M.IsAssociatedFunction.C (Self T A) "weak_count" (weak_count T A).
     Admitted.
     Global Typeclasses Opaque weak_count.
     
@@ -13749,7 +13787,7 @@ Module sync.
     
     Global Instance AssociatedFunction_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "inner" (inner T A).
+      M.IsAssociatedFunction.C (Self T A) "inner" (inner T A).
     Admitted.
     Global Typeclasses Opaque inner.
     
@@ -13835,7 +13873,7 @@ Module sync.
     
     Global Instance AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "ptr_eq" (ptr_eq T A).
+      M.IsAssociatedFunction.C (Self T A) "ptr_eq" (ptr_eq T A).
     Admitted.
     Global Typeclasses Opaque ptr_eq.
   End Impl_alloc_sync_Weak_T_A.
@@ -13952,7 +13990,12 @@ Module sync.
                                   (M.alloc (|
                                     BinOp.gt (|
                                       M.read (| old_size |),
-                                      M.read (| M.get_constant "alloc::sync::MAX_REFCOUNT" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "alloc::sync::MAX_REFCOUNT",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)
                                   |)) in
                               let _ :=
@@ -14283,8 +14326,16 @@ Module sync.
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.deref (|
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "alloc::sync::STATIC_INNER_SLICE"
+                                                                      get_constant (|
+                                                                        "alloc::sync::STATIC_INNER_SLICE",
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::sync::SliceArcInnerForStatic"
+                                                                          ]
+                                                                      |)
                                                                     |)
                                                                   |),
                                                                   "alloc::sync::SliceArcInnerForStatic",
@@ -15620,57 +15671,63 @@ Module sync.
         ];
     } *)
   
-  Definition value_MAX_STATIC_INNER_SLICE_ALIGNMENT : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+  Definition value_MAX_STATIC_INNER_SLICE_ALIGNMENT
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
   
-  Axiom Constant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT :
-    (M.get_constant "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT") =
+  Global Instance Instance_IsConstant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT :
+    M.IsFunction.C
+      "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT"
       value_MAX_STATIC_INNER_SLICE_ALIGNMENT.
-  Global Hint Rewrite Constant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_STATIC_INNER_SLICE_ALIGNMENT.
   
-  Definition value_STATIC_INNER_SLICE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            Value.StructRecord
-              "alloc::sync::SliceArcInnerForStatic"
-              [
-                ("inner",
-                  Value.StructRecord
-                    "alloc::sync::ArcInner"
-                    [
-                      ("strong",
-                        M.call_closure (|
+  Definition value_STATIC_INNER_SLICE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          Value.StructRecord
+            "alloc::sync::SliceArcInnerForStatic"
+            [
+              ("inner",
+                Value.StructRecord
+                  "alloc::sync::ArcInner"
+                  [
+                    ("strong",
+                      M.call_closure (|
+                        Ty.path "core::sync::atomic::AtomicUsize",
+                        M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
-                          M.get_associated_function (|
-                            Ty.path "core::sync::atomic::AtomicUsize",
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ Value.Integer IntegerKind.Usize 1 ]
-                        |));
-                      ("weak",
-                        M.call_closure (|
+                          "new",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.Usize 1 ]
+                      |));
+                    ("weak",
+                      M.call_closure (|
+                        Ty.path "core::sync::atomic::AtomicUsize",
+                        M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
-                          M.get_associated_function (|
-                            Ty.path "core::sync::atomic::AtomicUsize",
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ Value.Integer IntegerKind.Usize 1 ]
-                        |));
-                      ("data", Value.Array [ Value.Integer IntegerKind.U8 0 ])
-                    ])
-              ]
-          |)
-        |))).
+                          "new",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.Usize 1 ]
+                      |));
+                    ("data", Value.Array [ Value.Integer IntegerKind.U8 0 ])
+                  ])
+            ]
+        |)
+      |))).
   
-  Axiom Constant_value_STATIC_INNER_SLICE :
-    (M.get_constant "alloc::sync::STATIC_INNER_SLICE") = value_STATIC_INNER_SLICE.
-  Global Hint Rewrite Constant_value_STATIC_INNER_SLICE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_STATIC_INNER_SLICE :
+    M.IsFunction.C "alloc::sync::STATIC_INNER_SLICE" value_STATIC_INNER_SLICE.
+  Admitted.
+  Global Typeclasses Opaque value_STATIC_INNER_SLICE.
   
   Module Impl_core_default_Default_for_alloc_sync_Arc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -16042,7 +16099,17 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| M.get_constant "alloc::sync::STATIC_INNER_SLICE" |) |),
+                        M.deref (|
+                          M.read (|
+                            get_constant (|
+                              "alloc::sync::STATIC_INNER_SLICE",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                            |)
+                          |)
+                        |),
                         "alloc::sync::SliceArcInnerForStatic",
                         "inner"
                       |)
@@ -16338,7 +16405,10 @@ Module sync.
                                     []
                                   |),
                                   M.read (|
-                                    M.get_constant "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT"
+                                    get_constant (|
+                                      "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -16380,7 +16450,13 @@ Module sync.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "alloc::sync::STATIC_INNER_SLICE"
+                                              get_constant (|
+                                                "alloc::sync::STATIC_INNER_SLICE",
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -17579,7 +17655,7 @@ Module sync.
                                 |)
                               ]
                             |),
-                            M.read (| M.get_constant "alloc::sync::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -18361,7 +18437,7 @@ Module sync.
     end.
   
   Global Instance Instance_IsFunction_data_offset :
-    M.IsFunction.Trait "alloc::sync::data_offset" data_offset.
+    M.IsFunction.C "alloc::sync::data_offset" data_offset.
   Admitted.
   Global Typeclasses Opaque data_offset.
   
@@ -18419,7 +18495,7 @@ Module sync.
     end.
   
   Global Instance Instance_IsFunction_data_offset_align :
-    M.IsFunction.Trait "alloc::sync::data_offset_align" data_offset_align.
+    M.IsFunction.C "alloc::sync::data_offset_align" data_offset_align.
   Admitted.
   Global Typeclasses Opaque data_offset_align.
   
@@ -18685,7 +18761,7 @@ Module sync.
     
     Global Instance AssociatedFunction_new :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+      M.IsAssociatedFunction.C (Self T A) "new" (new T A).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -18782,7 +18858,7 @@ Module sync.
     
     Global Instance AssociatedFunction_data_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "data_ptr" (data_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "data_ptr" (data_ptr T A).
     Admitted.
     Global Typeclasses Opaque data_ptr.
     
@@ -18950,7 +19026,7 @@ Module sync.
     
     Global Instance AssociatedFunction_into_arc :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_arc" (into_arc T A).
+      M.IsAssociatedFunction.C (Self T A) "into_arc" (into_arc T A).
     Admitted.
     Global Typeclasses Opaque into_arc.
   End Impl_alloc_sync_UniqueArcUninit_T_A.

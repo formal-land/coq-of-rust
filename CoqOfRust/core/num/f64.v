@@ -2,231 +2,313 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module f64.
-  Definition value_RADIX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::RADIX")).
+  Definition value_RADIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "RADIX", Ty.path "u32" |))).
   
-  Axiom Constant_value_RADIX : (M.get_constant "core::f64::RADIX") = value_RADIX.
-  Global Hint Rewrite Constant_value_RADIX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_RADIX : M.IsFunction.C "core::f64::RADIX" value_RADIX.
+  Admitted.
+  Global Typeclasses Opaque value_RADIX.
   
-  Definition value_MANTISSA_DIGITS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MANTISSA_DIGITS")).
+  Definition value_MANTISSA_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_associated_constant (| Ty.path "f64", "MANTISSA_DIGITS", Ty.path "u32" |))).
   
-  Axiom Constant_value_MANTISSA_DIGITS :
-    (M.get_constant "core::f64::MANTISSA_DIGITS") = value_MANTISSA_DIGITS.
-  Global Hint Rewrite Constant_value_MANTISSA_DIGITS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MANTISSA_DIGITS :
+    M.IsFunction.C "core::f64::MANTISSA_DIGITS" value_MANTISSA_DIGITS.
+  Admitted.
+  Global Typeclasses Opaque value_MANTISSA_DIGITS.
   
-  Definition value_DIGITS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::DIGITS")).
+  Definition value_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "DIGITS", Ty.path "u32" |))).
   
-  Axiom Constant_value_DIGITS : (M.get_constant "core::f64::DIGITS") = value_DIGITS.
-  Global Hint Rewrite Constant_value_DIGITS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_DIGITS :
+    M.IsFunction.C "core::f64::DIGITS" value_DIGITS.
+  Admitted.
+  Global Typeclasses Opaque value_DIGITS.
   
-  Definition value_EPSILON : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::EPSILON")).
+  Definition value_EPSILON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "EPSILON", Ty.path "f64" |))).
   
-  Axiom Constant_value_EPSILON : (M.get_constant "core::f64::EPSILON") = value_EPSILON.
-  Global Hint Rewrite Constant_value_EPSILON : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EPSILON :
+    M.IsFunction.C "core::f64::EPSILON" value_EPSILON.
+  Admitted.
+  Global Typeclasses Opaque value_EPSILON.
   
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MIN", Ty.path "f64" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::f64::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::f64::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MIN_POSITIVE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_POSITIVE")).
+  Definition value_MIN_POSITIVE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MIN_POSITIVE", Ty.path "f64" |))).
   
-  Axiom Constant_value_MIN_POSITIVE :
-    (M.get_constant "core::f64::MIN_POSITIVE") = value_MIN_POSITIVE.
-  Global Hint Rewrite Constant_value_MIN_POSITIVE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN_POSITIVE :
+    M.IsFunction.C "core::f64::MIN_POSITIVE" value_MIN_POSITIVE.
+  Admitted.
+  Global Typeclasses Opaque value_MIN_POSITIVE.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MAX", Ty.path "f64" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::f64::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::f64::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
   
-  Definition value_MIN_EXP : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_EXP")).
+  Definition value_MIN_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MIN_EXP", Ty.path "i32" |))).
   
-  Axiom Constant_value_MIN_EXP : (M.get_constant "core::f64::MIN_EXP") = value_MIN_EXP.
-  Global Hint Rewrite Constant_value_MIN_EXP : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN_EXP :
+    M.IsFunction.C "core::f64::MIN_EXP" value_MIN_EXP.
+  Admitted.
+  Global Typeclasses Opaque value_MIN_EXP.
   
-  Definition value_MAX_EXP : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX_EXP")).
+  Definition value_MAX_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MAX_EXP", Ty.path "i32" |))).
   
-  Axiom Constant_value_MAX_EXP : (M.get_constant "core::f64::MAX_EXP") = value_MAX_EXP.
-  Global Hint Rewrite Constant_value_MAX_EXP : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_EXP :
+    M.IsFunction.C "core::f64::MAX_EXP" value_MAX_EXP.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_EXP.
   
-  Definition value_MIN_10_EXP : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_10_EXP")).
+  Definition value_MIN_10_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MIN_10_EXP", Ty.path "i32" |))).
   
-  Axiom Constant_value_MIN_10_EXP : (M.get_constant "core::f64::MIN_10_EXP") = value_MIN_10_EXP.
-  Global Hint Rewrite Constant_value_MIN_10_EXP : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN_10_EXP :
+    M.IsFunction.C "core::f64::MIN_10_EXP" value_MIN_10_EXP.
+  Admitted.
+  Global Typeclasses Opaque value_MIN_10_EXP.
   
-  Definition value_MAX_10_EXP : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX_10_EXP")).
+  Definition value_MAX_10_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "MAX_10_EXP", Ty.path "i32" |))).
   
-  Axiom Constant_value_MAX_10_EXP : (M.get_constant "core::f64::MAX_10_EXP") = value_MAX_10_EXP.
-  Global Hint Rewrite Constant_value_MAX_10_EXP : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_10_EXP :
+    M.IsFunction.C "core::f64::MAX_10_EXP" value_MAX_10_EXP.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_10_EXP.
   
-  Definition value_NAN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::NAN")).
+  Definition value_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |))).
   
-  Axiom Constant_value_NAN : (M.get_constant "core::f64::NAN") = value_NAN.
-  Global Hint Rewrite Constant_value_NAN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NAN : M.IsFunction.C "core::f64::NAN" value_NAN.
+  Admitted.
+  Global Typeclasses Opaque value_NAN.
   
-  Definition value_INFINITY : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::INFINITY")).
+  Definition value_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "INFINITY", Ty.path "f64" |))).
   
-  Axiom Constant_value_INFINITY : (M.get_constant "core::f64::INFINITY") = value_INFINITY.
-  Global Hint Rewrite Constant_value_INFINITY : constant_rewrites.
+  Global Instance Instance_IsConstant_value_INFINITY :
+    M.IsFunction.C "core::f64::INFINITY" value_INFINITY.
+  Admitted.
+  Global Typeclasses Opaque value_INFINITY.
   
-  Definition value_NEG_INFINITY : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::NEG_INFINITY")).
+  Definition value_NEG_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "NEG_INFINITY", Ty.path "f64" |))).
   
-  Axiom Constant_value_NEG_INFINITY :
-    (M.get_constant "core::f64::NEG_INFINITY") = value_NEG_INFINITY.
-  Global Hint Rewrite Constant_value_NEG_INFINITY : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NEG_INFINITY :
+    M.IsFunction.C "core::f64::NEG_INFINITY" value_NEG_INFINITY.
+  Admitted.
+  Global Typeclasses Opaque value_NEG_INFINITY.
   
   Module consts.
-    Definition value_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_PI : (M.get_constant "core::f64::consts::PI") = value_PI.
-    Global Hint Rewrite Constant_value_PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PI : M.IsFunction.C "core::f64::consts::PI" value_PI.
+    Admitted.
+    Global Typeclasses Opaque value_PI.
     
-    Definition value_TAU : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_TAU (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_TAU : (M.get_constant "core::f64::consts::TAU") = value_TAU.
-    Global Hint Rewrite Constant_value_TAU : constant_rewrites.
+    Global Instance Instance_IsConstant_value_TAU :
+      M.IsFunction.C "core::f64::consts::TAU" value_TAU.
+    Admitted.
+    Global Typeclasses Opaque value_TAU.
     
-    Definition value_PHI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PHI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_PHI : (M.get_constant "core::f64::consts::PHI") = value_PHI.
-    Global Hint Rewrite Constant_value_PHI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PHI :
+      M.IsFunction.C "core::f64::consts::PHI" value_PHI.
+    Admitted.
+    Global Typeclasses Opaque value_PHI.
     
-    Definition value_EGAMMA : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EGAMMA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_EGAMMA : (M.get_constant "core::f64::consts::EGAMMA") = value_EGAMMA.
-    Global Hint Rewrite Constant_value_EGAMMA : constant_rewrites.
+    Global Instance Instance_IsConstant_value_EGAMMA :
+      M.IsFunction.C "core::f64::consts::EGAMMA" value_EGAMMA.
+    Admitted.
+    Global Typeclasses Opaque value_EGAMMA.
     
-    Definition value_FRAC_PI_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_PI_2 :
-      (M.get_constant "core::f64::consts::FRAC_PI_2") = value_FRAC_PI_2.
-    Global Hint Rewrite Constant_value_FRAC_PI_2 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_PI_2 :
+      M.IsFunction.C "core::f64::consts::FRAC_PI_2" value_FRAC_PI_2.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_PI_2.
     
-    Definition value_FRAC_PI_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_PI_3 :
-      (M.get_constant "core::f64::consts::FRAC_PI_3") = value_FRAC_PI_3.
-    Global Hint Rewrite Constant_value_FRAC_PI_3 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_PI_3 :
+      M.IsFunction.C "core::f64::consts::FRAC_PI_3" value_FRAC_PI_3.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_PI_3.
     
-    Definition value_FRAC_PI_4 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_PI_4 :
-      (M.get_constant "core::f64::consts::FRAC_PI_4") = value_FRAC_PI_4.
-    Global Hint Rewrite Constant_value_FRAC_PI_4 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_PI_4 :
+      M.IsFunction.C "core::f64::consts::FRAC_PI_4" value_FRAC_PI_4.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_PI_4.
     
-    Definition value_FRAC_PI_6 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_PI_6 :
-      (M.get_constant "core::f64::consts::FRAC_PI_6") = value_FRAC_PI_6.
-    Global Hint Rewrite Constant_value_FRAC_PI_6 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_PI_6 :
+      M.IsFunction.C "core::f64::consts::FRAC_PI_6" value_FRAC_PI_6.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_PI_6.
     
-    Definition value_FRAC_PI_8 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_PI_8 :
-      (M.get_constant "core::f64::consts::FRAC_PI_8") = value_FRAC_PI_8.
-    Global Hint Rewrite Constant_value_FRAC_PI_8 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_PI_8 :
+      M.IsFunction.C "core::f64::consts::FRAC_PI_8" value_FRAC_PI_8.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_PI_8.
     
-    Definition value_FRAC_1_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_1_PI :
-      (M.get_constant "core::f64::consts::FRAC_1_PI") = value_FRAC_1_PI.
-    Global Hint Rewrite Constant_value_FRAC_1_PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_1_PI :
+      M.IsFunction.C "core::f64::consts::FRAC_1_PI" value_FRAC_1_PI.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_1_PI.
     
-    Definition value_FRAC_1_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_1_SQRT_PI :
-      (M.get_constant "core::f64::consts::FRAC_1_SQRT_PI") = value_FRAC_1_SQRT_PI.
-    Global Hint Rewrite Constant_value_FRAC_1_SQRT_PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_1_SQRT_PI :
+      M.IsFunction.C "core::f64::consts::FRAC_1_SQRT_PI" value_FRAC_1_SQRT_PI.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_1_SQRT_PI.
     
-    Definition value_FRAC_1_SQRT_2PI : Value.t :=
-      M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_2PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_1_SQRT_2PI :
-      (M.get_constant "core::f64::consts::FRAC_1_SQRT_2PI") = value_FRAC_1_SQRT_2PI.
-    Global Hint Rewrite Constant_value_FRAC_1_SQRT_2PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_1_SQRT_2PI :
+      M.IsFunction.C "core::f64::consts::FRAC_1_SQRT_2PI" value_FRAC_1_SQRT_2PI.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_1_SQRT_2PI.
     
-    Definition value_FRAC_2_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_2_PI :
-      (M.get_constant "core::f64::consts::FRAC_2_PI") = value_FRAC_2_PI.
-    Global Hint Rewrite Constant_value_FRAC_2_PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_2_PI :
+      M.IsFunction.C "core::f64::consts::FRAC_2_PI" value_FRAC_2_PI.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_2_PI.
     
-    Definition value_FRAC_2_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_SQRT_PI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_2_SQRT_PI :
-      (M.get_constant "core::f64::consts::FRAC_2_SQRT_PI") = value_FRAC_2_SQRT_PI.
-    Global Hint Rewrite Constant_value_FRAC_2_SQRT_PI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_2_SQRT_PI :
+      M.IsFunction.C "core::f64::consts::FRAC_2_SQRT_PI" value_FRAC_2_SQRT_PI.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_2_SQRT_PI.
     
-    Definition value_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_SQRT_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_SQRT_2 : (M.get_constant "core::f64::consts::SQRT_2") = value_SQRT_2.
-    Global Hint Rewrite Constant_value_SQRT_2 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SQRT_2 :
+      M.IsFunction.C "core::f64::consts::SQRT_2" value_SQRT_2.
+    Admitted.
+    Global Typeclasses Opaque value_SQRT_2.
     
-    Definition value_FRAC_1_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_1_SQRT_2 :
-      (M.get_constant "core::f64::consts::FRAC_1_SQRT_2") = value_FRAC_1_SQRT_2.
-    Global Hint Rewrite Constant_value_FRAC_1_SQRT_2 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_1_SQRT_2 :
+      M.IsFunction.C "core::f64::consts::FRAC_1_SQRT_2" value_FRAC_1_SQRT_2.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_1_SQRT_2.
     
-    Definition value_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_SQRT_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_SQRT_3 : (M.get_constant "core::f64::consts::SQRT_3") = value_SQRT_3.
-    Global Hint Rewrite Constant_value_SQRT_3 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SQRT_3 :
+      M.IsFunction.C "core::f64::consts::SQRT_3" value_SQRT_3.
+    Admitted.
+    Global Typeclasses Opaque value_SQRT_3.
     
-    Definition value_FRAC_1_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_FRAC_1_SQRT_3 :
-      (M.get_constant "core::f64::consts::FRAC_1_SQRT_3") = value_FRAC_1_SQRT_3.
-    Global Hint Rewrite Constant_value_FRAC_1_SQRT_3 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRAC_1_SQRT_3 :
+      M.IsFunction.C "core::f64::consts::FRAC_1_SQRT_3" value_FRAC_1_SQRT_3.
+    Admitted.
+    Global Typeclasses Opaque value_FRAC_1_SQRT_3.
     
-    Definition value_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_E (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_E : (M.get_constant "core::f64::consts::E") = value_E.
-    Global Hint Rewrite Constant_value_E : constant_rewrites.
+    Global Instance Instance_IsConstant_value_E : M.IsFunction.C "core::f64::consts::E" value_E.
+    Admitted.
+    Global Typeclasses Opaque value_E.
     
-    Definition value_LOG2_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG2_10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LOG2_10 : (M.get_constant "core::f64::consts::LOG2_10") = value_LOG2_10.
-    Global Hint Rewrite Constant_value_LOG2_10 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOG2_10 :
+      M.IsFunction.C "core::f64::consts::LOG2_10" value_LOG2_10.
+    Admitted.
+    Global Typeclasses Opaque value_LOG2_10.
     
-    Definition value_LOG2_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG2_E (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LOG2_E : (M.get_constant "core::f64::consts::LOG2_E") = value_LOG2_E.
-    Global Hint Rewrite Constant_value_LOG2_E : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOG2_E :
+      M.IsFunction.C "core::f64::consts::LOG2_E" value_LOG2_E.
+    Admitted.
+    Global Typeclasses Opaque value_LOG2_E.
     
-    Definition value_LOG10_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG10_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LOG10_2 : (M.get_constant "core::f64::consts::LOG10_2") = value_LOG10_2.
-    Global Hint Rewrite Constant_value_LOG10_2 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOG10_2 :
+      M.IsFunction.C "core::f64::consts::LOG10_2" value_LOG10_2.
+    Admitted.
+    Global Typeclasses Opaque value_LOG10_2.
     
-    Definition value_LOG10_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG10_E (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LOG10_E : (M.get_constant "core::f64::consts::LOG10_E") = value_LOG10_E.
-    Global Hint Rewrite Constant_value_LOG10_E : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOG10_E :
+      M.IsFunction.C "core::f64::consts::LOG10_E" value_LOG10_E.
+    Admitted.
+    Global Typeclasses Opaque value_LOG10_E.
     
-    Definition value_LN_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LN_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LN_2 : (M.get_constant "core::f64::consts::LN_2") = value_LN_2.
-    Global Hint Rewrite Constant_value_LN_2 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LN_2 :
+      M.IsFunction.C "core::f64::consts::LN_2" value_LN_2.
+    Admitted.
+    Global Typeclasses Opaque value_LN_2.
     
-    Definition value_LN_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LN_10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_LN_10 : (M.get_constant "core::f64::consts::LN_10") = value_LN_10.
-    Global Hint Rewrite Constant_value_LN_10 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LN_10 :
+      M.IsFunction.C "core::f64::consts::LN_10" value_LN_10.
+    Admitted.
+    Global Typeclasses Opaque value_LN_10.
   End consts.
   
   Module Impl_f64.
@@ -234,205 +316,202 @@ Module f64.
     
     (*     pub const RADIX: u32 = 2; *)
     (* Ty.path "u32" *)
-    Definition value_RADIX : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
+    Definition value_RADIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
     Global Instance AssociatedConstant_value_RADIX :
-      M.IsAssociatedConstant.Trait Self "value_RADIX" value_RADIX.
+      M.IsAssociatedFunction.C Self "RADIX" value_RADIX.
     Admitted.
     Global Typeclasses Opaque value_RADIX.
     
     (*     pub const MANTISSA_DIGITS: u32 = 53; *)
     (* Ty.path "u32" *)
-    Definition value_MANTISSA_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 53 |))).
+    Definition value_MANTISSA_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 53 |))).
     
     Global Instance AssociatedConstant_value_MANTISSA_DIGITS :
-      M.IsAssociatedConstant.Trait Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
+      M.IsAssociatedFunction.C Self "MANTISSA_DIGITS" value_MANTISSA_DIGITS.
     Admitted.
     Global Typeclasses Opaque value_MANTISSA_DIGITS.
     
     (*     pub const DIGITS: u32 = 15; *)
     (* Ty.path "u32" *)
-    Definition value_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 15 |))).
+    Definition value_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 15 |))).
     
     Global Instance AssociatedConstant_value_DIGITS :
-      M.IsAssociatedConstant.Trait Self "value_DIGITS" value_DIGITS.
+      M.IsAssociatedFunction.C Self "DIGITS" value_DIGITS.
     Admitted.
     Global Typeclasses Opaque value_DIGITS.
     
     (*     pub const EPSILON: f64 = 2.2204460492503131e-16_f64; *)
     (* Ty.path "f64" *)
-    Definition value_EPSILON : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EPSILON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
     Global Instance AssociatedConstant_value_EPSILON :
-      M.IsAssociatedConstant.Trait Self "value_EPSILON" value_EPSILON.
+      M.IsAssociatedFunction.C Self "EPSILON" value_EPSILON.
     Admitted.
     Global Typeclasses Opaque value_EPSILON.
     
     (*     pub const MIN: f64 = -1.7976931348623157e+308_f64; *)
     (* Ty.path "f64" *)
-    Definition value_MIN : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Global Instance AssociatedConstant_value_MIN :
-      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
     Admitted.
     Global Typeclasses Opaque value_MIN.
     
     (*     pub const MIN_POSITIVE: f64 = 2.2250738585072014e-308_f64; *)
     (* Ty.path "f64" *)
-    Definition value_MIN_POSITIVE : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MIN_POSITIVE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
     Global Instance AssociatedConstant_value_MIN_POSITIVE :
-      M.IsAssociatedConstant.Trait Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
+      M.IsAssociatedFunction.C Self "MIN_POSITIVE" value_MIN_POSITIVE.
     Admitted.
     Global Typeclasses Opaque value_MIN_POSITIVE.
     
     (*     pub const MAX: f64 = 1.7976931348623157e+308_f64; *)
     (* Ty.path "f64" *)
-    Definition value_MAX : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Global Instance AssociatedConstant_value_MAX :
-      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
     Admitted.
     Global Typeclasses Opaque value_MAX.
     
     (*     pub const MIN_EXP: i32 = -1021; *)
     (* Ty.path "i32" *)
-    Definition value_MIN_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-1021) |))).
+    Definition value_MIN_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-1021) |))).
     
     Global Instance AssociatedConstant_value_MIN_EXP :
-      M.IsAssociatedConstant.Trait Self "value_MIN_EXP" value_MIN_EXP.
+      M.IsAssociatedFunction.C Self "MIN_EXP" value_MIN_EXP.
     Admitted.
     Global Typeclasses Opaque value_MIN_EXP.
     
     (*     pub const MAX_EXP: i32 = 1024; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1024 |))).
+    Definition value_MAX_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1024 |))).
     
     Global Instance AssociatedConstant_value_MAX_EXP :
-      M.IsAssociatedConstant.Trait Self "value_MAX_EXP" value_MAX_EXP.
+      M.IsAssociatedFunction.C Self "MAX_EXP" value_MAX_EXP.
     Admitted.
     Global Typeclasses Opaque value_MAX_EXP.
     
     (*     pub const MIN_10_EXP: i32 = -307; *)
     (* Ty.path "i32" *)
-    Definition value_MIN_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-307) |))).
+    Definition value_MIN_10_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-307) |))).
     
     Global Instance AssociatedConstant_value_MIN_10_EXP :
-      M.IsAssociatedConstant.Trait Self "value_MIN_10_EXP" value_MIN_10_EXP.
+      M.IsAssociatedFunction.C Self "MIN_10_EXP" value_MIN_10_EXP.
     Admitted.
     Global Typeclasses Opaque value_MIN_10_EXP.
     
     (*     pub const MAX_10_EXP: i32 = 308; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
+    Definition value_MAX_10_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
     
     Global Instance AssociatedConstant_value_MAX_10_EXP :
-      M.IsAssociatedConstant.Trait Self "value_MAX_10_EXP" value_MAX_10_EXP.
+      M.IsAssociatedFunction.C Self "MAX_10_EXP" value_MAX_10_EXP.
     Admitted.
     Global Typeclasses Opaque value_MAX_10_EXP.
     
     (*     pub const NAN: f64 = 0.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
-    Definition value_NAN : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
-          |))).
+    Definition value_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+        |))).
     
-    Global Instance AssociatedConstant_value_NAN :
-      M.IsAssociatedConstant.Trait Self "value_NAN" value_NAN.
+    Global Instance AssociatedConstant_value_NAN : M.IsAssociatedFunction.C Self "NAN" value_NAN.
     Admitted.
     Global Typeclasses Opaque value_NAN.
     
     (*     pub const INFINITY: f64 = 1.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
-    Definition value_INFINITY : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
-          |))).
+    Definition value_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+        |))).
     
     Global Instance AssociatedConstant_value_INFINITY :
-      M.IsAssociatedConstant.Trait Self "value_INFINITY" value_INFINITY.
+      M.IsAssociatedFunction.C Self "INFINITY" value_INFINITY.
     Admitted.
     Global Typeclasses Opaque value_INFINITY.
     
     (*     pub const NEG_INFINITY: f64 = -1.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
-    Definition value_NEG_INFINITY : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
-          |))).
+    Definition value_NEG_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+        |))).
     
     Global Instance AssociatedConstant_value_NEG_INFINITY :
-      M.IsAssociatedConstant.Trait Self "value_NEG_INFINITY" value_NEG_INFINITY.
+      M.IsAssociatedFunction.C Self "NEG_INFINITY" value_NEG_INFINITY.
     Admitted.
     Global Typeclasses Opaque value_NEG_INFINITY.
     
     (*     const SIGN_MASK: u64 = 0x8000_0000_0000_0000; *)
     (* Ty.path "u64" *)
-    Definition value_SIGN_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775808 |))).
+    Definition value_SIGN_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775808 |))).
     
     Global Instance AssociatedConstant_value_SIGN_MASK :
-      M.IsAssociatedConstant.Trait Self "value_SIGN_MASK" value_SIGN_MASK.
+      M.IsAssociatedFunction.C Self "SIGN_MASK" value_SIGN_MASK.
     Admitted.
     Global Typeclasses Opaque value_SIGN_MASK.
     
     (*     const EXP_MASK: u64 = 0x7ff0_0000_0000_0000; *)
     (* Ty.path "u64" *)
-    Definition value_EXP_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9218868437227405312 |))).
+    Definition value_EXP_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9218868437227405312 |))).
     
     Global Instance AssociatedConstant_value_EXP_MASK :
-      M.IsAssociatedConstant.Trait Self "value_EXP_MASK" value_EXP_MASK.
+      M.IsAssociatedFunction.C Self "EXP_MASK" value_EXP_MASK.
     Admitted.
     Global Typeclasses Opaque value_EXP_MASK.
     
     (*     const MAN_MASK: u64 = 0x000f_ffff_ffff_ffff; *)
     (* Ty.path "u64" *)
-    Definition value_MAN_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4503599627370495 |))).
+    Definition value_MAN_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4503599627370495 |))).
     
     Global Instance AssociatedConstant_value_MAN_MASK :
-      M.IsAssociatedConstant.Trait Self "value_MAN_MASK" value_MAN_MASK.
+      M.IsAssociatedFunction.C Self "MAN_MASK" value_MAN_MASK.
     Admitted.
     Global Typeclasses Opaque value_MAN_MASK.
     
     (*     const TINY_BITS: u64 = 0x1; *)
     (* Ty.path "u64" *)
-    Definition value_TINY_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_TINY_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     Global Instance AssociatedConstant_value_TINY_BITS :
-      M.IsAssociatedConstant.Trait Self "value_TINY_BITS" value_TINY_BITS.
+      M.IsAssociatedFunction.C Self "TINY_BITS" value_TINY_BITS.
     Admitted.
     Global Typeclasses Opaque value_TINY_BITS.
     
     (*     const NEG_TINY_BITS: u64 = Self::TINY_BITS | Self::SIGN_MASK; *)
     (* Ty.path "u64" *)
-    Definition value_NEG_TINY_BITS : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.bit_or
-              (M.read (| M.get_constant "core::f64::TINY_BITS" |))
-              (M.read (| M.get_constant "core::f64::SIGN_MASK" |))
-          |))).
+    Definition value_NEG_TINY_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.bit_or
+            (M.read (| get_associated_constant (| Ty.path "f64", "TINY_BITS", Ty.path "u64" |) |))
+            (M.read (| get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |) |))
+        |))).
     
     Global Instance AssociatedConstant_value_NEG_TINY_BITS :
-      M.IsAssociatedConstant.Trait Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
+      M.IsAssociatedFunction.C Self "NEG_TINY_BITS" value_NEG_TINY_BITS.
     Admitted.
     Global Typeclasses Opaque value_NEG_TINY_BITS.
     
@@ -450,7 +529,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_nan : M.IsAssociatedFunction.Trait Self "is_nan" is_nan.
+    Global Instance AssociatedFunction_is_nan : M.IsAssociatedFunction.C Self "is_nan" is_nan.
     Admitted.
     Global Typeclasses Opaque is_nan.
     
@@ -468,16 +547,21 @@ Module f64.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_or
-            (BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::f64::INFINITY" |) |))
             (BinOp.eq (|
               M.read (| self |),
-              M.read (| M.get_constant "core::f64::NEG_INFINITY" |)
+              M.read (| get_associated_constant (| Ty.path "f64", "INFINITY", Ty.path "f64" |) |)
+            |))
+            (BinOp.eq (|
+              M.read (| self |),
+              M.read (|
+                get_associated_constant (| Ty.path "f64", "NEG_INFINITY", Ty.path "f64" |)
+              |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_is_infinite :
-      M.IsAssociatedFunction.Trait Self "is_infinite" is_infinite.
+      M.IsAssociatedFunction.C Self "is_infinite" is_infinite.
     Admitted.
     Global Typeclasses Opaque is_infinite.
     
@@ -499,13 +583,13 @@ Module f64.
               M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
               [ M.read (| self |) ]
             |),
-            M.read (| M.get_constant "core::f64::INFINITY" |)
+            M.read (| get_associated_constant (| Ty.path "f64", "INFINITY", Ty.path "f64" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_is_finite :
-      M.IsAssociatedFunction.Trait Self "is_finite" is_finite.
+      M.IsAssociatedFunction.C Self "is_finite" is_finite.
     Admitted.
     Global Typeclasses Opaque is_finite.
     
@@ -542,7 +626,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_is_subnormal :
-      M.IsAssociatedFunction.Trait Self "is_subnormal" is_subnormal.
+      M.IsAssociatedFunction.C Self "is_subnormal" is_subnormal.
     Admitted.
     Global Typeclasses Opaque is_subnormal.
     
@@ -579,7 +663,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_is_normal :
-      M.IsAssociatedFunction.Trait Self "is_normal" is_normal.
+      M.IsAssociatedFunction.C Self "is_normal" is_normal.
     Admitted.
     Global Typeclasses Opaque is_normal.
     
@@ -621,10 +705,14 @@ Module f64.
                   [
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant "core::f64::MAN_MASK" |));
+                      (M.read (|
+                        get_associated_constant (| Ty.path "f64", "MAN_MASK", Ty.path "u64" |)
+                      |));
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant "core::f64::EXP_MASK" |))
+                      (M.read (|
+                        get_associated_constant (| Ty.path "f64", "EXP_MASK", Ty.path "u64" |)
+                      |))
                   ]
               |),
               [
@@ -687,8 +775,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_classify :
-      M.IsAssociatedFunction.Trait Self "classify" classify.
+    Global Instance AssociatedFunction_classify : M.IsAssociatedFunction.C Self "classify" classify.
     Admitted.
     Global Typeclasses Opaque classify.
     
@@ -713,7 +800,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_is_sign_positive :
-      M.IsAssociatedFunction.Trait Self "is_sign_positive" is_sign_positive.
+      M.IsAssociatedFunction.C Self "is_sign_positive" is_sign_positive.
     Admitted.
     Global Typeclasses Opaque is_sign_positive.
     
@@ -736,7 +823,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_is_positive :
-      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+      M.IsAssociatedFunction.C Self "is_positive" is_positive.
     Admitted.
     Global Typeclasses Opaque is_positive.
     
@@ -764,14 +851,16 @@ Module f64.
                 |),
                 [ M.read (| self |) ]
               |))
-              (M.read (| M.get_constant "core::f64::SIGN_MASK" |)),
+              (M.read (|
+                get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
+              |)),
             Value.Integer IntegerKind.U64 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_is_sign_negative :
-      M.IsAssociatedFunction.Trait Self "is_sign_negative" is_sign_negative.
+      M.IsAssociatedFunction.C Self "is_sign_negative" is_sign_negative.
     Admitted.
     Global Typeclasses Opaque is_sign_negative.
     
@@ -794,7 +883,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_is_negative :
-      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+      M.IsAssociatedFunction.C Self "is_negative" is_negative.
     Admitted.
     Global Typeclasses Opaque is_negative.
     
@@ -862,7 +951,15 @@ Module f64.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| M.get_constant "core::f64::INFINITY" |) ]
+                                        [
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "f64",
+                                              "INFINITY",
+                                              Ty.path "f64"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                                 |)
@@ -879,7 +976,11 @@ Module f64.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
+                      (UnOp.not (|
+                        M.read (|
+                          get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
+                        |)
+                      |))
                   |) in
                 let~ next_bits : Ty.path "u64" :=
                   M.copy (|
@@ -896,7 +997,11 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant "core::f64::TINY_BITS"));
+                            get_associated_constant (|
+                              Ty.path "f64",
+                              "TINY_BITS",
+                              Ty.path "u64"
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -946,8 +1051,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_next_up :
-      M.IsAssociatedFunction.Trait Self "next_up" next_up.
+    Global Instance AssociatedFunction_next_up : M.IsAssociatedFunction.C Self "next_up" next_up.
     Admitted.
     Global Typeclasses Opaque next_up.
     
@@ -1015,7 +1119,15 @@ Module f64.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| M.get_constant "core::f64::NEG_INFINITY" |) ]
+                                        [
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "f64",
+                                              "NEG_INFINITY",
+                                              Ty.path "f64"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                                 |)
@@ -1032,7 +1144,11 @@ Module f64.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
+                      (UnOp.not (|
+                        M.read (|
+                          get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
+                        |)
+                      |))
                   |) in
                 let~ next_bits : Ty.path "u64" :=
                   M.copy (|
@@ -1049,7 +1165,11 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant "core::f64::NEG_TINY_BITS"));
+                            get_associated_constant (|
+                              Ty.path "f64",
+                              "NEG_TINY_BITS",
+                              Ty.path "u64"
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -1100,7 +1220,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_next_down :
-      M.IsAssociatedFunction.Trait Self "next_down" next_down.
+      M.IsAssociatedFunction.C Self "next_down" next_down.
     Admitted.
     Global Typeclasses Opaque next_down.
     
@@ -1118,7 +1238,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_recip : M.IsAssociatedFunction.Trait Self "recip" recip.
+    Global Instance AssociatedFunction_recip : M.IsAssociatedFunction.C Self "recip" recip.
     Admitted.
     Global Typeclasses Opaque recip.
     
@@ -1139,14 +1259,14 @@ Module f64.
             M.read (| self |),
             BinOp.Wrap.div (|
               M.read (| UnsupportedLiteral |),
-              M.read (| M.get_constant "core::f64::consts::PI" |)
+              M.read (| get_constant (| "core::f64::consts::PI", Ty.path "f64" |) |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_to_degrees :
-      M.IsAssociatedFunction.Trait Self "to_degrees" to_degrees.
+      M.IsAssociatedFunction.C Self "to_degrees" to_degrees.
     Admitted.
     Global Typeclasses Opaque to_degrees.
     
@@ -1163,13 +1283,13 @@ Module f64.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul (|
             M.read (| self |),
-            M.read (| M.get_constant "core::f64::to_radians::RADS_PER_DEG" |)
+            M.read (| get_constant (| "core::f64::to_radians::RADS_PER_DEG", Ty.path "f64" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_to_radians :
-      M.IsAssociatedFunction.Trait Self "to_radians" to_radians.
+      M.IsAssociatedFunction.C Self "to_radians" to_radians.
     Admitted.
     Global Typeclasses Opaque to_radians.
     
@@ -1192,7 +1312,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_max : M.IsAssociatedFunction.Trait Self "max" max.
+    Global Instance AssociatedFunction_max : M.IsAssociatedFunction.C Self "max" max.
     Admitted.
     Global Typeclasses Opaque max.
     
@@ -1215,7 +1335,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_min : M.IsAssociatedFunction.Trait Self "min" min.
+    Global Instance AssociatedFunction_min : M.IsAssociatedFunction.C Self "min" min.
     Admitted.
     Global Typeclasses Opaque min.
     
@@ -1340,8 +1460,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_maximum :
-      M.IsAssociatedFunction.Trait Self "maximum" maximum.
+    Global Instance AssociatedFunction_maximum : M.IsAssociatedFunction.C Self "maximum" maximum.
     Admitted.
     Global Typeclasses Opaque maximum.
     
@@ -1467,8 +1586,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_minimum :
-      M.IsAssociatedFunction.Trait Self "minimum" minimum.
+    Global Instance AssociatedFunction_minimum : M.IsAssociatedFunction.C Self "minimum" minimum.
     Admitted.
     Global Typeclasses Opaque minimum.
     
@@ -1541,12 +1659,19 @@ Module f64.
                                   LogicalOp.and (|
                                     BinOp.le (|
                                       M.read (| abs_a |),
-                                      M.read (| M.get_constant "core::f64::midpoint::HI" |)
+                                      M.read (|
+                                        get_constant (| "core::f64::midpoint::HI", Ty.path "f64" |)
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.le (|
                                         M.read (| abs_b |),
-                                        M.read (| M.get_constant "core::f64::midpoint::HI" |)
+                                        M.read (|
+                                          get_constant (|
+                                            "core::f64::midpoint::HI",
+                                            Ty.path "f64"
+                                          |)
+                                        |)
                                       |)))
                                   |)
                                 |)) in
@@ -1571,7 +1696,12 @@ Module f64.
                                         (M.alloc (|
                                           BinOp.lt (|
                                             M.read (| abs_a |),
-                                            M.read (| M.get_constant "core::f64::midpoint::LO" |)
+                                            M.read (|
+                                              get_constant (|
+                                                "core::f64::midpoint::LO",
+                                                Ty.path "f64"
+                                              |)
+                                            |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -1602,7 +1732,10 @@ Module f64.
                                                   BinOp.lt (|
                                                     M.read (| abs_b |),
                                                     M.read (|
-                                                      M.get_constant "core::f64::midpoint::LO"
+                                                      get_constant (|
+                                                        "core::f64::midpoint::LO",
+                                                        Ty.path "f64"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -1646,8 +1779,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_midpoint :
-      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Global Instance AssociatedFunction_midpoint : M.IsAssociatedFunction.C Self "midpoint" midpoint.
     Admitted.
     Global Typeclasses Opaque midpoint.
     
@@ -1683,7 +1815,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_to_int_unchecked :
-      M.IsAssociatedFunction.Trait Self "to_int_unchecked" to_int_unchecked.
+      M.IsAssociatedFunction.C Self "to_int_unchecked" to_int_unchecked.
     Admitted.
     Global Typeclasses Opaque to_int_unchecked.
     
@@ -1710,8 +1842,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to_bits :
-      M.IsAssociatedFunction.Trait Self "to_bits" to_bits.
+    Global Instance AssociatedFunction_to_bits : M.IsAssociatedFunction.C Self "to_bits" to_bits.
     Admitted.
     Global Typeclasses Opaque to_bits.
     
@@ -1740,7 +1871,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_from_bits :
-      M.IsAssociatedFunction.Trait Self "from_bits" from_bits.
+      M.IsAssociatedFunction.C Self "from_bits" from_bits.
     Admitted.
     Global Typeclasses Opaque from_bits.
     
@@ -1769,7 +1900,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_to_be_bytes :
-      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+      M.IsAssociatedFunction.C Self "to_be_bytes" to_be_bytes.
     Admitted.
     Global Typeclasses Opaque to_be_bytes.
     
@@ -1798,7 +1929,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_to_le_bytes :
-      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+      M.IsAssociatedFunction.C Self "to_le_bytes" to_le_bytes.
     Admitted.
     Global Typeclasses Opaque to_le_bytes.
     
@@ -1827,7 +1958,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_to_ne_bytes :
-      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+      M.IsAssociatedFunction.C Self "to_ne_bytes" to_ne_bytes.
     Admitted.
     Global Typeclasses Opaque to_ne_bytes.
     
@@ -1856,7 +1987,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+      M.IsAssociatedFunction.C Self "from_be_bytes" from_be_bytes.
     Admitted.
     Global Typeclasses Opaque from_be_bytes.
     
@@ -1885,7 +2016,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+      M.IsAssociatedFunction.C Self "from_le_bytes" from_le_bytes.
     Admitted.
     Global Typeclasses Opaque from_le_bytes.
     
@@ -1914,7 +2045,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+      M.IsAssociatedFunction.C Self "from_ne_bytes" from_ne_bytes.
     Admitted.
     Global Typeclasses Opaque from_ne_bytes.
     
@@ -2036,7 +2167,7 @@ Module f64.
       end.
     
     Global Instance AssociatedFunction_total_cmp :
-      M.IsAssociatedFunction.Trait Self "total_cmp" total_cmp.
+      M.IsAssociatedFunction.C Self "total_cmp" total_cmp.
     Admitted.
     Global Typeclasses Opaque total_cmp.
     
@@ -2133,7 +2264,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_clamp : M.IsAssociatedFunction.Trait Self "clamp" clamp.
+    Global Instance AssociatedFunction_clamp : M.IsAssociatedFunction.C Self "clamp" clamp.
     Admitted.
     Global Typeclasses Opaque clamp.
     
@@ -2156,7 +2287,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
     Admitted.
     Global Typeclasses Opaque abs.
     
@@ -2187,7 +2318,7 @@ Module f64.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "core::f64::NAN"));
+                    get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -2203,7 +2334,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.C Self "signum" signum.
     Admitted.
     Global Typeclasses Opaque signum.
     
@@ -2227,8 +2358,7 @@ Module f64.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_copysign :
-      M.IsAssociatedFunction.Trait Self "copysign" copysign.
+    Global Instance AssociatedFunction_copysign : M.IsAssociatedFunction.C Self "copysign" copysign.
     Admitted.
     Global Typeclasses Opaque copysign.
   End Impl_f64.

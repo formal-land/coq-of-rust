@@ -776,7 +776,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_quicksort :
-          M.IsFunction.Trait "core::slice::sort::unstable::quicksort::quicksort" quicksort.
+          M.IsFunction.C "core::slice::sort::unstable::quicksort::quicksort" quicksort.
         Admitted.
         Global Typeclasses Opaque quicksort.
         
@@ -969,8 +969,19 @@ Module slice.
                                 M.call_closure (|
                                   Ty.path "usize",
                                   M.read (|
-                                    M.get_constant
-                                      "core::slice::sort::unstable::quicksort::partition_discriminant"
+                                    get_constant (|
+                                      "core::slice::sort::unstable::quicksort::partition_discriminant",
+                                      Ty.function
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                                          Ty.apply (Ty.path "&") [] [ T ];
+                                          Ty.apply (Ty.path "&mut") [] [ F ]
+                                        ]
+                                        (Ty.path "usize")
+                                    |)
                                   |),
                                   [
                                     M.borrow (|
@@ -1048,7 +1059,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_partition :
-          M.IsFunction.Trait "core::slice::sort::unstable::quicksort::partition" partition.
+          M.IsFunction.C "core::slice::sort::unstable::quicksort::partition" partition.
         Admitted.
         Global Typeclasses Opaque partition.
         
@@ -1098,8 +1109,10 @@ Module slice.
                                   []
                                 |),
                                 M.read (|
-                                  M.get_constant
-                                    "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE"
+                                  get_constant (|
+                                    "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -1132,21 +1145,24 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_inst_partition :
-          M.IsFunction.Trait
-            "core::slice::sort::unstable::quicksort::inst_partition"
-            inst_partition.
+          M.IsFunction.C "core::slice::sort::unstable::quicksort::inst_partition" inst_partition.
         Admitted.
         Global Typeclasses Opaque inst_partition.
         
         Module inst_partition.
-          Definition value_MAX_BRANCHLESS_PARTITION_SIZE : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+          Definition value_MAX_BRANCHLESS_PARTITION_SIZE
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
           
-          Axiom Constant_value_MAX_BRANCHLESS_PARTITION_SIZE :
-            (M.get_constant
-                "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE") =
+          Global Instance Instance_IsConstant_value_MAX_BRANCHLESS_PARTITION_SIZE :
+            M.IsFunction.C
+              "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE"
               value_MAX_BRANCHLESS_PARTITION_SIZE.
-          Global Hint Rewrite Constant_value_MAX_BRANCHLESS_PARTITION_SIZE : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_MAX_BRANCHLESS_PARTITION_SIZE.
         End inst_partition.
         
         (*
@@ -1811,7 +1827,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_partition_hoare_branchy_cyclic :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic"
             partition_hoare_branchy_cyclic.
         Admitted.
@@ -2320,8 +2336,10 @@ Module slice.
                       |) in
                     let~ unroll_len : Ty.path "usize" :=
                       M.copy (|
-                        M.get_constant
-                          "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic_discriminant"
+                        get_constant (|
+                          "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic_discriminant",
+                          Ty.path "usize"
+                        |)
                       |) in
                     let~ unroll_end : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.alloc (|
@@ -2773,7 +2791,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_partition_lomuto_branchless_cyclic :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic"
             partition_lomuto_branchless_cyclic.
         Admitted.

@@ -60,7 +60,7 @@ Module net.
       
       Global Instance AssociatedFunction_new :
         forall (SIZE : Value.t),
-        M.IsAssociatedFunction.Trait (Self SIZE) "new" (new SIZE).
+        M.IsAssociatedFunction.C (Self SIZE) "new" (new SIZE).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -189,7 +189,7 @@ Module net.
       
       Global Instance AssociatedFunction_as_str :
         forall (SIZE : Value.t),
-        M.IsAssociatedFunction.Trait (Self SIZE) "as_str" (as_str SIZE).
+        M.IsAssociatedFunction.C (Self SIZE) "as_str" (as_str SIZE).
       Admitted.
       Global Typeclasses Opaque as_str.
     End Impl_core_net_display_buffer_DisplayBuffer_SIZE.

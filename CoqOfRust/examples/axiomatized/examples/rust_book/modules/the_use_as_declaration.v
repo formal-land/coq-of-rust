@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_function :
-  M.IsFunction.Trait "the_use_as_declaration::function" function.
+  M.IsFunction.C "the_use_as_declaration::function" function.
 Admitted.
 
 Module deeply.
@@ -12,12 +12,12 @@ Module deeply.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "the_use_as_declaration::deeply::nested::function" function.
+      M.IsFunction.C "the_use_as_declaration::deeply::nested::function" function.
     Admitted.
   End nested.
 End deeply.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "the_use_as_declaration::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "the_use_as_declaration::main" main.
 Admitted.

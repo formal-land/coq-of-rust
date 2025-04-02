@@ -1051,7 +1051,7 @@ Module hardfork.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_n : M.IsAssociatedFunction.Trait Self "n" n.
+    Global Instance AssociatedFunction_n : M.IsAssociatedFunction.C Self "n" n.
     Admitted.
     Global Typeclasses Opaque n.
     (*
@@ -1081,7 +1081,7 @@ Module hardfork.
       end.
     
     Global Instance AssociatedFunction_try_from_u8 :
-      M.IsAssociatedFunction.Trait Self "try_from_u8" try_from_u8.
+      M.IsAssociatedFunction.C Self "try_from_u8" try_from_u8.
     Admitted.
     Global Typeclasses Opaque try_from_u8.
     
@@ -1104,161 +1104,180 @@ Module hardfork.
       end.
     
     Global Instance AssociatedFunction_is_enabled_in :
-      M.IsAssociatedFunction.Trait Self "is_enabled_in" is_enabled_in.
+      M.IsAssociatedFunction.C Self "is_enabled_in" is_enabled_in.
     Admitted.
     Global Typeclasses Opaque is_enabled_in.
   End Impl_revm_specification_hardfork_SpecId.
   
   
   Module name.
-    Definition value_FRONTIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Frontier" |) |))).
+    Definition value_FRONTIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Frontier" |) |))).
     
-    Axiom Constant_value_FRONTIER :
-      (M.get_constant "revm_specification::hardfork::name::FRONTIER") = value_FRONTIER.
-    Global Hint Rewrite Constant_value_FRONTIER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRONTIER :
+      M.IsFunction.C "revm_specification::hardfork::name::FRONTIER" value_FRONTIER.
+    Admitted.
+    Global Typeclasses Opaque value_FRONTIER.
     
-    Definition value_FRONTIER_THAWING : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Frontier Thawing" |) |))).
+    Definition value_FRONTIER_THAWING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Frontier Thawing" |) |))).
     
-    Axiom Constant_value_FRONTIER_THAWING :
-      (M.get_constant "revm_specification::hardfork::name::FRONTIER_THAWING") =
-        value_FRONTIER_THAWING.
-    Global Hint Rewrite Constant_value_FRONTIER_THAWING : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FRONTIER_THAWING :
+      M.IsFunction.C "revm_specification::hardfork::name::FRONTIER_THAWING" value_FRONTIER_THAWING.
+    Admitted.
+    Global Typeclasses Opaque value_FRONTIER_THAWING.
     
-    Definition value_HOMESTEAD : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Homestead" |) |))).
+    Definition value_HOMESTEAD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Homestead" |) |))).
     
-    Axiom Constant_value_HOMESTEAD :
-      (M.get_constant "revm_specification::hardfork::name::HOMESTEAD") = value_HOMESTEAD.
-    Global Hint Rewrite Constant_value_HOMESTEAD : constant_rewrites.
+    Global Instance Instance_IsConstant_value_HOMESTEAD :
+      M.IsFunction.C "revm_specification::hardfork::name::HOMESTEAD" value_HOMESTEAD.
+    Admitted.
+    Global Typeclasses Opaque value_HOMESTEAD.
     
-    Definition value_DAO_FORK : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "DAO Fork" |) |))).
+    Definition value_DAO_FORK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "DAO Fork" |) |))).
     
-    Axiom Constant_value_DAO_FORK :
-      (M.get_constant "revm_specification::hardfork::name::DAO_FORK") = value_DAO_FORK.
-    Global Hint Rewrite Constant_value_DAO_FORK : constant_rewrites.
+    Global Instance Instance_IsConstant_value_DAO_FORK :
+      M.IsFunction.C "revm_specification::hardfork::name::DAO_FORK" value_DAO_FORK.
+    Admitted.
+    Global Typeclasses Opaque value_DAO_FORK.
     
-    Definition value_TANGERINE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Tangerine" |) |))).
+    Definition value_TANGERINE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Tangerine" |) |))).
     
-    Axiom Constant_value_TANGERINE :
-      (M.get_constant "revm_specification::hardfork::name::TANGERINE") = value_TANGERINE.
-    Global Hint Rewrite Constant_value_TANGERINE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_TANGERINE :
+      M.IsFunction.C "revm_specification::hardfork::name::TANGERINE" value_TANGERINE.
+    Admitted.
+    Global Typeclasses Opaque value_TANGERINE.
     
-    Definition value_SPURIOUS_DRAGON : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Spurious" |) |))).
+    Definition value_SPURIOUS_DRAGON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Spurious" |) |))).
     
-    Axiom Constant_value_SPURIOUS_DRAGON :
-      (M.get_constant "revm_specification::hardfork::name::SPURIOUS_DRAGON") =
-        value_SPURIOUS_DRAGON.
-    Global Hint Rewrite Constant_value_SPURIOUS_DRAGON : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SPURIOUS_DRAGON :
+      M.IsFunction.C "revm_specification::hardfork::name::SPURIOUS_DRAGON" value_SPURIOUS_DRAGON.
+    Admitted.
+    Global Typeclasses Opaque value_SPURIOUS_DRAGON.
     
-    Definition value_BYZANTIUM : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Byzantium" |) |))).
+    Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Byzantium" |) |))).
     
-    Axiom Constant_value_BYZANTIUM :
-      (M.get_constant "revm_specification::hardfork::name::BYZANTIUM") = value_BYZANTIUM.
-    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BYZANTIUM :
+      M.IsFunction.C "revm_specification::hardfork::name::BYZANTIUM" value_BYZANTIUM.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM.
     
-    Definition value_CONSTANTINOPLE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Constantinople" |) |))).
+    Definition value_CONSTANTINOPLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Constantinople" |) |))).
     
-    Axiom Constant_value_CONSTANTINOPLE :
-      (M.get_constant "revm_specification::hardfork::name::CONSTANTINOPLE") = value_CONSTANTINOPLE.
-    Global Hint Rewrite Constant_value_CONSTANTINOPLE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CONSTANTINOPLE :
+      M.IsFunction.C "revm_specification::hardfork::name::CONSTANTINOPLE" value_CONSTANTINOPLE.
+    Admitted.
+    Global Typeclasses Opaque value_CONSTANTINOPLE.
     
-    Definition value_PETERSBURG : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Petersburg" |) |))).
+    Definition value_PETERSBURG (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Petersburg" |) |))).
     
-    Axiom Constant_value_PETERSBURG :
-      (M.get_constant "revm_specification::hardfork::name::PETERSBURG") = value_PETERSBURG.
-    Global Hint Rewrite Constant_value_PETERSBURG : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PETERSBURG :
+      M.IsFunction.C "revm_specification::hardfork::name::PETERSBURG" value_PETERSBURG.
+    Admitted.
+    Global Typeclasses Opaque value_PETERSBURG.
     
-    Definition value_ISTANBUL : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Istanbul" |) |))).
+    Definition value_ISTANBUL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Istanbul" |) |))).
     
-    Axiom Constant_value_ISTANBUL :
-      (M.get_constant "revm_specification::hardfork::name::ISTANBUL") = value_ISTANBUL.
-    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ISTANBUL :
+      M.IsFunction.C "revm_specification::hardfork::name::ISTANBUL" value_ISTANBUL.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL.
     
-    Definition value_MUIR_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "MuirGlacier" |) |))).
+    Definition value_MUIR_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "MuirGlacier" |) |))).
     
-    Axiom Constant_value_MUIR_GLACIER :
-      (M.get_constant "revm_specification::hardfork::name::MUIR_GLACIER") = value_MUIR_GLACIER.
-    Global Hint Rewrite Constant_value_MUIR_GLACIER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MUIR_GLACIER :
+      M.IsFunction.C "revm_specification::hardfork::name::MUIR_GLACIER" value_MUIR_GLACIER.
+    Admitted.
+    Global Typeclasses Opaque value_MUIR_GLACIER.
     
-    Definition value_BERLIN : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Berlin" |) |))).
+    Definition value_BERLIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Berlin" |) |))).
     
-    Axiom Constant_value_BERLIN :
-      (M.get_constant "revm_specification::hardfork::name::BERLIN") = value_BERLIN.
-    Global Hint Rewrite Constant_value_BERLIN : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BERLIN :
+      M.IsFunction.C "revm_specification::hardfork::name::BERLIN" value_BERLIN.
+    Admitted.
+    Global Typeclasses Opaque value_BERLIN.
     
-    Definition value_LONDON : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "London" |) |))).
+    Definition value_LONDON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "London" |) |))).
     
-    Axiom Constant_value_LONDON :
-      (M.get_constant "revm_specification::hardfork::name::LONDON") = value_LONDON.
-    Global Hint Rewrite Constant_value_LONDON : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LONDON :
+      M.IsFunction.C "revm_specification::hardfork::name::LONDON" value_LONDON.
+    Admitted.
+    Global Typeclasses Opaque value_LONDON.
     
-    Definition value_ARROW_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Arrow Glacier" |) |))).
+    Definition value_ARROW_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Arrow Glacier" |) |))).
     
-    Axiom Constant_value_ARROW_GLACIER :
-      (M.get_constant "revm_specification::hardfork::name::ARROW_GLACIER") = value_ARROW_GLACIER.
-    Global Hint Rewrite Constant_value_ARROW_GLACIER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ARROW_GLACIER :
+      M.IsFunction.C "revm_specification::hardfork::name::ARROW_GLACIER" value_ARROW_GLACIER.
+    Admitted.
+    Global Typeclasses Opaque value_ARROW_GLACIER.
     
-    Definition value_GRAY_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Gray Glacier" |) |))).
+    Definition value_GRAY_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Gray Glacier" |) |))).
     
-    Axiom Constant_value_GRAY_GLACIER :
-      (M.get_constant "revm_specification::hardfork::name::GRAY_GLACIER") = value_GRAY_GLACIER.
-    Global Hint Rewrite Constant_value_GRAY_GLACIER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_GRAY_GLACIER :
+      M.IsFunction.C "revm_specification::hardfork::name::GRAY_GLACIER" value_GRAY_GLACIER.
+    Admitted.
+    Global Typeclasses Opaque value_GRAY_GLACIER.
     
-    Definition value_MERGE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Merge" |) |))).
+    Definition value_MERGE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Merge" |) |))).
     
-    Axiom Constant_value_MERGE :
-      (M.get_constant "revm_specification::hardfork::name::MERGE") = value_MERGE.
-    Global Hint Rewrite Constant_value_MERGE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MERGE :
+      M.IsFunction.C "revm_specification::hardfork::name::MERGE" value_MERGE.
+    Admitted.
+    Global Typeclasses Opaque value_MERGE.
     
-    Definition value_SHANGHAI : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Shanghai" |) |))).
+    Definition value_SHANGHAI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Shanghai" |) |))).
     
-    Axiom Constant_value_SHANGHAI :
-      (M.get_constant "revm_specification::hardfork::name::SHANGHAI") = value_SHANGHAI.
-    Global Hint Rewrite Constant_value_SHANGHAI : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SHANGHAI :
+      M.IsFunction.C "revm_specification::hardfork::name::SHANGHAI" value_SHANGHAI.
+    Admitted.
+    Global Typeclasses Opaque value_SHANGHAI.
     
-    Definition value_CANCUN : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Cancun" |) |))).
+    Definition value_CANCUN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Cancun" |) |))).
     
-    Axiom Constant_value_CANCUN :
-      (M.get_constant "revm_specification::hardfork::name::CANCUN") = value_CANCUN.
-    Global Hint Rewrite Constant_value_CANCUN : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CANCUN :
+      M.IsFunction.C "revm_specification::hardfork::name::CANCUN" value_CANCUN.
+    Admitted.
+    Global Typeclasses Opaque value_CANCUN.
     
-    Definition value_PRAGUE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Prague" |) |))).
+    Definition value_PRAGUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Prague" |) |))).
     
-    Axiom Constant_value_PRAGUE :
-      (M.get_constant "revm_specification::hardfork::name::PRAGUE") = value_PRAGUE.
-    Global Hint Rewrite Constant_value_PRAGUE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PRAGUE :
+      M.IsFunction.C "revm_specification::hardfork::name::PRAGUE" value_PRAGUE.
+    Admitted.
+    Global Typeclasses Opaque value_PRAGUE.
     
-    Definition value_OSAKA : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "PragueEOF" |) |))).
+    Definition value_OSAKA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "PragueEOF" |) |))).
     
-    Axiom Constant_value_OSAKA :
-      (M.get_constant "revm_specification::hardfork::name::OSAKA") = value_OSAKA.
-    Global Hint Rewrite Constant_value_OSAKA : constant_rewrites.
+    Global Instance Instance_IsConstant_value_OSAKA :
+      M.IsFunction.C "revm_specification::hardfork::name::OSAKA" value_OSAKA.
+    Admitted.
+    Global Typeclasses Opaque value_OSAKA.
     
-    Definition value_LATEST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Latest" |) |))).
+    Definition value_LATEST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| mk_str (| "Latest" |) |))).
     
-    Axiom Constant_value_LATEST :
-      (M.get_constant "revm_specification::hardfork::name::LATEST") = value_LATEST.
-    Global Hint Rewrite Constant_value_LATEST : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LATEST :
+      M.IsFunction.C "revm_specification::hardfork::name::LATEST" value_LATEST.
+    Admitted.
+    Global Typeclasses Opaque value_LATEST.
   End name.
   
   Module Impl_core_convert_From_ref__str_for_revm_specification_hardfork_SpecId.
@@ -1531,7 +1550,10 @@ Module hardfork.
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::FRONTIER" |) in
-                    M.get_constant "revm_specification::hardfork::name::FRONTIER"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::FRONTIER",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1539,7 +1561,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::FRONTIER_THAWING"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::FRONTIER_THAWING",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1547,12 +1572,18 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::HOMESTEAD"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::HOMESTEAD"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::HOMESTEAD",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::DAO_FORK" |) in
-                    M.get_constant "revm_specification::hardfork::name::DAO_FORK"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::DAO_FORK",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1560,7 +1591,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::TANGERINE"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::TANGERINE"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::TANGERINE",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1568,7 +1602,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::SPURIOUS_DRAGON"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::SPURIOUS_DRAGON",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1576,7 +1613,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::BYZANTIUM"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::BYZANTIUM"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::BYZANTIUM",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1584,7 +1624,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::CONSTANTINOPLE"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::CONSTANTINOPLE",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1592,12 +1635,18 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::PETERSBURG"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::PETERSBURG"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::PETERSBURG",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::ISTANBUL" |) in
-                    M.get_constant "revm_specification::hardfork::name::ISTANBUL"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::ISTANBUL",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1605,17 +1654,26 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::MUIR_GLACIER"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::MUIR_GLACIER",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::BERLIN" |) in
-                    M.get_constant "revm_specification::hardfork::name::BERLIN"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::BERLIN",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LONDON" |) in
-                    M.get_constant "revm_specification::hardfork::name::LONDON"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::LONDON",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1623,7 +1681,10 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::ARROW_GLACIER"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::ARROW_GLACIER",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1631,37 +1692,58 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                       |) in
-                    M.get_constant "revm_specification::hardfork::name::GRAY_GLACIER"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::GRAY_GLACIER",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::MERGE" |) in
-                    M.get_constant "revm_specification::hardfork::name::MERGE"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::MERGE",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::SHANGHAI" |) in
-                    M.get_constant "revm_specification::hardfork::name::SHANGHAI"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::SHANGHAI",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
-                    M.get_constant "revm_specification::hardfork::name::CANCUN"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::CANCUN",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::PRAGUE" |) in
-                    M.get_constant "revm_specification::hardfork::name::PRAGUE"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::PRAGUE",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::OSAKA" |) in
-                    M.get_constant "revm_specification::hardfork::name::OSAKA"));
+                    get_constant (|
+                      "revm_specification::hardfork::name::OSAKA",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
-                    M.get_constant "revm_specification::hardfork::name::LATEST"))
+                    get_constant (|
+                      "revm_specification::hardfork::name::LATEST",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    |)))
               ]
             |)
           |)))

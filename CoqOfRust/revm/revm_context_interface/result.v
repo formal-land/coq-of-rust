@@ -1859,7 +1859,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_success" (is_success HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_success.
     
@@ -1953,10 +1953,7 @@ Module result.
     
     Global Instance AssociatedFunction_created_address :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self HaltReasonT)
-        "created_address"
-        (created_address HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "created_address" (created_address HaltReasonT).
     Admitted.
     Global Typeclasses Opaque created_address.
     
@@ -1999,7 +1996,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_halt.
     
@@ -2092,7 +2089,7 @@ Module result.
     
     Global Instance AssociatedFunction_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "output" (output HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "output" (output HaltReasonT).
     Admitted.
     Global Typeclasses Opaque output.
     
@@ -2172,7 +2169,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_output" (into_output HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "into_output" (into_output HaltReasonT).
     Admitted.
     Global Typeclasses Opaque into_output.
     
@@ -2286,7 +2283,7 @@ Module result.
     
     Global Instance AssociatedFunction_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "logs" (logs HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "logs" (logs HaltReasonT).
     Admitted.
     Global Typeclasses Opaque logs.
     
@@ -2374,7 +2371,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
     Admitted.
     Global Typeclasses Opaque into_logs.
     
@@ -2454,7 +2451,7 @@ Module result.
     
     Global Instance AssociatedFunction_gas_used :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
     Admitted.
     Global Typeclasses Opaque gas_used.
   End Impl_revm_context_interface_result_ExecutionResult_HaltReasonT.
@@ -3182,7 +3179,7 @@ Module result.
       end.
     
     Global Instance AssociatedFunction_into_data :
-      M.IsAssociatedFunction.Trait Self "into_data" into_data.
+      M.IsAssociatedFunction.C Self "into_data" into_data.
     Admitted.
     Global Typeclasses Opaque into_data.
     
@@ -3247,7 +3244,7 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
     Admitted.
     Global Typeclasses Opaque data.
     
@@ -3329,8 +3326,7 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
   End Impl_revm_context_interface_result_Output.
@@ -4392,7 +4388,7 @@ Module result.
     
     Global Instance AssociatedFunction_map_db_err :
       forall (DBError TransactionValidationErrorT : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self DBError TransactionValidationErrorT)
         "map_db_err"
         (map_db_err DBError TransactionValidationErrorT).

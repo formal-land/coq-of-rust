@@ -87,7 +87,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_read_i16 :
-    M.IsFunction.Trait "revm_bytecode::utils::read_i16" read_i16.
+    M.IsFunction.C "revm_bytecode::utils::read_i16" read_i16.
   Admitted.
   Global Typeclasses Opaque read_i16.
   
@@ -176,7 +176,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_read_u16 :
-    M.IsFunction.Trait "revm_bytecode::utils::read_u16" read_u16.
+    M.IsFunction.C "revm_bytecode::utils::read_u16" read_u16.
   Admitted.
   Global Typeclasses Opaque read_u16.
 End utils.

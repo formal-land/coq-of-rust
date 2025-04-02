@@ -14,13 +14,13 @@ Module Impl_mutual_loop_LoopA.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_start_loop :
-    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+    M.IsAssociatedFunction.C Self "start_loop" start_loop.
   Admitted.
 End Impl_mutual_loop_LoopA.
 
@@ -47,12 +47,12 @@ Module Impl_mutual_loop_LoopB.
   Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_start_loop :
-    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+    M.IsAssociatedFunction.C Self "start_loop" start_loop.
   Admitted.
 End Impl_mutual_loop_LoopB.
 
 Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_start_loop :
-  M.IsFunction.Trait "mutual_loop::start_loop" start_loop.
+  M.IsFunction.C "mutual_loop::start_loop" start_loop.
 Admitted.

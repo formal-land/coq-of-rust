@@ -174,7 +174,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_analyze_slice :
-  M.IsFunction.Trait "arrays_and_slices::analyze_slice" analyze_slice.
+  M.IsFunction.C "arrays_and_slices::analyze_slice" analyze_slice.
 Admitted.
 Global Typeclasses Opaque analyze_slice.
 
@@ -1289,6 +1289,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "arrays_and_slices::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "arrays_and_slices::main" main.
 Admitted.
 Global Typeclasses Opaque main.

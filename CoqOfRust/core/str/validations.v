@@ -23,7 +23,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_utf8_first_byte :
-      M.IsFunction.Trait "core::str::validations::utf8_first_byte" utf8_first_byte.
+      M.IsFunction.C "core::str::validations::utf8_first_byte" utf8_first_byte.
     Admitted.
     Global Typeclasses Opaque utf8_first_byte.
     
@@ -44,12 +44,14 @@ Module str.
               (Ty.path "u32")
               (BinOp.bit_and
                 (M.read (| byte |))
-                (M.read (| M.get_constant "core::str::validations::CONT_MASK" |))))))
+                (M.read (|
+                  get_constant (| "core::str::validations::CONT_MASK", Ty.path "u8" |)
+                |))))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_utf8_acc_cont_byte :
-      M.IsFunction.Trait "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
+      M.IsFunction.C "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
     Admitted.
     Global Typeclasses Opaque utf8_acc_cont_byte.
     
@@ -71,7 +73,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_utf8_is_cont_byte :
-      M.IsFunction.Trait "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
+      M.IsFunction.C "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
     Admitted.
     Global Typeclasses Opaque utf8_is_cont_byte.
     
@@ -380,7 +382,10 @@ Module str.
                                     (BinOp.bit_and
                                       (M.read (| y |))
                                       (M.read (|
-                                        M.get_constant "core::str::validations::CONT_MASK"
+                                        get_constant (|
+                                          "core::str::validations::CONT_MASK",
+                                          Ty.path "u8"
+                                        |)
                                       |)));
                                   M.read (| z |)
                                 ]
@@ -493,7 +498,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_next_code_point :
-      M.IsFunction.Trait "core::str::validations::next_code_point" next_code_point.
+      M.IsFunction.C "core::str::validations::next_code_point" next_code_point.
     Admitted.
     Global Typeclasses Opaque next_code_point.
     
@@ -946,24 +951,24 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_next_code_point_reverse :
-      M.IsFunction.Trait "core::str::validations::next_code_point_reverse" next_code_point_reverse.
+      M.IsFunction.C "core::str::validations::next_code_point_reverse" next_code_point_reverse.
     Admitted.
     Global Typeclasses Opaque next_code_point_reverse.
     
-    Definition value_NONASCII_MASK : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
-              [ Value.Integer IntegerKind.U8 128 ]
-            |)
-          |))).
+    Definition value_NONASCII_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
+            [ Value.Integer IntegerKind.U8 128 ]
+          |)
+        |))).
     
-    Axiom Constant_value_NONASCII_MASK :
-      (M.get_constant "core::str::validations::NONASCII_MASK") = value_NONASCII_MASK.
-    Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
+    Global Instance Instance_IsConstant_value_NONASCII_MASK :
+      M.IsFunction.C "core::str::validations::NONASCII_MASK" value_NONASCII_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_NONASCII_MASK.
     
     (*
     const fn contains_nonascii(x: usize) -> bool {
@@ -978,14 +983,16 @@ Module str.
           BinOp.ne (|
             BinOp.bit_and
               (M.read (| x |))
-              (M.read (| M.get_constant "core::str::validations::NONASCII_MASK" |)),
+              (M.read (|
+                get_constant (| "core::str::validations::NONASCII_MASK", Ty.path "usize" |)
+              |)),
             Value.Integer IntegerKind.Usize 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_contains_nonascii :
-      M.IsFunction.Trait "core::str::validations::contains_nonascii" contains_nonascii.
+      M.IsFunction.C "core::str::validations::contains_nonascii" contains_nonascii.
     Admitted.
     Global Typeclasses Opaque contains_nonascii.
     
@@ -1144,7 +1151,10 @@ Module str.
                     BinOp.Wrap.mul (|
                       Value.Integer IntegerKind.Usize 2,
                       M.read (|
-                        M.get_constant "core::str::validations::run_utf8_validation::USIZE_BYTES"
+                        get_constant (|
+                          "core::str::validations::run_utf8_validation::USIZE_BYTES",
+                          Ty.path "usize"
+                        |)
                       |)
                     |)
                   |) in
@@ -2253,7 +2263,13 @@ Module str.
                                                     LogicalOp.and (|
                                                       BinOp.ne (|
                                                         M.read (| align |),
-                                                        M.read (| M.get_constant "core::num::MAX" |)
+                                                        M.read (|
+                                                          get_associated_constant (|
+                                                            Ty.path "usize",
+                                                            "MAX",
+                                                            Ty.path "usize"
+                                                          |)
+                                                        |)
                                                       |),
                                                       ltac:(M.monadic
                                                         (BinOp.eq (|
@@ -2272,8 +2288,10 @@ Module str.
                                                               ]
                                                             |),
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::str::validations::run_utf8_validation::USIZE_BYTES"
+                                                              get_constant (|
+                                                                "core::str::validations::run_utf8_validation::USIZE_BYTES",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.Usize 0
@@ -2589,306 +2607,305 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_run_utf8_validation :
-      M.IsFunction.Trait "core::str::validations::run_utf8_validation" run_utf8_validation.
+      M.IsFunction.C "core::str::validations::run_utf8_validation" run_utf8_validation.
     Admitted.
     Global Typeclasses Opaque run_utf8_validation.
     
     Module run_utf8_validation.
-      Definition value_USIZE_BYTES : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
-                []
-              |)
-            |))).
-      
-      Axiom Constant_value_USIZE_BYTES :
-        (M.get_constant "core::str::validations::run_utf8_validation::USIZE_BYTES") =
-          value_USIZE_BYTES.
-      Global Hint Rewrite Constant_value_USIZE_BYTES : constant_rewrites.
-    End run_utf8_validation.
-    
-    Definition value_UTF8_CHAR_WIDTH : Value.t :=
-      M.run_constant
+      Definition value_USIZE_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    Value.Array
-                      [
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 1;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 2;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 3;
-                        Value.Integer IntegerKind.U8 4;
-                        Value.Integer IntegerKind.U8 4;
-                        Value.Integer IntegerKind.U8 4;
-                        Value.Integer IntegerKind.U8 4;
-                        Value.Integer IntegerKind.U8 4;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0;
-                        Value.Integer IntegerKind.U8 0
-                      ]
-                  |)
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+              []
+            |)
+          |))).
+      
+      Global Instance Instance_IsConstant_value_USIZE_BYTES :
+        M.IsFunction.C "core::str::validations::run_utf8_validation::USIZE_BYTES" value_USIZE_BYTES.
+      Admitted.
+      Global Typeclasses Opaque value_USIZE_BYTES.
+    End run_utf8_validation.
+    
+    Definition value_UTF8_CHAR_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  Value.Array
+                    [
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 0
+                    ]
                 |)
               |)
             |)
-          |))).
+          |)
+        |))).
     
-    Axiom Constant_value_UTF8_CHAR_WIDTH :
-      (M.get_constant "core::str::validations::UTF8_CHAR_WIDTH") = value_UTF8_CHAR_WIDTH.
-    Global Hint Rewrite Constant_value_UTF8_CHAR_WIDTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_UTF8_CHAR_WIDTH :
+      M.IsFunction.C "core::str::validations::UTF8_CHAR_WIDTH" value_UTF8_CHAR_WIDTH.
+    Admitted.
+    Global Typeclasses Opaque value_UTF8_CHAR_WIDTH.
     
     (*
     pub const fn utf8_char_width(b: u8) -> usize {
@@ -2904,7 +2921,22 @@ Module str.
             (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_array_field (|
-                M.deref (| M.read (| M.get_constant "core::str::validations::UTF8_CHAR_WIDTH" |) |),
+                M.deref (|
+                  M.read (|
+                    get_constant (|
+                      "core::str::validations::UTF8_CHAR_WIDTH",
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 256 ]
+                            [ Ty.path "u8" ]
+                        ]
+                    |)
+                  |)
+                |),
                 M.cast (Ty.path "usize") (M.read (| b |))
               |)
             |))))
@@ -2912,15 +2944,16 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_utf8_char_width :
-      M.IsFunction.Trait "core::str::validations::utf8_char_width" utf8_char_width.
+      M.IsFunction.C "core::str::validations::utf8_char_width" utf8_char_width.
     Admitted.
     Global Typeclasses Opaque utf8_char_width.
     
-    Definition value_CONT_MASK : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
+    Definition value_CONT_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
     
-    Axiom Constant_value_CONT_MASK :
-      (M.get_constant "core::str::validations::CONT_MASK") = value_CONT_MASK.
-    Global Hint Rewrite Constant_value_CONT_MASK : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CONT_MASK :
+      M.IsFunction.C "core::str::validations::CONT_MASK" value_CONT_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_CONT_MASK.
   End validations.
 End str.

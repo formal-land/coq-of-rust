@@ -799,7 +799,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+      Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
       Admitted.
       Global Typeclasses Opaque caller.
       
@@ -828,7 +828,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_file : M.IsAssociatedFunction.Trait Self "file" file.
+      Global Instance AssociatedFunction_file : M.IsAssociatedFunction.C Self "file" file.
       Admitted.
       Global Typeclasses Opaque file.
       
@@ -852,7 +852,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_line : M.IsAssociatedFunction.Trait Self "line" line.
+      Global Instance AssociatedFunction_line : M.IsAssociatedFunction.C Self "line" line.
       Admitted.
       Global Typeclasses Opaque line.
       
@@ -876,7 +876,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_column : M.IsAssociatedFunction.Trait Self "column" column.
+      Global Instance AssociatedFunction_column : M.IsAssociatedFunction.C Self "column" column.
       Admitted.
       Global Typeclasses Opaque column.
       (*
@@ -902,7 +902,7 @@ Module panic.
         end.
       
       Global Instance AssociatedFunction_internal_constructor :
-        M.IsAssociatedFunction.Trait Self "internal_constructor" internal_constructor.
+        M.IsAssociatedFunction.C Self "internal_constructor" internal_constructor.
       Admitted.
       Global Typeclasses Opaque internal_constructor.
     End Impl_core_panic_location_Location.

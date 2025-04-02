@@ -4,16 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter checked_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_checked_division :
-  M.IsFunction.Trait "option::checked_division" checked_division.
+  M.IsFunction.C "option::checked_division" checked_division.
 Admitted.
 
 Parameter try_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_try_division :
-  M.IsFunction.Trait "option::try_division" try_division.
+  M.IsFunction.C "option::try_division" try_division.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "option::main" main.
 Admitted.

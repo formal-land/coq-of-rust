@@ -53,7 +53,7 @@ Module verifier.
     end.
   
   Global Instance Instance_IsFunction_verify_module_unmetered :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::verifier::verify_module_unmetered"
       verify_module_unmetered.
   Admitted.
@@ -662,8 +662,10 @@ Module verifier.
                                 [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
                               |),
                               M.read (|
-                                M.get_constant
-                                  "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
+                                get_constant (|
+                                  "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE",
+                                  Ty.path "usize"
+                                |)
                               |)
                             |)
                           |)
@@ -725,8 +727,10 @@ Module verifier.
                                                   M.deref (|
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.get_constant
-                                                        "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
+                                                      get_constant (|
+                                                        "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -789,21 +793,22 @@ Module verifier.
     end.
   
   Global Instance Instance_IsFunction_verify_module_with_config_for_test :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::verifier::verify_module_with_config_for_test"
       verify_module_with_config_for_test.
   Admitted.
   Global Typeclasses Opaque verify_module_with_config_for_test.
   
   Module verify_module_with_config_for_test.
-    Definition value_MAX_MODULE_SIZE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
+    Definition value_MAX_MODULE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
     
-    Axiom Constant_value_MAX_MODULE_SIZE :
-      (M.get_constant
-          "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE") =
+    Global Instance Instance_IsConstant_value_MAX_MODULE_SIZE :
+      M.IsFunction.C
+        "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
         value_MAX_MODULE_SIZE.
-    Global Hint Rewrite Constant_value_MAX_MODULE_SIZE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_MODULE_SIZE.
   End verify_module_with_config_for_test.
   
   (*
@@ -2102,7 +2107,7 @@ Module verifier.
     end.
   
   Global Instance Instance_IsFunction_verify_module_with_config_metered :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::verifier::verify_module_with_config_metered"
       verify_module_with_config_metered.
   Admitted.
@@ -2156,7 +2161,7 @@ Module verifier.
     end.
   
   Global Instance Instance_IsFunction_verify_module_with_config_unmetered :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::verifier::verify_module_with_config_unmetered"
       verify_module_with_config_unmetered.
   Admitted.

@@ -347,7 +347,7 @@ Module async_iter.
       
       Global Instance AssociatedFunction_async_gen_ready :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "async_gen_ready" (async_gen_ready T).
+        M.IsAssociatedFunction.C (Self T) "async_gen_ready" (async_gen_ready T).
       Admitted.
       Global Typeclasses Opaque async_gen_ready.
       
@@ -356,14 +356,18 @@ Module async_iter.
         (Ty.path "core::task::poll::Poll")
         []
         [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] *)
-      Definition value_PENDING (T : Ty.t) : Value.t :=
+      Definition value_PENDING
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run
-          ltac:(M.monadic (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |))).
+        ltac:(M.monadic (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |))).
       
       Global Instance AssociatedConstant_value_PENDING :
         forall (T : Ty.t),
-        M.IsAssociatedConstant.Trait (Self T) "value_PENDING" (value_PENDING T).
+        M.IsAssociatedFunction.C (Self T) "PENDING" (value_PENDING T).
       Admitted.
       Global Typeclasses Opaque value_PENDING.
       
@@ -372,19 +376,23 @@ Module async_iter.
         (Ty.path "core::task::poll::Poll")
         []
         [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] *)
-      Definition value_FINISHED (T : Ty.t) : Value.t :=
+      Definition value_FINISHED
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "core::task::poll::Poll::Ready"
-                [ Value.StructTuple "core::option::Option::None" [] ]
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "core::task::poll::Poll::Ready"
+              [ Value.StructTuple "core::option::Option::None" [] ]
+          |))).
       
       Global Instance AssociatedConstant_value_FINISHED :
         forall (T : Ty.t),
-        M.IsAssociatedConstant.Trait (Self T) "value_FINISHED" (value_FINISHED T).
+        M.IsAssociatedFunction.C (Self T) "FINISHED" (value_FINISHED T).
       Admitted.
       Global Typeclasses Opaque value_FINISHED.
     End Impl_core_task_poll_Poll_core_option_Option_T.

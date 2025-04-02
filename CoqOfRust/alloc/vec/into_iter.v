@@ -187,7 +187,7 @@ Module vec.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_slice" (as_slice T A).
+        M.IsAssociatedFunction.C (Self T A) "as_slice" (as_slice T A).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -243,7 +243,7 @@ Module vec.
       
       Global Instance AssociatedFunction_as_mut_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_mut_slice" (as_mut_slice T A).
+        M.IsAssociatedFunction.C (Self T A) "as_mut_slice" (as_mut_slice T A).
       Admitted.
       Global Typeclasses Opaque as_mut_slice.
       
@@ -295,7 +295,7 @@ Module vec.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
       
@@ -360,7 +360,7 @@ Module vec.
       
       Global Instance AssociatedFunction_as_raw_mut_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_raw_mut_slice" (as_raw_mut_slice T A).
+        M.IsAssociatedFunction.C (Self T A) "as_raw_mut_slice" (as_raw_mut_slice T A).
       Admitted.
       Global Typeclasses Opaque as_raw_mut_slice.
       
@@ -531,7 +531,7 @@ Module vec.
       
       Global Instance AssociatedFunction_forget_allocation_drop_remaining :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self T A)
           "forget_allocation_drop_remaining"
           (forget_allocation_drop_remaining T A).
@@ -594,7 +594,7 @@ Module vec.
       
       Global Instance AssociatedFunction_forget_remaining_elements :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self T A)
           "forget_remaining_elements"
           (forget_remaining_elements T A).
@@ -715,7 +715,11 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -1028,7 +1032,7 @@ Module vec.
       
       Global Instance AssociatedFunction_into_vecdeque :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "into_vecdeque" (into_vecdeque T A).
+        M.IsAssociatedFunction.C (Self T A) "into_vecdeque" (into_vecdeque T A).
       Admitted.
       Global Typeclasses Opaque into_vecdeque.
     End Impl_alloc_vec_into_iter_IntoIter_T_A.
@@ -1150,7 +1154,11 @@ Module vec.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                                M.use
+                                  (get_constant (|
+                                    "core::mem::SizedTypeProperties::IS_ZST",
+                                    Ty.path "bool"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1414,7 +1422,11 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -1631,7 +1643,12 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
@@ -1856,7 +1873,10 @@ Module vec.
                     M.alloc (|
                       repeat (|
                         M.read (|
-                          M.get_constant "alloc::vec::into_iter::next_chunk_discriminant"
+                          get_constant (|
+                            "alloc::vec::into_iter::next_chunk_discriminant",
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                          |)
                         |),
                         N
                       |)
@@ -1888,7 +1908,11 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1904,13 +1928,7 @@ Module vec.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.lt (|
-                                                    M.read (| len |),
-                                                    M.read (|
-                                                      M.get_constant
-                                                        "alloc::vec::into_iter::next_chunk::N"
-                                                    |)
-                                                  |)
+                                                  BinOp.lt (| M.read (| len |), N |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -2006,9 +2024,7 @@ Module vec.
                                                 "end"
                                               |)
                                             |);
-                                            M.read (|
-                                              M.get_constant "alloc::vec::into_iter::next_chunk::N"
-                                            |)
+                                            N
                                           ]
                                         |)
                                       |)
@@ -2068,16 +2084,7 @@ Module vec.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| len |),
-                                    M.read (|
-                                      M.get_constant "alloc::vec::into_iter::next_chunk::N"
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| len |), N |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2256,7 +2263,7 @@ Module vec.
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
                             |));
-                          M.read (| M.get_constant "alloc::vec::into_iter::next_chunk::N" |)
+                          N
                         ]
                       |)
                     |) in
@@ -2284,7 +2291,7 @@ Module vec.
                                 "ptr"
                               |)
                             |);
-                            M.read (| M.get_constant "alloc::vec::into_iter::next_chunk::N" |)
+                            N
                           ]
                         |)
                       |)
@@ -2378,7 +2385,12 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.loop (|
@@ -2758,7 +2770,11 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
@@ -3399,7 +3415,11 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
@@ -3736,7 +3756,12 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
@@ -3934,7 +3959,12 @@ Module vec.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                      (let γ :=
+                        M.use
+                          (get_constant (|
+                            "core::mem::SizedTypeProperties::IS_ZST",
+                            Ty.path "bool"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         BinOp.eq (|
@@ -4156,9 +4186,14 @@ Module vec.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T A : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -4168,8 +4203,7 @@ Module vec.
           (* Trait polymorphic types *) []
           (Self T A)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T A))
-          ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T A)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_alloc_Allocator_A_where_alloc_vec_into_iter_NonDrop_T_for_alloc_vec_into_iter_IntoIter_T_A.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_vec_into_iter_IntoIter_T_A.
@@ -4377,50 +4411,58 @@ Module vec.
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_EXPAND_BY (T A : Ty.t) : Value.t :=
+      Definition value_EXPAND_BY
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.Usize 1 ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                "new",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.Usize 1 ]
+            |)
+          |))).
       
       (*     const MERGE_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_MERGE_BY (T A : Ty.t) : Value.t :=
+      Definition value_MERGE_BY
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.Usize 1 ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                "new",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.Usize 1 ]
+            |)
+          |))).
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -4431,8 +4473,8 @@ Module vec.
           (Self T A)
           (* Instance *)
           [
-            ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY T A));
-            ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY T A))
+            ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY T A));
+            ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY T A))
           ].
     End Impl_core_iter_traits_marker_InPlaceIterable_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     

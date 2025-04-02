@@ -141,7 +141,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+          M.IsAssociatedFunction.C (Self T) "new" (new T).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_rev_Rev_T.

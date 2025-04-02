@@ -95,7 +95,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "concurrent_tests::foo" foo.
+Global Instance Instance_IsFunction_foo : M.IsFunction.C "concurrent_tests::foo" foo.
 Admitted.
 Global Typeclasses Opaque foo.
 
@@ -357,7 +357,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_file :
-    M.IsFunction.Trait "concurrent_tests::tests::test_file'1" test_file.
+    M.IsFunction.C "concurrent_tests::tests::test_file'1" test_file.
   Admitted.
   Global Typeclasses Opaque test_file.
   
@@ -618,7 +618,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_file_also :
-    M.IsFunction.Trait "concurrent_tests::tests::test_file_also'1" test_file_also.
+    M.IsFunction.C "concurrent_tests::tests::test_file_also'1" test_file_also.
   Admitted.
   Global Typeclasses Opaque test_file_also.
 End tests.

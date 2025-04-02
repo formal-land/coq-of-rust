@@ -2,34 +2,60 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module language_storage.
-  Definition value_CODE_TAG : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+  Definition value_CODE_TAG (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Axiom Constant_value_CODE_TAG :
-    (M.get_constant "move_core_types::language_storage::CODE_TAG") = value_CODE_TAG.
-  Global Hint Rewrite Constant_value_CODE_TAG : constant_rewrites.
+  Global Instance Instance_IsConstant_value_CODE_TAG :
+    M.IsFunction.C "move_core_types::language_storage::CODE_TAG" value_CODE_TAG.
+  Admitted.
+  Global Typeclasses Opaque value_CODE_TAG.
   
-  Definition value_RESOURCE_TAG : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  Definition value_RESOURCE_TAG (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
-  Axiom Constant_value_RESOURCE_TAG :
-    (M.get_constant "move_core_types::language_storage::RESOURCE_TAG") = value_RESOURCE_TAG.
-  Global Hint Rewrite Constant_value_RESOURCE_TAG : constant_rewrites.
+  Global Instance Instance_IsConstant_value_RESOURCE_TAG :
+    M.IsFunction.C "move_core_types::language_storage::RESOURCE_TAG" value_RESOURCE_TAG.
+  Admitted.
+  Global Typeclasses Opaque value_RESOURCE_TAG.
   
-  Definition value_CORE_CODE_ADDRESS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "move_core_types::account_address::ONE")).
+  Definition value_CORE_CODE_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_associated_constant (|
+        Ty.path "move_core_types::account_address::AccountAddress",
+        "ONE",
+        Ty.path "move_core_types::account_address::AccountAddress"
+      |))).
   
-  Axiom Constant_value_CORE_CODE_ADDRESS :
-    (M.get_constant "move_core_types::language_storage::CORE_CODE_ADDRESS") =
-      value_CORE_CODE_ADDRESS.
-  Global Hint Rewrite Constant_value_CORE_CODE_ADDRESS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_CORE_CODE_ADDRESS :
+    M.IsFunction.C "move_core_types::language_storage::CORE_CODE_ADDRESS" value_CORE_CODE_ADDRESS.
+  Admitted.
+  Global Typeclasses Opaque value_CORE_CODE_ADDRESS.
   
-  Definition value_TYPETAG_ENUM_ABSTRACT_SIZE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            M.call_closure (|
+  Definition value_TYPETAG_ENUM_ABSTRACT_SIZE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "once_cell::sync::Lazy")
+              []
+              [
+                Ty.apply
+                  (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                  []
+                  [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ];
+                Ty.function
+                  []
+                  (Ty.apply
+                    (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                    []
+                    [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])
+              ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "once_cell::sync::Lazy")
                 []
@@ -45,65 +71,62 @@ Module language_storage.
                       []
                       [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])
                 ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "once_cell::sync::Lazy")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                      []
-                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ];
-                    Ty.function
-                      []
-                      (Ty.apply
-                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                        []
-                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])
-                  ],
-                "new",
-                [],
-                []
-              |),
-              [
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [ Ty.tuple [] ]
-                                  (Ty.apply
-                                    (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                    []
-                                    [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+              "new",
+              [],
+              []
+            |),
+            [
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [] ]
+                                (Ty.apply
+                                  (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                  []
+                                  [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                      []
+                                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::arith::Add",
                                       Ty.apply
                                         (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                         []
                                         [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
                                         ],
-                                      M.get_trait_method (|
-                                        "core::ops::arith::Add",
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                           []
                                           [
                                             Ty.path
                                               "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ],
-                                        [],
-                                        [
+                                          ]
+                                      ],
+                                      "add",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE",
                                           Ty.apply
                                             (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                             []
@@ -111,35 +134,37 @@ Module language_storage.
                                               Ty.path
                                                 "move_core_types::gas_algebra::AbstractMemoryUnit"
                                             ]
-                                        ],
-                                        "add",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.get_constant
-                                            "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
-                                        |);
-                                        M.read (|
-                                          M.get_constant
-                                            "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
                                         |)
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-            |)
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE",
+                                          Ty.apply
+                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                            ]
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE :
-    (M.get_constant "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE") =
+  Global Instance Instance_IsConstant_value_TYPETAG_ENUM_ABSTRACT_SIZE :
+    M.IsFunction.C
+      "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE"
       value_TYPETAG_ENUM_ABSTRACT_SIZE.
-  Global Hint Rewrite Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TYPETAG_ENUM_ABSTRACT_SIZE.
   
   (*
   Enum TypeTag
@@ -691,7 +716,18 @@ Module language_storage.
                 M.read (| __deserializer |);
                 mk_str (| "TypeTag" |);
                 M.read (|
-                  M.get_constant "move_core_types::language_storage::_'1::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_core_types::language_storage::_'1::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'1::deserialize::__Visitor"
@@ -1208,7 +1244,18 @@ Module language_storage.
                 M.read (| __deserializer |);
                 mk_str (| "StructTag" |);
                 M.read (|
-                  M.get_constant "move_core_types::language_storage::_'3::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::language_storage::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'3::deserialize::__Visitor"
@@ -1549,7 +1596,18 @@ Module language_storage.
                 M.read (| __deserializer |);
                 mk_str (| "ResourceKey" |);
                 M.read (|
-                  M.get_constant "move_core_types::language_storage::_'5::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::language_storage::_'5::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'5::deserialize::__Visitor"
@@ -1890,7 +1948,18 @@ Module language_storage.
                 M.read (| __deserializer |);
                 mk_str (| "ModuleId" |);
                 M.read (|
-                  M.get_constant "move_core_types::language_storage::_'7::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::language_storage::_'7::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'7::deserialize::__Visitor"
@@ -3251,7 +3320,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+      M.IsAssociatedFunction.C Self "to_canonical_string" to_canonical_string.
     Admitted.
     Global Typeclasses Opaque to_canonical_string.
     
@@ -3304,7 +3373,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+      M.IsAssociatedFunction.C Self "to_canonical_display" to_canonical_display.
     Admitted.
     Global Typeclasses Opaque to_canonical_display.
     
@@ -3398,8 +3467,33 @@ Module language_storage.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant
-                              "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE"
+                            get_constant (|
+                              "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "once_cell::sync::Lazy")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                        []
+                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                        ];
+                                      Ty.function
+                                        []
+                                        (Ty.apply
+                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                          ])
+                                    ]
+                                ]
+                            |)
                           |)
                         |)
                       |)
@@ -3602,10 +3696,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction.Trait
-        Self
-        "abstract_size_for_gas_metering"
-        abstract_size_for_gas_metering.
+      M.IsAssociatedFunction.C Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
     Admitted.
     Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_language_storage_TypeTag.
@@ -4875,7 +4966,10 @@ Module language_storage.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant "move_core_types::language_storage::RESOURCE_TAG"
+                                  get_constant (|
+                                    "move_core_types::language_storage::RESOURCE_TAG",
+                                    Ty.path "u8"
+                                  |)
                                 |)
                               ]
                           |)
@@ -4961,7 +5055,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_access_vector :
-      M.IsAssociatedFunction.Trait Self "access_vector" access_vector.
+      M.IsAssociatedFunction.C Self "access_vector" access_vector.
     Admitted.
     Global Typeclasses Opaque access_vector.
     
@@ -5133,7 +5227,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_is_ascii_string :
-      M.IsAssociatedFunction.Trait Self "is_ascii_string" is_ascii_string.
+      M.IsAssociatedFunction.C Self "is_ascii_string" is_ascii_string.
     Admitted.
     Global Typeclasses Opaque is_ascii_string.
     
@@ -5305,7 +5399,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_is_std_string :
-      M.IsAssociatedFunction.Trait Self "is_std_string" is_std_string.
+      M.IsAssociatedFunction.C Self "is_std_string" is_std_string.
     Admitted.
     Global Typeclasses Opaque is_std_string.
     
@@ -5363,7 +5457,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_module_id :
-      M.IsAssociatedFunction.Trait Self "module_id" module_id.
+      M.IsAssociatedFunction.C Self "module_id" module_id.
     Admitted.
     Global Typeclasses Opaque module_id.
     
@@ -5414,7 +5508,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+      M.IsAssociatedFunction.C Self "to_canonical_string" to_canonical_string.
     Admitted.
     Global Typeclasses Opaque to_canonical_string.
     
@@ -5471,7 +5565,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+      M.IsAssociatedFunction.C Self "to_canonical_display" to_canonical_display.
     Admitted.
     Global Typeclasses Opaque to_canonical_display.
     
@@ -5941,10 +6035,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction.Trait
-        Self
-        "abstract_size_for_gas_metering"
-        abstract_size_for_gas_metering.
+      M.IsAssociatedFunction.C Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
     Admitted.
     Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_language_storage_StructTag.
@@ -6647,8 +6738,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
     
@@ -6678,7 +6768,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_type_ : M.IsAssociatedFunction.Trait Self "type_" type_.
+    Global Instance AssociatedFunction_type_ : M.IsAssociatedFunction.C Self "type_" type_.
     Admitted.
     Global Typeclasses Opaque type_.
     (*
@@ -6698,7 +6788,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_core_types_language_storage_ResourceKey.
@@ -7409,7 +7499,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -7458,7 +7548,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -7488,8 +7578,7 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
     
@@ -7556,7 +7645,10 @@ Module language_storage.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant "move_core_types::language_storage::CODE_TAG"
+                                  get_constant (|
+                                    "move_core_types::language_storage::CODE_TAG",
+                                    Ty.path "u8"
+                                  |)
                                 |)
                               ]
                           |)
@@ -7642,7 +7734,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_access_vector :
-      M.IsAssociatedFunction.Trait Self "access_vector" access_vector.
+      M.IsAssociatedFunction.C Self "access_vector" access_vector.
     Admitted.
     Global Typeclasses Opaque access_vector.
     
@@ -7693,7 +7785,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+      M.IsAssociatedFunction.C Self "to_canonical_string" to_canonical_string.
     Admitted.
     Global Typeclasses Opaque to_canonical_string.
     
@@ -7737,7 +7829,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+      M.IsAssociatedFunction.C Self "to_canonical_display" to_canonical_display.
     Admitted.
     Global Typeclasses Opaque to_canonical_display.
     (*
@@ -7871,7 +7963,7 @@ Module language_storage.
       end.
     
     Global Instance AssociatedFunction_short_str_lossless :
-      M.IsAssociatedFunction.Trait Self "short_str_lossless" short_str_lossless.
+      M.IsAssociatedFunction.C Self "short_str_lossless" short_str_lossless.
     Admitted.
     Global Typeclasses Opaque short_str_lossless.
   End Impl_move_core_types_language_storage_ModuleId.

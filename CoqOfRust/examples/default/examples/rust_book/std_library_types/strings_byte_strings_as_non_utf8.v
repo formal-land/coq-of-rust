@@ -559,6 +559,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "strings_byte_strings_as_non_utf8::main" main.
+  M.IsFunction.C "strings_byte_strings_as_non_utf8::main" main.
 Admitted.
 Global Typeclasses Opaque main.

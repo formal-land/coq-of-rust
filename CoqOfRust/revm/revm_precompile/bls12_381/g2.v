@@ -3,20 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module g2.
-    Definition value_G2_INPUT_ITEM_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    Definition value_G2_INPUT_ITEM_LENGTH
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
-    Axiom Constant_value_G2_INPUT_ITEM_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH") =
+    Global Instance Instance_IsConstant_value_G2_INPUT_ITEM_LENGTH :
+      M.IsFunction.C
+        "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
         value_G2_INPUT_ITEM_LENGTH.
-    Global Hint Rewrite Constant_value_G2_INPUT_ITEM_LENGTH : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_G2_INPUT_ITEM_LENGTH.
     
-    Definition value_G2_OUTPUT_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    Definition value_G2_OUTPUT_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
-    Axiom Constant_value_G2_OUTPUT_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH") = value_G2_OUTPUT_LENGTH.
-    Global Hint Rewrite Constant_value_G2_OUTPUT_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_G2_OUTPUT_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH" value_G2_OUTPUT_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_G2_OUTPUT_LENGTH.
     
     (*
     pub(super) fn encode_g2_point(input: &blst_p2_affine) -> Bytes {
@@ -57,7 +64,12 @@ Module bls12_381.
                   M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                   [
                     Value.Integer IntegerKind.U8 0;
-                    M.read (| M.get_constant "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH" |)
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH",
+                        Ty.path "usize"
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -102,8 +114,10 @@ Module bls12_381.
                                   [
                                     ("end_",
                                       M.read (|
-                                        M.get_constant
-                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                        get_constant (|
+                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                          Ty.path "usize"
+                                        |)
                                       |))
                                   ]
                               ]
@@ -176,15 +190,19 @@ Module bls12_381.
                                   [
                                     ("start",
                                       M.read (|
-                                        M.get_constant
-                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                        get_constant (|
+                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                          Ty.path "usize"
+                                        |)
                                       |));
                                     ("end_",
                                       BinOp.Wrap.mul (|
                                         Value.Integer IntegerKind.Usize 2,
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |))
                                   ]
@@ -260,16 +278,20 @@ Module bls12_381.
                                       BinOp.Wrap.mul (|
                                         Value.Integer IntegerKind.Usize 2,
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |));
                                     ("end_",
                                       BinOp.Wrap.mul (|
                                         Value.Integer IntegerKind.Usize 3,
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |))
                                   ]
@@ -345,16 +367,20 @@ Module bls12_381.
                                       BinOp.Wrap.mul (|
                                         Value.Integer IntegerKind.Usize 3,
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |));
                                     ("end_",
                                       BinOp.Wrap.mul (|
                                         Value.Integer IntegerKind.Usize 4,
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |))
                                   ]
@@ -410,7 +436,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_encode_g2_point :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2::encode_g2_point" encode_g2_point.
+      M.IsFunction.C "revm_precompile::bls12_381::g2::encode_g2_point" encode_g2_point.
     Admitted.
     Global Typeclasses Opaque encode_g2_point.
     
@@ -702,7 +728,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_decode_and_check_g2 :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2::decode_and_check_g2" decode_and_check_g2.
+      M.IsFunction.C "revm_precompile::bls12_381::g2::decode_and_check_g2" decode_and_check_g2.
     Admitted.
     Global Typeclasses Opaque decode_and_check_g2.
     
@@ -977,7 +1003,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_check_canonical_fp2 :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2::check_canonical_fp2" check_canonical_fp2.
+      M.IsFunction.C "revm_precompile::bls12_381::g2::check_canonical_fp2" check_canonical_fp2.
     Admitted.
     Global Typeclasses Opaque check_canonical_fp2.
     
@@ -1075,8 +1101,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -1192,8 +1220,10 @@ Module bls12_381.
                                                                           |);
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
-                                                                            M.get_constant
-                                                                              "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                                            get_constant (|
+                                                                              "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                     |),
@@ -1555,8 +1585,11 @@ Module bls12_381.
                                                                                         i
                                                                                       |),
                                                                                       M.read (|
-                                                                                        M.get_constant
-                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                                                        get_constant (|
+                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
                                                                                       |)
                                                                                     |));
                                                                                   ("end_",
@@ -1570,8 +1603,11 @@ Module bls12_381.
                                                                                           1
                                                                                       |),
                                                                                       M.read (|
-                                                                                        M.get_constant
-                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                                                        get_constant (|
+                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
                                                                                       |)
                                                                                     |))
                                                                                 ]
@@ -1998,7 +2034,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_extract_g2_input :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2::extract_g2_input" extract_g2_input.
+      M.IsFunction.C "revm_precompile::bls12_381::g2::extract_g2_input" extract_g2_input.
     Admitted.
     Global Typeclasses Opaque extract_g2_input.
   End g2.

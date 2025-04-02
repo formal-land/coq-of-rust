@@ -1073,7 +1073,7 @@ Module hash.
     
     Global Instance AssociatedFunction_new :
       forall (H : Ty.t),
-      M.IsAssociatedFunction.Trait (Self H) "new" (new H).
+      M.IsAssociatedFunction.C (Self H) "new" (new H).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_hash_BuildHasherDefault_H.

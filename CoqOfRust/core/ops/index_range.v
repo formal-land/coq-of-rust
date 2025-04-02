@@ -330,7 +330,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+        M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -350,8 +350,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_zero_to :
-        M.IsAssociatedFunction.Trait Self "zero_to" zero_to.
+      Global Instance AssociatedFunction_zero_to : M.IsAssociatedFunction.C Self "zero_to" zero_to.
       Admitted.
       Global Typeclasses Opaque zero_to.
       
@@ -375,7 +374,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_start : M.IsAssociatedFunction.Trait Self "start" start.
+      Global Instance AssociatedFunction_start : M.IsAssociatedFunction.C Self "start" start.
       Admitted.
       Global Typeclasses Opaque start.
       
@@ -399,7 +398,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_end_ : M.IsAssociatedFunction.Trait Self "end_" end_.
+      Global Instance AssociatedFunction_end_ : M.IsAssociatedFunction.C Self "end" end_.
       Admitted.
       Global Typeclasses Opaque end_.
       
@@ -438,7 +437,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -547,7 +546,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_next_unchecked :
-        M.IsAssociatedFunction.Trait Self "next_unchecked" next_unchecked.
+        M.IsAssociatedFunction.C Self "next_unchecked" next_unchecked.
       Admitted.
       Global Typeclasses Opaque next_unchecked.
       
@@ -661,7 +660,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_next_back_unchecked :
-        M.IsAssociatedFunction.Trait Self "next_back_unchecked" next_back_unchecked.
+        M.IsAssociatedFunction.C Self "next_back_unchecked" next_back_unchecked.
       Admitted.
       Global Typeclasses Opaque next_back_unchecked.
       
@@ -783,7 +782,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_take_prefix :
-        M.IsAssociatedFunction.Trait Self "take_prefix" take_prefix.
+        M.IsAssociatedFunction.C Self "take_prefix" take_prefix.
       Admitted.
       Global Typeclasses Opaque take_prefix.
       
@@ -905,7 +904,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_take_suffix :
-        M.IsAssociatedFunction.Trait Self "take_suffix" take_suffix.
+        M.IsAssociatedFunction.C Self "take_suffix" take_suffix.
       Admitted.
       Global Typeclasses Opaque take_suffix.
     End Impl_core_ops_index_range_IndexRange.

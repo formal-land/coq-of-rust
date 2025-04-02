@@ -700,7 +700,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_created_address :
-        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+        M.IsAssociatedFunction.C Self "created_address" created_address.
       Admitted.
       Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
@@ -1391,7 +1391,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1451,7 +1451,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_new_opcode :
-        M.IsAssociatedFunction.Trait Self "new_opcode" new_opcode.
+        M.IsAssociatedFunction.C Self "new_opcode" new_opcode.
       Admitted.
       Global Typeclasses Opaque new_opcode.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.

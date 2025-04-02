@@ -1542,7 +1542,16 @@ Module transaction.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "revm_specification::eip2::SECP256K1N_HALF"
+                                        get_constant (|
+                                          "revm_specification::eip2::SECP256K1N_HALF",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |)

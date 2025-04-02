@@ -26,12 +26,12 @@ Module my.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "struct_visibility::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "struct_visibility::main" main.
 Admitted.

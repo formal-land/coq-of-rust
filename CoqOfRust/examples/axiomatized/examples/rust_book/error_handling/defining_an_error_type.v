@@ -62,16 +62,15 @@ End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "defining_an_error_type::double_first" double_first.
+  M.IsFunction.C "defining_an_error_type::double_first" double_first.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "defining_an_error_type::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "defining_an_error_type::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "defining_an_error_type::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "defining_an_error_type::main" main.
 Admitted.

@@ -1630,7 +1630,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unspecified :
-        M.IsAssociatedFunction.Trait Self "is_unspecified" is_unspecified.
+        M.IsAssociatedFunction.C Self "is_unspecified" is_unspecified.
       Admitted.
       Global Typeclasses Opaque is_unspecified.
       
@@ -1703,7 +1703,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_loopback :
-        M.IsAssociatedFunction.Trait Self "is_loopback" is_loopback.
+        M.IsAssociatedFunction.C Self "is_loopback" is_loopback.
       Admitted.
       Global Typeclasses Opaque is_loopback.
       
@@ -1776,7 +1776,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_global :
-        M.IsAssociatedFunction.Trait Self "is_global" is_global.
+        M.IsAssociatedFunction.C Self "is_global" is_global.
       Admitted.
       Global Typeclasses Opaque is_global.
       
@@ -1849,7 +1849,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_multicast :
-        M.IsAssociatedFunction.Trait Self "is_multicast" is_multicast.
+        M.IsAssociatedFunction.C Self "is_multicast" is_multicast.
       Admitted.
       Global Typeclasses Opaque is_multicast.
       
@@ -1922,7 +1922,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_documentation :
-        M.IsAssociatedFunction.Trait Self "is_documentation" is_documentation.
+        M.IsAssociatedFunction.C Self "is_documentation" is_documentation.
       Admitted.
       Global Typeclasses Opaque is_documentation.
       
@@ -1995,7 +1995,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_benchmarking :
-        M.IsAssociatedFunction.Trait Self "is_benchmarking" is_benchmarking.
+        M.IsAssociatedFunction.C Self "is_benchmarking" is_benchmarking.
       Admitted.
       Global Typeclasses Opaque is_benchmarking.
       
@@ -2031,8 +2031,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_ipv4 :
-        M.IsAssociatedFunction.Trait Self "is_ipv4" is_ipv4.
+      Global Instance AssociatedFunction_is_ipv4 : M.IsAssociatedFunction.C Self "is_ipv4" is_ipv4.
       Admitted.
       Global Typeclasses Opaque is_ipv4.
       
@@ -2068,8 +2067,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_ipv6 :
-        M.IsAssociatedFunction.Trait Self "is_ipv6" is_ipv6.
+      Global Instance AssociatedFunction_is_ipv6 : M.IsAssociatedFunction.C Self "is_ipv6" is_ipv6.
       Admitted.
       Global Typeclasses Opaque is_ipv6.
       
@@ -2130,7 +2128,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_to_canonical :
-        M.IsAssociatedFunction.Trait Self "to_canonical" to_canonical.
+        M.IsAssociatedFunction.C Self "to_canonical" to_canonical.
       Admitted.
       Global Typeclasses Opaque to_canonical.
     End Impl_core_net_ip_addr_IpAddr.
@@ -2160,17 +2158,17 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
       (*     pub const BITS: u32 = 32; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 32 |))).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 32 |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -2200,8 +2198,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_bits :
-        M.IsAssociatedFunction.Trait Self "to_bits" to_bits.
+      Global Instance AssociatedFunction_to_bits : M.IsAssociatedFunction.C Self "to_bits" to_bits.
       Admitted.
       Global Typeclasses Opaque to_bits.
       
@@ -2232,91 +2229,73 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_from_bits :
-        M.IsAssociatedFunction.Trait Self "from_bits" from_bits.
+        M.IsAssociatedFunction.C Self "from_bits" from_bits.
       Admitted.
       Global Typeclasses Opaque from_bits.
       
       (*     pub const LOCALHOST: Self = Ipv4Addr::new(127, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_LOCALHOST : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::net::ip_addr::Ipv4Addr",
-                M.get_associated_function (|
-                  Ty.path "core::net::ip_addr::Ipv4Addr",
-                  "new",
-                  [],
-                  []
-                |),
-                [
-                  Value.Integer IntegerKind.U8 127;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 1
-                ]
-              |)
-            |))).
+      Definition value_LOCALHOST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::net::ip_addr::Ipv4Addr",
+              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [], [] |),
+              [
+                Value.Integer IntegerKind.U8 127;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 1
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_LOCALHOST :
-        M.IsAssociatedConstant.Trait Self "value_LOCALHOST" value_LOCALHOST.
+        M.IsAssociatedFunction.C Self "LOCALHOST" value_LOCALHOST.
       Admitted.
       Global Typeclasses Opaque value_LOCALHOST.
       
       (*     pub const UNSPECIFIED: Self = Ipv4Addr::new(0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_UNSPECIFIED : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::net::ip_addr::Ipv4Addr",
-                M.get_associated_function (|
-                  Ty.path "core::net::ip_addr::Ipv4Addr",
-                  "new",
-                  [],
-                  []
-                |),
-                [
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0
-                ]
-              |)
-            |))).
+      Definition value_UNSPECIFIED (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::net::ip_addr::Ipv4Addr",
+              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [], [] |),
+              [
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_UNSPECIFIED :
-        M.IsAssociatedConstant.Trait Self "value_UNSPECIFIED" value_UNSPECIFIED.
+        M.IsAssociatedFunction.C Self "UNSPECIFIED" value_UNSPECIFIED.
       Admitted.
       Global Typeclasses Opaque value_UNSPECIFIED.
       
       (*     pub const BROADCAST: Self = Ipv4Addr::new(255, 255, 255, 255); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_BROADCAST : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::net::ip_addr::Ipv4Addr",
-                M.get_associated_function (|
-                  Ty.path "core::net::ip_addr::Ipv4Addr",
-                  "new",
-                  [],
-                  []
-                |),
-                [
-                  Value.Integer IntegerKind.U8 255;
-                  Value.Integer IntegerKind.U8 255;
-                  Value.Integer IntegerKind.U8 255;
-                  Value.Integer IntegerKind.U8 255
-                ]
-              |)
-            |))).
+      Definition value_BROADCAST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::net::ip_addr::Ipv4Addr",
+              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [], [] |),
+              [
+                Value.Integer IntegerKind.U8 255;
+                Value.Integer IntegerKind.U8 255;
+                Value.Integer IntegerKind.U8 255;
+                Value.Integer IntegerKind.U8 255
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_BROADCAST :
-        M.IsAssociatedConstant.Trait Self "value_BROADCAST" value_BROADCAST.
+        M.IsAssociatedFunction.C Self "BROADCAST" value_BROADCAST.
       Admitted.
       Global Typeclasses Opaque value_BROADCAST.
       
@@ -2340,7 +2319,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.Trait Self "octets" octets.
+      Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.C Self "octets" octets.
       Admitted.
       Global Typeclasses Opaque octets.
       
@@ -2359,7 +2338,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_from_octets :
-        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+        M.IsAssociatedFunction.C Self "from_octets" from_octets.
       Admitted.
       Global Typeclasses Opaque from_octets.
       
@@ -2393,7 +2372,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unspecified :
-        M.IsAssociatedFunction.Trait Self "is_unspecified" is_unspecified.
+        M.IsAssociatedFunction.C Self "is_unspecified" is_unspecified.
       Admitted.
       Global Typeclasses Opaque is_unspecified.
       
@@ -2434,7 +2413,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_loopback :
-        M.IsAssociatedFunction.Trait Self "is_loopback" is_loopback.
+        M.IsAssociatedFunction.C Self "is_loopback" is_loopback.
       Admitted.
       Global Typeclasses Opaque is_loopback.
       
@@ -2528,7 +2507,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_private :
-        M.IsAssociatedFunction.Trait Self "is_private" is_private.
+        M.IsAssociatedFunction.C Self "is_private" is_private.
       Admitted.
       Global Typeclasses Opaque is_private.
       
@@ -2585,7 +2564,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_link_local :
-        M.IsAssociatedFunction.Trait Self "is_link_local" is_link_local.
+        M.IsAssociatedFunction.C Self "is_link_local" is_link_local.
       Admitted.
       Global Typeclasses Opaque is_link_local.
       
@@ -2912,7 +2891,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_global :
-        M.IsAssociatedFunction.Trait Self "is_global" is_global.
+        M.IsAssociatedFunction.C Self "is_global" is_global.
       Admitted.
       Global Typeclasses Opaque is_global.
       
@@ -2981,7 +2960,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_shared :
-        M.IsAssociatedFunction.Trait Self "is_shared" is_shared.
+        M.IsAssociatedFunction.C Self "is_shared" is_shared.
       Admitted.
       Global Typeclasses Opaque is_shared.
       
@@ -3050,7 +3029,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_benchmarking :
-        M.IsAssociatedFunction.Trait Self "is_benchmarking" is_benchmarking.
+        M.IsAssociatedFunction.C Self "is_benchmarking" is_benchmarking.
       Admitted.
       Global Typeclasses Opaque is_benchmarking.
       
@@ -3108,7 +3087,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_reserved :
-        M.IsAssociatedFunction.Trait Self "is_reserved" is_reserved.
+        M.IsAssociatedFunction.C Self "is_reserved" is_reserved.
       Admitted.
       Global Typeclasses Opaque is_reserved.
       
@@ -3175,7 +3154,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_multicast :
-        M.IsAssociatedFunction.Trait Self "is_multicast" is_multicast.
+        M.IsAssociatedFunction.C Self "is_multicast" is_multicast.
       Admitted.
       Global Typeclasses Opaque is_multicast.
       
@@ -3227,7 +3206,11 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "core::net::ip_addr::BROADCAST"
+                        get_associated_constant (|
+                          Ty.path "core::net::ip_addr::Ipv4Addr",
+                          "BROADCAST",
+                          Ty.path "core::net::ip_addr::Ipv4Addr"
+                        |)
                       |)
                     ]
                   |)
@@ -3238,7 +3221,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_broadcast :
-        M.IsAssociatedFunction.Trait Self "is_broadcast" is_broadcast.
+        M.IsAssociatedFunction.C Self "is_broadcast" is_broadcast.
       Admitted.
       Global Typeclasses Opaque is_broadcast.
       
@@ -3358,7 +3341,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_documentation :
-        M.IsAssociatedFunction.Trait Self "is_documentation" is_documentation.
+        M.IsAssociatedFunction.C Self "is_documentation" is_documentation.
       Admitted.
       Global Typeclasses Opaque is_documentation.
       
@@ -3435,7 +3418,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_to_ipv6_compatible :
-        M.IsAssociatedFunction.Trait Self "to_ipv6_compatible" to_ipv6_compatible.
+        M.IsAssociatedFunction.C Self "to_ipv6_compatible" to_ipv6_compatible.
       Admitted.
       Global Typeclasses Opaque to_ipv6_compatible.
       
@@ -3512,7 +3495,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_to_ipv6_mapped :
-        M.IsAssociatedFunction.Trait Self "to_ipv6_mapped" to_ipv6_mapped.
+        M.IsAssociatedFunction.C Self "to_ipv6_mapped" to_ipv6_mapped.
       Admitted.
       Global Typeclasses Opaque to_ipv6_mapped.
     End Impl_core_net_ip_addr_Ipv4Addr.
@@ -4989,17 +4972,17 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
       (*     pub const BITS: u32 = 128; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -5029,8 +5012,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_bits :
-        M.IsAssociatedFunction.Trait Self "to_bits" to_bits.
+      Global Instance AssociatedFunction_to_bits : M.IsAssociatedFunction.C Self "to_bits" to_bits.
       Admitted.
       Global Typeclasses Opaque to_bits.
       
@@ -5061,71 +5043,59 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_from_bits :
-        M.IsAssociatedFunction.Trait Self "from_bits" from_bits.
+        M.IsAssociatedFunction.C Self "from_bits" from_bits.
       Admitted.
       Global Typeclasses Opaque from_bits.
       
       (*     pub const LOCALHOST: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
-      Definition value_LOCALHOST : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::net::ip_addr::Ipv6Addr",
-                M.get_associated_function (|
-                  Ty.path "core::net::ip_addr::Ipv6Addr",
-                  "new",
-                  [],
-                  []
-                |),
-                [
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 1
-                ]
-              |)
-            |))).
+      Definition value_LOCALHOST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::net::ip_addr::Ipv6Addr",
+              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [], [] |),
+              [
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 1
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_LOCALHOST :
-        M.IsAssociatedConstant.Trait Self "value_LOCALHOST" value_LOCALHOST.
+        M.IsAssociatedFunction.C Self "LOCALHOST" value_LOCALHOST.
       Admitted.
       Global Typeclasses Opaque value_LOCALHOST.
       
       (*     pub const UNSPECIFIED: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
-      Definition value_UNSPECIFIED : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::net::ip_addr::Ipv6Addr",
-                M.get_associated_function (|
-                  Ty.path "core::net::ip_addr::Ipv6Addr",
-                  "new",
-                  [],
-                  []
-                |),
-                [
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0;
-                  Value.Integer IntegerKind.U16 0
-                ]
-              |)
-            |))).
+      Definition value_UNSPECIFIED (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::net::ip_addr::Ipv6Addr",
+              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [], [] |),
+              [
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0;
+                Value.Integer IntegerKind.U16 0
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_UNSPECIFIED :
-        M.IsAssociatedConstant.Trait Self "value_UNSPECIFIED" value_UNSPECIFIED.
+        M.IsAssociatedFunction.C Self "UNSPECIFIED" value_UNSPECIFIED.
       Admitted.
       Global Typeclasses Opaque value_UNSPECIFIED.
       
@@ -5257,7 +5227,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_segments :
-        M.IsAssociatedFunction.Trait Self "segments" segments.
+        M.IsAssociatedFunction.C Self "segments" segments.
       Admitted.
       Global Typeclasses Opaque segments.
       
@@ -5323,7 +5293,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_from_segments :
-        M.IsAssociatedFunction.Trait Self "from_segments" from_segments.
+        M.IsAssociatedFunction.C Self "from_segments" from_segments.
       Admitted.
       Global Typeclasses Opaque from_segments.
       
@@ -5375,7 +5345,11 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "core::net::ip_addr::UNSPECIFIED"
+                        get_associated_constant (|
+                          Ty.path "core::net::ip_addr::Ipv6Addr",
+                          "UNSPECIFIED",
+                          Ty.path "core::net::ip_addr::Ipv6Addr"
+                        |)
                       |)
                     ]
                   |)
@@ -5386,7 +5360,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unspecified :
-        M.IsAssociatedFunction.Trait Self "is_unspecified" is_unspecified.
+        M.IsAssociatedFunction.C Self "is_unspecified" is_unspecified.
       Admitted.
       Global Typeclasses Opaque is_unspecified.
       
@@ -5438,7 +5412,11 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "core::net::ip_addr::LOCALHOST"
+                        get_associated_constant (|
+                          Ty.path "core::net::ip_addr::Ipv6Addr",
+                          "LOCALHOST",
+                          Ty.path "core::net::ip_addr::Ipv6Addr"
+                        |)
                       |)
                     ]
                   |)
@@ -5449,7 +5427,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_loopback :
-        M.IsAssociatedFunction.Trait Self "is_loopback" is_loopback.
+        M.IsAssociatedFunction.C Self "is_loopback" is_loopback.
       Admitted.
       Global Typeclasses Opaque is_loopback.
       
@@ -6134,7 +6112,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_global :
-        M.IsAssociatedFunction.Trait Self "is_global" is_global.
+        M.IsAssociatedFunction.C Self "is_global" is_global.
       Admitted.
       Global Typeclasses Opaque is_global.
       
@@ -6177,7 +6155,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unique_local :
-        M.IsAssociatedFunction.Trait Self "is_unique_local" is_unique_local.
+        M.IsAssociatedFunction.C Self "is_unique_local" is_unique_local.
       Admitted.
       Global Typeclasses Opaque is_unique_local.
       
@@ -6207,7 +6185,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unicast :
-        M.IsAssociatedFunction.Trait Self "is_unicast" is_unicast.
+        M.IsAssociatedFunction.C Self "is_unicast" is_unicast.
       Admitted.
       Global Typeclasses Opaque is_unicast.
       
@@ -6250,7 +6228,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unicast_link_local :
-        M.IsAssociatedFunction.Trait Self "is_unicast_link_local" is_unicast_link_local.
+        M.IsAssociatedFunction.C Self "is_unicast_link_local" is_unicast_link_local.
       Admitted.
       Global Typeclasses Opaque is_unicast_link_local.
       
@@ -6317,7 +6295,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_documentation :
-        M.IsAssociatedFunction.Trait Self "is_documentation" is_documentation.
+        M.IsAssociatedFunction.C Self "is_documentation" is_documentation.
       Admitted.
       Global Typeclasses Opaque is_documentation.
       
@@ -6410,7 +6388,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_benchmarking :
-        M.IsAssociatedFunction.Trait Self "is_benchmarking" is_benchmarking.
+        M.IsAssociatedFunction.C Self "is_benchmarking" is_benchmarking.
       Admitted.
       Global Typeclasses Opaque is_benchmarking.
       
@@ -6534,7 +6512,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_unicast_global :
-        M.IsAssociatedFunction.Trait Self "is_unicast_global" is_unicast_global.
+        M.IsAssociatedFunction.C Self "is_unicast_global" is_unicast_global.
       Admitted.
       Global Typeclasses Opaque is_unicast_global.
       
@@ -6750,7 +6728,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_multicast_scope :
-        M.IsAssociatedFunction.Trait Self "multicast_scope" multicast_scope.
+        M.IsAssociatedFunction.C Self "multicast_scope" multicast_scope.
       Admitted.
       Global Typeclasses Opaque multicast_scope.
       
@@ -6793,7 +6771,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_multicast :
-        M.IsAssociatedFunction.Trait Self "is_multicast" is_multicast.
+        M.IsAssociatedFunction.C Self "is_multicast" is_multicast.
       Admitted.
       Global Typeclasses Opaque is_multicast.
       
@@ -6875,7 +6853,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_is_ipv4_mapped :
-        M.IsAssociatedFunction.Trait Self "is_ipv4_mapped" is_ipv4_mapped.
+        M.IsAssociatedFunction.C Self "is_ipv4_mapped" is_ipv4_mapped.
       Admitted.
       Global Typeclasses Opaque is_ipv4_mapped.
       
@@ -7025,7 +7003,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_to_ipv4_mapped :
-        M.IsAssociatedFunction.Trait Self "to_ipv4_mapped" to_ipv4_mapped.
+        M.IsAssociatedFunction.C Self "to_ipv4_mapped" to_ipv4_mapped.
       Admitted.
       Global Typeclasses Opaque to_ipv4_mapped.
       
@@ -7219,8 +7197,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_ipv4 :
-        M.IsAssociatedFunction.Trait Self "to_ipv4" to_ipv4.
+      Global Instance AssociatedFunction_to_ipv4 : M.IsAssociatedFunction.C Self "to_ipv4" to_ipv4.
       Admitted.
       Global Typeclasses Opaque to_ipv4.
       
@@ -7296,7 +7273,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_to_canonical :
-        M.IsAssociatedFunction.Trait Self "to_canonical" to_canonical.
+        M.IsAssociatedFunction.C Self "to_canonical" to_canonical.
       Admitted.
       Global Typeclasses Opaque to_canonical.
       
@@ -7320,7 +7297,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.Trait Self "octets" octets.
+      Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.C Self "octets" octets.
       Admitted.
       Global Typeclasses Opaque octets.
       
@@ -7339,7 +7316,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_from_octets :
-        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+        M.IsAssociatedFunction.C Self "from_octets" from_octets.
       Admitted.
       Global Typeclasses Opaque from_octets.
     End Impl_core_net_ip_addr_Ipv6Addr.

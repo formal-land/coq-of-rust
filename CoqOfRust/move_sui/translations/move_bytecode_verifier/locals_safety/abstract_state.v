@@ -249,38 +249,49 @@ Module locals_safety.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_move_bytecode_verifier_locals_safety_abstract_state_LocalState_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
     
-    Definition value_STEP_BASE_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 15 |))).
+    Definition value_STEP_BASE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 15 |))).
     
-    Axiom Constant_value_STEP_BASE_COST :
-      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST") =
+    Global Instance Instance_IsConstant_value_STEP_BASE_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST"
         value_STEP_BASE_COST.
-    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_STEP_BASE_COST.
     
-    Definition value_RET_PER_LOCAL_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+    Definition value_RET_PER_LOCAL_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
     
-    Axiom Constant_value_RET_PER_LOCAL_COST :
-      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST") =
+    Global Instance Instance_IsConstant_value_RET_PER_LOCAL_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST"
         value_RET_PER_LOCAL_COST.
-    Global Hint Rewrite Constant_value_RET_PER_LOCAL_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_RET_PER_LOCAL_COST.
     
-    Definition value_JOIN_BASE_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    Definition value_JOIN_BASE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
     
-    Axiom Constant_value_JOIN_BASE_COST :
-      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST") =
+    Global Instance Instance_IsConstant_value_JOIN_BASE_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST"
         value_JOIN_BASE_COST.
-    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_JOIN_BASE_COST.
     
-    Definition value_JOIN_PER_LOCAL_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
+    Definition value_JOIN_PER_LOCAL_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
     
-    Axiom Constant_value_JOIN_PER_LOCAL_COST :
-      (M.get_constant
-          "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST") =
+    Global Instance Instance_IsConstant_value_JOIN_PER_LOCAL_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST"
         value_JOIN_PER_LOCAL_COST.
-    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_JOIN_PER_LOCAL_COST.
     
     (* StructRecord
       {
@@ -1710,7 +1721,7 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1765,7 +1776,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_local_abilities :
-        M.IsAssociatedFunction.Trait Self "local_abilities" local_abilities.
+        M.IsAssociatedFunction.C Self "local_abilities" local_abilities.
       Admitted.
       Global Typeclasses Opaque local_abilities.
       
@@ -1796,7 +1807,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_all_local_abilities :
-        M.IsAssociatedFunction.Trait Self "all_local_abilities" all_local_abilities.
+        M.IsAssociatedFunction.C Self "all_local_abilities" all_local_abilities.
       Admitted.
       Global Typeclasses Opaque all_local_abilities.
       
@@ -1851,7 +1862,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_local_state :
-        M.IsAssociatedFunction.Trait Self "local_state" local_state.
+        M.IsAssociatedFunction.C Self "local_state" local_state.
       Admitted.
       Global Typeclasses Opaque local_state.
       
@@ -1882,7 +1893,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_local_states :
-        M.IsAssociatedFunction.Trait Self "local_states" local_states.
+        M.IsAssociatedFunction.C Self "local_states" local_states.
       Admitted.
       Global Typeclasses Opaque local_states.
       
@@ -1940,7 +1951,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_set_available :
-        M.IsAssociatedFunction.Trait Self "set_available" set_available.
+        M.IsAssociatedFunction.C Self "set_available" set_available.
       Admitted.
       Global Typeclasses Opaque set_available.
       
@@ -2105,7 +2116,7 @@ Module locals_safety.
         end.
       
       Global Instance AssociatedFunction_set_unavailable :
-        M.IsAssociatedFunction.Trait Self "set_unavailable" set_unavailable.
+        M.IsAssociatedFunction.C Self "set_unavailable" set_unavailable.
       Admitted.
       Global Typeclasses Opaque set_unavailable.
       
@@ -2173,7 +2184,7 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+      Global Instance AssociatedFunction_error : M.IsAssociatedFunction.C Self "error" error.
       Admitted.
       Global Typeclasses Opaque error.
       
@@ -3159,7 +3170,7 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_join_ : M.IsAssociatedFunction.Trait Self "join_" join_.
+      Global Instance AssociatedFunction_join_ : M.IsAssociatedFunction.C Self "join_" join_.
       Admitted.
       Global Typeclasses Opaque join_.
     End Impl_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
@@ -3260,8 +3271,10 @@ Module locals_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |)
                               ]
                             |)
@@ -3386,8 +3399,10 @@ Module locals_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   Ty.path "usize",

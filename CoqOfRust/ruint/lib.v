@@ -241,150 +241,165 @@ Module Impl_ruint_Uint_BITS_LIMBS.
       };
   *)
   (* Ty.path "usize" *)
-  Definition value_LIMBS (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_LIMBS
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run
-      ltac:(M.monadic
-        (let~ limbs : Ty.path "usize" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_function (| "ruint::nlimbs", [], [] |),
-              [ M.read (| M.get_constant "ruint::BITS" |) ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          BinOp.eq (|
-                            M.read (| M.get_constant "ruint::LIMBS" |),
-                            M.read (| limbs |)
-                          |)
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                        [
-                          M.call_closure (|
+    ltac:(M.monadic
+      (let~ limbs : Ty.path "usize" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_function (| "ruint::nlimbs", [], [] |),
+            [ BITS ]
+          |)
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.match_operator (|
+          Some (Ty.tuple []),
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use (M.alloc (| UnOp.not (| BinOp.eq (| LIMBS, M.read (| limbs |) |) |) |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          mk_str (|
-                                            "Can not construct Uint<BITS, LIMBS> with incorrect LIMBS"
-                                          |)
-                                        ]
-                                    |)
+                            "new_const",
+                            [ Value.Integer IntegerKind.Usize 1 ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        mk_str (|
+                                          "Can not construct Uint<BITS, LIMBS> with incorrect LIMBS"
+                                        |)
+                                      ]
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        ]
-                      |)
+                            |)
+                          ]
+                        |)
+                      ]
                     |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        limbs)).
+                  |)
+                |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+          ]
+        |) in
+      limbs)).
   
   Global Instance AssociatedConstant_value_LIMBS :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_LIMBS" (value_LIMBS BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "LIMBS" (value_LIMBS BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_LIMBS.
   
   (*     pub const MASK: u64 = mask(BITS); *)
   (* Ty.path "u64" *)
-  Definition value_MASK (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_MASK
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
-            Ty.path "u64",
-            M.get_function (| "ruint::mask", [], [] |),
-            [ M.read (| M.get_constant "ruint::BITS" |) ]
-          |)
-        |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (| Ty.path "u64", M.get_function (| "ruint::mask", [], [] |), [ BITS ] |)
+      |))).
   
   Global Instance AssociatedConstant_value_MASK :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MASK" (value_MASK BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "MASK" (value_MASK BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_MASK.
   
   (*     pub const BITS: usize = BITS; *)
   (* Ty.path "usize" *)
-  Definition value_BITS (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_BITS
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run ltac:(M.monadic (M.get_constant "ruint::BITS")).
+    ltac:(M.monadic (M.alloc (| BITS |))).
   
   Global Instance AssociatedConstant_value_BITS :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_BITS" (value_BITS BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "BITS" (value_BITS BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_BITS.
   
   (*     pub const ZERO: Self = Self::from_limbs([0; LIMBS]); *)
   (* Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] *)
-  Definition value_ZERO (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_ZERO
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+          M.get_associated_function (|
             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-            M.get_associated_function (|
-              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-              "from_limbs",
-              [],
-              []
-            |),
-            [ repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) ]
-          |)
-        |))).
+            "from_limbs",
+            [],
+            []
+          |),
+          [ repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) ]
+        |)
+      |))).
   
   Global Instance AssociatedConstant_value_ZERO :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_ZERO" (value_ZERO BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "ZERO" (value_ZERO BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_ZERO.
   
   (*     pub const MIN: Self = Self::ZERO; *)
   (* Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] *)
-  Definition value_MIN (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_MIN
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run ltac:(M.monadic (M.get_constant "ruint::ZERO")).
+    ltac:(M.monadic
+      (get_associated_constant (|
+        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+        "ZERO",
+        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+      |))).
   
   Global Instance AssociatedConstant_value_MIN :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MIN" (value_MIN BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "MIN" (value_MIN BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_MIN.
   
@@ -398,63 +413,71 @@ Module Impl_ruint_Uint_BITS_LIMBS.
       };
   *)
   (* Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] *)
-  Definition value_MAX (BITS LIMBS : Value.t) : Value.t :=
+  Definition value_MAX
+      (BITS LIMBS : Value.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self BITS LIMBS in
-    M.run
-      ltac:(M.monadic
-        (let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-          M.alloc (| repeat (| M.read (| M.get_constant "core::num::MAX" |), LIMBS |) |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        BinOp.gt (|
-                          M.read (| M.get_constant "ruint::BITS" |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
-                      let β :=
-                        M.SubPointer.get_array_field (|
-                          limbs,
-                          BinOp.Wrap.sub (|
-                            M.read (| M.get_constant "ruint::LIMBS" |),
-                            Value.Integer IntegerKind.Usize 1
-                          |)
-                        |) in
-                      M.write (|
-                        β,
-                        BinOp.bit_and (M.read (| β |)) (M.read (| M.get_constant "ruint::MASK" |))
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
+    ltac:(M.monadic
+      (let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
         M.alloc (|
-          M.call_closure (|
-            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-            M.get_associated_function (|
-              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-              "from_limbs",
-              [],
-              []
-            |),
-            [ M.read (| limbs |) ]
+          repeat (|
+            M.read (| get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |) |),
+            LIMBS
           |)
-        |))).
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.match_operator (|
+          Some (Ty.tuple []),
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use (M.alloc (| BinOp.gt (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_array_field (|
+                        limbs,
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_and
+                        (M.read (| β |))
+                        (M.read (|
+                          get_associated_constant (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "MASK",
+                            Ty.path "u64"
+                          |)
+                        |))
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+          ]
+        |) in
+      M.alloc (|
+        M.call_closure (|
+          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+          M.get_associated_function (|
+            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+            "from_limbs",
+            [],
+            []
+          |),
+          [ M.read (| limbs |) ]
+        |)
+      |))).
   
   Global Instance AssociatedConstant_value_MAX :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_MAX" (value_MAX BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "MAX" (value_MAX BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque value_MAX.
   
@@ -492,7 +515,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_as_limbs :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_limbs" (as_limbs BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "as_limbs" (as_limbs BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque as_limbs.
   
@@ -535,7 +558,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_as_limbs_mut :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_limbs_mut" (as_limbs_mut BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "as_limbs_mut" (as_limbs_mut BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque as_limbs_mut.
   
@@ -561,7 +584,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_into_limbs :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait (Self BITS LIMBS) "into_limbs" (into_limbs BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "into_limbs" (into_limbs BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque into_limbs.
   
@@ -600,14 +623,19 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.gt (|
-                              M.read (| M.get_constant "ruint::BITS" |),
-                              Value.Integer IntegerKind.Usize 0
-                            |),
+                            BinOp.gt (| BITS, Value.Integer IntegerKind.Usize 0 |),
                             ltac:(M.monadic
                               (BinOp.ne (|
-                                M.read (| M.get_constant "ruint::MASK" |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "MASK",
+                                    Ty.path "u64"
+                                  |)
+                                |),
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               |)))
                           |)
                         |)) in
@@ -628,12 +656,27 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                           M.SubPointer.get_array_field (|
                                             limbs,
                                             BinOp.Wrap.sub (|
-                                              M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    [],
+                                                  "LIMBS",
+                                                  Ty.path "usize"
+                                                |)
+                                              |),
                                               Value.Integer IntegerKind.Usize 1
                                             |)
                                           |)
                                         |),
-                                        M.read (| M.get_constant "ruint::MASK" |)
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "MASK",
+                                            Ty.path "u64"
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -689,7 +732,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_from_limbs :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_limbs" (from_limbs BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "from_limbs" (from_limbs BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque from_limbs.
   
@@ -780,7 +823,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_from_limbs_slice :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_limbs_slice" (from_limbs_slice BITS LIMBS).
+    M.IsAssociatedFunction.C (Self BITS LIMBS) "from_limbs_slice" (from_limbs_slice BITS LIMBS).
   Admitted.
   Global Typeclasses Opaque from_limbs_slice.
   
@@ -844,7 +887,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_checked_from_limbs_slice :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait
+    M.IsAssociatedFunction.C
       (Self BITS LIMBS)
       "checked_from_limbs_slice"
       (checked_from_limbs_slice BITS LIMBS).
@@ -889,7 +932,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_wrapping_from_limbs_slice :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait
+    M.IsAssociatedFunction.C
       (Self BITS LIMBS)
       "wrapping_from_limbs_slice"
       (wrapping_from_limbs_slice BITS LIMBS).
@@ -947,7 +990,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                             |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                           |),
-                          M.read (| M.get_constant "ruint::LIMBS" |)
+                          LIMBS
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1055,10 +1098,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
-                          M.read (| M.get_constant "ruint::LIMBS" |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |); LIMBS ]
                       |)
                     |),
                     [
@@ -1169,10 +1209,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (|
-                                            M.read (| M.get_constant "ruint::LIMBS" |),
-                                            Value.Integer IntegerKind.Usize 0
-                                          |)
+                                          BinOp.gt (| LIMBS, Value.Integer IntegerKind.Usize 0 |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1191,12 +1228,21 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                                 M.SubPointer.get_array_field (|
                                                   limbs,
                                                   BinOp.Wrap.sub (|
-                                                    M.read (| M.get_constant "ruint::LIMBS" |),
+                                                    LIMBS,
                                                     Value.Integer IntegerKind.Usize 1
                                                   |)
                                                 |)
                                               |),
-                                              M.read (| M.get_constant "ruint::MASK" |)
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    [],
+                                                  "MASK",
+                                                  Ty.path "u64"
+                                                |)
+                                              |)
                                             |))
                                         |)
                                       |) in
@@ -1206,7 +1252,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                           M.SubPointer.get_array_field (|
                                             limbs,
                                             BinOp.Wrap.sub (|
-                                              M.read (| M.get_constant "ruint::LIMBS" |),
+                                              LIMBS,
                                               Value.Integer IntegerKind.Usize 1
                                             |)
                                           |) in
@@ -1214,7 +1260,13 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                           β,
                                           BinOp.bit_and
                                             (M.read (| β |))
-                                            (M.read (| M.get_constant "ruint::MASK" |))
+                                            (M.read (|
+                                              get_associated_constant (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "MASK",
+                                                Ty.path "u64"
+                                              |)
+                                            |))
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
@@ -1247,7 +1299,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_overflowing_from_limbs_slice :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait
+    M.IsAssociatedFunction.C
       (Self BITS LIMBS)
       "overflowing_from_limbs_slice"
       (overflowing_from_limbs_slice BITS LIMBS).
@@ -1301,7 +1353,11 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                  M.get_constant "ruint::MAX"))
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                    "MAX",
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                  |)))
             ]
           |)
         |)))
@@ -1310,7 +1366,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
   
   Global Instance AssociatedFunction_saturating_from_limbs_slice :
     forall (BITS LIMBS : Value.t),
-    M.IsAssociatedFunction.Trait
+    M.IsAssociatedFunction.C
       (Self BITS LIMBS)
       "saturating_from_limbs_slice"
       (saturating_from_limbs_slice BITS LIMBS).
@@ -1335,7 +1391,15 @@ Module Impl_core_default_Default_for_ruint_Uint_BITS_LIMBS.
       : M :=
     let Self : Ty.t := Self BITS LIMBS in
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "ruint::ZERO" |)))
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.read (|
+          get_associated_constant (|
+            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+            "ZERO",
+            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+          |)
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1366,7 +1430,7 @@ Definition nlimbs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_nlimbs : M.IsFunction.Trait "ruint::nlimbs" nlimbs.
+Global Instance Instance_IsFunction_nlimbs : M.IsFunction.C "ruint::nlimbs" nlimbs.
 Admitted.
 Global Typeclasses Opaque nlimbs.
 
@@ -1428,7 +1492,7 @@ Definition mask (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           BinOp.eq (| M.read (| bits |), Value.Integer IntegerKind.Usize 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "core::num::MAX"));
+                    get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -1444,6 +1508,6 @@ Definition mask (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_mask : M.IsFunction.Trait "ruint::mask" mask.
+Global Instance Instance_IsFunction_mask : M.IsFunction.C "ruint::mask" mask.
 Admitted.
 Global Typeclasses Opaque mask.

@@ -53,7 +53,7 @@ Module vec.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -83,7 +83,7 @@ Module vec.
     
     Global Instance AssociatedFunction_with_capacity :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "with_capacity" (with_capacity T).
+      M.IsAssociatedFunction.C (Self T) "with_capacity" (with_capacity T).
     Admitted.
     Global Typeclasses Opaque with_capacity.
     
@@ -124,7 +124,7 @@ Module vec.
     
     Global Instance AssociatedFunction_try_with_capacity :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_with_capacity" (try_with_capacity T).
+      M.IsAssociatedFunction.C (Self T) "try_with_capacity" (try_with_capacity T).
     Admitted.
     Global Typeclasses Opaque try_with_capacity.
     
@@ -166,7 +166,7 @@ Module vec.
     
     Global Instance AssociatedFunction_from_raw_parts :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_raw_parts" (from_raw_parts T).
+      M.IsAssociatedFunction.C (Self T) "from_raw_parts" (from_raw_parts T).
     Admitted.
     Global Typeclasses Opaque from_raw_parts.
     
@@ -203,7 +203,7 @@ Module vec.
     
     Global Instance AssociatedFunction_from_parts :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_parts" (from_parts T).
+      M.IsAssociatedFunction.C (Self T) "from_parts" (from_parts T).
     Admitted.
     Global Typeclasses Opaque from_parts.
   End Impl_alloc_vec_Vec_T_alloc_alloc_Global.
@@ -243,7 +243,7 @@ Module vec.
     
     Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
     Admitted.
     Global Typeclasses Opaque new_in.
     
@@ -285,7 +285,7 @@ Module vec.
     
     Global Instance AssociatedFunction_with_capacity_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "with_capacity_in" (with_capacity_in T A).
+      M.IsAssociatedFunction.C (Self T A) "with_capacity_in" (with_capacity_in T A).
     Admitted.
     Global Typeclasses Opaque with_capacity_in.
     
@@ -441,7 +441,7 @@ Module vec.
     
     Global Instance AssociatedFunction_try_with_capacity_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_with_capacity_in" (try_with_capacity_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_with_capacity_in" (try_with_capacity_in T A).
     Admitted.
     Global Typeclasses Opaque try_with_capacity_in.
     
@@ -485,7 +485,7 @@ Module vec.
     
     Global Instance AssociatedFunction_from_raw_parts_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
     Admitted.
     Global Typeclasses Opaque from_raw_parts_in.
     
@@ -529,7 +529,7 @@ Module vec.
     
     Global Instance AssociatedFunction_from_parts_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_parts_in" (from_parts_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_parts_in" (from_parts_in T A).
     Admitted.
     Global Typeclasses Opaque from_parts_in.
     
@@ -690,7 +690,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_raw_parts :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_raw_parts" (into_raw_parts T A).
+      M.IsAssociatedFunction.C (Self T A) "into_raw_parts" (into_raw_parts T A).
     Admitted.
     Global Typeclasses Opaque into_raw_parts.
     
@@ -756,7 +756,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_parts :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_parts" (into_parts T A).
+      M.IsAssociatedFunction.C (Self T A) "into_parts" (into_parts T A).
     Admitted.
     Global Typeclasses Opaque into_parts.
     
@@ -978,7 +978,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_raw_parts_with_alloc :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "into_raw_parts_with_alloc"
         (into_raw_parts_with_alloc T A).
@@ -1056,7 +1056,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_parts_with_alloc :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_parts_with_alloc" (into_parts_with_alloc T A).
+      M.IsAssociatedFunction.C (Self T A) "into_parts_with_alloc" (into_parts_with_alloc T A).
     Admitted.
     Global Typeclasses Opaque into_parts_with_alloc.
     
@@ -1095,7 +1095,7 @@ Module vec.
     
     Global Instance AssociatedFunction_capacity :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "capacity" (capacity T A).
+      M.IsAssociatedFunction.C (Self T A) "capacity" (capacity T A).
     Admitted.
     Global Typeclasses Opaque capacity.
     
@@ -1149,7 +1149,7 @@ Module vec.
     
     Global Instance AssociatedFunction_reserve :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "reserve" (reserve T A).
+      M.IsAssociatedFunction.C (Self T A) "reserve" (reserve T A).
     Admitted.
     Global Typeclasses Opaque reserve.
     
@@ -1208,7 +1208,7 @@ Module vec.
     
     Global Instance AssociatedFunction_reserve_exact :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "reserve_exact" (reserve_exact T A).
+      M.IsAssociatedFunction.C (Self T A) "reserve_exact" (reserve_exact T A).
     Admitted.
     Global Typeclasses Opaque reserve_exact.
     
@@ -1259,7 +1259,7 @@ Module vec.
     
     Global Instance AssociatedFunction_try_reserve :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_reserve" (try_reserve T A).
+      M.IsAssociatedFunction.C (Self T A) "try_reserve" (try_reserve T A).
     Admitted.
     Global Typeclasses Opaque try_reserve.
     
@@ -1315,7 +1315,7 @@ Module vec.
     
     Global Instance AssociatedFunction_try_reserve_exact :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_reserve_exact" (try_reserve_exact T A).
+      M.IsAssociatedFunction.C (Self T A) "try_reserve_exact" (try_reserve_exact T A).
     Admitted.
     Global Typeclasses Opaque try_reserve_exact.
     
@@ -1410,7 +1410,7 @@ Module vec.
     
     Global Instance AssociatedFunction_shrink_to_fit :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "shrink_to_fit" (shrink_to_fit T A).
+      M.IsAssociatedFunction.C (Self T A) "shrink_to_fit" (shrink_to_fit T A).
     Admitted.
     Global Typeclasses Opaque shrink_to_fit.
     
@@ -1499,7 +1499,7 @@ Module vec.
     
     Global Instance AssociatedFunction_shrink_to :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "shrink_to" (shrink_to T A).
+      M.IsAssociatedFunction.C (Self T A) "shrink_to" (shrink_to T A).
     Admitted.
     Global Typeclasses Opaque shrink_to.
     
@@ -1696,7 +1696,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_boxed_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_boxed_slice" (into_boxed_slice T A).
+      M.IsAssociatedFunction.C (Self T A) "into_boxed_slice" (into_boxed_slice T A).
     Admitted.
     Global Typeclasses Opaque into_boxed_slice.
     
@@ -1839,7 +1839,7 @@ Module vec.
     
     Global Instance AssociatedFunction_truncate :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "truncate" (truncate T A).
+      M.IsAssociatedFunction.C (Self T A) "truncate" (truncate T A).
     Admitted.
     Global Typeclasses Opaque truncate.
     
@@ -1900,7 +1900,7 @@ Module vec.
     
     Global Instance AssociatedFunction_as_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_slice" (as_slice T A).
+      M.IsAssociatedFunction.C (Self T A) "as_slice" (as_slice T A).
     Admitted.
     Global Typeclasses Opaque as_slice.
     
@@ -1976,7 +1976,7 @@ Module vec.
     
     Global Instance AssociatedFunction_as_mut_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_mut_slice" (as_mut_slice T A).
+      M.IsAssociatedFunction.C (Self T A) "as_mut_slice" (as_mut_slice T A).
     Admitted.
     Global Typeclasses Opaque as_mut_slice.
     
@@ -2019,7 +2019,7 @@ Module vec.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_ptr" (as_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -2060,7 +2060,7 @@ Module vec.
     
     Global Instance AssociatedFunction_as_mut_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_mut_ptr" (as_mut_ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "as_mut_ptr" (as_mut_ptr T A).
     Admitted.
     Global Typeclasses Opaque as_mut_ptr.
     
@@ -2102,7 +2102,7 @@ Module vec.
     
     Global Instance AssociatedFunction_as_non_null :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "as_non_null" (as_non_null T A).
+      M.IsAssociatedFunction.C (Self T A) "as_non_null" (as_non_null T A).
     Admitted.
     Global Typeclasses Opaque as_non_null.
     
@@ -2146,7 +2146,7 @@ Module vec.
     
     Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -2245,7 +2245,7 @@ Module vec.
     
     Global Instance AssociatedFunction_set_len :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "set_len" (set_len T A).
+      M.IsAssociatedFunction.C (Self T A) "set_len" (set_len T A).
     Admitted.
     Global Typeclasses Opaque set_len.
     
@@ -2425,7 +2425,7 @@ Module vec.
     
     Global Instance AssociatedFunction_swap_remove :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "swap_remove" (swap_remove T A).
+      M.IsAssociatedFunction.C (Self T A) "swap_remove" (swap_remove T A).
     Admitted.
     Global Typeclasses Opaque swap_remove.
     
@@ -2666,7 +2666,7 @@ Module vec.
     
     Global Instance AssociatedFunction_insert :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "insert" (insert T A).
+      M.IsAssociatedFunction.C (Self T A) "insert" (insert T A).
     Admitted.
     Global Typeclasses Opaque insert.
     
@@ -2833,7 +2833,7 @@ Module vec.
     
     Global Instance AssociatedFunction_remove :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "remove" (remove T A).
+      M.IsAssociatedFunction.C (Self T A) "remove" (remove T A).
     Admitted.
     Global Typeclasses Opaque remove.
     
@@ -2921,7 +2921,7 @@ Module vec.
     
     Global Instance AssociatedFunction_retain :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "retain" (retain T A).
+      M.IsAssociatedFunction.C (Self T A) "retain" (retain T A).
     Admitted.
     Global Typeclasses Opaque retain.
     
@@ -3154,7 +3154,7 @@ Module vec.
     
     Global Instance AssociatedFunction_retain_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "retain_mut" (retain_mut T A).
+      M.IsAssociatedFunction.C (Self T A) "retain_mut" (retain_mut T A).
     Admitted.
     Global Typeclasses Opaque retain_mut.
     
@@ -3321,7 +3321,7 @@ Module vec.
     
     Global Instance AssociatedFunction_dedup_by_key :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "dedup_by_key" (dedup_by_key T A).
+      M.IsAssociatedFunction.C (Self T A) "dedup_by_key" (dedup_by_key T A).
     Admitted.
     Global Typeclasses Opaque dedup_by_key.
     
@@ -4041,7 +4041,7 @@ Module vec.
     
     Global Instance AssociatedFunction_dedup_by :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "dedup_by" (dedup_by T A).
+      M.IsAssociatedFunction.C (Self T A) "dedup_by" (dedup_by T A).
     Admitted.
     Global Typeclasses Opaque dedup_by.
     
@@ -4183,7 +4183,7 @@ Module vec.
     
     Global Instance AssociatedFunction_push :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "push" (push T A).
+      M.IsAssociatedFunction.C (Self T A) "push" (push T A).
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -4332,7 +4332,7 @@ Module vec.
     
     Global Instance AssociatedFunction_push_within_capacity :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "push_within_capacity" (push_within_capacity T A).
+      M.IsAssociatedFunction.C (Self T A) "push_within_capacity" (push_within_capacity T A).
     Admitted.
     Global Typeclasses Opaque push_within_capacity.
     
@@ -4482,7 +4482,7 @@ Module vec.
     
     Global Instance AssociatedFunction_pop :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "pop" (pop T A).
+      M.IsAssociatedFunction.C (Self T A) "pop" (pop T A).
     Admitted.
     Global Typeclasses Opaque pop.
     
@@ -4684,7 +4684,7 @@ Module vec.
     
     Global Instance AssociatedFunction_pop_if :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "pop_if" (pop_if T A).
+      M.IsAssociatedFunction.C (Self T A) "pop_if" (pop_if T A).
     Admitted.
     Global Typeclasses Opaque pop_if.
     
@@ -4763,7 +4763,7 @@ Module vec.
     
     Global Instance AssociatedFunction_append :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "append" (append T A).
+      M.IsAssociatedFunction.C (Self T A) "append" (append T A).
     Admitted.
     Global Typeclasses Opaque append.
     
@@ -4881,7 +4881,7 @@ Module vec.
     
     Global Instance AssociatedFunction_append_elements :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "append_elements" (append_elements T A).
+      M.IsAssociatedFunction.C (Self T A) "append_elements" (append_elements T A).
     Admitted.
     Global Typeclasses Opaque append_elements.
     
@@ -5073,7 +5073,7 @@ Module vec.
     
     Global Instance AssociatedFunction_drain :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "drain" (drain T A).
+      M.IsAssociatedFunction.C (Self T A) "drain" (drain T A).
     Admitted.
     Global Typeclasses Opaque drain.
     
@@ -5148,7 +5148,7 @@ Module vec.
     
     Global Instance AssociatedFunction_clear :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "clear" (clear T A).
+      M.IsAssociatedFunction.C (Self T A) "clear" (clear T A).
     Admitted.
     Global Typeclasses Opaque clear.
     
@@ -5175,7 +5175,7 @@ Module vec.
     
     Global Instance AssociatedFunction_len :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "len" (len T A).
+      M.IsAssociatedFunction.C (Self T A) "len" (len T A).
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -5208,7 +5208,7 @@ Module vec.
     
     Global Instance AssociatedFunction_is_empty :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "is_empty" (is_empty T A).
+      M.IsAssociatedFunction.C (Self T A) "is_empty" (is_empty T A).
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -5437,7 +5437,7 @@ Module vec.
     
     Global Instance AssociatedFunction_split_off :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "split_off" (split_off T A).
+      M.IsAssociatedFunction.C (Self T A) "split_off" (split_off T A).
     Admitted.
     Global Typeclasses Opaque split_off.
     
@@ -5576,7 +5576,7 @@ Module vec.
     
     Global Instance AssociatedFunction_resize_with :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "resize_with" (resize_with T A).
+      M.IsAssociatedFunction.C (Self T A) "resize_with" (resize_with T A).
     Admitted.
     Global Typeclasses Opaque resize_with.
     
@@ -5710,7 +5710,7 @@ Module vec.
     
     Global Instance AssociatedFunction_leak :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "leak" (leak T A).
+      M.IsAssociatedFunction.C (Self T A) "leak" (leak T A).
     Admitted.
     Global Typeclasses Opaque leak.
     
@@ -5843,7 +5843,7 @@ Module vec.
     
     Global Instance AssociatedFunction_spare_capacity_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "spare_capacity_mut" (spare_capacity_mut T A).
+      M.IsAssociatedFunction.C (Self T A) "spare_capacity_mut" (spare_capacity_mut T A).
     Admitted.
     Global Typeclasses Opaque spare_capacity_mut.
     
@@ -5917,7 +5917,7 @@ Module vec.
     
     Global Instance AssociatedFunction_split_at_spare_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "split_at_spare_mut" (split_at_spare_mut T A).
+      M.IsAssociatedFunction.C (Self T A) "split_at_spare_mut" (split_at_spare_mut T A).
     Admitted.
     Global Typeclasses Opaque split_at_spare_mut.
     
@@ -6111,7 +6111,7 @@ Module vec.
     
     Global Instance AssociatedFunction_split_at_spare_mut_with_len :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self T A)
         "split_at_spare_mut_with_len"
         (split_at_spare_mut_with_len T A).
@@ -6202,7 +6202,7 @@ Module vec.
     
     Global Instance AssociatedFunction_resize :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "resize" (resize T A).
+      M.IsAssociatedFunction.C (Self T A) "resize" (resize T A).
     Admitted.
     Global Typeclasses Opaque resize.
     
@@ -6251,7 +6251,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extend_from_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extend_from_slice" (extend_from_slice T A).
+      M.IsAssociatedFunction.C (Self T A) "extend_from_slice" (extend_from_slice T A).
     Admitted.
     Global Typeclasses Opaque extend_from_slice.
     
@@ -6362,7 +6362,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extend_from_within :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extend_from_within" (extend_from_within T A).
+      M.IsAssociatedFunction.C (Self T A) "extend_from_within" (extend_from_within T A).
     Admitted.
     Global Typeclasses Opaque extend_from_within.
     (*
@@ -6659,7 +6659,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extend_with :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extend_with" (extend_with T A).
+      M.IsAssociatedFunction.C (Self T A) "extend_with" (extend_with T A).
     Admitted.
     Global Typeclasses Opaque extend_with.
     (*
@@ -6757,7 +6757,7 @@ Module vec.
     
     Global Instance AssociatedFunction_dedup :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "dedup" (dedup T A).
+      M.IsAssociatedFunction.C (Self T A) "dedup" (dedup T A).
     Admitted.
     Global Typeclasses Opaque dedup.
     (*
@@ -7021,7 +7021,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extend_desugared :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extend_desugared" (extend_desugared T A).
+      M.IsAssociatedFunction.C (Self T A) "extend_desugared" (extend_desugared T A).
     Admitted.
     Global Typeclasses Opaque extend_desugared.
     
@@ -7550,7 +7550,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extend_trusted :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extend_trusted" (extend_trusted T A).
+      M.IsAssociatedFunction.C (Self T A) "extend_trusted" (extend_trusted T A).
     Admitted.
     Global Typeclasses Opaque extend_trusted.
     
@@ -7613,7 +7613,7 @@ Module vec.
     
     Global Instance AssociatedFunction_splice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "splice" (splice T A).
+      M.IsAssociatedFunction.C (Self T A) "splice" (splice T A).
     Admitted.
     Global Typeclasses Opaque splice.
     
@@ -7688,7 +7688,7 @@ Module vec.
     
     Global Instance AssociatedFunction_extract_if :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "extract_if" (extract_if T A).
+      M.IsAssociatedFunction.C (Self T A) "extract_if" (extract_if T A).
     Admitted.
     Global Typeclasses Opaque extract_if.
   End Impl_alloc_vec_Vec_T_A.
@@ -7776,7 +7776,11 @@ Module vec.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                                M.use
+                                  (get_constant (|
+                                    "core::mem::SizedTypeProperties::IS_ZST",
+                                    Ty.path "bool"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -7808,10 +7812,7 @@ Module vec.
                                             [],
                                             []
                                           |),
-                                          [
-                                            M.read (| len |);
-                                            M.read (| M.get_constant "alloc::vec::N" |)
-                                          ]
+                                          [ M.read (| len |); N ]
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -7819,7 +7820,13 @@ Module vec.
                                         |)
                                       ]
                                     |);
-                                    M.read (| M.get_constant "core::num::MAX" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   ]
                               |)));
                           fun γ =>
@@ -7835,10 +7842,7 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [
-                                        M.read (| len |);
-                                        M.read (| M.get_constant "alloc::vec::N" |)
-                                      ]
+                                      [ M.read (| len |); N ]
                                     |);
                                     M.call_closure (|
                                       Ty.path "usize",
@@ -7848,10 +7852,7 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [
-                                        M.read (| cap |);
-                                        M.read (| M.get_constant "alloc::vec::N" |)
-                                      ]
+                                      [ M.read (| cap |); N ]
                                     |)
                                   ]
                               |)))
@@ -7903,7 +7904,7 @@ Module vec.
     
     Global Instance AssociatedFunction_into_flattened :
       forall (N : Value.t) (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T A) "into_flattened" (into_flattened N T A).
+      M.IsAssociatedFunction.C (Self N T A) "into_flattened" (into_flattened N T A).
     Admitted.
     Global Typeclasses Opaque into_flattened.
   End Impl_alloc_vec_Vec_array_N_T_A.
@@ -7937,8 +7938,7 @@ Module vec.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_elem :
-    M.IsFunction.Trait "alloc::vec::from_elem" from_elem.
+  Global Instance Instance_IsFunction_from_elem : M.IsFunction.C "alloc::vec::from_elem" from_elem.
   Admitted.
   Global Typeclasses Opaque from_elem.
   
@@ -7971,7 +7971,7 @@ Module vec.
     end.
   
   Global Instance Instance_IsFunction_from_elem_in :
-    M.IsFunction.Trait "alloc::vec::from_elem_in" from_elem_in.
+    M.IsFunction.C "alloc::vec::from_elem_in" from_elem_in.
   Admitted.
   Global Typeclasses Opaque from_elem_in.
   
@@ -9329,7 +9329,12 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -11137,7 +11142,7 @@ Module vec.
                                     |),
                                     [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                                   |),
-                                  M.read (| M.get_constant "alloc::vec::N" |)
+                                  N
                                 |)
                               |)) in
                           let _ :=

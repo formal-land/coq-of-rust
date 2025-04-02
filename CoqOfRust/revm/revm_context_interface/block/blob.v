@@ -376,7 +376,7 @@ Module block.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_revm_context_interface_block_blob_BlobExcessGasAndPrice.
@@ -400,14 +400,19 @@ Module block.
                 M.read (| parent_excess_blob_gas |),
                 M.read (| parent_blob_gas_used |)
               |);
-              M.read (| M.get_constant "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK" |)
+              M.read (|
+                get_constant (|
+                  "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK",
+                  Ty.path "u64"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_calc_excess_blob_gas :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_context_interface::block::blob::calc_excess_blob_gas"
         calc_excess_blob_gas.
     Admitted.
@@ -431,10 +436,15 @@ Module block.
             Ty.path "u128",
             M.get_function (| "revm_context_interface::block::blob::fake_exponential", [], [] |),
             [
-              M.read (| M.get_constant "revm_specification::eip4844::MIN_BLOB_GASPRICE" |);
+              M.read (|
+                get_constant (| "revm_specification::eip4844::MIN_BLOB_GASPRICE", Ty.path "u64" |)
+              |);
               M.read (| excess_blob_gas |);
               M.read (|
-                M.get_constant "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION"
+                get_constant (|
+                  "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION",
+                  Ty.path "u64"
+                |)
               |)
             ]
           |)))
@@ -442,9 +452,7 @@ Module block.
       end.
     
     Global Instance Instance_IsFunction_calc_blob_gasprice :
-      M.IsFunction.Trait
-        "revm_context_interface::block::blob::calc_blob_gasprice"
-        calc_blob_gasprice.
+      M.IsFunction.C "revm_context_interface::block::blob::calc_blob_gasprice" calc_blob_gasprice.
     Admitted.
     Global Typeclasses Opaque calc_blob_gasprice.
     
@@ -672,7 +680,7 @@ Module block.
       end.
     
     Global Instance Instance_IsFunction_fake_exponential :
-      M.IsFunction.Trait "revm_context_interface::block::blob::fake_exponential" fake_exponential.
+      M.IsFunction.C "revm_context_interface::block::blob::fake_exponential" fake_exponential.
     Admitted.
     Global Typeclasses Opaque fake_exponential.
   End blob.

@@ -71,7 +71,7 @@ Module instructions.
     end.
   
   Global Instance Instance_IsFunction_instruction :
-    M.IsFunction.Trait "revm_interpreter::instructions::instruction" instruction.
+    M.IsFunction.C "revm_interpreter::instructions::instruction" instruction.
   Admitted.
   Global Typeclasses Opaque instruction.
   
@@ -137,7 +137,7 @@ Module instructions.
                   table,
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
+                    (M.read (| get_constant (| "revm_bytecode::opcode::STOP", Ty.path "u8" |) |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -155,7 +155,7 @@ Module instructions.
                   table,
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
+                    (M.read (| get_constant (| "revm_bytecode::opcode::ADD", Ty.path "u8" |) |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -173,7 +173,7 @@ Module instructions.
                   table,
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
+                    (M.read (| get_constant (| "revm_bytecode::opcode::BALANCE", Ty.path "u8" |) |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -190,7 +190,7 @@ Module instructions.
     end.
   
   Global Instance Instance_IsFunction_instruction_table :
-    M.IsFunction.Trait "revm_interpreter::instructions::instruction_table" instruction_table.
+    M.IsFunction.C "revm_interpreter::instructions::instruction_table" instruction_table.
   Admitted.
   Global Typeclasses Opaque instruction_table.
 End instructions.

@@ -51,7 +51,7 @@ Module foo.
       end.
     
     Global Instance Instance_IsFunction_f_foo_gre :
-      M.IsFunction.Trait "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
+      M.IsFunction.C "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
     Admitted.
     Global Typeclasses Opaque f_foo_gre.
   End gre.
@@ -112,8 +112,7 @@ Module foo.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_f_foo :
-    M.IsFunction.Trait "module_duplicate::foo::f_foo" f_foo.
+  Global Instance Instance_IsFunction_f_foo : M.IsFunction.C "module_duplicate::foo::f_foo" f_foo.
   Admitted.
   Global Typeclasses Opaque f_foo.
 End foo.
@@ -141,6 +140,6 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_f : M.IsFunction.Trait "module_duplicate::f" f.
+Global Instance Instance_IsFunction_f : M.IsFunction.C "module_duplicate::f" f.
 Admitted.
 Global Typeclasses Opaque f.

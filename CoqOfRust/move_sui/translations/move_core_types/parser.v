@@ -1417,7 +1417,7 @@ Module parser.
       end.
     
     Global Instance AssociatedFunction_is_whitespace :
-      M.IsAssociatedFunction.Trait Self "is_whitespace" is_whitespace.
+      M.IsAssociatedFunction.C Self "is_whitespace" is_whitespace.
     Admitted.
     Global Typeclasses Opaque is_whitespace.
   End Impl_move_core_types_parser_Token.
@@ -1983,7 +1983,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_token_as_name :
-    M.IsFunction.Trait "move_core_types::parser::token_as_name" token_as_name.
+    M.IsFunction.C "move_core_types::parser::token_as_name" token_as_name.
   Admitted.
   Global Typeclasses Opaque token_as_name.
   
@@ -2092,7 +2092,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_name_token :
-    M.IsFunction.Trait "move_core_types::parser::name_token" name_token.
+    M.IsFunction.C "move_core_types::parser::name_token" name_token.
   Admitted.
   Global Typeclasses Opaque name_token.
   
@@ -2621,7 +2621,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_next_number :
-    M.IsFunction.Trait "move_core_types::parser::next_number" next_number.
+    M.IsFunction.C "move_core_types::parser::next_number" next_number.
   Admitted.
   Global Typeclasses Opaque next_number.
   
@@ -4957,7 +4957,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_next_token :
-    M.IsFunction.Trait "move_core_types::parser::next_token" next_token.
+    M.IsFunction.C "move_core_types::parser::next_token" next_token.
   Admitted.
   Global Typeclasses Opaque next_token.
   
@@ -5273,7 +5273,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_tokenize :
-    M.IsFunction.Trait "move_core_types::parser::tokenize" tokenize.
+    M.IsFunction.C "move_core_types::parser::tokenize" tokenize.
   Admitted.
   Global Typeclasses Opaque tokenize.
   
@@ -5339,7 +5339,7 @@ Module parser.
     
     Global Instance AssociatedFunction_new :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+      M.IsAssociatedFunction.C (Self I) "new" (new I).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5473,7 +5473,7 @@ Module parser.
     
     Global Instance AssociatedFunction_next :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "next" (next I).
+      M.IsAssociatedFunction.C (Self I) "next" (next I).
     Admitted.
     Global Typeclasses Opaque next.
     
@@ -5515,7 +5515,7 @@ Module parser.
     
     Global Instance AssociatedFunction_peek :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+      M.IsAssociatedFunction.C (Self I) "peek" (peek I).
     Admitted.
     Global Typeclasses Opaque peek.
     
@@ -5826,7 +5826,7 @@ Module parser.
     
     Global Instance AssociatedFunction_consume :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "consume" (consume I).
+      M.IsAssociatedFunction.C (Self I) "consume" (consume I).
     Admitted.
     Global Typeclasses Opaque consume.
     
@@ -6513,7 +6513,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_comma_list :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_comma_list" (parse_comma_list I).
+      M.IsAssociatedFunction.C (Self I) "parse_comma_list" (parse_comma_list I).
     Admitted.
     Global Typeclasses Opaque parse_comma_list.
     
@@ -6796,7 +6796,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_string :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_string" (parse_string I).
+      M.IsAssociatedFunction.C (Self I) "parse_string" (parse_string I).
     Admitted.
     Global Typeclasses Opaque parse_string.
     
@@ -9334,7 +9334,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_type_tag :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_type_tag" (parse_type_tag I).
+      M.IsAssociatedFunction.C (Self I) "parse_type_tag" (parse_type_tag I).
     Admitted.
     Global Typeclasses Opaque parse_type_tag.
     
@@ -11180,10 +11180,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_transaction_argument :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self I)
-        "parse_transaction_argument"
-        (parse_transaction_argument I).
+      M.IsAssociatedFunction.C (Self I) "parse_transaction_argument" (parse_transaction_argument I).
     Admitted.
     Global Typeclasses Opaque parse_transaction_argument.
   End Impl_move_core_types_parser_Parser_I.
@@ -11855,8 +11852,7 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_parse :
-    M.IsFunction.Trait "move_core_types::parser::parse" parse.
+  Global Instance Instance_IsFunction_parse : M.IsFunction.C "move_core_types::parser::parse" parse.
   Admitted.
   Global Typeclasses Opaque parse.
   
@@ -12140,7 +12136,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_string_list :
-    M.IsFunction.Trait "move_core_types::parser::parse_string_list" parse_string_list.
+    M.IsFunction.C "move_core_types::parser::parse_string_list" parse_string_list.
   Admitted.
   Global Typeclasses Opaque parse_string_list.
   
@@ -12439,7 +12435,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_type_tags :
-    M.IsFunction.Trait "move_core_types::parser::parse_type_tags" parse_type_tags.
+    M.IsFunction.C "move_core_types::parser::parse_type_tags" parse_type_tags.
   Admitted.
   Global Typeclasses Opaque parse_type_tags.
   
@@ -12580,7 +12576,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_type_tag :
-    M.IsFunction.Trait "move_core_types::parser::parse_type_tag" parse_type_tag.
+    M.IsFunction.C "move_core_types::parser::parse_type_tag" parse_type_tag.
   Admitted.
   Global Typeclasses Opaque parse_type_tag.
   
@@ -12891,7 +12887,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_transaction_arguments :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_core_types::parser::parse_transaction_arguments"
       parse_transaction_arguments.
   Admitted.
@@ -13041,9 +13037,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_transaction_argument :
-    M.IsFunction.Trait
-      "move_core_types::parser::parse_transaction_argument"
-      parse_transaction_argument.
+    M.IsFunction.C "move_core_types::parser::parse_transaction_argument" parse_transaction_argument.
   Admitted.
   Global Typeclasses Opaque parse_transaction_argument.
   
@@ -13643,7 +13637,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_struct_tag :
-    M.IsFunction.Trait "move_core_types::parser::parse_struct_tag" parse_struct_tag.
+    M.IsFunction.C "move_core_types::parser::parse_struct_tag" parse_struct_tag.
   Admitted.
   Global Typeclasses Opaque parse_struct_tag.
 End parser.

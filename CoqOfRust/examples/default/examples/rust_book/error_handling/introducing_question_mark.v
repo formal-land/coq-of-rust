@@ -251,7 +251,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "introducing_question_mark::multiply" multiply.
+  M.IsFunction.C "introducing_question_mark::multiply" multiply.
 Admitted.
 Global Typeclasses Opaque multiply.
 
@@ -413,8 +413,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "introducing_question_mark::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "introducing_question_mark::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -474,7 +473,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "introducing_question_mark::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "introducing_question_mark::main" main.
 Admitted.
 Global Typeclasses Opaque main.

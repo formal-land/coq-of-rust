@@ -3,12 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module sync.
   Module atomic.
-    Definition value_EMULATE_ATOMIC_BOOL : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    Definition value_EMULATE_ATOMIC_BOOL
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Bool false |))).
     
-    Axiom Constant_value_EMULATE_ATOMIC_BOOL :
-      (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") = value_EMULATE_ATOMIC_BOOL.
-    Global Hint Rewrite Constant_value_EMULATE_ATOMIC_BOOL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_EMULATE_ATOMIC_BOOL :
+      M.IsFunction.C "core::sync::atomic::EMULATE_ATOMIC_BOOL" value_EMULATE_ATOMIC_BOOL.
+    Admitted.
+    Global Typeclasses Opaque value_EMULATE_ATOMIC_BOOL.
     
     (* StructRecord
       {
@@ -448,25 +453,20 @@ Module sync.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_sync_atomic_Ordering.
     
-    Definition value_ATOMIC_BOOL_INIT : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::sync::atomic::AtomicBool",
-              M.get_associated_function (|
-                Ty.path "core::sync::atomic::AtomicBool",
-                "new",
-                [],
-                []
-              |),
-              [ Value.Bool false ]
-            |)
-          |))).
+    Definition value_ATOMIC_BOOL_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::sync::atomic::AtomicBool",
+            M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [], [] |),
+            [ Value.Bool false ]
+          |)
+        |))).
     
-    Axiom Constant_value_ATOMIC_BOOL_INIT :
-      (M.get_constant "core::sync::atomic::ATOMIC_BOOL_INIT") = value_ATOMIC_BOOL_INIT.
-    Global Hint Rewrite Constant_value_ATOMIC_BOOL_INIT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ATOMIC_BOOL_INIT :
+      M.IsFunction.C "core::sync::atomic::ATOMIC_BOOL_INIT" value_ATOMIC_BOOL_INIT.
+    Admitted.
+    Global Typeclasses Opaque value_ATOMIC_BOOL_INIT.
     
     Module Impl_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -499,7 +499,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -538,7 +538,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -597,8 +597,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -652,7 +651,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -705,7 +704,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -764,7 +763,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -803,7 +802,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -854,7 +853,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -910,7 +909,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -938,7 +937,12 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
+                      (let γ :=
+                        M.use
+                          (get_constant (|
+                            "core::sync::atomic::EMULATE_ATOMIC_BOOL",
+                            Ty.path "bool"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.path "bool"),
@@ -1038,7 +1042,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -1115,7 +1119,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -1180,7 +1184,12 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
+                      (let γ :=
+                        M.use
+                          (get_constant (|
+                            "core::sync::atomic::EMULATE_ATOMIC_BOOL",
+                            Ty.path "bool"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ order : Ty.path "core::sync::atomic::Ordering" :=
                         M.copy (|
@@ -1571,7 +1580,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -1616,7 +1625,11 @@ Module sync.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
+                              M.use
+                                (get_constant (|
+                                  "core::sync::atomic::EMULATE_ATOMIC_BOOL",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1730,7 +1743,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -1781,7 +1794,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -1859,7 +1872,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -1910,7 +1923,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -1961,7 +1974,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -1994,7 +2007,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_not :
-        M.IsAssociatedFunction.Trait Self "fetch_not" fetch_not.
+        M.IsAssociatedFunction.C Self "fetch_not" fetch_not.
       Admitted.
       Global Typeclasses Opaque fetch_not.
       
@@ -2041,7 +2054,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
       
@@ -2207,7 +2220,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
     End Impl_core_sync_atomic_AtomicBool.
@@ -2253,7 +2266,7 @@ Module sync.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2297,7 +2310,7 @@ Module sync.
       
       Global Instance AssociatedFunction_from_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_ptr" (from_ptr T).
+        M.IsAssociatedFunction.C (Self T) "from_ptr" (from_ptr T).
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -2349,7 +2362,7 @@ Module sync.
       
       Global Instance AssociatedFunction_get_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+        M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -2425,7 +2438,7 @@ Module sync.
       
       Global Instance AssociatedFunction_from_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+        M.IsAssociatedFunction.C (Self T) "from_mut" (from_mut T).
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -2490,7 +2503,7 @@ Module sync.
       
       Global Instance AssociatedFunction_get_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "get_mut_slice" (get_mut_slice T).
+        M.IsAssociatedFunction.C (Self T) "get_mut_slice" (get_mut_slice T).
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -2558,7 +2571,7 @@ Module sync.
       
       Global Instance AssociatedFunction_from_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_mut_slice" (from_mut_slice T).
+        M.IsAssociatedFunction.C (Self T) "from_mut_slice" (from_mut_slice T).
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -2599,7 +2612,7 @@ Module sync.
       
       Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+        M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -2656,7 +2669,7 @@ Module sync.
       
       Global Instance AssociatedFunction_load :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "load" (load T).
+        M.IsAssociatedFunction.C (Self T) "load" (load T).
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -2721,7 +2734,7 @@ Module sync.
       
       Global Instance AssociatedFunction_store :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "store" (store T).
+        M.IsAssociatedFunction.C (Self T) "store" (store T).
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -2778,7 +2791,7 @@ Module sync.
       
       Global Instance AssociatedFunction_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+        M.IsAssociatedFunction.C (Self T) "swap" (swap T).
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -2865,7 +2878,7 @@ Module sync.
       
       Global Instance AssociatedFunction_compare_and_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "compare_and_swap" (compare_and_swap T).
+        M.IsAssociatedFunction.C (Self T) "compare_and_swap" (compare_and_swap T).
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -2940,7 +2953,7 @@ Module sync.
       
       Global Instance AssociatedFunction_compare_exchange :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "compare_exchange" (compare_exchange T).
+        M.IsAssociatedFunction.C (Self T) "compare_exchange" (compare_exchange T).
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -3018,7 +3031,7 @@ Module sync.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "compare_exchange_weak" (compare_exchange_weak T).
+        M.IsAssociatedFunction.C (Self T) "compare_exchange_weak" (compare_exchange_weak T).
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -3194,7 +3207,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_update :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_update" (fetch_update T).
+        M.IsAssociatedFunction.C (Self T) "fetch_update" (fetch_update T).
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -3246,7 +3259,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_ptr_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_ptr_add" (fetch_ptr_add T).
+        M.IsAssociatedFunction.C (Self T) "fetch_ptr_add" (fetch_ptr_add T).
       Admitted.
       Global Typeclasses Opaque fetch_ptr_add.
       
@@ -3298,7 +3311,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_ptr_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_ptr_sub" (fetch_ptr_sub T).
+        M.IsAssociatedFunction.C (Self T) "fetch_ptr_sub" (fetch_ptr_sub T).
       Admitted.
       Global Typeclasses Opaque fetch_ptr_sub.
       
@@ -3370,7 +3383,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_byte_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_byte_add" (fetch_byte_add T).
+        M.IsAssociatedFunction.C (Self T) "fetch_byte_add" (fetch_byte_add T).
       Admitted.
       Global Typeclasses Opaque fetch_byte_add.
       
@@ -3442,7 +3455,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_byte_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_byte_sub" (fetch_byte_sub T).
+        M.IsAssociatedFunction.C (Self T) "fetch_byte_sub" (fetch_byte_sub T).
       Admitted.
       Global Typeclasses Opaque fetch_byte_sub.
       
@@ -3509,7 +3522,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_or :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_or" (fetch_or T).
+        M.IsAssociatedFunction.C (Self T) "fetch_or" (fetch_or T).
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -3576,7 +3589,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_and :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_and" (fetch_and T).
+        M.IsAssociatedFunction.C (Self T) "fetch_and" (fetch_and T).
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -3643,7 +3656,7 @@ Module sync.
       
       Global Instance AssociatedFunction_fetch_xor :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "fetch_xor" (fetch_xor T).
+        M.IsAssociatedFunction.C (Self T) "fetch_xor" (fetch_xor T).
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -3685,7 +3698,7 @@ Module sync.
       
       Global Instance AssociatedFunction_as_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+        M.IsAssociatedFunction.C (Self T) "as_ptr" (as_ptr T).
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicPtr_T.
@@ -3942,7 +3955,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -3981,7 +3994,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -4027,8 +4040,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -4097,7 +4109,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -4150,7 +4162,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -4224,7 +4236,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -4260,7 +4272,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -4307,7 +4319,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -4360,7 +4372,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -4407,7 +4419,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -4490,7 +4502,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -4550,7 +4562,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -4612,7 +4624,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -4660,7 +4672,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -4708,7 +4720,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -4756,7 +4768,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -4804,7 +4816,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -4852,7 +4864,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -4900,7 +4912,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -5059,7 +5071,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -5107,7 +5119,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -5155,7 +5167,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -5191,7 +5203,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI8.
@@ -5375,7 +5387,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -5414,7 +5426,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -5460,8 +5472,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -5530,7 +5541,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -5583,7 +5594,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -5657,7 +5668,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -5693,7 +5704,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -5740,7 +5751,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -5793,7 +5804,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -5840,7 +5851,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -5923,7 +5934,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -5983,7 +5994,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -6045,7 +6056,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -6093,7 +6104,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -6141,7 +6152,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -6189,7 +6200,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -6237,7 +6248,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -6285,7 +6296,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -6333,7 +6344,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -6492,7 +6503,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -6540,7 +6551,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -6588,7 +6599,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -6624,7 +6635,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU8.
@@ -6818,7 +6829,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -6857,7 +6868,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -6903,8 +6914,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -6973,7 +6983,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -7026,7 +7036,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -7100,7 +7110,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -7136,7 +7146,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -7183,7 +7193,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -7236,7 +7246,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -7283,7 +7293,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -7366,7 +7376,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -7426,7 +7436,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -7488,7 +7498,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -7536,7 +7546,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -7584,7 +7594,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -7632,7 +7642,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -7680,7 +7690,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -7728,7 +7738,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -7776,7 +7786,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -7938,7 +7948,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -7986,7 +7996,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -8034,7 +8044,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -8070,7 +8080,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI16.
@@ -8264,7 +8274,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -8303,7 +8313,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -8349,8 +8359,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -8419,7 +8428,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -8472,7 +8481,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -8546,7 +8555,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -8582,7 +8591,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -8629,7 +8638,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -8682,7 +8691,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -8729,7 +8738,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -8812,7 +8821,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -8872,7 +8881,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -8934,7 +8943,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -8982,7 +8991,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -9030,7 +9039,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -9078,7 +9087,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -9126,7 +9135,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -9174,7 +9183,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -9222,7 +9231,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -9384,7 +9393,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -9432,7 +9441,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -9480,7 +9489,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -9516,7 +9525,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU16.
@@ -9710,7 +9719,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -9749,7 +9758,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -9795,8 +9804,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -9865,7 +9873,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -9918,7 +9926,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -9992,7 +10000,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -10028,7 +10036,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -10075,7 +10083,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -10128,7 +10136,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -10175,7 +10183,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -10258,7 +10266,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -10318,7 +10326,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -10380,7 +10388,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -10428,7 +10436,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -10476,7 +10484,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -10524,7 +10532,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -10572,7 +10580,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -10620,7 +10628,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -10668,7 +10676,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -10830,7 +10838,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -10878,7 +10886,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -10926,7 +10934,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -10962,7 +10970,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI32.
@@ -11156,7 +11164,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -11195,7 +11203,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -11241,8 +11249,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -11311,7 +11318,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -11364,7 +11371,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -11438,7 +11445,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -11474,7 +11481,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -11521,7 +11528,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -11574,7 +11581,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -11621,7 +11628,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -11704,7 +11711,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -11764,7 +11771,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -11826,7 +11833,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -11874,7 +11881,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -11922,7 +11929,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -11970,7 +11977,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -12018,7 +12025,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -12066,7 +12073,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -12114,7 +12121,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -12276,7 +12283,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -12324,7 +12331,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -12372,7 +12379,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -12408,7 +12415,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU32.
@@ -12602,7 +12609,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -12641,7 +12648,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -12687,8 +12694,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -12757,7 +12763,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -12810,7 +12816,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -12884,7 +12890,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -12920,7 +12926,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -12967,7 +12973,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -13020,7 +13026,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -13067,7 +13073,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -13150,7 +13156,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -13210,7 +13216,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -13272,7 +13278,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -13320,7 +13326,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -13368,7 +13374,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -13416,7 +13422,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -13464,7 +13470,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -13512,7 +13518,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -13560,7 +13566,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -13722,7 +13728,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -13770,7 +13776,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -13818,7 +13824,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -13854,7 +13860,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI64.
@@ -14048,7 +14054,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -14087,7 +14093,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -14133,8 +14139,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -14203,7 +14208,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -14256,7 +14261,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -14330,7 +14335,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -14366,7 +14371,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -14413,7 +14418,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -14466,7 +14471,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -14513,7 +14518,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -14596,7 +14601,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -14656,7 +14661,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -14718,7 +14723,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -14766,7 +14771,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -14814,7 +14819,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -14862,7 +14867,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -14910,7 +14915,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -14958,7 +14963,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -15006,7 +15011,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -15168,7 +15173,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -15216,7 +15221,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -15264,7 +15269,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -15300,7 +15305,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU64.
@@ -15494,7 +15499,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -15533,7 +15538,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -15579,8 +15584,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -15649,7 +15653,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -15702,7 +15706,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -15776,7 +15780,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -15812,7 +15816,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -15859,7 +15863,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -15916,7 +15920,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -15963,7 +15967,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -16049,7 +16053,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -16109,7 +16113,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -16171,7 +16175,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -16219,7 +16223,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -16267,7 +16271,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -16315,7 +16319,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -16363,7 +16367,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -16411,7 +16415,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -16459,7 +16463,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -16621,7 +16625,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -16669,7 +16673,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -16717,7 +16721,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -16753,7 +16757,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicIsize.
@@ -16947,7 +16951,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -16986,7 +16990,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -17032,8 +17036,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_mut :
-        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -17102,7 +17105,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut :
-        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+        M.IsAssociatedFunction.C Self "from_mut" from_mut.
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -17155,7 +17158,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+        M.IsAssociatedFunction.C Self "get_mut_slice" get_mut_slice.
       Admitted.
       Global Typeclasses Opaque get_mut_slice.
       
@@ -17229,7 +17232,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+        M.IsAssociatedFunction.C Self "from_mut_slice" from_mut_slice.
       Admitted.
       Global Typeclasses Opaque from_mut_slice.
       
@@ -17265,7 +17268,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -17312,7 +17315,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.C Self "load" load.
       Admitted.
       Global Typeclasses Opaque load.
       
@@ -17369,7 +17372,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.C Self "store" store.
       Admitted.
       Global Typeclasses Opaque store.
       
@@ -17416,7 +17419,7 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -17502,7 +17505,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+        M.IsAssociatedFunction.C Self "compare_and_swap" compare_and_swap.
       Admitted.
       Global Typeclasses Opaque compare_and_swap.
       
@@ -17562,7 +17565,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+        M.IsAssociatedFunction.C Self "compare_exchange" compare_exchange.
       Admitted.
       Global Typeclasses Opaque compare_exchange.
       
@@ -17624,7 +17627,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+        M.IsAssociatedFunction.C Self "compare_exchange_weak" compare_exchange_weak.
       Admitted.
       Global Typeclasses Opaque compare_exchange_weak.
       
@@ -17672,7 +17675,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_add :
-        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+        M.IsAssociatedFunction.C Self "fetch_add" fetch_add.
       Admitted.
       Global Typeclasses Opaque fetch_add.
       
@@ -17720,7 +17723,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_sub :
-        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+        M.IsAssociatedFunction.C Self "fetch_sub" fetch_sub.
       Admitted.
       Global Typeclasses Opaque fetch_sub.
       
@@ -17768,7 +17771,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_and :
-        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+        M.IsAssociatedFunction.C Self "fetch_and" fetch_and.
       Admitted.
       Global Typeclasses Opaque fetch_and.
       
@@ -17816,7 +17819,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_nand :
-        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+        M.IsAssociatedFunction.C Self "fetch_nand" fetch_nand.
       Admitted.
       Global Typeclasses Opaque fetch_nand.
       
@@ -17864,7 +17867,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_or :
-        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+        M.IsAssociatedFunction.C Self "fetch_or" fetch_or.
       Admitted.
       Global Typeclasses Opaque fetch_or.
       
@@ -17912,7 +17915,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_xor :
-        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+        M.IsAssociatedFunction.C Self "fetch_xor" fetch_xor.
       Admitted.
       Global Typeclasses Opaque fetch_xor.
       
@@ -18074,7 +18077,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+        M.IsAssociatedFunction.C Self "fetch_update" fetch_update.
       Admitted.
       Global Typeclasses Opaque fetch_update.
       
@@ -18122,7 +18125,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_max :
-        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+        M.IsAssociatedFunction.C Self "fetch_max" fetch_max.
       Admitted.
       Global Typeclasses Opaque fetch_max.
       
@@ -18170,7 +18173,7 @@ Module sync.
         end.
       
       Global Instance AssociatedFunction_fetch_min :
-        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+        M.IsAssociatedFunction.C Self "fetch_min" fetch_min.
       Admitted.
       Global Typeclasses Opaque fetch_min.
       
@@ -18206,50 +18209,50 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicUsize.
     
-    Definition value_ATOMIC_ISIZE_INIT : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_ATOMIC_ISIZE_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::sync::atomic::AtomicIsize",
+            M.get_associated_function (|
               Ty.path "core::sync::atomic::AtomicIsize",
-              M.get_associated_function (|
-                Ty.path "core::sync::atomic::AtomicIsize",
-                "new",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.Isize 0 ]
-            |)
-          |))).
+              "new",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.Isize 0 ]
+          |)
+        |))).
     
-    Axiom Constant_value_ATOMIC_ISIZE_INIT :
-      (M.get_constant "core::sync::atomic::ATOMIC_ISIZE_INIT") = value_ATOMIC_ISIZE_INIT.
-    Global Hint Rewrite Constant_value_ATOMIC_ISIZE_INIT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ATOMIC_ISIZE_INIT :
+      M.IsFunction.C "core::sync::atomic::ATOMIC_ISIZE_INIT" value_ATOMIC_ISIZE_INIT.
+    Admitted.
+    Global Typeclasses Opaque value_ATOMIC_ISIZE_INIT.
     
-    Definition value_ATOMIC_USIZE_INIT : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_ATOMIC_USIZE_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::sync::atomic::AtomicUsize",
+            M.get_associated_function (|
               Ty.path "core::sync::atomic::AtomicUsize",
-              M.get_associated_function (|
-                Ty.path "core::sync::atomic::AtomicUsize",
-                "new",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.Usize 0 ]
-            |)
-          |))).
+              "new",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.Usize 0 ]
+          |)
+        |))).
     
-    Axiom Constant_value_ATOMIC_USIZE_INIT :
-      (M.get_constant "core::sync::atomic::ATOMIC_USIZE_INIT") = value_ATOMIC_USIZE_INIT.
-    Global Hint Rewrite Constant_value_ATOMIC_USIZE_INIT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ATOMIC_USIZE_INIT :
+      M.IsFunction.C "core::sync::atomic::ATOMIC_USIZE_INIT" value_ATOMIC_USIZE_INIT.
+    Admitted.
+    Global Typeclasses Opaque value_ATOMIC_USIZE_INIT.
     
     (*
     fn strongest_failure_ordering(order: Ordering) -> Ordering {
@@ -18303,9 +18306,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_strongest_failure_ordering :
-      M.IsFunction.Trait
-        "core::sync::atomic::strongest_failure_ordering"
-        strongest_failure_ordering.
+      M.IsFunction.C "core::sync::atomic::strongest_failure_ordering" strongest_failure_ordering.
     Admitted.
     Global Typeclasses Opaque strongest_failure_ordering.
     
@@ -18452,7 +18453,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_store :
-      M.IsFunction.Trait "core::sync::atomic::atomic_store" atomic_store.
+      M.IsFunction.C "core::sync::atomic::atomic_store" atomic_store.
     Admitted.
     Global Typeclasses Opaque atomic_store.
     
@@ -18595,7 +18596,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_load :
-      M.IsFunction.Trait "core::sync::atomic::atomic_load" atomic_load.
+      M.IsFunction.C "core::sync::atomic::atomic_load" atomic_load.
     Admitted.
     Global Typeclasses Opaque atomic_load.
     
@@ -18682,7 +18683,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_swap :
-      M.IsFunction.Trait "core::sync::atomic::atomic_swap" atomic_swap.
+      M.IsFunction.C "core::sync::atomic::atomic_swap" atomic_swap.
     Admitted.
     Global Typeclasses Opaque atomic_swap.
     
@@ -18769,7 +18770,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_add :
-      M.IsFunction.Trait "core::sync::atomic::atomic_add" atomic_add.
+      M.IsFunction.C "core::sync::atomic::atomic_add" atomic_add.
     Admitted.
     Global Typeclasses Opaque atomic_add.
     
@@ -18856,7 +18857,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_sub :
-      M.IsFunction.Trait "core::sync::atomic::atomic_sub" atomic_sub.
+      M.IsFunction.C "core::sync::atomic::atomic_sub" atomic_sub.
     Admitted.
     Global Typeclasses Opaque atomic_sub.
     
@@ -19315,7 +19316,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_compare_exchange :
-      M.IsFunction.Trait "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
+      M.IsFunction.C "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
     Admitted.
     Global Typeclasses Opaque atomic_compare_exchange.
     
@@ -19778,7 +19779,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_compare_exchange_weak :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::sync::atomic::atomic_compare_exchange_weak"
         atomic_compare_exchange_weak.
     Admitted.
@@ -19867,7 +19868,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_and :
-      M.IsFunction.Trait "core::sync::atomic::atomic_and" atomic_and.
+      M.IsFunction.C "core::sync::atomic::atomic_and" atomic_and.
     Admitted.
     Global Typeclasses Opaque atomic_and.
     
@@ -19954,7 +19955,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_nand :
-      M.IsFunction.Trait "core::sync::atomic::atomic_nand" atomic_nand.
+      M.IsFunction.C "core::sync::atomic::atomic_nand" atomic_nand.
     Admitted.
     Global Typeclasses Opaque atomic_nand.
     
@@ -20041,7 +20042,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_or :
-      M.IsFunction.Trait "core::sync::atomic::atomic_or" atomic_or.
+      M.IsFunction.C "core::sync::atomic::atomic_or" atomic_or.
     Admitted.
     Global Typeclasses Opaque atomic_or.
     
@@ -20128,7 +20129,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_xor :
-      M.IsFunction.Trait "core::sync::atomic::atomic_xor" atomic_xor.
+      M.IsFunction.C "core::sync::atomic::atomic_xor" atomic_xor.
     Admitted.
     Global Typeclasses Opaque atomic_xor.
     
@@ -20215,7 +20216,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_max :
-      M.IsFunction.Trait "core::sync::atomic::atomic_max" atomic_max.
+      M.IsFunction.C "core::sync::atomic::atomic_max" atomic_max.
     Admitted.
     Global Typeclasses Opaque atomic_max.
     
@@ -20302,7 +20303,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_min :
-      M.IsFunction.Trait "core::sync::atomic::atomic_min" atomic_min.
+      M.IsFunction.C "core::sync::atomic::atomic_min" atomic_min.
     Admitted.
     Global Typeclasses Opaque atomic_min.
     
@@ -20389,7 +20390,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_umax :
-      M.IsFunction.Trait "core::sync::atomic::atomic_umax" atomic_umax.
+      M.IsFunction.C "core::sync::atomic::atomic_umax" atomic_umax.
     Admitted.
     Global Typeclasses Opaque atomic_umax.
     
@@ -20476,7 +20477,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_atomic_umin :
-      M.IsFunction.Trait "core::sync::atomic::atomic_umin" atomic_umin.
+      M.IsFunction.C "core::sync::atomic::atomic_umin" atomic_umin.
     Admitted.
     Global Typeclasses Opaque atomic_umin.
     
@@ -20587,8 +20588,7 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_fence :
-      M.IsFunction.Trait "core::sync::atomic::fence" fence.
+    Global Instance Instance_IsFunction_fence : M.IsFunction.C "core::sync::atomic::fence" fence.
     Admitted.
     Global Typeclasses Opaque fence.
     
@@ -20719,7 +20719,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_compiler_fence :
-      M.IsFunction.Trait "core::sync::atomic::compiler_fence" compiler_fence.
+      M.IsFunction.C "core::sync::atomic::compiler_fence" compiler_fence.
     Admitted.
     Global Typeclasses Opaque compiler_fence.
     
@@ -20940,7 +20940,7 @@ Module sync.
       end.
     
     Global Instance Instance_IsFunction_spin_loop_hint :
-      M.IsFunction.Trait "core::sync::atomic::spin_loop_hint" spin_loop_hint.
+      M.IsFunction.C "core::sync::atomic::spin_loop_hint" spin_loop_hint.
     Admitted.
     Global Typeclasses Opaque spin_loop_hint.
   End atomic.

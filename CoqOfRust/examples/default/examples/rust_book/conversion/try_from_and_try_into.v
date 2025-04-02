@@ -800,6 +800,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "try_from_and_try_into::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "try_from_and_try_into::main" main.
 Admitted.
 Global Typeclasses Opaque main.

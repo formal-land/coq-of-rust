@@ -607,7 +607,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -648,7 +648,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_new_spent :
-      M.IsAssociatedFunction.Trait Self "new_spent" new_spent.
+      M.IsAssociatedFunction.C Self "new_spent" new_spent.
     Admitted.
     Global Typeclasses Opaque new_spent.
     
@@ -672,7 +672,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_limit : M.IsAssociatedFunction.Trait Self "limit" limit.
+    Global Instance AssociatedFunction_limit : M.IsAssociatedFunction.C Self "limit" limit.
     Admitted.
     Global Typeclasses Opaque limit.
     
@@ -690,7 +690,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_memory : M.IsAssociatedFunction.Trait Self "memory" memory.
+    Global Instance AssociatedFunction_memory : M.IsAssociatedFunction.C Self "memory" memory.
     Admitted.
     Global Typeclasses Opaque memory.
     
@@ -714,8 +714,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_refunded :
-      M.IsAssociatedFunction.Trait Self "refunded" refunded.
+    Global Instance AssociatedFunction_refunded : M.IsAssociatedFunction.C Self "refunded" refunded.
     Admitted.
     Global Typeclasses Opaque refunded.
     
@@ -748,7 +747,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_spent : M.IsAssociatedFunction.Trait Self "spent" spent.
+    Global Instance AssociatedFunction_spent : M.IsAssociatedFunction.C Self "spent" spent.
     Admitted.
     Global Typeclasses Opaque spent.
     
@@ -773,7 +772,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_remaining :
-      M.IsAssociatedFunction.Trait Self "remaining" remaining.
+      M.IsAssociatedFunction.C Self "remaining" remaining.
     Admitted.
     Global Typeclasses Opaque remaining.
     
@@ -810,7 +809,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_remaining_63_of_64_parts :
-      M.IsAssociatedFunction.Trait Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
+      M.IsAssociatedFunction.C Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
     Admitted.
     Global Typeclasses Opaque remaining_63_of_64_parts.
     
@@ -842,7 +841,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_erase_cost :
-      M.IsAssociatedFunction.Trait Self "erase_cost" erase_cost.
+      M.IsAssociatedFunction.C Self "erase_cost" erase_cost.
     Admitted.
     Global Typeclasses Opaque erase_cost.
     
@@ -874,7 +873,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_spend_all :
-      M.IsAssociatedFunction.Trait Self "spend_all" spend_all.
+      M.IsAssociatedFunction.C Self "spend_all" spend_all.
     Admitted.
     Global Typeclasses Opaque spend_all.
     
@@ -906,7 +905,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_record_refund :
-      M.IsAssociatedFunction.Trait Self "record_refund" record_refund.
+      M.IsAssociatedFunction.C Self "record_refund" record_refund.
     Admitted.
     Global Typeclasses Opaque record_refund.
     
@@ -996,7 +995,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_set_final_refund :
-      M.IsAssociatedFunction.Trait Self "set_final_refund" set_final_refund.
+      M.IsAssociatedFunction.C Self "set_final_refund" set_final_refund.
     Admitted.
     Global Typeclasses Opaque set_final_refund.
     
@@ -1029,7 +1028,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_set_refund :
-      M.IsAssociatedFunction.Trait Self "set_refund" set_refund.
+      M.IsAssociatedFunction.C Self "set_refund" set_refund.
     Admitted.
     Global Typeclasses Opaque set_refund.
     
@@ -1113,7 +1112,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_record_cost :
-      M.IsAssociatedFunction.Trait Self "record_cost" record_cost.
+      M.IsAssociatedFunction.C Self "record_cost" record_cost.
     Admitted.
     Global Typeclasses Opaque record_cost.
     
@@ -1234,7 +1233,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_record_memory_expansion :
-      M.IsAssociatedFunction.Trait Self "record_memory_expansion" record_memory_expansion.
+      M.IsAssociatedFunction.C Self "record_memory_expansion" record_memory_expansion.
     Admitted.
     Global Typeclasses Opaque record_memory_expansion.
   End Impl_revm_interpreter_gas_Gas.
@@ -1667,7 +1666,7 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1793,7 +1792,7 @@ Module gas.
       end.
     
     Global Instance AssociatedFunction_record_new_len :
-      M.IsAssociatedFunction.Trait Self "record_new_len" record_new_len.
+      M.IsAssociatedFunction.C Self "record_new_len" record_new_len.
     Admitted.
     Global Typeclasses Opaque record_new_len.
   End Impl_revm_interpreter_gas_MemoryGas.

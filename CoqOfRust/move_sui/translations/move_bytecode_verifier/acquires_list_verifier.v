@@ -1856,7 +1856,7 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_verify : M.IsAssociatedFunction.Trait Self "verify" verify.
+    Global Instance AssociatedFunction_verify : M.IsAssociatedFunction.C Self "verify" verify.
     Admitted.
     Global Typeclasses Opaque verify.
     
@@ -2940,7 +2940,7 @@ Module acquires_list_verifier.
       end.
     
     Global Instance AssociatedFunction_verify_instruction :
-      M.IsAssociatedFunction.Trait Self "verify_instruction" verify_instruction.
+      M.IsAssociatedFunction.C Self "verify_instruction" verify_instruction.
     Admitted.
     Global Typeclasses Opaque verify_instruction.
     
@@ -3275,7 +3275,7 @@ Module acquires_list_verifier.
       end.
     
     Global Instance AssociatedFunction_call_acquire :
-      M.IsAssociatedFunction.Trait Self "call_acquire" call_acquire.
+      M.IsAssociatedFunction.C Self "call_acquire" call_acquire.
     Admitted.
     Global Typeclasses Opaque call_acquire.
     
@@ -3407,7 +3407,7 @@ Module acquires_list_verifier.
       end.
     
     Global Instance AssociatedFunction_struct_acquire :
-      M.IsAssociatedFunction.Trait Self "struct_acquire" struct_acquire.
+      M.IsAssociatedFunction.C Self "struct_acquire" struct_acquire.
     Admitted.
     Global Typeclasses Opaque struct_acquire.
     
@@ -3787,7 +3787,7 @@ Module acquires_list_verifier.
       end.
     
     Global Instance AssociatedFunction_function_acquired_resources :
-      M.IsAssociatedFunction.Trait Self "function_acquired_resources" function_acquired_resources.
+      M.IsAssociatedFunction.C Self "function_acquired_resources" function_acquired_resources.
     Admitted.
     Global Typeclasses Opaque function_acquired_resources.
     
@@ -3835,7 +3835,7 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.C Self "error" error.
     Admitted.
     Global Typeclasses Opaque error.
   End Impl_move_bytecode_verifier_acquires_list_verifier_AcquiresVerifier.

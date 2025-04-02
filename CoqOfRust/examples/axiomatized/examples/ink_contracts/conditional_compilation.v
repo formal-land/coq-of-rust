@@ -114,19 +114,19 @@ Module Impl_conditional_compilation_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
   
   Parameter block_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_block_number :
-    M.IsAssociatedFunction.Trait Self "block_number" block_number.
+    M.IsAssociatedFunction.C Self "block_number" block_number.
   Admitted.
 End Impl_conditional_compilation_Env.
 
@@ -143,46 +143,45 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter new_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new_foo : M.IsAssociatedFunction.Trait Self "new_foo" new_foo.
+  Global Instance AssociatedFunction_new_foo : M.IsAssociatedFunction.C Self "new_foo" new_foo.
   Admitted.
   
   Parameter new_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new_bar : M.IsAssociatedFunction.Trait Self "new_bar" new_bar.
+  Global Instance AssociatedFunction_new_bar : M.IsAssociatedFunction.C Self "new_bar" new_bar.
   Admitted.
   
   Parameter new_foo_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_new_foo_bar :
-    M.IsAssociatedFunction.Trait Self "new_foo_bar" new_foo_bar.
+    M.IsAssociatedFunction.C Self "new_foo_bar" new_foo_bar.
   Admitted.
   
   Parameter inherent_flip_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_inherent_flip_foo :
-    M.IsAssociatedFunction.Trait Self "inherent_flip_foo" inherent_flip_foo.
+    M.IsAssociatedFunction.C Self "inherent_flip_foo" inherent_flip_foo.
   Admitted.
   
   Parameter inherent_flip_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_inherent_flip_bar :
-    M.IsAssociatedFunction.Trait Self "inherent_flip_bar" inherent_flip_bar.
+    M.IsAssociatedFunction.C Self "inherent_flip_bar" inherent_flip_bar.
   Admitted.
 End Impl_conditional_compilation_ConditionalCompilation.
 

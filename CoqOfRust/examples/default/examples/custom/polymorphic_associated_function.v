@@ -49,7 +49,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
   
   Global Instance AssociatedFunction_convert :
     forall (A : Ty.t),
-    M.IsAssociatedFunction.Trait (Self A) "convert" (convert A).
+    M.IsAssociatedFunction.C (Self A) "convert" (convert A).
   Admitted.
   Global Typeclasses Opaque convert.
 End Impl_polymorphic_associated_function_Foo_A.
@@ -181,6 +181,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "polymorphic_associated_function::main" main.
+  M.IsFunction.C "polymorphic_associated_function::main" main.
 Admitted.
 Global Typeclasses Opaque main.

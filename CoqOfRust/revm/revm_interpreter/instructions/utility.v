@@ -1296,7 +1296,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_cast_slice_to_u256 :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_interpreter::instructions::utility::cast_slice_to_u256"
         cast_slice_to_u256.
     Admitted.

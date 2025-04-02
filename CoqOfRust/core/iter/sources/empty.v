@@ -20,7 +20,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_empty :
-        M.IsFunction.Trait "core::iter::sources::empty::empty" empty.
+        M.IsFunction.C "core::iter::sources::empty::empty" empty.
       Admitted.
       Global Typeclasses Opaque empty.
       

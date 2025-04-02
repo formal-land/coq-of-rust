@@ -486,7 +486,20 @@ Module errmap.
               [
                 M.read (| __deserializer |);
                 mk_str (| "ErrorDescription" |);
-                M.read (| M.get_constant "move_core_types::errmap::_'1::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::errmap::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::errmap::_'1::deserialize::__Visitor"
                   [
@@ -850,7 +863,20 @@ Module errmap.
               [
                 M.read (| __deserializer |);
                 mk_str (| "ErrorMapping" |);
-                M.read (| M.get_constant "move_core_types::errmap::_'3::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::errmap::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::errmap::_'3::deserialize::__Visitor"
                   [
@@ -1553,7 +1579,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_add_error_category :
-      M.IsAssociatedFunction.Trait Self "add_error_category" add_error_category.
+      M.IsAssociatedFunction.C Self "add_error_category" add_error_category.
     Admitted.
     Global Typeclasses Opaque add_error_category.
     
@@ -2079,7 +2105,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_add_module_error :
-      M.IsAssociatedFunction.Trait Self "add_module_error" add_module_error.
+      M.IsAssociatedFunction.C Self "add_module_error" add_module_error.
     Admitted.
     Global Typeclasses Opaque add_module_error.
     
@@ -2254,7 +2280,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_from_file :
-      M.IsAssociatedFunction.Trait Self "from_file" from_file.
+      M.IsAssociatedFunction.C Self "from_file" from_file.
     Admitted.
     Global Typeclasses Opaque from_file.
     
@@ -2414,8 +2440,7 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to_file :
-      M.IsAssociatedFunction.Trait Self "to_file" to_file.
+    Global Instance AssociatedFunction_to_file : M.IsAssociatedFunction.C Self "to_file" to_file.
     Admitted.
     Global Typeclasses Opaque to_file.
     
@@ -2640,7 +2665,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_get_explanation :
-      M.IsAssociatedFunction.Trait Self "get_explanation" get_explanation.
+      M.IsAssociatedFunction.C Self "get_explanation" get_explanation.
     Admitted.
     Global Typeclasses Opaque get_explanation.
   End Impl_move_core_types_errmap_ErrorMapping.

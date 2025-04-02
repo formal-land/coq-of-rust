@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module dec2flt.
     Module parse.
-      Definition value_MIN_19DIGIT_INT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000000000000000 |))).
+      Definition value_MIN_19DIGIT_INT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000000000000000 |))).
       
-      Axiom Constant_value_MIN_19DIGIT_INT :
-        (M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT") = value_MIN_19DIGIT_INT.
-      Global Hint Rewrite Constant_value_MIN_19DIGIT_INT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_MIN_19DIGIT_INT :
+        M.IsFunction.C "core::num::dec2flt::parse::MIN_19DIGIT_INT" value_MIN_19DIGIT_INT.
+      Admitted.
+      Global Typeclasses Opaque value_MIN_19DIGIT_INT.
       
       (*
       fn parse_8digits(mut v: u64) -> u64 {
@@ -60,9 +60,17 @@ Module num.
                       BinOp.bit_and
                         (M.read (| v |))
                         (M.read (|
-                          M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK"
+                          get_constant (|
+                            "core::num::dec2flt::parse::parse_8digits::MASK",
+                            Ty.path "u64"
+                          |)
                         |));
-                      M.read (| M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1" |)
+                      M.read (|
+                        get_constant (|
+                          "core::num::dec2flt::parse::parse_8digits::MUL1",
+                          Ty.path "u64"
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -75,9 +83,17 @@ Module num.
                       BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| v |), Value.Integer IntegerKind.I32 16 |))
                         (M.read (|
-                          M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK"
+                          get_constant (|
+                            "core::num::dec2flt::parse::parse_8digits::MASK",
+                            Ty.path "u64"
+                          |)
                         |));
-                      M.read (| M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2" |)
+                      M.read (|
+                        get_constant (|
+                          "core::num::dec2flt::parse::parse_8digits::MUL2",
+                          Ty.path "u64"
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -100,34 +116,34 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_parse_8digits :
-        M.IsFunction.Trait "core::num::dec2flt::parse::parse_8digits" parse_8digits.
+        M.IsFunction.C "core::num::dec2flt::parse::parse_8digits" parse_8digits.
       Admitted.
       Global Typeclasses Opaque parse_8digits.
       
       Module parse_8digits.
-        Definition value_MASK : Value.t :=
-          M.run_constant
-            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1095216660735 |))).
+        Definition value_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1095216660735 |))).
         
-        Axiom Constant_value_MASK :
-          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK") = value_MASK.
-        Global Hint Rewrite Constant_value_MASK : constant_rewrites.
+        Global Instance Instance_IsConstant_value_MASK :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_8digits::MASK" value_MASK.
+        Admitted.
+        Global Typeclasses Opaque value_MASK.
         
-        Definition value_MUL1 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967296000100 |))).
+        Definition value_MUL1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967296000100 |))).
         
-        Axiom Constant_value_MUL1 :
-          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1") = value_MUL1.
-        Global Hint Rewrite Constant_value_MUL1 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_MUL1 :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_8digits::MUL1" value_MUL1.
+        Admitted.
+        Global Typeclasses Opaque value_MUL1.
         
-        Definition value_MUL2 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 42949672960001 |))).
+        Definition value_MUL2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 42949672960001 |))).
         
-        Axiom Constant_value_MUL2 :
-          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2") = value_MUL2.
-        Global Hint Rewrite Constant_value_MUL2 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_MUL2 :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_8digits::MUL2" value_MUL2.
+        Admitted.
+        Global Typeclasses Opaque value_MUL2.
       End parse_8digits.
       
       (*
@@ -436,7 +452,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_try_parse_digits :
-        M.IsFunction.Trait "core::num::dec2flt::parse::try_parse_digits" try_parse_digits.
+        M.IsFunction.C "core::num::dec2flt::parse::try_parse_digits" try_parse_digits.
       Admitted.
       Global Typeclasses Opaque try_parse_digits.
       
@@ -488,7 +504,10 @@ Module num.
                                   BinOp.lt (|
                                     M.read (| M.deref (| M.read (| x |) |) |),
                                     M.read (|
-                                      M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT"
+                                      get_constant (|
+                                        "core::num::dec2flt::parse::MIN_19DIGIT_INT",
+                                        Ty.path "u64"
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -639,7 +658,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_try_parse_19digits :
-        M.IsFunction.Trait "core::num::dec2flt::parse::try_parse_19digits" try_parse_19digits.
+        M.IsFunction.C "core::num::dec2flt::parse::try_parse_19digits" try_parse_19digits.
       Admitted.
       Global Typeclasses Opaque try_parse_19digits.
       
@@ -972,7 +991,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_parse_scientific :
-        M.IsFunction.Trait "core::num::dec2flt::parse::parse_scientific" parse_scientific.
+        M.IsFunction.C "core::num::dec2flt::parse::parse_scientific" parse_scientific.
       Admitted.
       Global Typeclasses Opaque parse_scientific.
       
@@ -1895,8 +1914,10 @@ Module num.
                                                     BinOp.ge (|
                                                       M.read (| mantissa |),
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::dec2flt::parse::MIN_19DIGIT_INT"
+                                                        get_constant (|
+                                                          "core::num::dec2flt::parse::MIN_19DIGIT_INT",
+                                                          Ty.path "u64"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)) in
@@ -2095,7 +2116,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_parse_partial_number :
-        M.IsFunction.Trait "core::num::dec2flt::parse::parse_partial_number" parse_partial_number.
+        M.IsFunction.C "core::num::dec2flt::parse::parse_partial_number" parse_partial_number.
       Admitted.
       Global Typeclasses Opaque parse_partial_number.
       
@@ -2212,7 +2233,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_parse_number :
-        M.IsFunction.Trait "core::num::dec2flt::parse::parse_number" parse_number.
+        M.IsFunction.C "core::num::dec2flt::parse::parse_number" parse_number.
       Admitted.
       Global Typeclasses Opaque parse_number.
       
@@ -2462,7 +2483,10 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 3
                                 |) in
-                              M.get_constant "core::num::dec2flt::float::RawFloat::INFINITY"));
+                              get_constant (|
+                                "core::num::dec2flt::float::RawFloat::INFINITY",
+                                F
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2477,7 +2501,10 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 8
                                 |) in
-                              M.get_constant "core::num::dec2flt::float::RawFloat::INFINITY"));
+                              get_constant (|
+                                "core::num::dec2flt::float::RawFloat::INFINITY",
+                                F
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2492,7 +2519,7 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 3
                                 |) in
-                              M.get_constant "core::num::dec2flt::float::RawFloat::NAN"));
+                              get_constant (| "core::num::dec2flt::float::RawFloat::NAN", F |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -2548,32 +2575,34 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_parse_inf_nan :
-        M.IsFunction.Trait "core::num::dec2flt::parse::parse_inf_nan" parse_inf_nan.
+        M.IsFunction.C "core::num::dec2flt::parse::parse_inf_nan" parse_inf_nan.
       Admitted.
       Global Typeclasses Opaque parse_inf_nan.
       
       Module parse_inf_nan.
-        Definition value_INF_3 : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4607561 |))).
+        Definition value_INF_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4607561 |))).
         
-        Axiom Constant_value_INF_3 :
-          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_3") = value_INF_3.
-        Global Hint Rewrite Constant_value_INF_3 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_INF_3 :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_inf_nan::INF_3" value_INF_3.
+        Admitted.
+        Global Typeclasses Opaque value_INF_3.
         
-        Definition value_INF_8 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6436850368004902473 |))).
+        Definition value_INF_8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6436850368004902473 |))).
         
-        Axiom Constant_value_INF_8 :
-          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_8") = value_INF_8.
-        Global Hint Rewrite Constant_value_INF_8 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_INF_8 :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_inf_nan::INF_8" value_INF_8.
+        Admitted.
+        Global Typeclasses Opaque value_INF_8.
         
-        Definition value_NAN : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
+        Definition value_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
         
-        Axiom Constant_value_NAN :
-          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::NAN") = value_NAN.
-        Global Hint Rewrite Constant_value_NAN : constant_rewrites.
+        Global Instance Instance_IsConstant_value_NAN :
+          M.IsFunction.C "core::num::dec2flt::parse::parse_inf_nan::NAN" value_NAN.
+        Admitted.
+        Global Typeclasses Opaque value_NAN.
       End parse_inf_nan.
     End parse.
   End dec2flt.

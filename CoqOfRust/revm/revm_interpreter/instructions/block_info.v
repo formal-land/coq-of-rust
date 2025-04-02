@@ -177,7 +177,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -395,7 +398,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_chainid :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::chainid" chainid.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::chainid" chainid.
     Admitted.
     Global Typeclasses Opaque chainid.
     
@@ -473,7 +476,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -719,7 +725,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_coinbase :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::coinbase" coinbase.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::coinbase" coinbase.
     Admitted.
     Global Typeclasses Opaque coinbase.
     
@@ -797,7 +803,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1015,7 +1024,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_timestamp :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::timestamp" timestamp.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::timestamp" timestamp.
     Admitted.
     Global Typeclasses Opaque timestamp.
     
@@ -1093,7 +1102,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1311,7 +1323,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_block_number :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::block_number" block_number.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::block_number" block_number.
     Admitted.
     Global Typeclasses Opaque block_number.
     
@@ -1397,7 +1409,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1854,7 +1869,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_difficulty :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::difficulty" difficulty.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::difficulty" difficulty.
     Admitted.
     Global Typeclasses Opaque difficulty.
     
@@ -1932,7 +1947,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2150,7 +2168,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_gaslimit :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::gaslimit" gaslimit.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::gaslimit" gaslimit.
     Admitted.
     Global Typeclasses Opaque gaslimit.
     
@@ -2328,7 +2346,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2546,7 +2567,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_basefee :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::basefee" basefee.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::basefee" basefee.
     Admitted.
     Global Typeclasses Opaque basefee.
     
@@ -2727,7 +2748,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2962,7 +2986,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_blob_basefee :
-      M.IsFunction.Trait "revm_interpreter::instructions::block_info::blob_basefee" blob_basefee.
+      M.IsFunction.C "revm_interpreter::instructions::block_info::blob_basefee" blob_basefee.
     Admitted.
     Global Typeclasses Opaque blob_basefee.
   End block_info.

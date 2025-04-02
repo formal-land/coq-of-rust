@@ -6,18 +6,17 @@ Module foo.
     Parameter f_foo_gre : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_f_foo_gre :
-      M.IsFunction.Trait "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
+      M.IsFunction.C "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
     Admitted.
   End gre.
   
   Parameter f_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_f_foo :
-    M.IsFunction.Trait "module_duplicate::foo::f_foo" f_foo.
+  Global Instance Instance_IsFunction_f_foo : M.IsFunction.C "module_duplicate::foo::f_foo" f_foo.
   Admitted.
 End foo.
 
 Parameter f : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_f : M.IsFunction.Trait "module_duplicate::f" f.
+Global Instance Instance_IsFunction_f : M.IsFunction.C "module_duplicate::f" f.
 Admitted.

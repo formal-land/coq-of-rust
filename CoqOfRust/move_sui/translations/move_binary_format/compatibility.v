@@ -491,7 +491,13 @@ Module compatibility.
               ("check_friend_linking", Value.Bool true);
               ("check_private_entry_linking", Value.Bool true);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "move_binary_format::file_format::AbilitySet",
+                    "EMPTY",
+                    Ty.path "move_binary_format::file_format::AbilitySet"
+                  |)
+                |));
               ("disallow_change_struct_type_params", Value.Bool true)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -535,7 +541,7 @@ Module compatibility.
       end.
     
     Global Instance AssociatedFunction_full_check :
-      M.IsAssociatedFunction.Trait Self "full_check" full_check.
+      M.IsAssociatedFunction.C Self "full_check" full_check.
     Admitted.
     Global Typeclasses Opaque full_check.
     
@@ -563,14 +569,19 @@ Module compatibility.
               ("check_friend_linking", Value.Bool false);
               ("check_private_entry_linking", Value.Bool false);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "move_binary_format::file_format::AbilitySet",
+                    "EMPTY",
+                    Ty.path "move_binary_format::file_format::AbilitySet"
+                  |)
+                |));
               ("disallow_change_struct_type_params", Value.Bool false)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_no_check :
-      M.IsAssociatedFunction.Trait Self "no_check" no_check.
+    Global Instance AssociatedFunction_no_check : M.IsAssociatedFunction.C Self "no_check" no_check.
     Admitted.
     Global Typeclasses Opaque no_check.
     
@@ -631,7 +642,7 @@ Module compatibility.
       end.
     
     Global Instance AssociatedFunction_need_check_compat :
-      M.IsAssociatedFunction.Trait Self "need_check_compat" need_check_compat.
+      M.IsAssociatedFunction.C Self "need_check_compat" need_check_compat.
     Admitted.
     Global Typeclasses Opaque need_check_compat.
     
@@ -1686,8 +1697,10 @@ Module compatibility.
                                                                             |)
                                                                           |),
                                                                           M.read (|
-                                                                            M.get_constant
-                                                                              "move_binary_format::file_format_common::VERSION_5"
+                                                                            get_constant (|
+                                                                              "move_binary_format::file_format_common::VERSION_5",
+                                                                              Ty.path "u32"
+                                                                            |)
                                                                           |)
                                                                         |),
                                                                         ltac:(M.monadic
@@ -1704,8 +1717,10 @@ Module compatibility.
                                                                               |)
                                                                             |),
                                                                             M.read (|
-                                                                              M.get_constant
-                                                                                "move_binary_format::file_format_common::VERSION_5"
+                                                                              get_constant (|
+                                                                                "move_binary_format::file_format_common::VERSION_5",
+                                                                                Ty.path "u32"
+                                                                              |)
                                                                             |)
                                                                           |)))
                                                                       |),
@@ -2712,7 +2727,7 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.C Self "check" check.
     Admitted.
     Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_Compatibility.
@@ -2839,7 +2854,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_struct_abilities_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::struct_abilities_compatible"
       struct_abilities_compatible.
   Admitted.
@@ -3075,7 +3090,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_fun_type_parameters_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::fun_type_parameters_compatible"
       fun_type_parameters_compatible.
   Admitted.
@@ -3352,7 +3367,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_struct_type_parameters_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::struct_type_parameters_compatible"
       struct_type_parameters_compatible.
   Admitted.
@@ -3431,7 +3446,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_type_parameter_constraints_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::type_parameter_constraints_compatible"
       type_parameter_constraints_compatible.
   Admitted.
@@ -3521,7 +3536,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_type_parameter_phantom_decl_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::type_parameter_phantom_decl_compatible"
       type_parameter_phantom_decl_compatible.
   Admitted.
@@ -4953,7 +4968,7 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.C Self "check" check.
     Admitted.
     Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_InclusionCheck.

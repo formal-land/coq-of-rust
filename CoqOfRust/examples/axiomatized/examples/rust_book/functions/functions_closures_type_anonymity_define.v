@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_type_anonymity_define::main" main.
+  M.IsFunction.C "functions_closures_type_anonymity_define::main" main.
 Admitted.
 
 Module main.
   Parameter apply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_apply :
-    M.IsFunction.Trait "functions_closures_type_anonymity_define::main::apply" apply.
+    M.IsFunction.C "functions_closures_type_anonymity_define::main::apply" apply.
   Admitted.
 End main.

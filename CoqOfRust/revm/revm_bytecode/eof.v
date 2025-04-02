@@ -2,60 +2,75 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module eof.
-  Definition value_EOF_MAGIC_HASH : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_EOF_MAGIC_HASH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+            [ Value.Integer IntegerKind.Usize 32 ]
+            [],
+          M.get_associated_function (|
             Ty.apply
               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
               [ Value.Integer IntegerKind.Usize 32 ]
               [],
+            "new",
+            [],
+            []
+          |),
+          [
+            M.read (|
+              get_constant (|
+                "revm_bytecode::eof::EOF_MAGIC_HASH::RES",
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+              |)
+            |)
+          ]
+        |)
+      |))).
+  
+  Global Instance Instance_IsConstant_value_EOF_MAGIC_HASH :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC_HASH" value_EOF_MAGIC_HASH.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC_HASH.
+  
+  Definition value_EOF_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61184 |))).
+  
+  Global Instance Instance_IsConstant_value_EOF_MAGIC :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC" value_EOF_MAGIC.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC.
+  
+  Definition value_EOF_MAGIC_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
-              Ty.apply
-                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                [ Value.Integer IntegerKind.Usize 32 ]
-                [],
-              "new",
+              Ty.path "alloy_primitives::bytes_::Bytes",
+              "from_static",
               [],
               []
             |),
-            [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH::RES" |) ]
+            [
+              M.read (|
+                get_constant (|
+                  "revm_bytecode::eof::EOF_MAGIC_BYTES::STATIC_BYTES",
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                |)
+              |)
+            ]
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_EOF_MAGIC_HASH :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH") = value_EOF_MAGIC_HASH.
-  Global Hint Rewrite Constant_value_EOF_MAGIC_HASH : constant_rewrites.
-  
-  Definition value_EOF_MAGIC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61184 |))).
-  
-  Axiom Constant_value_EOF_MAGIC :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC") = value_EOF_MAGIC.
-  Global Hint Rewrite Constant_value_EOF_MAGIC : constant_rewrites.
-  
-  Definition value_EOF_MAGIC_BYTES : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "alloy_primitives::bytes_::Bytes",
-              M.get_associated_function (|
-                Ty.path "alloy_primitives::bytes_::Bytes",
-                "from_static",
-                [],
-                []
-              |),
-              [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_BYTES::STATIC_BYTES" |) ]
-            |)
-          |)
-        |))).
-  
-  Axiom Constant_value_EOF_MAGIC_BYTES :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC_BYTES") = value_EOF_MAGIC_BYTES.
-  Global Hint Rewrite Constant_value_EOF_MAGIC_BYTES : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EOF_MAGIC_BYTES :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC_BYTES" value_EOF_MAGIC_BYTES.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC_BYTES.
   
   (* StructRecord
     {
@@ -1179,8 +1194,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_validate :
-      M.IsAssociatedFunction.Trait Self "validate" validate.
+    Global Instance AssociatedFunction_validate : M.IsAssociatedFunction.C Self "validate" validate.
     Admitted.
     Global Typeclasses Opaque validate.
     
@@ -1209,7 +1223,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_valitate_raw :
-      M.IsAssociatedFunction.Trait Self "valitate_raw" valitate_raw.
+      M.IsAssociatedFunction.C Self "valitate_raw" valitate_raw.
     Admitted.
     Global Typeclasses Opaque valitate_raw.
     
@@ -1239,7 +1253,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_validate_mode :
-      M.IsAssociatedFunction.Trait Self "validate_mode" validate_mode.
+      M.IsAssociatedFunction.C Self "validate_mode" validate_mode.
     Admitted.
     Global Typeclasses Opaque validate_mode.
     
@@ -1266,7 +1280,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1323,7 +1337,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.C Self "size" size.
     Admitted.
     Global Typeclasses Opaque size.
     
@@ -1353,7 +1367,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.Trait Self "raw" raw.
+    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.C Self "raw" raw.
     Admitted.
     Global Typeclasses Opaque raw.
     
@@ -1622,7 +1636,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_data_slice :
-      M.IsAssociatedFunction.Trait Self "data_slice" data_slice.
+      M.IsAssociatedFunction.C Self "data_slice" data_slice.
     Admitted.
     Global Typeclasses Opaque data_slice.
     
@@ -1694,7 +1708,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
     Admitted.
     Global Typeclasses Opaque data.
     
@@ -1821,7 +1835,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_encode_slow :
-      M.IsAssociatedFunction.Trait Self "encode_slow" encode_slow.
+      M.IsAssociatedFunction.C Self "encode_slow" encode_slow.
     Admitted.
     Global Typeclasses Opaque encode_slow.
     
@@ -2321,7 +2335,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_decode_dangling :
-      M.IsAssociatedFunction.Trait Self "decode_dangling" decode_dangling.
+      M.IsAssociatedFunction.C Self "decode_dangling" decode_dangling.
     Admitted.
     Global Typeclasses Opaque decode_dangling.
     
@@ -2688,7 +2702,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+    Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.C Self "decode" decode.
     Admitted.
     Global Typeclasses Opaque decode.
   End Impl_revm_bytecode_eof_Eof.

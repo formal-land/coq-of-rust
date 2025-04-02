@@ -2,27 +2,29 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module runtime_value.
-  Definition value_MOVE_STRUCT_NAME : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "struct" |) |))).
+  Definition value_MOVE_STRUCT_NAME (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "struct" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_NAME :
-    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_NAME : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_NAME :
+    M.IsFunction.C "move_core_types::runtime_value::MOVE_STRUCT_NAME" value_MOVE_STRUCT_NAME.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_NAME.
   
-  Definition value_MOVE_STRUCT_TYPE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "type" |) |))).
+  Definition value_MOVE_STRUCT_TYPE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "type" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_TYPE :
-    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_TYPE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_TYPE :
+    M.IsFunction.C "move_core_types::runtime_value::MOVE_STRUCT_TYPE" value_MOVE_STRUCT_TYPE.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_TYPE.
   
-  Definition value_MOVE_STRUCT_FIELDS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "fields" |) |))).
+  Definition value_MOVE_STRUCT_FIELDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "fields" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_FIELDS :
-    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_FIELDS") =
-      value_MOVE_STRUCT_FIELDS.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_FIELDS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_FIELDS :
+    M.IsFunction.C "move_core_types::runtime_value::MOVE_STRUCT_FIELDS" value_MOVE_STRUCT_FIELDS.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_FIELDS.
   
   (* StructTuple
     {
@@ -2467,7 +2469,18 @@ Module runtime_value.
                 M.read (| __deserializer |);
                 mk_str (| "MoveTypeLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::runtime_value::_'3::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_core_types::runtime_value::_'3::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::runtime_value::_'3::deserialize::__Visitor"
@@ -3258,7 +3271,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -3322,7 +3335,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_simple_serialize :
-      M.IsAssociatedFunction.Trait Self "simple_serialize" simple_serialize.
+      M.IsAssociatedFunction.C Self "simple_serialize" simple_serialize.
     Admitted.
     Global Typeclasses Opaque simple_serialize.
     
@@ -3436,7 +3449,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_vector_u8 :
-      M.IsAssociatedFunction.Trait Self "vector_u8" vector_u8.
+      M.IsAssociatedFunction.C Self "vector_u8" vector_u8.
     Admitted.
     Global Typeclasses Opaque vector_u8.
     
@@ -3771,7 +3784,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_vec_to_vec_u8 :
-      M.IsAssociatedFunction.Trait Self "vec_to_vec_u8" vec_to_vec_u8.
+      M.IsAssociatedFunction.C Self "vec_to_vec_u8" vec_to_vec_u8.
     Admitted.
     Global Typeclasses Opaque vec_to_vec_u8.
     
@@ -3900,7 +3913,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_vector_address :
-      M.IsAssociatedFunction.Trait Self "vector_address" vector_address.
+      M.IsAssociatedFunction.C Self "vector_address" vector_address.
     Admitted.
     Global Typeclasses Opaque vector_address.
     
@@ -4348,8 +4361,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_decorate :
-      M.IsAssociatedFunction.Trait Self "decorate" decorate.
+    Global Instance AssociatedFunction_decorate : M.IsAssociatedFunction.C Self "decorate" decorate.
     Admitted.
     Global Typeclasses Opaque decorate.
   End Impl_move_core_types_runtime_value_MoveValue.
@@ -4594,7 +4606,7 @@ Module runtime_value.
     end.
   
   Global Instance Instance_IsFunction_serialize_values :
-    M.IsFunction.Trait "move_core_types::runtime_value::serialize_values" serialize_values.
+    M.IsFunction.C "move_core_types::runtime_value::serialize_values" serialize_values.
   Admitted.
   Global Typeclasses Opaque serialize_values.
   
@@ -4615,7 +4627,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -4763,7 +4775,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -5248,8 +5260,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_decorate :
-      M.IsAssociatedFunction.Trait Self "decorate" decorate.
+    Global Instance AssociatedFunction_decorate : M.IsAssociatedFunction.C Self "decorate" decorate.
     Admitted.
     Global Typeclasses Opaque decorate.
     
@@ -5312,7 +5323,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.Trait Self "fields" fields.
+    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.C Self "fields" fields.
     Admitted.
     Global Typeclasses Opaque fields.
     
@@ -5337,7 +5348,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
   End Impl_move_core_types_runtime_value_MoveStruct.
@@ -5361,7 +5372,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5424,7 +5435,7 @@ Module runtime_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.Trait Self "fields" fields.
+    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.C Self "fields" fields.
     Admitted.
     Global Typeclasses Opaque fields.
     
@@ -5449,7 +5460,7 @@ Module runtime_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
   End Impl_move_core_types_runtime_value_MoveStructLayout.

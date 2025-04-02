@@ -174,8 +174,7 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_is_naked :
-    M.IsAssociatedFunction.Trait Self "is_naked" is_naked.
+  Global Instance AssociatedFunction_is_naked : M.IsAssociatedFunction.C Self "is_naked" is_naked.
   Admitted.
   Global Typeclasses Opaque is_naked.
   (*
@@ -406,7 +405,7 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_shear : M.IsAssociatedFunction.Trait Self "shear" shear.
+  Global Instance AssociatedFunction_shear : M.IsAssociatedFunction.C Self "shear" shear.
   Admitted.
   Global Typeclasses Opaque shear.
 End Impl_traits_Sheep.
@@ -722,6 +721,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "traits::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "traits::main" main.
 Admitted.
 Global Typeclasses Opaque main.

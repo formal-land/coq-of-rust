@@ -884,7 +884,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_created_address :
-        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+        M.IsAssociatedFunction.C Self "created_address" created_address.
       Admitted.
       Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_create_inputs_CreateInputs.

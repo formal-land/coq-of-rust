@@ -56,7 +56,11 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -124,8 +128,10 @@ Module slice.
                                       BinOp.le (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
+                                          get_constant (|
+                                            "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -183,18 +189,24 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_sort :
-        M.IsFunction.Trait "core::slice::sort::unstable::sort" sort.
+        M.IsFunction.C "core::slice::sort::unstable::sort" sort.
       Admitted.
       Global Typeclasses Opaque sort.
       
       Module sort.
-        Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+        Definition value_MAX_LEN_ALWAYS_INSERTION_SORT
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
         
-        Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
-          (M.get_constant "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
+        Global Instance Instance_IsConstant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
+          M.IsFunction.C
+            "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
             value_MAX_LEN_ALWAYS_INSERTION_SORT.
-        Global Hint Rewrite Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_MAX_LEN_ALWAYS_INSERTION_SORT.
       End sort.
       
       (*
@@ -384,7 +396,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_ipnsort :
-        M.IsFunction.Trait "core::slice::sort::unstable::ipnsort" ipnsort.
+        M.IsFunction.C "core::slice::sort::unstable::ipnsort" ipnsort.
       Admitted.
       Global Typeclasses Opaque ipnsort.
     End unstable.

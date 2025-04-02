@@ -1810,7 +1810,7 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1835,7 +1835,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_element_layout :
-      M.IsAssociatedFunction.Trait Self "element_layout" element_layout.
+      M.IsAssociatedFunction.C Self "element_layout" element_layout.
     Admitted.
     Global Typeclasses Opaque element_layout.
     
@@ -1859,7 +1859,7 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -1893,7 +1893,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_has_element :
-      M.IsAssociatedFunction.Trait Self "has_element" has_element.
+      M.IsAssociatedFunction.C Self "has_element" has_element.
     Admitted.
     Global Typeclasses Opaque has_element.
     
@@ -2216,7 +2216,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_next_element :
-      M.IsAssociatedFunction.Trait Self "next_element" next_element.
+      M.IsAssociatedFunction.C Self "next_element" next_element.
     Admitted.
     Global Typeclasses Opaque next_element.
     
@@ -2321,7 +2321,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_skip_element :
-      M.IsAssociatedFunction.Trait Self "skip_element" skip_element.
+      M.IsAssociatedFunction.C Self "skip_element" skip_element.
     Admitted.
     Global Typeclasses Opaque skip_element.
   End Impl_move_core_types_annotated_visitor_VecDriver.
@@ -2354,7 +2354,7 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2379,7 +2379,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_struct_layout :
-      M.IsAssociatedFunction.Trait Self "struct_layout" struct_layout.
+      M.IsAssociatedFunction.C Self "struct_layout" struct_layout.
     Admitted.
     Global Typeclasses Opaque struct_layout.
     
@@ -2475,7 +2475,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_peek_field :
-      M.IsAssociatedFunction.Trait Self "peek_field" peek_field.
+      M.IsAssociatedFunction.C Self "peek_field" peek_field.
     Admitted.
     Global Typeclasses Opaque peek_field.
     
@@ -2817,7 +2817,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_next_field :
-      M.IsAssociatedFunction.Trait Self "next_field" next_field.
+      M.IsAssociatedFunction.C Self "next_field" next_field.
     Admitted.
     Global Typeclasses Opaque next_field.
     
@@ -3122,7 +3122,7 @@ Module annotated_visitor.
       end.
     
     Global Instance AssociatedFunction_skip_field :
-      M.IsAssociatedFunction.Trait Self "skip_field" skip_field.
+      M.IsAssociatedFunction.C Self "skip_field" skip_field.
     Admitted.
     Global Typeclasses Opaque skip_field.
   End Impl_move_core_types_annotated_visitor_StructDriver.
@@ -5840,7 +5840,7 @@ Module annotated_visitor.
     end.
   
   Global Instance Instance_IsFunction_visit_value :
-    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_value" visit_value.
+    M.IsFunction.C "move_core_types::annotated_visitor::visit_value" visit_value.
   Admitted.
   Global Typeclasses Opaque visit_value.
   
@@ -6328,7 +6328,7 @@ Module annotated_visitor.
     end.
   
   Global Instance Instance_IsFunction_visit_struct :
-    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_struct" visit_struct.
+    M.IsFunction.C "move_core_types::annotated_visitor::visit_struct" visit_struct.
   Admitted.
   Global Typeclasses Opaque visit_struct.
   
@@ -6527,7 +6527,7 @@ Module annotated_visitor.
     end.
   
   Global Instance Instance_IsFunction_read_exact :
-    M.IsFunction.Trait "move_core_types::annotated_visitor::read_exact" read_exact.
+    M.IsFunction.C "move_core_types::annotated_visitor::read_exact" read_exact.
   Admitted.
   Global Typeclasses Opaque read_exact.
 End annotated_visitor.

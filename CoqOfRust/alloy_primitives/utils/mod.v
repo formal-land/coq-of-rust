@@ -2,39 +2,48 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module utils.
-  Definition value_WEI_IN_ETHER : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
-            Ty.apply
-              (Ty.path "ruint::Uint")
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-              [],
-            M.get_associated_function (|
-              Ty.path "alloy_primitives::utils::units::Unit",
-              "wei_const",
-              [],
-              []
-            |),
-            [ M.read (| M.get_constant "alloy_primitives::utils::units::ETHER" |) ]
-          |)
-        |))).
+  Definition value_WEI_IN_ETHER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "ruint::Uint")
+            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+            [],
+          M.get_associated_function (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "wei_const",
+            [],
+            []
+          |),
+          [
+            M.read (|
+              get_associated_constant (|
+                Ty.path "alloy_primitives::utils::units::Unit",
+                "ETHER",
+                Ty.path "alloy_primitives::utils::units::Unit"
+              |)
+            |)
+          ]
+        |)
+      |))).
   
-  Axiom Constant_value_WEI_IN_ETHER :
-    (M.get_constant "alloy_primitives::utils::WEI_IN_ETHER") = value_WEI_IN_ETHER.
-  Global Hint Rewrite Constant_value_WEI_IN_ETHER : constant_rewrites.
+  Global Instance Instance_IsConstant_value_WEI_IN_ETHER :
+    M.IsFunction.C "alloy_primitives::utils::WEI_IN_ETHER" value_WEI_IN_ETHER.
+  Admitted.
+  Global Typeclasses Opaque value_WEI_IN_ETHER.
   
   Axiom Units :
     (Ty.path "alloy_primitives::utils::Units") = (Ty.path "alloy_primitives::utils::units::Unit").
   
-  Definition value_EIP191_PREFIX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Ethereum Signed Message:
+  Definition value_EIP191_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "Ethereum Signed Message:
 " |) |))).
   
-  Axiom Constant_value_EIP191_PREFIX :
-    (M.get_constant "alloy_primitives::utils::EIP191_PREFIX") = value_EIP191_PREFIX.
-  Global Hint Rewrite Constant_value_EIP191_PREFIX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EIP191_PREFIX :
+    M.IsFunction.C "alloy_primitives::utils::EIP191_PREFIX" value_EIP191_PREFIX.
+  Admitted.
+  Global Typeclasses Opaque value_EIP191_PREFIX.
   
   (*
   pub fn box_try_new<T>(value: T) -> Result<Box<T>, TryReserveError> {
@@ -309,7 +318,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_box_try_new :
-    M.IsFunction.Trait "alloy_primitives::utils::box_try_new" box_try_new.
+    M.IsFunction.C "alloy_primitives::utils::box_try_new" box_try_new.
   Admitted.
   Global Typeclasses Opaque box_try_new.
   
@@ -673,7 +682,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_box_try_new_uninit :
-    M.IsFunction.Trait "alloy_primitives::utils::box_try_new_uninit" box_try_new_uninit.
+    M.IsFunction.C "alloy_primitives::utils::box_try_new_uninit" box_try_new_uninit.
   Admitted.
   Global Typeclasses Opaque box_try_new_uninit.
   
@@ -909,7 +918,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_try_collect_vec :
-    M.IsFunction.Trait "alloy_primitives::utils::try_collect_vec" try_collect_vec.
+    M.IsFunction.C "alloy_primitives::utils::try_collect_vec" try_collect_vec.
   Admitted.
   Global Typeclasses Opaque try_collect_vec.
   
@@ -1003,7 +1012,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_vec_try_with_capacity :
-    M.IsFunction.Trait "alloy_primitives::utils::vec_try_with_capacity" vec_try_with_capacity.
+    M.IsFunction.C "alloy_primitives::utils::vec_try_with_capacity" vec_try_with_capacity.
   Admitted.
   Global Typeclasses Opaque vec_try_with_capacity.
   
@@ -1177,7 +1186,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_vec_try_from_elem :
-    M.IsFunction.Trait "alloy_primitives::utils::vec_try_from_elem" vec_try_from_elem.
+    M.IsFunction.C "alloy_primitives::utils::vec_try_from_elem" vec_try_from_elem.
   Admitted.
   Global Typeclasses Opaque vec_try_from_elem.
   
@@ -1221,7 +1230,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_eip191_hash_message :
-    M.IsFunction.Trait "alloy_primitives::utils::eip191_hash_message" eip191_hash_message.
+    M.IsFunction.C "alloy_primitives::utils::eip191_hash_message" eip191_hash_message.
   Admitted.
   Global Typeclasses Opaque eip191_hash_message.
   
@@ -1275,7 +1284,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_eip191_message :
-    M.IsFunction.Trait "alloy_primitives::utils::eip191_message" eip191_message.
+    M.IsFunction.C "alloy_primitives::utils::eip191_message" eip191_message.
   Admitted.
   Global Typeclasses Opaque eip191_message.
   
@@ -1363,7 +1372,12 @@ Module utils.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (| M.get_constant "alloy_primitives::utils::EIP191_PREFIX" |)
+                                M.read (|
+                                  get_constant (|
+                                    "alloy_primitives::utils::EIP191_PREFIX",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -1407,7 +1421,12 @@ Module utils.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (| M.get_constant "alloy_primitives::utils::EIP191_PREFIX" |)
+                                M.read (|
+                                  get_constant (|
+                                    "alloy_primitives::utils::EIP191_PREFIX",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -1473,7 +1492,7 @@ Module utils.
       end.
     
     Global Instance Instance_IsFunction_eip191_message :
-      M.IsFunction.Trait "alloy_primitives::utils::eip191_message::eip191_message" eip191_message.
+      M.IsFunction.C "alloy_primitives::utils::eip191_message::eip191_message" eip191_message.
     Admitted.
     Global Typeclasses Opaque eip191_message.
   End eip191_message.
@@ -1558,7 +1577,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_keccak256 :
-    M.IsFunction.Trait "alloy_primitives::utils::keccak256" keccak256.
+    M.IsFunction.C "alloy_primitives::utils::keccak256" keccak256.
   Admitted.
   Global Typeclasses Opaque keccak256.
   
@@ -1761,7 +1780,7 @@ Module utils.
       end.
     
     Global Instance Instance_IsFunction_keccak256 :
-      M.IsFunction.Trait "alloy_primitives::utils::keccak256::keccak256" keccak256.
+      M.IsFunction.C "alloy_primitives::utils::keccak256::keccak256" keccak256.
     Admitted.
     Global Typeclasses Opaque keccak256.
   End keccak256.
@@ -1856,7 +1875,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1903,7 +1922,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_finalize_into :
-        M.IsAssociatedFunction.Trait Self "finalize_into" finalize_into.
+        M.IsAssociatedFunction.C Self "finalize_into" finalize_into.
       Admitted.
       Global Typeclasses Opaque finalize_into.
       
@@ -1950,7 +1969,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_update : M.IsAssociatedFunction.Trait Self "update" update.
+      Global Instance AssociatedFunction_update : M.IsAssociatedFunction.C Self "update" update.
       Admitted.
       Global Typeclasses Opaque update.
     End Impl_alloy_primitives_utils_keccak256_state_State.
@@ -2139,7 +2158,7 @@ Module utils.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2203,7 +2222,7 @@ Module utils.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_update : M.IsAssociatedFunction.Trait Self "update" update.
+    Global Instance AssociatedFunction_update : M.IsAssociatedFunction.C Self "update" update.
     Admitted.
     Global Typeclasses Opaque update.
     
@@ -2347,8 +2366,7 @@ Module utils.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_finalize :
-      M.IsAssociatedFunction.Trait Self "finalize" finalize.
+    Global Instance AssociatedFunction_finalize : M.IsAssociatedFunction.C Self "finalize" finalize.
     Admitted.
     Global Typeclasses Opaque finalize.
     
@@ -2452,7 +2470,7 @@ Module utils.
       end.
     
     Global Instance AssociatedFunction_finalize_into :
-      M.IsAssociatedFunction.Trait Self "finalize_into" finalize_into.
+      M.IsAssociatedFunction.C Self "finalize_into" finalize_into.
     Admitted.
     Global Typeclasses Opaque finalize_into.
     
@@ -2534,7 +2552,7 @@ Module utils.
       end.
     
     Global Instance AssociatedFunction_finalize_into_array :
-      M.IsAssociatedFunction.Trait Self "finalize_into_array" finalize_into_array.
+      M.IsAssociatedFunction.C Self "finalize_into_array" finalize_into_array.
     Admitted.
     Global Typeclasses Opaque finalize_into_array.
     
@@ -2598,7 +2616,7 @@ Module utils.
       end.
     
     Global Instance AssociatedFunction_finalize_into_raw :
-      M.IsAssociatedFunction.Trait Self "finalize_into_raw" finalize_into_raw.
+      M.IsAssociatedFunction.C Self "finalize_into_raw" finalize_into_raw.
     Admitted.
     Global Typeclasses Opaque finalize_into_raw.
   End Impl_alloy_primitives_utils_Keccak256.

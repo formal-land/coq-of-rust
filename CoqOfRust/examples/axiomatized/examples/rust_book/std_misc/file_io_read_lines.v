@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter read_lines : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_read_lines :
-  M.IsFunction.Trait "file_io_read_lines::read_lines" read_lines.
+  M.IsFunction.C "file_io_read_lines::read_lines" read_lines.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "file_io_read_lines::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "file_io_read_lines::main" main.
 Admitted.

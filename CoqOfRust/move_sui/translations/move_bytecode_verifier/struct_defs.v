@@ -119,7 +119,7 @@ Module struct_defs.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -473,7 +473,7 @@ Module struct_defs.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
   End Impl_move_bytecode_verifier_struct_defs_RecursiveStructDefChecker.
@@ -814,7 +814,7 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1868,7 +1868,7 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_build : M.IsAssociatedFunction.Trait Self "build" build.
+    Global Instance AssociatedFunction_build : M.IsAssociatedFunction.C Self "build" build.
     Admitted.
     Global Typeclasses Opaque build.
     
@@ -2364,7 +2364,7 @@ Module struct_defs.
       end.
     
     Global Instance AssociatedFunction_add_struct_defs :
-      M.IsAssociatedFunction.Trait Self "add_struct_defs" add_struct_defs.
+      M.IsAssociatedFunction.C Self "add_struct_defs" add_struct_defs.
     Admitted.
     Global Typeclasses Opaque add_struct_defs.
     
@@ -3466,7 +3466,7 @@ Module struct_defs.
       end.
     
     Global Instance AssociatedFunction_add_signature_token :
-      M.IsAssociatedFunction.Trait Self "add_signature_token" add_signature_token.
+      M.IsAssociatedFunction.C Self "add_signature_token" add_signature_token.
     Admitted.
     Global Typeclasses Opaque add_signature_token.
   End Impl_move_bytecode_verifier_struct_defs_StructDefGraphBuilder.

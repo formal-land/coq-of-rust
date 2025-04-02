@@ -101,7 +101,7 @@ Module ability_field_requirements.
     end.
   
   Global Instance Instance_IsFunction_verify_module :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::ability_field_requirements::verify_module"
       verify_module.
   Admitted.
@@ -596,8 +596,13 @@ Module ability_field_requirements.
                                                   ]
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "move_binary_format::file_format::EMPTY"
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet",
+                                                    "EMPTY",
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet"
+                                                  |)
                                                 |);
                                                 M.closure
                                                   (fun γ =>
@@ -897,8 +902,13 @@ Module ability_field_requirements.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.read (|
-                                                                        M.get_constant
-                                                                          "move_binary_format::file_format::ALL"
+                                                                        get_associated_constant (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet",
+                                                                          "ALL",
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        |)
                                                                       |)))
                                                                 ]
                                                               |)))
@@ -1346,7 +1356,7 @@ Module ability_field_requirements.
     end.
   
   Global Instance Instance_IsFunction_verify_module_impl :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::ability_field_requirements::verify_module_impl"
       verify_module_impl.
   Admitted.

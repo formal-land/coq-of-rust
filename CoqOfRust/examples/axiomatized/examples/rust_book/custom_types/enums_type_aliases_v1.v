@@ -31,5 +31,5 @@ Axiom Operations :
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums_type_aliases_v1::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_type_aliases_v1::main" main.
 Admitted.

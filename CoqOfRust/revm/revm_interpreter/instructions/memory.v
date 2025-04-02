@@ -80,7 +80,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -263,7 +266,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -702,7 +709,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_mload :
-      M.IsFunction.Trait "revm_interpreter::instructions::memory::mload" mload.
+      M.IsFunction.C "revm_interpreter::instructions::memory::mload" mload.
     Admitted.
     Global Typeclasses Opaque mload.
     
@@ -783,7 +790,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -951,7 +961,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -1289,7 +1303,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_mstore :
-      M.IsFunction.Trait "revm_interpreter::instructions::memory::mstore" mstore.
+      M.IsFunction.C "revm_interpreter::instructions::memory::mstore" mstore.
     Admitted.
     Global Typeclasses Opaque mstore.
     
@@ -1370,7 +1384,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1538,7 +1555,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -1879,7 +1900,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_mstore8 :
-      M.IsFunction.Trait "revm_interpreter::instructions::memory::mstore8" mstore8.
+      M.IsFunction.C "revm_interpreter::instructions::memory::mstore8" mstore8.
     Admitted.
     Global Typeclasses Opaque mstore8.
     
@@ -1957,7 +1978,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2150,7 +2174,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_msize :
-      M.IsFunction.Trait "revm_interpreter::instructions::memory::msize" msize.
+      M.IsFunction.C "revm_interpreter::instructions::memory::msize" msize.
     Admitted.
     Global Typeclasses Opaque msize.
     
@@ -2405,7 +2429,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2762,7 +2790,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2913,7 +2945,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -3235,7 +3271,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_mcopy :
-      M.IsFunction.Trait "revm_interpreter::instructions::memory::mcopy" mcopy.
+      M.IsFunction.C "revm_interpreter::instructions::memory::mcopy" mcopy.
     Admitted.
     Global Typeclasses Opaque mcopy.
   End memory.

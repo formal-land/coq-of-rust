@@ -389,7 +389,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_reference :
-        M.IsAssociatedFunction.Trait Self "is_reference" is_reference.
+        M.IsAssociatedFunction.C Self "is_reference" is_reference.
       Admitted.
       Global Typeclasses Opaque is_reference.
       
@@ -419,7 +419,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_value :
-        M.IsAssociatedFunction.Trait Self "is_value" is_value.
+        M.IsAssociatedFunction.C Self "is_value" is_value.
       Admitted.
       Global Typeclasses Opaque is_value.
       
@@ -475,7 +475,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ref_id : M.IsAssociatedFunction.Trait Self "ref_id" ref_id.
+      Global Instance AssociatedFunction_ref_id : M.IsAssociatedFunction.C Self "ref_id" ref_id.
       Admitted.
       Global Typeclasses Opaque ref_id.
     End Impl_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
@@ -1777,84 +1777,123 @@ Module reference_safety.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
-    Definition value_STEP_BASE_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    Definition value_STEP_BASE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
     
-    Axiom Constant_value_STEP_BASE_COST :
-      (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST") =
+    Global Instance Instance_IsConstant_value_STEP_BASE_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST"
         value_STEP_BASE_COST.
-    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_STEP_BASE_COST.
     
-    Definition value_STEP_PER_LOCAL_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
+    Definition value_STEP_PER_LOCAL_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
     
-    Axiom Constant_value_STEP_PER_LOCAL_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST") =
+    Global Instance Instance_IsConstant_value_STEP_PER_LOCAL_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST"
         value_STEP_PER_LOCAL_COST.
-    Global Hint Rewrite Constant_value_STEP_PER_LOCAL_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_STEP_PER_LOCAL_COST.
     
-    Definition value_STEP_PER_GRAPH_ITEM_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+    Definition value_STEP_PER_GRAPH_ITEM_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
     
-    Axiom Constant_value_STEP_PER_GRAPH_ITEM_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST") =
+    Global Instance Instance_IsConstant_value_STEP_PER_GRAPH_ITEM_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST"
         value_STEP_PER_GRAPH_ITEM_COST.
-    Global Hint Rewrite Constant_value_STEP_PER_GRAPH_ITEM_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_STEP_PER_GRAPH_ITEM_COST.
     
-    Definition value_JOIN_BASE_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    Definition value_JOIN_BASE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
     
-    Axiom Constant_value_JOIN_BASE_COST :
-      (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST") =
+    Global Instance Instance_IsConstant_value_JOIN_BASE_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST"
         value_JOIN_BASE_COST.
-    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_JOIN_BASE_COST.
     
-    Definition value_JOIN_PER_LOCAL_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    Definition value_JOIN_PER_LOCAL_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
     
-    Axiom Constant_value_JOIN_PER_LOCAL_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST") =
+    Global Instance Instance_IsConstant_value_JOIN_PER_LOCAL_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST"
         value_JOIN_PER_LOCAL_COST.
-    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_JOIN_PER_LOCAL_COST.
     
-    Definition value_JOIN_PER_GRAPH_ITEM_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+    Definition value_JOIN_PER_GRAPH_ITEM_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
     
-    Axiom Constant_value_JOIN_PER_GRAPH_ITEM_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST") =
+    Global Instance Instance_IsConstant_value_JOIN_PER_GRAPH_ITEM_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST"
         value_JOIN_PER_GRAPH_ITEM_COST.
-    Global Hint Rewrite Constant_value_JOIN_PER_GRAPH_ITEM_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_JOIN_PER_GRAPH_ITEM_COST.
     
-    Definition value_REF_PARAM_EDGE_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    Definition value_REF_PARAM_EDGE_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
     
-    Axiom Constant_value_REF_PARAM_EDGE_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST") =
+    Global Instance Instance_IsConstant_value_REF_PARAM_EDGE_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST"
         value_REF_PARAM_EDGE_COST.
-    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_REF_PARAM_EDGE_COST.
     
-    Definition value_REF_PARAM_EDGE_COST_GROWTH : Value.t :=
-      M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    Definition value_REF_PARAM_EDGE_COST_GROWTH
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom Constant_value_REF_PARAM_EDGE_COST_GROWTH :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH") =
+    Global Instance Instance_IsConstant_value_REF_PARAM_EDGE_COST_GROWTH :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH"
         value_REF_PARAM_EDGE_COST_GROWTH.
-    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST_GROWTH : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_REF_PARAM_EDGE_COST_GROWTH.
     
-    Definition value_CALL_PER_ACQUIRES_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    Definition value_CALL_PER_ACQUIRES_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
     
-    Axiom Constant_value_CALL_PER_ACQUIRES_COST :
-      (M.get_constant
-          "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST") =
+    Global Instance Instance_IsConstant_value_CALL_PER_ACQUIRES_COST :
+      M.IsFunction.C
+        "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST"
         value_CALL_PER_ACQUIRES_COST.
-    Global Hint Rewrite Constant_value_CALL_PER_ACQUIRES_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_CALL_PER_ACQUIRES_COST.
     
     (* StructRecord
       {
@@ -3055,7 +3094,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -3099,7 +3138,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_local_count :
-        M.IsAssociatedFunction.Trait Self "local_count" local_count.
+        M.IsAssociatedFunction.C Self "local_count" local_count.
       Admitted.
       Global Typeclasses Opaque local_count.
       
@@ -3142,7 +3181,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_graph_size :
-        M.IsAssociatedFunction.Trait Self "graph_size" graph_size.
+        M.IsAssociatedFunction.C Self "graph_size" graph_size.
       Admitted.
       Global Typeclasses Opaque graph_size.
       
@@ -3197,7 +3236,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_frame_root :
-        M.IsAssociatedFunction.Trait Self "frame_root" frame_root.
+        M.IsAssociatedFunction.C Self "frame_root" frame_root.
       Admitted.
       Global Typeclasses Opaque frame_root.
       
@@ -3265,7 +3304,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+      Global Instance AssociatedFunction_error : M.IsAssociatedFunction.C Self "error" error.
       Admitted.
       Global Typeclasses Opaque error.
       
@@ -3363,7 +3402,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_value_for :
-        M.IsAssociatedFunction.Trait Self "value_for" value_for.
+        M.IsAssociatedFunction.C Self "value_for" value_for.
       Admitted.
       Global Typeclasses Opaque value_for.
       
@@ -3451,8 +3490,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new_ref :
-        M.IsAssociatedFunction.Trait Self "new_ref" new_ref.
+      Global Instance AssociatedFunction_new_ref : M.IsAssociatedFunction.C Self "new_ref" new_ref.
       Admitted.
       Global Typeclasses Opaque new_ref.
       
@@ -3500,7 +3538,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_add_copy :
-        M.IsAssociatedFunction.Trait Self "add_copy" add_copy.
+        M.IsAssociatedFunction.C Self "add_copy" add_copy.
       Admitted.
       Global Typeclasses Opaque add_copy.
       
@@ -3548,7 +3586,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_add_borrow :
-        M.IsAssociatedFunction.Trait Self "add_borrow" add_borrow.
+        M.IsAssociatedFunction.C Self "add_borrow" add_borrow.
       Admitted.
       Global Typeclasses Opaque add_borrow.
       
@@ -3601,7 +3639,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_add_field_borrow :
-        M.IsAssociatedFunction.Trait Self "add_field_borrow" add_field_borrow.
+        M.IsAssociatedFunction.C Self "add_field_borrow" add_field_borrow.
       Admitted.
       Global Typeclasses Opaque add_field_borrow.
       
@@ -3663,7 +3701,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_add_local_borrow :
-        M.IsAssociatedFunction.Trait Self "add_local_borrow" add_local_borrow.
+        M.IsAssociatedFunction.C Self "add_local_borrow" add_local_borrow.
       Admitted.
       Global Typeclasses Opaque add_local_borrow.
       
@@ -3725,7 +3763,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_add_resource_borrow :
-        M.IsAssociatedFunction.Trait Self "add_resource_borrow" add_resource_borrow.
+        M.IsAssociatedFunction.C Self "add_resource_borrow" add_resource_borrow.
       Admitted.
       Global Typeclasses Opaque add_resource_borrow.
       
@@ -3775,8 +3813,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_release :
-        M.IsAssociatedFunction.Trait Self "release" release.
+      Global Instance AssociatedFunction_release : M.IsAssociatedFunction.C Self "release" release.
       Admitted.
       Global Typeclasses Opaque release.
       
@@ -3884,7 +3921,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_has_full_borrows :
-        M.IsAssociatedFunction.Trait Self "has_full_borrows" has_full_borrows.
+        M.IsAssociatedFunction.C Self "has_full_borrows" has_full_borrows.
       Admitted.
       Global Typeclasses Opaque has_full_borrows.
       
@@ -4400,7 +4437,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_has_consistent_borrows :
-        M.IsAssociatedFunction.Trait Self "has_consistent_borrows" has_consistent_borrows.
+        M.IsAssociatedFunction.C Self "has_consistent_borrows" has_consistent_borrows.
       Admitted.
       Global Typeclasses Opaque has_consistent_borrows.
       
@@ -4916,7 +4953,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_has_consistent_mutable_borrows :
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           Self
           "has_consistent_mutable_borrows"
           has_consistent_mutable_borrows.
@@ -5014,7 +5051,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_writable :
-        M.IsAssociatedFunction.Trait Self "is_writable" is_writable.
+        M.IsAssociatedFunction.C Self "is_writable" is_writable.
       Admitted.
       Global Typeclasses Opaque is_writable.
       
@@ -5139,7 +5176,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_freezable :
-        M.IsAssociatedFunction.Trait Self "is_freezable" is_freezable.
+        M.IsAssociatedFunction.C Self "is_freezable" is_freezable.
       Admitted.
       Global Typeclasses Opaque is_freezable.
       
@@ -5212,7 +5249,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_readable :
-        M.IsAssociatedFunction.Trait Self "is_readable" is_readable.
+        M.IsAssociatedFunction.C Self "is_readable" is_readable.
       Admitted.
       Global Typeclasses Opaque is_readable.
       
@@ -5261,7 +5298,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_local_borrowed :
-        M.IsAssociatedFunction.Trait Self "is_local_borrowed" is_local_borrowed.
+        M.IsAssociatedFunction.C Self "is_local_borrowed" is_local_borrowed.
       Admitted.
       Global Typeclasses Opaque is_local_borrowed.
       
@@ -5314,7 +5351,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_local_mutably_borrowed :
-        M.IsAssociatedFunction.Trait Self "is_local_mutably_borrowed" is_local_mutably_borrowed.
+        M.IsAssociatedFunction.C Self "is_local_mutably_borrowed" is_local_mutably_borrowed.
       Admitted.
       Global Typeclasses Opaque is_local_mutably_borrowed.
       
@@ -5363,7 +5400,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_global_borrowed :
-        M.IsAssociatedFunction.Trait Self "is_global_borrowed" is_global_borrowed.
+        M.IsAssociatedFunction.C Self "is_global_borrowed" is_global_borrowed.
       Admitted.
       Global Typeclasses Opaque is_global_borrowed.
       
@@ -5416,7 +5453,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_global_mutably_borrowed :
-        M.IsAssociatedFunction.Trait Self "is_global_mutably_borrowed" is_global_mutably_borrowed.
+        M.IsAssociatedFunction.C Self "is_global_mutably_borrowed" is_global_mutably_borrowed.
       Admitted.
       Global Typeclasses Opaque is_global_mutably_borrowed.
       
@@ -5464,7 +5501,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_frame_safe_to_destroy :
-        M.IsAssociatedFunction.Trait Self "is_frame_safe_to_destroy" is_frame_safe_to_destroy.
+        M.IsAssociatedFunction.C Self "is_frame_safe_to_destroy" is_frame_safe_to_destroy.
       Admitted.
       Global Typeclasses Opaque is_frame_safe_to_destroy.
       
@@ -5527,7 +5564,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_release_value :
-        M.IsAssociatedFunction.Trait Self "release_value" release_value.
+        M.IsAssociatedFunction.C Self "release_value" release_value.
       Admitted.
       Global Typeclasses Opaque release_value.
       
@@ -6052,7 +6089,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_copy_loc :
-        M.IsAssociatedFunction.Trait Self "copy_loc" copy_loc.
+        M.IsAssociatedFunction.C Self "copy_loc" copy_loc.
       Admitted.
       Global Typeclasses Opaque copy_loc.
       
@@ -6592,7 +6629,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_move_loc :
-        M.IsAssociatedFunction.Trait Self "move_loc" move_loc.
+        M.IsAssociatedFunction.C Self "move_loc" move_loc.
       Admitted.
       Global Typeclasses Opaque move_loc.
       
@@ -7136,7 +7173,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_st_loc : M.IsAssociatedFunction.Trait Self "st_loc" st_loc.
+      Global Instance AssociatedFunction_st_loc : M.IsAssociatedFunction.C Self "st_loc" st_loc.
       Admitted.
       Global Typeclasses Opaque st_loc.
       
@@ -7297,7 +7334,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_freeze_ref :
-        M.IsAssociatedFunction.Trait Self "freeze_ref" freeze_ref.
+        M.IsAssociatedFunction.C Self "freeze_ref" freeze_ref.
       Admitted.
       Global Typeclasses Opaque freeze_ref.
       
@@ -7604,7 +7641,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_comparison :
-        M.IsAssociatedFunction.Trait Self "comparison" comparison.
+        M.IsAssociatedFunction.C Self "comparison" comparison.
       Admitted.
       Global Typeclasses Opaque comparison.
       
@@ -7728,7 +7765,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_read_ref :
-        M.IsAssociatedFunction.Trait Self "read_ref" read_ref.
+        M.IsAssociatedFunction.C Self "read_ref" read_ref.
       Admitted.
       Global Typeclasses Opaque read_ref.
       
@@ -7843,7 +7880,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_write_ref :
-        M.IsAssociatedFunction.Trait Self "write_ref" write_ref.
+        M.IsAssociatedFunction.C Self "write_ref" write_ref.
       Admitted.
       Global Typeclasses Opaque write_ref.
       
@@ -7995,7 +8032,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_borrow_loc :
-        M.IsAssociatedFunction.Trait Self "borrow_loc" borrow_loc.
+        M.IsAssociatedFunction.C Self "borrow_loc" borrow_loc.
       Admitted.
       Global Typeclasses Opaque borrow_loc.
       
@@ -8280,7 +8317,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_borrow_field :
-        M.IsAssociatedFunction.Trait Self "borrow_field" borrow_field.
+        M.IsAssociatedFunction.C Self "borrow_field" borrow_field.
       Admitted.
       Global Typeclasses Opaque borrow_field.
       
@@ -8451,7 +8488,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_borrow_global :
-        M.IsAssociatedFunction.Trait Self "borrow_global" borrow_global.
+        M.IsAssociatedFunction.C Self "borrow_global" borrow_global.
       Admitted.
       Global Typeclasses Opaque borrow_global.
       
@@ -8550,7 +8587,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_move_from :
-        M.IsAssociatedFunction.Trait Self "move_from" move_from.
+        M.IsAssociatedFunction.C Self "move_from" move_from.
       Admitted.
       Global Typeclasses Opaque move_from.
       
@@ -8925,7 +8962,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_vector_op :
-        M.IsAssociatedFunction.Trait Self "vector_op" vector_op.
+        M.IsAssociatedFunction.C Self "vector_op" vector_op.
       Admitted.
       Global Typeclasses Opaque vector_op.
       
@@ -9350,7 +9387,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_vector_element_borrow :
-        M.IsAssociatedFunction.Trait Self "vector_element_borrow" vector_element_borrow.
+        M.IsAssociatedFunction.C Self "vector_element_borrow" vector_element_borrow.
       Admitted.
       Global Typeclasses Opaque vector_element_borrow.
       
@@ -9503,8 +9540,10 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -11119,8 +11158,10 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -11156,8 +11197,10 @@ Module reference_safety.
                                   ]
                                 |);
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH",
+                                    Ty.path "f32"
+                                  |)
                                 |)
                               ]
                             |)
@@ -11364,7 +11407,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_call : M.IsAssociatedFunction.Trait Self "call" call.
+      Global Instance AssociatedFunction_call : M.IsAssociatedFunction.C Self "call" call.
       Admitted.
       Global Typeclasses Opaque call.
       
@@ -12216,7 +12259,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ret : M.IsAssociatedFunction.Trait Self "ret" ret.
+      Global Instance AssociatedFunction_ret : M.IsAssociatedFunction.C Self "ret" ret.
       Admitted.
       Global Typeclasses Opaque ret.
       
@@ -12976,7 +13019,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_construct_canonical_state :
-        M.IsAssociatedFunction.Trait Self "construct_canonical_state" construct_canonical_state.
+        M.IsAssociatedFunction.C Self "construct_canonical_state" construct_canonical_state.
       Admitted.
       Global Typeclasses Opaque construct_canonical_state.
       
@@ -13106,7 +13149,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_all_immutable :
-        M.IsAssociatedFunction.Trait Self "all_immutable" all_immutable.
+        M.IsAssociatedFunction.C Self "all_immutable" all_immutable.
       Admitted.
       Global Typeclasses Opaque all_immutable.
       
@@ -13485,7 +13528,7 @@ Module reference_safety.
         end.
       
       Global Instance AssociatedFunction_is_canonical :
-        M.IsAssociatedFunction.Trait Self "is_canonical" is_canonical.
+        M.IsAssociatedFunction.C Self "is_canonical" is_canonical.
       Admitted.
       Global Typeclasses Opaque is_canonical.
       
@@ -14547,7 +14590,7 @@ Module reference_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_join_ : M.IsAssociatedFunction.Trait Self "join_" join_.
+      Global Instance AssociatedFunction_join_ : M.IsAssociatedFunction.C Self "join_" join_.
       Admitted.
       Global Typeclasses Opaque join_.
     End Impl_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
@@ -14795,8 +14838,10 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |)
                               ]
                             |)
@@ -14921,8 +14966,10 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -15073,8 +15120,10 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant
-                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST"
+                                  get_constant (|
+                                    "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST",
+                                    Ty.path "u128"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   Ty.path "usize",

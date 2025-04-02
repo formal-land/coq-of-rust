@@ -19,21 +19,21 @@ Module fmt.
       
       (*         const MAX: u64 = 1 << 63; *)
       (* Ty.path "u64" *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
-            |))).
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
+          |))).
       
       (*         const WIDTH: usize = 63; *)
       (* Ty.path "usize" *)
-      Definition value_WIDTH : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 63 |))).
+      Definition value_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 63 |))).
       
       (*         const PREFIX: &'static str = "0b"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -43,9 +43,9 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_MAX", InstanceField.Constant value_MAX);
-            ("value_WIDTH", InstanceField.Constant value_WIDTH);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX)
+            ("value_MAX", InstanceField.Method value_MAX);
+            ("value_WIDTH", InstanceField.Method value_WIDTH);
+            ("value_PREFIX", InstanceField.Method value_PREFIX)
           ].
     End Impl_ruint_fmt_base_Base_for_ruint_fmt_base_Binary.
     
@@ -62,21 +62,21 @@ Module fmt.
       
       (*         const MAX: u64 = 1 << 63; *)
       (* Ty.path "u64" *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
-            |))).
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
+          |))).
       
       (*         const WIDTH: usize = 21; *)
       (* Ty.path "usize" *)
-      Definition value_WIDTH : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 21 |))).
+      Definition value_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 21 |))).
       
       (*         const PREFIX: &'static str = "0o"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -86,9 +86,9 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_MAX", InstanceField.Constant value_MAX);
-            ("value_WIDTH", InstanceField.Constant value_WIDTH);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX)
+            ("value_MAX", InstanceField.Method value_MAX);
+            ("value_WIDTH", InstanceField.Method value_WIDTH);
+            ("value_PREFIX", InstanceField.Method value_PREFIX)
           ].
     End Impl_ruint_fmt_base_Base_for_ruint_fmt_base_Octal.
     
@@ -105,17 +105,18 @@ Module fmt.
       
       (*         const MAX: u64 = 10_000_000_000_000_000_000; *)
       (* Ty.path "u64" *)
-      Definition value_MAX : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10000000000000000000 |))).
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10000000000000000000 |))).
       
       (*         const WIDTH: usize = 19; *)
       (* Ty.path "usize" *)
-      Definition value_WIDTH : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
+      Definition value_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
       
       (*         const PREFIX: &'static str = ""; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -125,9 +126,9 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_MAX", InstanceField.Constant value_MAX);
-            ("value_WIDTH", InstanceField.Constant value_WIDTH);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX)
+            ("value_MAX", InstanceField.Method value_MAX);
+            ("value_WIDTH", InstanceField.Method value_WIDTH);
+            ("value_PREFIX", InstanceField.Method value_PREFIX)
           ].
     End Impl_ruint_fmt_base_Base_for_ruint_fmt_base_Decimal.
     
@@ -144,21 +145,21 @@ Module fmt.
       
       (*         const MAX: u64 = 1 << 60; *)
       (* Ty.path "u64" *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 60 |)
-            |))).
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 60 |)
+          |))).
       
       (*         const WIDTH: usize = 15; *)
       (* Ty.path "usize" *)
-      Definition value_WIDTH : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 15 |))).
+      Definition value_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 15 |))).
       
       (*         const PREFIX: &'static str = "0x"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -168,9 +169,9 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_MAX", InstanceField.Constant value_MAX);
-            ("value_WIDTH", InstanceField.Constant value_WIDTH);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX)
+            ("value_MAX", InstanceField.Method value_MAX);
+            ("value_WIDTH", InstanceField.Method value_WIDTH);
+            ("value_PREFIX", InstanceField.Method value_PREFIX)
           ].
     End Impl_ruint_fmt_base_Base_for_ruint_fmt_base_Hexadecimal.
   End base.
@@ -211,10 +212,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| M.get_constant "ruint::fmt::LIMBS" |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -260,7 +258,10 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "ruint::fmt::base::Base::PREFIX"
+                                              get_constant (|
+                                                "ruint::fmt::base::Base::PREFIX",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              |)
                                             |)
                                           |)
                                         |);
@@ -341,7 +342,12 @@ Module fmt.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.read (| M.get_constant "ruint::fmt::base::Base::MAX" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::fmt::base::Base::MAX",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -546,8 +552,11 @@ Module fmt.
                                                                                           |)));
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
-                                                                                          (M.get_constant
-                                                                                            "ruint::fmt::base::Base::WIDTH"))
+                                                                                          (get_constant (|
+                                                                                            "ruint::fmt::base::Base::WIDTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)))
                                                                                     ]
                                                                                   |)
                                                                                 |)
@@ -647,7 +656,14 @@ Module fmt.
                         Value.Bool true;
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.get_constant "ruint::fmt::base::Base::PREFIX" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "ruint::fmt::base::Base::PREFIX",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
+                            |)
+                          |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -772,10 +788,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| M.get_constant "ruint::fmt::LIMBS" |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -821,7 +834,10 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "ruint::fmt::base::Base::PREFIX"
+                                              get_constant (|
+                                                "ruint::fmt::base::Base::PREFIX",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              |)
                                             |)
                                           |)
                                         |);
@@ -902,7 +918,12 @@ Module fmt.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.read (| M.get_constant "ruint::fmt::base::Base::MAX" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::fmt::base::Base::MAX",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1107,8 +1128,11 @@ Module fmt.
                                                                                           |)));
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
-                                                                                          (M.get_constant
-                                                                                            "ruint::fmt::base::Base::WIDTH"))
+                                                                                          (get_constant (|
+                                                                                            "ruint::fmt::base::Base::WIDTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)))
                                                                                     ]
                                                                                   |)
                                                                                 |)
@@ -1208,7 +1232,14 @@ Module fmt.
                         Value.Bool true;
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.get_constant "ruint::fmt::base::Base::PREFIX" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "ruint::fmt::base::Base::PREFIX",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
+                            |)
+                          |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1280,10 +1311,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| M.get_constant "ruint::fmt::LIMBS" |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1329,7 +1357,10 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "ruint::fmt::base::Base::PREFIX"
+                                              get_constant (|
+                                                "ruint::fmt::base::Base::PREFIX",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              |)
                                             |)
                                           |)
                                         |);
@@ -1410,7 +1441,12 @@ Module fmt.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.read (| M.get_constant "ruint::fmt::base::Base::MAX" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::fmt::base::Base::MAX",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1615,8 +1651,11 @@ Module fmt.
                                                                                           |)));
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
-                                                                                          (M.get_constant
-                                                                                            "ruint::fmt::base::Base::WIDTH"))
+                                                                                          (get_constant (|
+                                                                                            "ruint::fmt::base::Base::WIDTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)))
                                                                                     ]
                                                                                   |)
                                                                                 |)
@@ -1716,7 +1755,14 @@ Module fmt.
                         Value.Bool true;
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.get_constant "ruint::fmt::base::Base::PREFIX" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "ruint::fmt::base::Base::PREFIX",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
+                            |)
+                          |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1788,10 +1834,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| M.get_constant "ruint::fmt::LIMBS" |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1837,7 +1880,10 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "ruint::fmt::base::Base::PREFIX"
+                                              get_constant (|
+                                                "ruint::fmt::base::Base::PREFIX",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              |)
                                             |)
                                           |)
                                         |);
@@ -1918,7 +1964,12 @@ Module fmt.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.read (| M.get_constant "ruint::fmt::base::Base::MAX" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::fmt::base::Base::MAX",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -2123,8 +2174,11 @@ Module fmt.
                                                                                           |)));
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
-                                                                                          (M.get_constant
-                                                                                            "ruint::fmt::base::Base::WIDTH"))
+                                                                                          (get_constant (|
+                                                                                            "ruint::fmt::base::Base::WIDTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)))
                                                                                     ]
                                                                                   |)
                                                                                 |)
@@ -2224,7 +2278,14 @@ Module fmt.
                         Value.Bool true;
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.get_constant "ruint::fmt::base::Base::PREFIX" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "ruint::fmt::base::Base::PREFIX",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
+                            |)
+                          |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -2296,10 +2357,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| M.get_constant "ruint::fmt::LIMBS" |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -2345,7 +2403,10 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant "ruint::fmt::base::Base::PREFIX"
+                                              get_constant (|
+                                                "ruint::fmt::base::Base::PREFIX",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              |)
                                             |)
                                           |)
                                         |);
@@ -2426,7 +2487,12 @@ Module fmt.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.read (| M.get_constant "ruint::fmt::base::Base::MAX" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::fmt::base::Base::MAX",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -2631,8 +2697,11 @@ Module fmt.
                                                                                           |)));
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
-                                                                                          (M.get_constant
-                                                                                            "ruint::fmt::base::Base::WIDTH"))
+                                                                                          (get_constant (|
+                                                                                            "ruint::fmt::base::Base::WIDTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)))
                                                                                     ]
                                                                                   |)
                                                                                 |)
@@ -2732,7 +2801,14 @@ Module fmt.
                         Value.Bool true;
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.get_constant "ruint::fmt::base::Base::PREFIX" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "ruint::fmt::base::Base::PREFIX",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
+                            |)
+                          |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -2876,7 +2952,7 @@ Module fmt.
     
     Global Instance AssociatedFunction_new :
       forall (SIZE : Value.t),
-      M.IsAssociatedFunction.Trait (Self SIZE) "new" (new SIZE).
+      M.IsAssociatedFunction.C (Self SIZE) "new" (new SIZE).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2977,7 +3053,7 @@ Module fmt.
     
     Global Instance AssociatedFunction_as_str :
       forall (SIZE : Value.t),
-      M.IsAssociatedFunction.Trait (Self SIZE) "as_str" (as_str SIZE).
+      M.IsAssociatedFunction.C (Self SIZE) "as_str" (as_str SIZE).
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -3067,7 +3143,7 @@ Module fmt.
     
     Global Instance AssociatedFunction_as_bytes_full :
       forall (SIZE : Value.t),
-      M.IsAssociatedFunction.Trait (Self SIZE) "as_bytes_full" (as_bytes_full SIZE).
+      M.IsAssociatedFunction.C (Self SIZE) "as_bytes_full" (as_bytes_full SIZE).
     Admitted.
     Global Typeclasses Opaque as_bytes_full.
   End Impl_ruint_fmt_DisplayBuffer_SIZE.
@@ -3134,7 +3210,7 @@ Module fmt.
                                       ]
                                     |)
                                   |),
-                                  M.read (| M.get_constant "ruint::fmt::SIZE" |)
+                                  SIZE
                                 |)
                               |)) in
                           let _ :=

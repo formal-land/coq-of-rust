@@ -962,7 +962,7 @@ Module ops.
       
       Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+        M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
       Admitted.
       Global Typeclasses Opaque contains.
       
@@ -1006,7 +1006,7 @@ Module ops.
       
       Global Instance AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+        M.IsAssociatedFunction.C (Self Idx) "is_empty" (is_empty Idx).
       Admitted.
       Global Typeclasses Opaque is_empty.
     End Impl_core_ops_range_Range_Idx.
@@ -1527,7 +1527,7 @@ Module ops.
       
       Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+        M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
       Admitted.
       Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeFrom_Idx.
@@ -2062,7 +2062,7 @@ Module ops.
       
       Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+        M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
       Admitted.
       Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeTo_Idx.
@@ -2454,7 +2454,7 @@ Module ops.
       
       Global Instance AssociatedFunction_new :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "new" (new Idx).
+        M.IsAssociatedFunction.C (Self Idx) "new" (new Idx).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2487,7 +2487,7 @@ Module ops.
       
       Global Instance AssociatedFunction_start :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "start" (start Idx).
+        M.IsAssociatedFunction.C (Self Idx) "start" (start Idx).
       Admitted.
       Global Typeclasses Opaque start.
       
@@ -2520,7 +2520,7 @@ Module ops.
       
       Global Instance AssociatedFunction_end_ :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "end_" (end_ Idx).
+        M.IsAssociatedFunction.C (Self Idx) "end" (end_ Idx).
       Admitted.
       Global Typeclasses Opaque end_.
       
@@ -2562,7 +2562,7 @@ Module ops.
       
       Global Instance AssociatedFunction_into_inner :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "into_inner" (into_inner Idx).
+        M.IsAssociatedFunction.C (Self Idx) "into_inner" (into_inner Idx).
       Admitted.
       Global Typeclasses Opaque into_inner.
       (*
@@ -2602,7 +2602,7 @@ Module ops.
       
       Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+        M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
       Admitted.
       Global Typeclasses Opaque contains.
       
@@ -2664,7 +2664,7 @@ Module ops.
       
       Global Instance AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+        M.IsAssociatedFunction.C (Self Idx) "is_empty" (is_empty Idx).
       Admitted.
       Global Typeclasses Opaque is_empty.
     End Impl_core_ops_range_RangeInclusive_Idx.
@@ -2740,7 +2740,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_into_slice_range :
-        M.IsAssociatedFunction.Trait Self "into_slice_range" into_slice_range.
+        M.IsAssociatedFunction.C Self "into_slice_range" into_slice_range.
       Admitted.
       Global Typeclasses Opaque into_slice_range.
     End Impl_core_ops_range_RangeInclusive_usize.
@@ -3819,7 +3819,7 @@ Module ops.
       
       Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+        M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
       Admitted.
       Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeToInclusive_Idx.
@@ -4462,7 +4462,7 @@ Module ops.
       
       Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+        M.IsAssociatedFunction.C (Self T) "as_ref" (as_ref T).
       Admitted.
       Global Typeclasses Opaque as_ref.
       
@@ -4530,7 +4530,7 @@ Module ops.
       
       Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+        M.IsAssociatedFunction.C (Self T) "as_mut" (as_mut T).
       Admitted.
       Global Typeclasses Opaque as_mut.
       
@@ -4623,7 +4623,7 @@ Module ops.
       
       Global Instance AssociatedFunction_map :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+        M.IsAssociatedFunction.C (Self T) "map" (map T).
       Admitted.
       Global Typeclasses Opaque map.
     End Impl_core_ops_range_Bound_T.
@@ -4720,7 +4720,7 @@ Module ops.
       
       Global Instance AssociatedFunction_cloned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "cloned" (cloned T).
+        M.IsAssociatedFunction.C (Self T) "cloned" (cloned T).
       Admitted.
       Global Typeclasses Opaque cloned.
     End Impl_core_ops_range_Bound_ref__T.

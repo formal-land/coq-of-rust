@@ -72,7 +72,10 @@ Module script_signature.
                                   |)
                                 |),
                                 M.read (|
-                                  M.get_constant "move_binary_format::file_format_common::VERSION_5"
+                                  get_constant (|
+                                    "move_binary_format::file_format_common::VERSION_5",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -652,7 +655,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_verify_module :
-    M.IsFunction.Trait "move_bytecode_verifier::script_signature::verify_module" verify_module.
+    M.IsFunction.C "move_bytecode_verifier::script_signature::verify_module" verify_module.
   Admitted.
   Global Typeclasses Opaque verify_module.
   
@@ -1282,7 +1285,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_verify_module_function_signature_by_name :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::script_signature::verify_module_function_signature_by_name"
       verify_module_function_signature_by_name.
   Admitted.
@@ -1519,7 +1522,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_verify_module_function_signature :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::script_signature::verify_module_function_signature"
       verify_module_function_signature.
   Admitted.
@@ -1568,7 +1571,10 @@ Module script_signature.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                       |),
                       M.read (|
-                        M.get_constant "move_binary_format::file_format_common::VERSION_5"
+                        get_constant (|
+                          "move_binary_format::file_format_common::VERSION_5",
+                          Ty.path "u32"
+                        |)
                       |)
                     |),
                     ltac:(M.monadic (M.read (| is_entry |)))
@@ -1734,7 +1740,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_verify_main_signature_impl :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::script_signature::verify_main_signature_impl"
       verify_main_signature_impl.
   Admitted.
@@ -1767,7 +1773,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_no_additional_script_signature_checks :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::script_signature::no_additional_script_signature_checks"
       no_additional_script_signature_checks.
   Admitted.
@@ -2111,7 +2117,10 @@ Module script_signature.
                                 ]
                               |),
                               M.read (|
-                                M.get_constant "move_binary_format::file_format_common::VERSION_1"
+                                get_constant (|
+                                  "move_binary_format::file_format_common::VERSION_1",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |)
                           |)) in
@@ -2815,7 +2824,7 @@ Module script_signature.
     end.
   
   Global Instance Instance_IsFunction_legacy_script_signature_checks :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::script_signature::legacy_script_signature_checks"
       legacy_script_signature_checks.
   Admitted.

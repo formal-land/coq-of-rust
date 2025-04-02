@@ -113,6 +113,7 @@ struct Snippet(Vec<String>);
 #[derive(Debug, Serialize)]
 struct ImplItem {
     name: String,
+    source_name: String,
     snippet: Option<Rc<Snippet>>,
     kind: Rc<ImplItemKind>,
 }
@@ -846,7 +847,8 @@ fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<Imp
         rustc_hir::ImplItemKind::Const(..) | rustc_hir::ImplItemKind::Fn(..) => IsValue::Yes,
         rustc_hir::ImplItemKind::Type(..) => IsValue::No,
     };
-    let name = to_valid_coq_name(is_value, item.ident.name.as_str());
+    let source_name = item.ident.name.as_str().to_string();
+    let name = to_valid_coq_name(is_value, source_name.as_str());
     let snippet = Snippet::of_span(env, &item.span);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
@@ -876,6 +878,7 @@ fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<Imp
     };
     Rc::new(ImplItem {
         name,
+        source_name,
         snippet,
         kind,
     })
@@ -1419,40 +1422,7 @@ impl FunDefinition {
                                         .concat(),
                                         coq::ArgSpecKind::Explicit,
                                     ),
-                                    vec![
-                                        coq::ArgDecl::new(
-                                            Rc::new(coq::ArgDeclVar::Simple {
-                                                idents: vec!["ε".to_string()],
-                                                ty: Some(
-                                                    coq::Expression::just_name("list").apply(
-                                                        coq::Expression::just_name("Value.t"),
-                                                    ),
-                                                ),
-                                            }),
-                                            coq::ArgSpecKind::Explicit,
-                                        ),
-                                        coq::ArgDecl::new(
-                                            Rc::new(coq::ArgDeclVar::Simple {
-                                                idents: vec!["τ".to_string()],
-                                                ty: Some(
-                                                    coq::Expression::just_name("list")
-                                                        .apply(coq::Expression::just_name("Ty.t")),
-                                                ),
-                                            }),
-                                            coq::ArgSpecKind::Explicit,
-                                        ),
-                                        coq::ArgDecl::new(
-                                            Rc::new(coq::ArgDeclVar::Simple {
-                                                idents: vec!["α".to_string()],
-                                                ty: Some(
-                                                    coq::Expression::just_name("list").apply(
-                                                        coq::Expression::just_name("Value.t"),
-                                                    ),
-                                                ),
-                                            }),
-                                            coq::ArgSpecKind::Explicit,
-                                        ),
-                                    ],
+                                    coq::ArgDecl::polymorphic_function_params(),
                                 ]
                                 .concat(),
                                 ty: Some(coq::Expression::just_name("M")),
@@ -1529,18 +1499,21 @@ impl ImplItemKind {
                         }),
                     ))),
                     Some(body) => {
-                        let body = coq::Expression::just_name("M.run")
-                            .apply(coq::Expression::monadic(body.to_coq()));
+                        let body = coq::Expression::monadic(body.to_coq());
 
                         Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
                             &definition_name,
                             Rc::new(coq::DefinitionKind::Alias {
-                                args: coq::ArgDecl::of_const_ty_params(
-                                    &generic_consts,
-                                    &generic_tys,
-                                    coq::ArgSpecKind::Explicit,
-                                ),
-                                ty: Some(coq::Expression::just_name("Value.t")),
+                                args: [
+                                    coq::ArgDecl::of_const_ty_params(
+                                        &generic_consts,
+                                        &generic_tys,
+                                        coq::ArgSpecKind::Explicit,
+                                    ),
+                                    coq::ArgDecl::polymorphic_function_params(),
+                                ]
+                                .concat(),
+                                ty: Some(coq::Expression::just_name("M")),
                                 body: if !generics.is_empty() {
                                     Rc::new(coq::Expression::Let {
                                         name: Some("Self".to_string()),
@@ -1768,35 +1741,38 @@ impl TopLevelItem {
                     None => Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         Rc::new(coq::DefinitionKind::Assumption {
-                            ty: coq::Expression::just_name("Value.t"),
+                            ty: coq::Expression::just_name("PolymorphicFunction.t"),
                         }),
                     ))),
                     Some(value) => Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         Rc::new(coq::DefinitionKind::Alias {
-                            args: vec![],
-                            ty: Some(coq::Expression::just_name("Value.t")),
-                            body: coq::Expression::just_name("M.run_constant")
-                                .apply(coq::Expression::monadic(value.to_coq())),
+                            args: coq::ArgDecl::polymorphic_function_params(),
+                            ty: Some(coq::Expression::just_name("M")),
+                            body: coq::Expression::monadic(value.to_coq()),
                         }),
                     ))),
                 },
                 Rc::new(coq::TopLevelItem::Line),
                 Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
-                    &format!("Constant_{name}"),
-                    Rc::new(coq::DefinitionKind::Axiom {
-                        ty: Rc::new(coq::Expression::Equality {
-                            lhs: coq::Expression::just_name("M.get_constant")
-                                .apply(Rc::new(coq::Expression::String(path.to_string()))),
-                            rhs: coq::Expression::just_name(name),
-                        }),
+                    &format!("Instance_IsConstant_{name}"),
+                    Rc::new(coq::DefinitionKind::AdmittedInstance {
+                        locality: "Global".to_string(),
+                        ty: coq::Expression::just_name("M.IsFunction.C").apply_many(&[
+                            Rc::new(coq::Expression::String(path.to_string())),
+                            coq::Expression::just_name(name),
+                        ]),
                     }),
                 ))),
-                Rc::new(coq::TopLevelItem::Hint {
-                    kind: "Global Hint Rewrite".to_string(),
-                    name: format!("Constant_{name}"),
-                    database: Some("constant_rewrites".to_string()),
-                }),
+                if value.is_some() {
+                    Rc::new(coq::TopLevelItem::Hint {
+                        kind: "Global Typeclasses Opaque".to_string(),
+                        name: name.to_string(),
+                        database: None,
+                    })
+                } else {
+                    Rc::new(coq::TopLevelItem::Empty)
+                },
             ],
             TopLevelItem::Definition {
                 name,
@@ -1811,7 +1787,7 @@ impl TopLevelItem {
                         &format!("Instance_IsFunction_{name}"),
                         Rc::new(coq::DefinitionKind::AdmittedInstance {
                             locality: "Global".to_string(),
-                            ty: coq::Expression::just_name("M.IsFunction.Trait").apply_many(&[
+                            ty: coq::Expression::just_name("M.IsFunction.C").apply_many(&[
                                 Rc::new(coq::Expression::String(path.to_string())),
                                 coq::Expression::just_name(name),
                             ]),
@@ -2004,6 +1980,7 @@ impl TopLevelItem {
                     .flat_map(|item| {
                         let ImplItem {
                             name,
+                            source_name,
                             snippet,
                             kind,
                         } = item.as_ref();
@@ -2040,10 +2017,10 @@ impl TopLevelItem {
                                             image: coq::Expression::just_name(
                                                 match kind.as_ref() {
                                                     ImplItemKind::Const { .. } => {
-                                                        "M.IsAssociatedConstant.Trait"
+                                                        "M.IsAssociatedFunction.C"
                                                     }
                                                     ImplItemKind::Definition { .. } => {
-                                                        "M.IsAssociatedFunction.Trait"
+                                                        "M.IsAssociatedFunction.C"
                                                     }
                                                     ImplItemKind::Type { .. } => {
                                                         "M.IsAssociatedType.Trait"
@@ -2059,7 +2036,9 @@ impl TopLevelItem {
                                                         })
                                                         .collect_vec(),
                                                 ),
-                                                Rc::new(coq::Expression::String(name.to_string())),
+                                                Rc::new(coq::Expression::String(
+                                                    source_name.to_string(),
+                                                )),
                                                 coq::Expression::just_name(name).apply_many(
                                                     &generics
                                                         .iter()
@@ -2228,7 +2207,7 @@ impl TopLevelItem {
                             Rc::new(coq::Expression::Tuple(vec![
                                 Rc::new(coq::Expression::String(item.name.to_string())),
                                 coq::Expression::just_name(match kind {
-                                    ImplItemKind::Const { .. } => "InstanceField.Constant",
+                                    ImplItemKind::Const { .. } => "InstanceField.Method",
                                     ImplItemKind::Definition { .. } => "InstanceField.Method",
                                     ImplItemKind::Type { .. } => "InstanceField.Ty",
                                 })

@@ -129,7 +129,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "panic::drink" drink.
+Global Instance Instance_IsFunction_drink : M.IsFunction.C "panic::drink" drink.
 Admitted.
 Global Typeclasses Opaque drink.
 
@@ -165,6 +165,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "panic::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "panic::main" main.
 Admitted.
 Global Typeclasses Opaque main.

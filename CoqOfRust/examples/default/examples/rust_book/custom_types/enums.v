@@ -374,7 +374,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_inspect : M.IsFunction.Trait "enums::inspect" inspect.
+Global Instance Instance_IsFunction_inspect : M.IsFunction.C "enums::inspect" inspect.
 Admitted.
 Global Typeclasses Opaque inspect.
 
@@ -476,6 +476,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums::main" main.
 Admitted.
 Global Typeclasses Opaque main.

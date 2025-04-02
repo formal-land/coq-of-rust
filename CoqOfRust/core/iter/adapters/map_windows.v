@@ -109,14 +109,7 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      M.get_constant "core::iter::adapters::map_windows::N"
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
-                                |)
+                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -229,13 +222,7 @@ Module iter.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          M.get_constant
-                                                            "core::iter::adapters::map_windows::N"
-                                                        |);
-                                                        Value.Integer IntegerKind.Usize 2
-                                                      ]
+                                                      [ N; Value.Integer IntegerKind.Usize 2 ]
                                                     |)
                                                   |)
                                                 |)
@@ -322,7 +309,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (N : Value.t) (I F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I F) "new" (new N I F).
+          M.IsAssociatedFunction.C (Self N I F) "new" (new N I F).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_map_windows_MapWindows_N_I_F.
@@ -359,7 +346,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "new" (new N I).
+          M.IsAssociatedFunction.C (Self N I) "new" (new N I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -967,7 +954,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_window :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "next_window" (next_window N I).
+          M.IsAssociatedFunction.C (Self N I) "next_window" (next_window N I).
         Admitted.
         Global Typeclasses Opaque next_window.
         
@@ -1122,10 +1109,7 @@ Module iter.
                                                 [
                                                   M.read (| lo |);
                                                   BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      M.get_constant
-                                                        "core::iter::adapters::map_windows::N"
-                                                    |),
+                                                    N,
                                                     Value.Integer IntegerKind.Usize 1
                                                   |)
                                                 ]
@@ -1178,10 +1162,7 @@ Module iter.
                                                                       [
                                                                         M.read (| hi |);
                                                                         BinOp.Wrap.sub (|
-                                                                          M.read (|
-                                                                            M.get_constant
-                                                                              "core::iter::adapters::map_windows::N"
-                                                                          |),
+                                                                          N,
                                                                           Value.Integer
                                                                             IntegerKind.Usize
                                                                             1
@@ -1209,7 +1190,7 @@ Module iter.
         
         Global Instance AssociatedFunction_size_hint :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N I) "size_hint" (size_hint N I).
+          M.IsAssociatedFunction.C (Self N I) "size_hint" (size_hint N I).
         Admitted.
         Global Typeclasses Opaque size_hint.
       End Impl_core_iter_adapters_map_windows_MapWindowsInner_N_I.
@@ -1432,8 +1413,10 @@ Module iter.
                             |);
                             repeat (|
                               M.read (|
-                                M.get_constant
-                                  "core::iter::adapters::map_windows::try_from_iter_discriminant"
+                                get_constant (|
+                                  "core::iter::adapters::map_windows::try_from_iter_discriminant",
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                |)
                               |),
                               N
                             |)
@@ -1458,7 +1441,7 @@ Module iter.
         
         Global Instance AssociatedFunction_try_from_iter :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "try_from_iter" (try_from_iter N T).
+          M.IsAssociatedFunction.C (Self N T) "try_from_iter" (try_from_iter N T).
         Admitted.
         Global Typeclasses Opaque try_from_iter.
         
@@ -1541,7 +1524,7 @@ Module iter.
         
         Global Instance AssociatedFunction_buffer_ptr :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "buffer_ptr" (buffer_ptr N T).
+          M.IsAssociatedFunction.C (Self N T) "buffer_ptr" (buffer_ptr N T).
         Admitted.
         Global Typeclasses Opaque buffer_ptr.
         
@@ -1624,7 +1607,7 @@ Module iter.
         
         Global Instance AssociatedFunction_buffer_mut_ptr :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "buffer_mut_ptr" (buffer_mut_ptr N T).
+          M.IsAssociatedFunction.C (Self N T) "buffer_mut_ptr" (buffer_mut_ptr N T).
         Admitted.
         Global Typeclasses Opaque buffer_mut_ptr.
         
@@ -1679,17 +1662,11 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                M.read (|
-                                                  M.get_constant
-                                                    "core::iter::adapters::map_windows::N"
-                                                |)
+                                                N
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  M.get_constant
-                                                    "core::iter::adapters::map_windows::N"
-                                                |)
+                                                N
                                               |)
                                             |)
                                           |)
@@ -1812,7 +1789,7 @@ Module iter.
         
         Global Instance AssociatedFunction_as_array_ref :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "as_array_ref" (as_array_ref N T).
+          M.IsAssociatedFunction.C (Self N T) "as_array_ref" (as_array_ref N T).
         Admitted.
         Global Typeclasses Opaque as_array_ref.
         
@@ -1873,17 +1850,11 @@ Module iter.
                                                         "start"
                                                       |)
                                                     |),
-                                                    M.read (|
-                                                      M.get_constant
-                                                        "core::iter::adapters::map_windows::N"
-                                                    |)
+                                                    N
                                                   |),
                                                   BinOp.Wrap.mul (|
                                                     Value.Integer IntegerKind.Usize 2,
-                                                    M.read (|
-                                                      M.get_constant
-                                                        "core::iter::adapters::map_windows::N"
-                                                    |)
+                                                    N
                                                   |)
                                                 |)
                                               |)
@@ -2031,7 +2002,7 @@ Module iter.
         
         Global Instance AssociatedFunction_as_uninit_array_mut :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "as_uninit_array_mut" (as_uninit_array_mut N T).
+          M.IsAssociatedFunction.C (Self N T) "as_uninit_array_mut" (as_uninit_array_mut N T).
         Admitted.
         Global Typeclasses Opaque as_uninit_array_mut.
         
@@ -2156,17 +2127,11 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                M.read (|
-                                                  M.get_constant
-                                                    "core::iter::adapters::map_windows::N"
-                                                |)
+                                                N
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  M.get_constant
-                                                    "core::iter::adapters::map_windows::N"
-                                                |)
+                                                N
                                               |)
                                             |)
                                           |)
@@ -2220,9 +2185,7 @@ Module iter.
                                         "start"
                                       |)
                                     |),
-                                    M.read (|
-                                      M.get_constant "core::iter::adapters::map_windows::N"
-                                    |)
+                                    N
                                   |)
                                 |)) in
                             let _ :=
@@ -2294,12 +2257,7 @@ Module iter.
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
-                                        BinOp.Wrap.sub (|
-                                          M.read (|
-                                            M.get_constant "core::iter::adapters::map_windows::N"
-                                          |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |)
+                                        BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
                                       ]
                                     |)
                                   |) in
@@ -2348,10 +2306,7 @@ Module iter.
                                               [
                                                 M.read (| buffer_mut_ptr |);
                                                 BinOp.Wrap.sub (|
-                                                  M.read (|
-                                                    M.get_constant
-                                                      "core::iter::adapters::map_windows::N"
-                                                  |),
+                                                  N,
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               ]
@@ -2477,10 +2432,7 @@ Module iter.
                                                       "start"
                                                     |)
                                                   |),
-                                                  M.read (|
-                                                    M.get_constant
-                                                      "core::iter::adapters::map_windows::N"
-                                                  |)
+                                                  N
                                                 |)
                                               ]
                                             |)
@@ -2578,7 +2530,7 @@ Module iter.
         
         Global Instance AssociatedFunction_push :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "push" (push N T).
+          M.IsAssociatedFunction.C (Self N T) "push" (push N T).
         Admitted.
         Global Typeclasses Opaque push.
       End Impl_core_iter_adapters_map_windows_Buffer_N_T.
@@ -2621,15 +2573,25 @@ Module iter.
                             [
                               repeat (|
                                 M.read (|
-                                  M.get_constant
-                                    "core::iter::adapters::map_windows::clone_discriminant"
+                                  get_constant (|
+                                    "core::iter::adapters::map_windows::clone_discriminant",
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  |)
                                 |),
                                 N
                               |);
                               repeat (|
                                 M.read (|
-                                  M.get_constant
-                                    "core::iter::adapters::map_windows::clone_discriminant"
+                                  get_constant (|
+                                    "core::iter::adapters::map_windows::clone_discriminant",
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  |)
                                 |),
                                 N
                               |)
@@ -2960,7 +2922,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::iter::adapters::map_windows::N" |)
+                        N
                       ]
                     |)
                   |) in

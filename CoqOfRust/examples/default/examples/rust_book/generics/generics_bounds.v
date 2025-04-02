@@ -206,7 +206,7 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_print_debug :
-  M.IsFunction.Trait "generics_bounds::print_debug" print_debug.
+  M.IsFunction.C "generics_bounds::print_debug" print_debug.
 Admitted.
 Global Typeclasses Opaque print_debug.
 
@@ -228,7 +228,7 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_area : M.IsFunction.Trait "generics_bounds::area" area.
+Global Instance Instance_IsFunction_area : M.IsFunction.C "generics_bounds::area" area.
 Admitted.
 Global Typeclasses Opaque area.
 
@@ -376,6 +376,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_bounds::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_bounds::main" main.
 Admitted.
 Global Typeclasses Opaque main.

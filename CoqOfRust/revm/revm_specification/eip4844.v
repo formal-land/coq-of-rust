@@ -2,90 +2,139 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module eip4844.
-  Definition value_GAS_PER_BLOB : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 17 |)
-        |))).
+  Definition value_GAS_PER_BLOB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 17 |)
+      |))).
   
-  Axiom Constant_value_GAS_PER_BLOB :
-    (M.get_constant "revm_specification::eip4844::GAS_PER_BLOB") = value_GAS_PER_BLOB.
-  Global Hint Rewrite Constant_value_GAS_PER_BLOB : constant_rewrites.
+  Global Instance Instance_IsConstant_value_GAS_PER_BLOB :
+    M.IsFunction.C "revm_specification::eip4844::GAS_PER_BLOB" value_GAS_PER_BLOB.
+  Admitted.
+  Global Typeclasses Opaque value_GAS_PER_BLOB.
   
-  Definition value_TARGET_BLOB_NUMBER_PER_BLOCK : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+  Definition value_TARGET_BLOB_NUMBER_PER_BLOCK
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
   
-  Axiom Constant_value_TARGET_BLOB_NUMBER_PER_BLOCK :
-    (M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK") =
+  Global Instance Instance_IsConstant_value_TARGET_BLOB_NUMBER_PER_BLOCK :
+    M.IsFunction.C
+      "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK"
       value_TARGET_BLOB_NUMBER_PER_BLOCK.
-  Global Hint Rewrite Constant_value_TARGET_BLOB_NUMBER_PER_BLOCK : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TARGET_BLOB_NUMBER_PER_BLOCK.
   
-  Definition value_MAX_BLOB_NUMBER_PER_BLOCK : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.U64 2,
-            M.read (| M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |)
+  Definition value_MAX_BLOB_NUMBER_PER_BLOCK
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.mul (|
+          Value.Integer IntegerKind.U64 2,
+          M.read (|
+            get_constant (|
+              "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
+              Ty.path "u64"
+            |)
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_MAX_BLOB_NUMBER_PER_BLOCK :
-    (M.get_constant "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK") =
+  Global Instance Instance_IsConstant_value_MAX_BLOB_NUMBER_PER_BLOCK :
+    M.IsFunction.C
+      "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK"
       value_MAX_BLOB_NUMBER_PER_BLOCK.
-  Global Hint Rewrite Constant_value_MAX_BLOB_NUMBER_PER_BLOCK : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_BLOB_NUMBER_PER_BLOCK.
   
-  Definition value_MAX_BLOB_GAS_PER_BLOCK : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.mul (|
-            M.read (| M.get_constant "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK" |),
-            M.read (| M.get_constant "revm_specification::eip4844::GAS_PER_BLOB" |)
-          |)
-        |))).
+  Definition value_MAX_BLOB_GAS_PER_BLOCK
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.mul (|
+          M.read (|
+            get_constant (|
+              "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK",
+              Ty.path "u64"
+            |)
+          |),
+          M.read (| get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |) |)
+        |)
+      |))).
   
-  Axiom Constant_value_MAX_BLOB_GAS_PER_BLOCK :
-    (M.get_constant "revm_specification::eip4844::MAX_BLOB_GAS_PER_BLOCK") =
+  Global Instance Instance_IsConstant_value_MAX_BLOB_GAS_PER_BLOCK :
+    M.IsFunction.C
+      "revm_specification::eip4844::MAX_BLOB_GAS_PER_BLOCK"
       value_MAX_BLOB_GAS_PER_BLOCK.
-  Global Hint Rewrite Constant_value_MAX_BLOB_GAS_PER_BLOCK : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_BLOB_GAS_PER_BLOCK.
   
-  Definition value_TARGET_BLOB_GAS_PER_BLOCK : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.mul (|
-            M.read (| M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |),
-            M.read (| M.get_constant "revm_specification::eip4844::GAS_PER_BLOB" |)
-          |)
-        |))).
+  Definition value_TARGET_BLOB_GAS_PER_BLOCK
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.mul (|
+          M.read (|
+            get_constant (|
+              "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK",
+              Ty.path "u64"
+            |)
+          |),
+          M.read (| get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |) |)
+        |)
+      |))).
   
-  Axiom Constant_value_TARGET_BLOB_GAS_PER_BLOCK :
-    (M.get_constant "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK") =
+  Global Instance Instance_IsConstant_value_TARGET_BLOB_GAS_PER_BLOCK :
+    M.IsFunction.C
+      "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK"
       value_TARGET_BLOB_GAS_PER_BLOCK.
-  Global Hint Rewrite Constant_value_TARGET_BLOB_GAS_PER_BLOCK : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TARGET_BLOB_GAS_PER_BLOCK.
   
-  Definition value_MIN_BLOB_GASPRICE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+  Definition value_MIN_BLOB_GASPRICE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
   
-  Axiom Constant_value_MIN_BLOB_GASPRICE :
-    (M.get_constant "revm_specification::eip4844::MIN_BLOB_GASPRICE") = value_MIN_BLOB_GASPRICE.
-  Global Hint Rewrite Constant_value_MIN_BLOB_GASPRICE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN_BLOB_GASPRICE :
+    M.IsFunction.C "revm_specification::eip4844::MIN_BLOB_GASPRICE" value_MIN_BLOB_GASPRICE.
+  Admitted.
+  Global Typeclasses Opaque value_MIN_BLOB_GASPRICE.
   
-  Definition value_BLOB_GASPRICE_UPDATE_FRACTION : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
+  Definition value_BLOB_GASPRICE_UPDATE_FRACTION
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
   
-  Axiom Constant_value_BLOB_GASPRICE_UPDATE_FRACTION :
-    (M.get_constant "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION") =
+  Global Instance Instance_IsConstant_value_BLOB_GASPRICE_UPDATE_FRACTION :
+    M.IsFunction.C
+      "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION"
       value_BLOB_GASPRICE_UPDATE_FRACTION.
-  Global Hint Rewrite Constant_value_BLOB_GASPRICE_UPDATE_FRACTION : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BLOB_GASPRICE_UPDATE_FRACTION.
   
-  Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  Definition value_VERSIONED_HASH_VERSION_KZG
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
-  Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
-    (M.get_constant "revm_specification::eip4844::VERSIONED_HASH_VERSION_KZG") =
+  Global Instance Instance_IsConstant_value_VERSIONED_HASH_VERSION_KZG :
+    M.IsFunction.C
+      "revm_specification::eip4844::VERSIONED_HASH_VERSION_KZG"
       value_VERSIONED_HASH_VERSION_KZG.
-  Global Hint Rewrite Constant_value_VERSIONED_HASH_VERSION_KZG : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VERSIONED_HASH_VERSION_KZG.
 End eip4844.

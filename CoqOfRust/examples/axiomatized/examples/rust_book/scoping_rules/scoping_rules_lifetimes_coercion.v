@@ -4,17 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::multiply" multiply.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::multiply" multiply.
 Admitted.
 
 Parameter choose_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_choose_first :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::choose_first" choose_first.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::choose_first" choose_first.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::main" main.
 Admitted.

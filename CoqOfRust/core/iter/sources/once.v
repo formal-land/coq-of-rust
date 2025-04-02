@@ -36,7 +36,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_once :
-        M.IsFunction.Trait "core::iter::sources::once::once" once.
+        M.IsFunction.C "core::iter::sources::once::once" once.
       Admitted.
       Global Typeclasses Opaque once.
       

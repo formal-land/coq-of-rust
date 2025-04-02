@@ -3,12 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module utils.
   Module units.
-    Definition value_MAX_U64_EXPONENT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 19 |))).
+    Definition value_MAX_U64_EXPONENT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 19 |))).
     
-    Axiom Constant_value_MAX_U64_EXPONENT :
-      (M.get_constant "alloy_primitives::utils::units::MAX_U64_EXPONENT") = value_MAX_U64_EXPONENT.
-    Global Hint Rewrite Constant_value_MAX_U64_EXPONENT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MAX_U64_EXPONENT :
+      M.IsFunction.C "alloy_primitives::utils::units::MAX_U64_EXPONENT" value_MAX_U64_EXPONENT.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_U64_EXPONENT.
     
     (*
     pub fn parse_ether(eth: &str) -> Result<U256, UnitsError> {
@@ -71,7 +72,13 @@ Module utils.
                 |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| eth |) |) |);
-                  M.read (| M.get_constant "alloy_primitives::utils::units::ETHER" |)
+                  M.read (|
+                    get_associated_constant (|
+                      Ty.path "alloy_primitives::utils::units::Unit",
+                      "ETHER",
+                      Ty.path "alloy_primitives::utils::units::Unit"
+                    |)
+                  |)
                 ]
               |);
               M.get_trait_method (|
@@ -94,7 +101,7 @@ Module utils.
       end.
     
     Global Instance Instance_IsFunction_parse_ether :
-      M.IsFunction.Trait "alloy_primitives::utils::units::parse_ether" parse_ether.
+      M.IsFunction.C "alloy_primitives::utils::units::parse_ether" parse_ether.
     Admitted.
     Global Typeclasses Opaque parse_ether.
     
@@ -246,7 +253,7 @@ Module utils.
       end.
     
     Global Instance Instance_IsFunction_parse_units :
-      M.IsFunction.Trait "alloy_primitives::utils::units::parse_units" parse_units.
+      M.IsFunction.C "alloy_primitives::utils::units::parse_units" parse_units.
     Admitted.
     Global Typeclasses Opaque parse_units.
     
@@ -287,14 +294,20 @@ Module utils.
                   |)
                 |)
               |);
-              M.read (| M.get_constant "alloy_primitives::utils::units::ETHER" |)
+              M.read (|
+                get_associated_constant (|
+                  Ty.path "alloy_primitives::utils::units::Unit",
+                  "ETHER",
+                  Ty.path "alloy_primitives::utils::units::Unit"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_format_ether :
-      M.IsFunction.Trait "alloy_primitives::utils::units::format_ether" format_ether.
+      M.IsFunction.C "alloy_primitives::utils::units::format_ether" format_ether.
     Admitted.
     Global Typeclasses Opaque format_ether.
     
@@ -435,7 +448,7 @@ Module utils.
       end.
     
     Global Instance Instance_IsFunction_format_units :
-      M.IsFunction.Trait "alloy_primitives::utils::units::format_units" format_units.
+      M.IsFunction.C "alloy_primitives::utils::units::format_units" format_units.
     Admitted.
     Global Typeclasses Opaque format_units.
     
@@ -3682,8 +3695,25 @@ Module utils.
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
                                                   [
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloy_primitives::signed::int::ZERO"
+                                                      get_associated_constant (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [],
+                                                        "ZERO",
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      |)
                                                     |)
                                                   ]
                                               ]
@@ -4138,8 +4168,25 @@ Module utils.
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
                                                   [
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloy_primitives::signed::int::ZERO"
+                                                      get_associated_constant (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [],
+                                                        "ZERO",
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      |)
                                                     |)
                                                   ]
                                               ]
@@ -5209,7 +5256,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_parse_units :
-        M.IsAssociatedFunction.Trait Self "parse_units" parse_units.
+        M.IsAssociatedFunction.C Self "parse_units" parse_units.
       Admitted.
       Global Typeclasses Opaque parse_units.
       
@@ -5286,7 +5333,11 @@ Module utils.
                                       M.borrow (| Pointer.Kind.Ref, unit_ |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "alloy_primitives::utils::units::MAX"
+                                        get_associated_constant (|
+                                          Ty.path "alloy_primitives::utils::units::Unit",
+                                          "MAX",
+                                          Ty.path "alloy_primitives::utils::units::Unit"
+                                        |)
                                       |)
                                     ]
                                   |)))
@@ -5333,7 +5384,11 @@ Module utils.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_constant "alloy_primitives::utils::units::MAX"
+                                              get_associated_constant (|
+                                                Ty.path "alloy_primitives::utils::units::Unit",
+                                                "MAX",
+                                                Ty.path "alloy_primitives::utils::units::Unit"
+                                              |)
                                             |)
                                           ]
                                         |),
@@ -6171,7 +6226,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_format_units :
-        M.IsAssociatedFunction.Trait Self "format_units" format_units.
+        M.IsAssociatedFunction.C Self "format_units" format_units.
       Admitted.
       Global Typeclasses Opaque format_units.
       
@@ -6208,7 +6263,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_is_signed :
-        M.IsAssociatedFunction.Trait Self "is_signed" is_signed.
+        M.IsAssociatedFunction.C Self "is_signed" is_signed.
       Admitted.
       Global Typeclasses Opaque is_signed.
       
@@ -6245,7 +6300,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_is_unsigned :
-        M.IsAssociatedFunction.Trait Self "is_unsigned" is_unsigned.
+        M.IsAssociatedFunction.C Self "is_unsigned" is_unsigned.
       Admitted.
       Global Typeclasses Opaque is_unsigned.
       
@@ -6312,7 +6367,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -6379,7 +6434,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -6463,8 +6518,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_zero :
-        M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+      Global Instance AssociatedFunction_is_zero : M.IsAssociatedFunction.C Self "is_zero" is_zero.
       Admitted.
       Global Typeclasses Opaque is_zero.
       
@@ -6538,7 +6592,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_get_absolute :
-        M.IsAssociatedFunction.Trait Self "get_absolute" get_absolute.
+        M.IsAssociatedFunction.C Self "get_absolute" get_absolute.
       Admitted.
       Global Typeclasses Opaque get_absolute.
       
@@ -6612,7 +6666,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_get_signed :
-        M.IsAssociatedFunction.Trait Self "get_signed" get_signed.
+        M.IsAssociatedFunction.C Self "get_signed" get_signed.
       Admitted.
       Global Typeclasses Opaque get_signed.
     End Impl_alloy_primitives_utils_units_ParseUnits.
@@ -7502,8 +7556,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant
-                                              "alloy_primitives::utils::units::ETHER"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "ETHER",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7550,7 +7607,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant "alloy_primitives::utils::units::PWEI"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "PWEI",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7597,7 +7658,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant "alloy_primitives::utils::units::TWEI"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "TWEI",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7644,7 +7709,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant "alloy_primitives::utils::units::GWEI"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "GWEI",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7691,7 +7760,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant "alloy_primitives::utils::units::MWEI"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "MWEI",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7738,7 +7811,11 @@ Module utils.
                                         match γ with
                                         | [] =>
                                           ltac:(M.monadic
-                                            (M.get_constant "alloy_primitives::utils::units::KWEI"))
+                                            (get_associated_constant (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "KWEI",
+                                              Ty.path "alloy_primitives::utils::units::Unit"
+                                            |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end)
                                   |)));
@@ -7749,7 +7826,11 @@ Module utils.
                                       M.read (| γ |),
                                       mk_str (| "wei" |)
                                     |) in
-                                  M.get_constant "alloy_primitives::utils::units::WEI"));
+                                  get_associated_constant (|
+                                    Ty.path "alloy_primitives::utils::units::Unit",
+                                    "WEI",
+                                    Ty.path "alloy_primitives::utils::units::Unit"
+                                  |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
@@ -7811,265 +7892,293 @@ Module utils.
       
       (*     pub const WEI: Self = unsafe { Self::new_unchecked(0) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_WEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_WEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 0 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 0 ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_WEI :
-        M.IsAssociatedConstant.Trait Self "value_WEI" value_WEI.
+      Global Instance AssociatedConstant_value_WEI : M.IsAssociatedFunction.C Self "WEI" value_WEI.
       Admitted.
       Global Typeclasses Opaque value_WEI.
       
       (*     pub const Wei: Self = Self::WEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Wei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::WEI")).
+      Definition value_Wei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "WEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
-      Global Instance AssociatedConstant_value_Wei :
-        M.IsAssociatedConstant.Trait Self "value_Wei" value_Wei.
+      Global Instance AssociatedConstant_value_Wei : M.IsAssociatedFunction.C Self "Wei" value_Wei.
       Admitted.
       Global Typeclasses Opaque value_Wei.
       
       (*     pub const KWEI: Self = unsafe { Self::new_unchecked(3) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_KWEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_KWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 3 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 3 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_KWEI :
-        M.IsAssociatedConstant.Trait Self "value_KWEI" value_KWEI.
+        M.IsAssociatedFunction.C Self "KWEI" value_KWEI.
       Admitted.
       Global Typeclasses Opaque value_KWEI.
       
       (*     pub const Kwei: Self = Self::KWEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Kwei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::KWEI")).
+      Definition value_Kwei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "KWEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Kwei :
-        M.IsAssociatedConstant.Trait Self "value_Kwei" value_Kwei.
+        M.IsAssociatedFunction.C Self "Kwei" value_Kwei.
       Admitted.
       Global Typeclasses Opaque value_Kwei.
       
       (*     pub const MWEI: Self = unsafe { Self::new_unchecked(6) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_MWEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_MWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 6 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 6 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_MWEI :
-        M.IsAssociatedConstant.Trait Self "value_MWEI" value_MWEI.
+        M.IsAssociatedFunction.C Self "MWEI" value_MWEI.
       Admitted.
       Global Typeclasses Opaque value_MWEI.
       
       (*     pub const Mwei: Self = Self::MWEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Mwei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::MWEI")).
+      Definition value_Mwei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "MWEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Mwei :
-        M.IsAssociatedConstant.Trait Self "value_Mwei" value_Mwei.
+        M.IsAssociatedFunction.C Self "Mwei" value_Mwei.
       Admitted.
       Global Typeclasses Opaque value_Mwei.
       
       (*     pub const GWEI: Self = unsafe { Self::new_unchecked(9) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_GWEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_GWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 9 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 9 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_GWEI :
-        M.IsAssociatedConstant.Trait Self "value_GWEI" value_GWEI.
+        M.IsAssociatedFunction.C Self "GWEI" value_GWEI.
       Admitted.
       Global Typeclasses Opaque value_GWEI.
       
       (*     pub const Gwei: Self = Self::GWEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Gwei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::GWEI")).
+      Definition value_Gwei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "GWEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Gwei :
-        M.IsAssociatedConstant.Trait Self "value_Gwei" value_Gwei.
+        M.IsAssociatedFunction.C Self "Gwei" value_Gwei.
       Admitted.
       Global Typeclasses Opaque value_Gwei.
       
       (*     pub const TWEI: Self = unsafe { Self::new_unchecked(12) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_TWEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_TWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 12 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 12 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_TWEI :
-        M.IsAssociatedConstant.Trait Self "value_TWEI" value_TWEI.
+        M.IsAssociatedFunction.C Self "TWEI" value_TWEI.
       Admitted.
       Global Typeclasses Opaque value_TWEI.
       
       (*     pub const Twei: Self = Self::TWEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Twei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::TWEI")).
+      Definition value_Twei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "TWEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Twei :
-        M.IsAssociatedConstant.Trait Self "value_Twei" value_Twei.
+        M.IsAssociatedFunction.C Self "Twei" value_Twei.
       Admitted.
       Global Typeclasses Opaque value_Twei.
       
       (*     pub const PWEI: Self = unsafe { Self::new_unchecked(15) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_PWEI : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_PWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 15 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 15 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_PWEI :
-        M.IsAssociatedConstant.Trait Self "value_PWEI" value_PWEI.
+        M.IsAssociatedFunction.C Self "PWEI" value_PWEI.
       Admitted.
       Global Typeclasses Opaque value_PWEI.
       
       (*     pub const Pwei: Self = Self::PWEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Pwei : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::PWEI")).
+      Definition value_Pwei (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "PWEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Pwei :
-        M.IsAssociatedConstant.Trait Self "value_Pwei" value_Pwei.
+        M.IsAssociatedFunction.C Self "Pwei" value_Pwei.
       Admitted.
       Global Typeclasses Opaque value_Pwei.
       
       (*     pub const ETHER: Self = unsafe { Self::new_unchecked(18) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_ETHER : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_ETHER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 18 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 18 ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_ETHER :
-        M.IsAssociatedConstant.Trait Self "value_ETHER" value_ETHER.
+        M.IsAssociatedFunction.C Self "ETHER" value_ETHER.
       Admitted.
       Global Typeclasses Opaque value_ETHER.
       
       (*     pub const Ether: Self = Self::ETHER; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_Ether : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::ETHER")).
+      Definition value_Ether (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "ETHER",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
       Global Instance AssociatedConstant_value_Ether :
-        M.IsAssociatedConstant.Trait Self "value_Ether" value_Ether.
+        M.IsAssociatedFunction.C Self "Ether" value_Ether.
       Admitted.
       Global Typeclasses Opaque value_Ether.
       
       (*     pub const MIN: Self = Self::WEI; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_MIN : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "alloy_primitives::utils::units::WEI")).
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_associated_constant (|
+            Ty.path "alloy_primitives::utils::units::Unit",
+            "WEI",
+            Ty.path "alloy_primitives::utils::units::Unit"
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*     pub const MAX: Self = unsafe { Self::new_unchecked(77) }; *)
       (* Ty.path "alloy_primitives::utils::units::Unit" *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "alloy_primitives::utils::units::Unit",
+              M.get_associated_function (|
                 Ty.path "alloy_primitives::utils::units::Unit",
-                M.get_associated_function (|
-                  Ty.path "alloy_primitives::utils::units::Unit",
-                  "new_unchecked",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.U8 77 ]
-              |)
-            |))).
+                "new_unchecked",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.U8 77 ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -8112,7 +8221,14 @@ Module utils.
                                   [],
                                   []
                                 |),
-                                [ M.read (| M.get_constant "alloy_primitives::utils::units::MAX" |)
+                                [
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "alloy_primitives::utils::units::Unit",
+                                      "MAX",
+                                      Ty.path "alloy_primitives::utils::units::Unit"
+                                    |)
+                                  |)
                                 ]
                               |)
                             |)
@@ -8143,7 +8259,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -8162,7 +8278,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+        M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -8206,7 +8322,10 @@ Module utils.
                                 [ M.read (| self |) ]
                               |),
                               M.read (|
-                                M.get_constant "alloy_primitives::utils::units::MAX_U64_EXPONENT"
+                                get_constant (|
+                                  "alloy_primitives::utils::units::MAX_U64_EXPONENT",
+                                  Ty.path "u8"
+                                |)
                               |)
                             |)
                           |)) in
@@ -8313,7 +8432,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_wei : M.IsAssociatedFunction.Trait Self "wei" wei.
+      Global Instance AssociatedFunction_wei : M.IsAssociatedFunction.C Self "wei" wei.
       Admitted.
       Global Typeclasses Opaque wei.
       
@@ -8353,7 +8472,10 @@ Module utils.
                                   [ M.read (| self |) ]
                                 |),
                                 M.read (|
-                                  M.get_constant "alloy_primitives::utils::units::MAX_U64_EXPONENT"
+                                  get_constant (|
+                                    "alloy_primitives::utils::units::MAX_U64_EXPONENT",
+                                    Ty.path "u8"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -8441,7 +8563,7 @@ Module utils.
         end.
       
       Global Instance AssociatedFunction_wei_const :
-        M.IsAssociatedFunction.Trait Self "wei_const" wei_const.
+        M.IsAssociatedFunction.C Self "wei_const" wei_const.
       Admitted.
       Global Typeclasses Opaque wei_const.
       
@@ -8465,7 +8587,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+      Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
       Admitted.
       Global Typeclasses Opaque get.
       
@@ -8492,7 +8614,7 @@ Module utils.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_num : M.IsAssociatedFunction.Trait Self "as_num" as_num.
+      Global Instance AssociatedFunction_as_num : M.IsAssociatedFunction.C Self "as_num" as_num.
       Admitted.
       Global Typeclasses Opaque as_num.
     End Impl_alloy_primitives_utils_units_Unit.

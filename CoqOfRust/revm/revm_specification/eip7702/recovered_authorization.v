@@ -443,7 +443,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+        M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -473,7 +473,7 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.Trait Self "inner" inner.
+      Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.C Self "inner" inner.
       Admitted.
       Global Typeclasses Opaque inner.
       
@@ -498,7 +498,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_authority :
-        M.IsAssociatedFunction.Trait Self "authority" authority.
+        M.IsAssociatedFunction.C Self "authority" authority.
       Admitted.
       Global Typeclasses Opaque authority.
       
@@ -533,7 +533,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_into_parts :
-        M.IsAssociatedFunction.Trait Self "into_parts" into_parts.
+        M.IsAssociatedFunction.C Self "into_parts" into_parts.
       Admitted.
       Global Typeclasses Opaque into_parts.
     End Impl_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.

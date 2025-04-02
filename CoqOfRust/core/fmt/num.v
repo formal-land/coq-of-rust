@@ -890,7 +890,11 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant "core::fmt::num::GenericRadix::BASE" |) ]
+                    [
+                      M.read (|
+                        get_constant (| "core::fmt::num::GenericRadix::BASE", Ty.path "u8" |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1325,7 +1329,12 @@ Module fmt.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (| M.get_constant "core::fmt::num::GenericRadix::PREFIX" |)
+                        M.read (|
+                          get_constant (|
+                            "core::fmt::num::GenericRadix::PREFIX",
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                          |)
+                        |)
                       |)
                     |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
@@ -1605,12 +1614,13 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
+      Definition value_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -1697,8 +1707,10 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE",
+                                                                Ty.path "u8"
+                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -1748,8 +1760,8 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_BASE", InstanceField.Constant value_BASE);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX);
+            ("value_BASE", InstanceField.Method value_BASE);
+            ("value_PREFIX", InstanceField.Method value_PREFIX);
             ("digit", InstanceField.Method digit)
           ].
     End Impl_core_fmt_num_GenericRadix_for_core_fmt_num_Binary.
@@ -1759,12 +1771,13 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 8 |))).
+      Definition value_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 8 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -1851,8 +1864,10 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE",
+                                                                Ty.path "u8"
+                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -1902,8 +1917,8 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_BASE", InstanceField.Constant value_BASE);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX);
+            ("value_BASE", InstanceField.Method value_BASE);
+            ("value_PREFIX", InstanceField.Method value_PREFIX);
             ("digit", InstanceField.Method digit)
           ].
     End Impl_core_fmt_num_GenericRadix_for_core_fmt_num_Octal.
@@ -1913,12 +1928,13 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
+      Definition value_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -2014,8 +2030,10 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE",
+                                                                Ty.path "u8"
+                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -2065,8 +2083,8 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_BASE", InstanceField.Constant value_BASE);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX);
+            ("value_BASE", InstanceField.Method value_BASE);
+            ("value_PREFIX", InstanceField.Method value_PREFIX);
             ("digit", InstanceField.Method digit)
           ].
     End Impl_core_fmt_num_GenericRadix_for_core_fmt_num_LowerHex.
@@ -2076,12 +2094,13 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
+      Definition value_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
+      Definition value_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -2177,8 +2196,10 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::fmt::num::GenericRadix::BASE"
+                                                              get_constant (|
+                                                                "core::fmt::num::GenericRadix::BASE",
+                                                                Ty.path "u8"
+                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -2228,8 +2249,8 @@ Module fmt.
           Self
           (* Instance *)
           [
-            ("value_BASE", InstanceField.Constant value_BASE);
-            ("value_PREFIX", InstanceField.Constant value_PREFIX);
+            ("value_BASE", InstanceField.Method value_BASE);
+            ("value_PREFIX", InstanceField.Method value_PREFIX);
             ("digit", InstanceField.Method digit)
           ].
     End Impl_core_fmt_num_GenericRadix_for_core_fmt_num_UpperHex.
@@ -4586,12 +4607,13 @@ Module fmt.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u128.
     
-    Definition value_DEC_DIGITS_LUT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| UnsupportedLiteral |))).
+    Definition value_DEC_DIGITS_LUT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| UnsupportedLiteral |))).
     
-    Axiom Constant_value_DEC_DIGITS_LUT :
-      (M.get_constant "core::fmt::num::DEC_DIGITS_LUT") = value_DEC_DIGITS_LUT.
-    Global Hint Rewrite Constant_value_DEC_DIGITS_LUT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_DEC_DIGITS_LUT :
+      M.IsFunction.C "core::fmt::num::DEC_DIGITS_LUT" value_DEC_DIGITS_LUT.
+    Admitted.
+    Global Typeclasses Opaque value_DEC_DIGITS_LUT.
     
     Module Impl_core_fmt_Debug_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
@@ -6855,7 +6877,9 @@ Module fmt.
                     |)
                   |) in
                 let~ curr : Ty.path "usize" :=
-                  M.copy (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
+                  M.copy (|
+                    get_constant (| "core::fmt::num::imp::_fmt::SIZE", Ty.path "usize" |)
+                  |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -6893,7 +6917,25 @@ Module fmt.
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::DEC_DIGITS_LUT",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 200 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]
+                                  |)
+                                |)
                               |)
                             |)
                           |)
@@ -7364,7 +7406,7 @@ Module fmt.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.Trait Self "_fmt" _fmt.
+        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.C Self "_fmt" _fmt.
         Admitted.
         Global Typeclasses Opaque _fmt.
       End Impl_u8.
@@ -7590,7 +7632,9 @@ Module fmt.
                     |)
                   |) in
                 let~ curr : Ty.path "usize" :=
-                  M.copy (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
+                  M.copy (|
+                    get_constant (| "core::fmt::num::imp::_fmt::SIZE", Ty.path "usize" |)
+                  |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -7628,7 +7672,25 @@ Module fmt.
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::DEC_DIGITS_LUT",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 200 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]
+                                  |)
+                                |)
                               |)
                             |)
                           |)
@@ -8099,7 +8161,7 @@ Module fmt.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.Trait Self "_fmt" _fmt.
+        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.C Self "_fmt" _fmt.
         Admitted.
         Global Typeclasses Opaque _fmt.
       End Impl_u16.
@@ -8325,7 +8387,9 @@ Module fmt.
                     |)
                   |) in
                 let~ curr : Ty.path "usize" :=
-                  M.copy (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
+                  M.copy (|
+                    get_constant (| "core::fmt::num::imp::_fmt::SIZE", Ty.path "usize" |)
+                  |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -8363,7 +8427,25 @@ Module fmt.
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::DEC_DIGITS_LUT",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 200 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]
+                                  |)
+                                |)
                               |)
                             |)
                           |)
@@ -8834,7 +8916,7 @@ Module fmt.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.Trait Self "_fmt" _fmt.
+        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.C Self "_fmt" _fmt.
         Admitted.
         Global Typeclasses Opaque _fmt.
       End Impl_u32.
@@ -9060,7 +9142,9 @@ Module fmt.
                     |)
                   |) in
                 let~ curr : Ty.path "usize" :=
-                  M.copy (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
+                  M.copy (|
+                    get_constant (| "core::fmt::num::imp::_fmt::SIZE", Ty.path "usize" |)
+                  |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -9098,7 +9182,25 @@ Module fmt.
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::DEC_DIGITS_LUT",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 200 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]
+                                  |)
+                                |)
                               |)
                             |)
                           |)
@@ -9569,7 +9671,7 @@ Module fmt.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.Trait Self "_fmt" _fmt.
+        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.C Self "_fmt" _fmt.
         Admitted.
         Global Typeclasses Opaque _fmt.
       End Impl_u64.
@@ -9800,7 +9902,9 @@ Module fmt.
                     |)
                   |) in
                 let~ curr : Ty.path "usize" :=
-                  M.copy (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
+                  M.copy (|
+                    get_constant (| "core::fmt::num::imp::_fmt::SIZE", Ty.path "usize" |)
+                  |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -9838,7 +9942,25 @@ Module fmt.
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::DEC_DIGITS_LUT",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 200 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]
+                                  |)
+                                |)
                               |)
                             |)
                           |)
@@ -10309,7 +10431,7 @@ Module fmt.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.Trait Self "_fmt" _fmt.
+        Global Instance AssociatedFunction__fmt : M.IsAssociatedFunction.C Self "_fmt" _fmt.
         Admitted.
         Global Typeclasses Opaque _fmt.
       End Impl_usize.
@@ -11073,7 +11195,25 @@ Module fmt.
                                 M.deref (|
                                   M.read (|
                                     M.deref (|
-                                      M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "core::fmt::num::DEC_DIGITS_LUT",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 200 ]
+                                                    [ Ty.path "u8" ]
+                                                ]
+                                            ]
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -11795,7 +11935,7 @@ Module fmt.
         end.
       
       Global Instance Instance_IsFunction_exp_u64 :
-        M.IsFunction.Trait "core::fmt::num::imp::exp_u64" exp_u64.
+        M.IsFunction.C "core::fmt::num::imp::exp_u64" exp_u64.
       Admitted.
       Global Typeclasses Opaque exp_u64.
       
@@ -14988,7 +15128,25 @@ Module fmt.
                               M.deref (|
                                 M.read (|
                                   M.deref (|
-                                    M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::fmt::num::DEC_DIGITS_LUT",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 200 ]
+                                                  [ Ty.path "u8" ]
+                                              ]
+                                          ]
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |)
@@ -15707,7 +15865,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_exp_u128 :
-      M.IsFunction.Trait "core::fmt::num::exp_u128" exp_u128.
+      M.IsFunction.C "core::fmt::num::exp_u128" exp_u128.
     Admitted.
     Global Typeclasses Opaque exp_u128.
     
@@ -16322,7 +16480,27 @@ Module fmt.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.deref (| M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "core::fmt::num::DEC_DIGITS_LUT",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 200 ]
+                                          [ Ty.path "u8" ]
+                                      ]
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       |)
                     |)
@@ -17408,7 +17586,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_parse_u64_into :
-      M.IsFunction.Trait "core::fmt::num::parse_u64_into" parse_u64_into.
+      M.IsFunction.C "core::fmt::num::parse_u64_into" parse_u64_into.
     Admitted.
     Global Typeclasses Opaque parse_u64_into.
     
@@ -18104,7 +18282,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_fmt_u128 :
-      M.IsFunction.Trait "core::fmt::num::fmt_u128" fmt_u128.
+      M.IsFunction.C "core::fmt::num::fmt_u128" fmt_u128.
     Admitted.
     Global Typeclasses Opaque fmt_u128.
     
@@ -18161,7 +18339,9 @@ Module fmt.
                                   Value.Integer IntegerKind.I32 19
                                 |)),
                               BinOp.Wrap.shr (|
-                                M.read (| M.get_constant "core::fmt::num::udiv_1e19::DIV" |),
+                                M.read (|
+                                  get_constant (| "core::fmt::num::udiv_1e19::DIV", Ty.path "u64" |)
+                                |),
                                 Value.Integer IntegerKind.I32 19
                               |)
                             |))
@@ -18175,7 +18355,12 @@ Module fmt.
                               M.get_function (| "core::fmt::num::u128_mulhi", [], [] |),
                               [
                                 M.read (| n |);
-                                M.read (| M.get_constant "core::fmt::num::udiv_1e19::FACTOR" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::fmt::num::udiv_1e19::FACTOR",
+                                    Ty.path "u128"
+                                  |)
+                                |)
                               ]
                             |),
                             Value.Integer IntegerKind.I32 62
@@ -18194,7 +18379,9 @@ Module fmt.
                       M.read (| quot |),
                       M.cast
                         (Ty.path "u128")
-                        (M.read (| M.get_constant "core::fmt::num::udiv_1e19::DIV" |))
+                        (M.read (|
+                          get_constant (| "core::fmt::num::udiv_1e19::DIV", Ty.path "u64" |)
+                        |))
                     |)
                   |))
               |) in
@@ -18204,26 +18391,27 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_udiv_1e19 :
-      M.IsFunction.Trait "core::fmt::num::udiv_1e19" udiv_1e19.
+      M.IsFunction.C "core::fmt::num::udiv_1e19" udiv_1e19.
     Admitted.
     Global Typeclasses Opaque udiv_1e19.
     
     Module udiv_1e19.
-      Definition value_DIV : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
+      Definition value_DIV (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
       
-      Axiom Constant_value_DIV : (M.get_constant "core::fmt::num::udiv_1e19::DIV") = value_DIV.
-      Global Hint Rewrite Constant_value_DIV : constant_rewrites.
+      Global Instance Instance_IsConstant_value_DIV :
+        M.IsFunction.C "core::fmt::num::udiv_1e19::DIV" value_DIV.
+      Admitted.
+      Global Typeclasses Opaque value_DIV.
       
-      Definition value_FACTOR : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (| Value.Integer IntegerKind.U128 156927543384667019095894735580191660403 |))).
+      Definition value_FACTOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (| Value.Integer IntegerKind.U128 156927543384667019095894735580191660403 |))).
       
-      Axiom Constant_value_FACTOR :
-        (M.get_constant "core::fmt::num::udiv_1e19::FACTOR") = value_FACTOR.
-      Global Hint Rewrite Constant_value_FACTOR : constant_rewrites.
+      Global Instance Instance_IsConstant_value_FACTOR :
+        M.IsFunction.C "core::fmt::num::udiv_1e19::FACTOR" value_FACTOR.
+      Admitted.
+      Global Typeclasses Opaque value_FACTOR.
     End udiv_1e19.
     
     (*
@@ -18318,7 +18506,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_u128_mulhi :
-      M.IsFunction.Trait "core::fmt::num::u128_mulhi" u128_mulhi.
+      M.IsFunction.C "core::fmt::num::u128_mulhi" u128_mulhi.
     Admitted.
     Global Typeclasses Opaque u128_mulhi.
   End num.

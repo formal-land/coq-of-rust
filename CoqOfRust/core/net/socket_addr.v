@@ -2250,7 +2250,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2342,7 +2342,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.C Self "ip" ip.
       Admitted.
       Global Typeclasses Opaque ip.
       
@@ -2475,7 +2475,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.C Self "set_ip" set_ip.
       Admitted.
       Global Typeclasses Opaque set_ip.
       
@@ -2545,7 +2545,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.C Self "port" port.
       Admitted.
       Global Typeclasses Opaque port.
       
@@ -2623,7 +2623,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_set_port :
-        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+        M.IsAssociatedFunction.C Self "set_port" set_port.
       Admitted.
       Global Typeclasses Opaque set_port.
       
@@ -2658,8 +2658,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_ipv4 :
-        M.IsAssociatedFunction.Trait Self "is_ipv4" is_ipv4.
+      Global Instance AssociatedFunction_is_ipv4 : M.IsAssociatedFunction.C Self "is_ipv4" is_ipv4.
       Admitted.
       Global Typeclasses Opaque is_ipv4.
       
@@ -2694,8 +2693,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_ipv6 :
-        M.IsAssociatedFunction.Trait Self "is_ipv6" is_ipv6.
+      Global Instance AssociatedFunction_is_ipv6 : M.IsAssociatedFunction.C Self "is_ipv6" is_ipv6.
       Admitted.
       Global Typeclasses Opaque is_ipv6.
     End Impl_core_net_socket_addr_SocketAddr.
@@ -2720,7 +2718,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2750,7 +2748,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.C Self "ip" ip.
       Admitted.
       Global Typeclasses Opaque ip.
       
@@ -2782,7 +2780,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.C Self "set_ip" set_ip.
       Admitted.
       Global Typeclasses Opaque set_ip.
       
@@ -2806,7 +2804,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.C Self "port" port.
       Admitted.
       Global Typeclasses Opaque port.
       
@@ -2839,7 +2837,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_set_port :
-        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+        M.IsAssociatedFunction.C Self "set_port" set_port.
       Admitted.
       Global Typeclasses Opaque set_port.
     End Impl_core_net_socket_addr_SocketAddrV4.
@@ -2871,7 +2869,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2901,7 +2899,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.C Self "ip" ip.
       Admitted.
       Global Typeclasses Opaque ip.
       
@@ -2933,7 +2931,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.C Self "set_ip" set_ip.
       Admitted.
       Global Typeclasses Opaque set_ip.
       
@@ -2957,7 +2955,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.C Self "port" port.
       Admitted.
       Global Typeclasses Opaque port.
       
@@ -2990,7 +2988,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_set_port :
-        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+        M.IsAssociatedFunction.C Self "set_port" set_port.
       Admitted.
       Global Typeclasses Opaque set_port.
       
@@ -3015,7 +3013,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_flowinfo :
-        M.IsAssociatedFunction.Trait Self "flowinfo" flowinfo.
+        M.IsAssociatedFunction.C Self "flowinfo" flowinfo.
       Admitted.
       Global Typeclasses Opaque flowinfo.
       
@@ -3048,7 +3046,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_set_flowinfo :
-        M.IsAssociatedFunction.Trait Self "set_flowinfo" set_flowinfo.
+        M.IsAssociatedFunction.C Self "set_flowinfo" set_flowinfo.
       Admitted.
       Global Typeclasses Opaque set_flowinfo.
       
@@ -3073,7 +3071,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_scope_id :
-        M.IsAssociatedFunction.Trait Self "scope_id" scope_id.
+        M.IsAssociatedFunction.C Self "scope_id" scope_id.
       Admitted.
       Global Typeclasses Opaque scope_id.
       
@@ -3106,7 +3104,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_set_scope_id :
-        M.IsAssociatedFunction.Trait Self "set_scope_id" set_scope_id.
+        M.IsAssociatedFunction.C Self "set_scope_id" set_scope_id.
       Admitted.
       Global Typeclasses Opaque set_scope_id.
     End Impl_core_net_socket_addr_SocketAddrV6.

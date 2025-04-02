@@ -94,7 +94,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+    M.IsAssociatedFunction.C (Self K V) "contains" (contains K V).
   Admitted.
   Global Typeclasses Opaque contains.
   
@@ -122,7 +122,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -151,7 +151,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
   Global Typeclasses Opaque insert.
   
@@ -179,7 +179,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+    M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
   Admitted.
   Global Typeclasses Opaque remove.
   
@@ -207,7 +207,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+    M.IsAssociatedFunction.C (Self K V) "size" (size K V).
   Admitted.
   Global Typeclasses Opaque size.
   
@@ -235,7 +235,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+    M.IsAssociatedFunction.C (Self K V) "take" (take K V).
   Admitted.
   Global Typeclasses Opaque take.
 End Impl_erc1155_Mapping_K_V.
@@ -444,44 +444,53 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_zero_address :
-  M.IsFunction.Trait "erc1155::zero_address" zero_address.
+  M.IsFunction.C "erc1155::zero_address" zero_address.
 Admitted.
 Global Typeclasses Opaque zero_address.
 
-Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
-  M.run_constant
-    ltac:(M.monadic
-      (M.alloc (|
-        Value.Array
-          [
-            Value.Integer IntegerKind.U8 242;
-            Value.Integer IntegerKind.U8 58;
-            Value.Integer IntegerKind.U8 110;
-            Value.Integer IntegerKind.U8 97
-          ]
-      |))).
+Definition value_ON_ERC_1155_RECEIVED_SELECTOR
+    (ε : list Value.t)
+    (τ : list Ty.t)
+    (α : list Value.t)
+    : M :=
+  ltac:(M.monadic
+    (M.alloc (|
+      Value.Array
+        [
+          Value.Integer IntegerKind.U8 242;
+          Value.Integer IntegerKind.U8 58;
+          Value.Integer IntegerKind.U8 110;
+          Value.Integer IntegerKind.U8 97
+        ]
+    |))).
 
-Axiom Constant_value_ON_ERC_1155_RECEIVED_SELECTOR :
-  (M.get_constant "erc1155::ON_ERC_1155_RECEIVED_SELECTOR") = value_ON_ERC_1155_RECEIVED_SELECTOR.
-Global Hint Rewrite Constant_value_ON_ERC_1155_RECEIVED_SELECTOR : constant_rewrites.
+Global Instance Instance_IsConstant_value_ON_ERC_1155_RECEIVED_SELECTOR :
+  M.IsFunction.C "erc1155::ON_ERC_1155_RECEIVED_SELECTOR" value_ON_ERC_1155_RECEIVED_SELECTOR.
+Admitted.
+Global Typeclasses Opaque value_ON_ERC_1155_RECEIVED_SELECTOR.
 
-Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
-  M.run_constant
-    ltac:(M.monadic
-      (M.alloc (|
-        Value.Array
-          [
-            Value.Integer IntegerKind.U8 188;
-            Value.Integer IntegerKind.U8 25;
-            Value.Integer IntegerKind.U8 124;
-            Value.Integer IntegerKind.U8 129
-          ]
-      |))).
+Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR
+    (ε : list Value.t)
+    (τ : list Ty.t)
+    (α : list Value.t)
+    : M :=
+  ltac:(M.monadic
+    (M.alloc (|
+      Value.Array
+        [
+          Value.Integer IntegerKind.U8 188;
+          Value.Integer IntegerKind.U8 25;
+          Value.Integer IntegerKind.U8 124;
+          Value.Integer IntegerKind.U8 129
+        ]
+    |))).
 
-Axiom Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
-  (M.get_constant "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR") =
+Global Instance Instance_IsConstant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
+  M.IsFunction.C
+    "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR"
     _ON_ERC_1155_BATCH_RECEIVED_SELECTOR.
-Global Hint Rewrite Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR : constant_rewrites.
+Admitted.
+Global Typeclasses Opaque _ON_ERC_1155_BATCH_RECEIVED_SELECTOR.
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
@@ -719,7 +728,7 @@ Module Impl_erc1155_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -745,7 +754,7 @@ Module Impl_erc1155_Env.
     end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
   Global Typeclasses Opaque emit_event.
 End Impl_erc1155_Env.
@@ -878,8 +887,7 @@ Module Impl_erc1155_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -901,7 +909,7 @@ Module Impl_erc1155_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -930,7 +938,7 @@ Module Impl_erc1155_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -1114,7 +1122,7 @@ Module Impl_erc1155_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_create : M.IsAssociatedFunction.Trait Self "create" create.
+  Global Instance AssociatedFunction_create : M.IsAssociatedFunction.C Self "create" create.
   Admitted.
   Global Typeclasses Opaque create.
   
@@ -1301,7 +1309,7 @@ Module Impl_erc1155_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.C Self "mint" mint.
   Admitted.
   Global Typeclasses Opaque mint.
   
@@ -1567,7 +1575,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Global Instance AssociatedFunction_perform_transfer :
-    M.IsAssociatedFunction.Trait Self "perform_transfer" perform_transfer.
+    M.IsAssociatedFunction.C Self "perform_transfer" perform_transfer.
   Admitted.
   Global Typeclasses Opaque perform_transfer.
   
@@ -1660,7 +1668,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Global Instance AssociatedFunction_transfer_acceptance_check :
-    M.IsAssociatedFunction.Trait Self "transfer_acceptance_check" transfer_acceptance_check.
+    M.IsAssociatedFunction.C Self "transfer_acceptance_check" transfer_acceptance_check.
   Admitted.
   Global Typeclasses Opaque transfer_acceptance_check.
 End Impl_erc1155_Contract.

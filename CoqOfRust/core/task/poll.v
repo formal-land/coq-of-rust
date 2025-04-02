@@ -773,7 +773,7 @@ Module task.
       
       Global Instance AssociatedFunction_map :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+        M.IsAssociatedFunction.C (Self T) "map" (map T).
       Admitted.
       Global Typeclasses Opaque map.
       
@@ -811,7 +811,7 @@ Module task.
       
       Global Instance AssociatedFunction_is_ready :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_ready" (is_ready T).
+        M.IsAssociatedFunction.C (Self T) "is_ready" (is_ready T).
       Admitted.
       Global Typeclasses Opaque is_ready.
       
@@ -843,7 +843,7 @@ Module task.
       
       Global Instance AssociatedFunction_is_pending :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_pending" (is_pending T).
+        M.IsAssociatedFunction.C (Self T) "is_pending" (is_pending T).
       Admitted.
       Global Typeclasses Opaque is_pending.
     End Impl_core_task_poll_Poll_T.
@@ -953,7 +953,7 @@ Module task.
       
       Global Instance AssociatedFunction_map_ok :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T E) "map_ok" (map_ok T E).
+        M.IsAssociatedFunction.C (Self T E) "map_ok" (map_ok T E).
       Admitted.
       Global Typeclasses Opaque map_ok.
       
@@ -1055,7 +1055,7 @@ Module task.
       
       Global Instance AssociatedFunction_map_err :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+        M.IsAssociatedFunction.C (Self T E) "map_err" (map_err T E).
       Admitted.
       Global Typeclasses Opaque map_err.
     End Impl_core_task_poll_Poll_core_result_Result_T_E.
@@ -1210,7 +1210,7 @@ Module task.
       
       Global Instance AssociatedFunction_map_ok :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T E) "map_ok" (map_ok T E).
+        M.IsAssociatedFunction.C (Self T E) "map_ok" (map_ok T E).
       Admitted.
       Global Typeclasses Opaque map_ok.
       
@@ -1352,7 +1352,7 @@ Module task.
       
       Global Instance AssociatedFunction_map_err :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+        M.IsAssociatedFunction.C (Self T E) "map_err" (map_err T E).
       Admitted.
       Global Typeclasses Opaque map_err.
     End Impl_core_task_poll_Poll_core_option_Option_core_result_Result_T_E.

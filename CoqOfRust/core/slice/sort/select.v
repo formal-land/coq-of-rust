@@ -177,7 +177,12 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -477,17 +482,23 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_partition_at_index :
-        M.IsFunction.Trait "core::slice::sort::select::partition_at_index" partition_at_index.
+        M.IsFunction.C "core::slice::sort::select::partition_at_index" partition_at_index.
       Admitted.
       Global Typeclasses Opaque partition_at_index.
       
-      Definition value_INSERTION_SORT_THRESHOLD : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      Definition value_INSERTION_SORT_THRESHOLD
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
-      Axiom Constant_value_INSERTION_SORT_THRESHOLD :
-        (M.get_constant "core::slice::sort::select::INSERTION_SORT_THRESHOLD") =
+      Global Instance Instance_IsConstant_value_INSERTION_SORT_THRESHOLD :
+        M.IsFunction.C
+          "core::slice::sort::select::INSERTION_SORT_THRESHOLD"
           value_INSERTION_SORT_THRESHOLD.
-      Global Hint Rewrite Constant_value_INSERTION_SORT_THRESHOLD : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_INSERTION_SORT_THRESHOLD.
       
       (*
       fn partition_at_index_loop<'a, T, F>(
@@ -620,8 +631,10 @@ Module slice.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::slice::sort::select::INSERTION_SORT_THRESHOLD"
+                                                get_constant (|
+                                                  "core::slice::sort::select::INSERTION_SORT_THRESHOLD",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1405,9 +1418,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_partition_at_index_loop :
-        M.IsFunction.Trait
-          "core::slice::sort::select::partition_at_index_loop"
-          partition_at_index_loop.
+        M.IsFunction.C "core::slice::sort::select::partition_at_index_loop" partition_at_index_loop.
       Admitted.
       Global Typeclasses Opaque partition_at_index_loop.
       
@@ -1673,7 +1684,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_min_index :
-        M.IsFunction.Trait "core::slice::sort::select::min_index" min_index.
+        M.IsFunction.C "core::slice::sort::select::min_index" min_index.
       Admitted.
       Global Typeclasses Opaque min_index.
       
@@ -1939,7 +1950,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_max_index :
-        M.IsFunction.Trait "core::slice::sort::select::max_index" max_index.
+        M.IsFunction.C "core::slice::sort::select::max_index" max_index.
       Admitted.
       Global Typeclasses Opaque max_index.
       
@@ -2087,8 +2098,10 @@ Module slice.
                                             UnOp.not (|
                                               UnOp.not (|
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::mem::SizedTypeProperties::IS_ZST"
+                                                  get_constant (|
+                                                    "core::mem::SizedTypeProperties::IS_ZST",
+                                                    Ty.path "bool"
+                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -2147,8 +2160,10 @@ Module slice.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::slice::sort::select::INSERTION_SORT_THRESHOLD"
+                                                get_constant (|
+                                                  "core::slice::sort::select::INSERTION_SORT_THRESHOLD",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -2618,7 +2633,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_median_of_medians :
-        M.IsFunction.Trait "core::slice::sort::select::median_of_medians" median_of_medians.
+        M.IsFunction.C "core::slice::sort::select::median_of_medians" median_of_medians.
       Admitted.
       Global Typeclasses Opaque median_of_medians.
       
@@ -3078,7 +3093,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_median_of_ninthers :
-        M.IsFunction.Trait "core::slice::sort::select::median_of_ninthers" median_of_ninthers.
+        M.IsFunction.C "core::slice::sort::select::median_of_ninthers" median_of_ninthers.
       Admitted.
       Global Typeclasses Opaque median_of_ninthers.
       
@@ -3873,7 +3888,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_ninther :
-        M.IsFunction.Trait "core::slice::sort::select::ninther" ninther.
+        M.IsFunction.C "core::slice::sort::select::ninther" ninther.
       Admitted.
       Global Typeclasses Opaque ninther.
       
@@ -4141,7 +4156,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_median_idx :
-        M.IsFunction.Trait "core::slice::sort::select::median_idx" median_idx.
+        M.IsFunction.C "core::slice::sort::select::median_idx" median_idx.
       Admitted.
       Global Typeclasses Opaque median_idx.
     End select.

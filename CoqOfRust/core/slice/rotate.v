@@ -198,7 +198,11 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -1535,7 +1539,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_ptr_rotate :
-      M.IsFunction.Trait "core::slice::rotate::ptr_rotate" ptr_rotate.
+      M.IsFunction.C "core::slice::rotate::ptr_rotate" ptr_rotate.
     Admitted.
     Global Typeclasses Opaque ptr_rotate.
     

@@ -708,7 +708,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   end.
 
 Global Instance Instance_IsFunction_try_logon :
-  M.IsFunction.Trait "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
+  M.IsFunction.C "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
 Admitted.
 Global Typeclasses Opaque try_logon.
 
@@ -865,6 +865,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "hash_map_alternate_or_custom_key_types::main" main.
+  M.IsFunction.C "hash_map_alternate_or_custom_key_types::main" main.
 Admitted.
 Global Typeclasses Opaque main.

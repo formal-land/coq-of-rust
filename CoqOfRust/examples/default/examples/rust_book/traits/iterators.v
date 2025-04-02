@@ -107,7 +107,7 @@ Definition fibonacci (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_fibonacci : M.IsFunction.Trait "iterators::fibonacci" fibonacci.
+Global Instance Instance_IsFunction_fibonacci : M.IsFunction.C "iterators::fibonacci" fibonacci.
 Admitted.
 Global Typeclasses Opaque fibonacci.
 
@@ -1459,6 +1459,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "iterators::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "iterators::main" main.
 Admitted.
 Global Typeclasses Opaque main.

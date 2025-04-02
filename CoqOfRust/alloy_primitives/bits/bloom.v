@@ -3,70 +3,87 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bits.
   Module bloom.
-    Definition value_BLOOM_BITS_PER_ITEM : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 3 |))).
+    Definition value_BLOOM_BITS_PER_ITEM
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 3 |))).
     
-    Axiom Constant_value_BLOOM_BITS_PER_ITEM :
-      (M.get_constant "alloy_primitives::bits::bloom::BLOOM_BITS_PER_ITEM") =
-        value_BLOOM_BITS_PER_ITEM.
-    Global Hint Rewrite Constant_value_BLOOM_BITS_PER_ITEM : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BLOOM_BITS_PER_ITEM :
+      M.IsFunction.C "alloy_primitives::bits::bloom::BLOOM_BITS_PER_ITEM" value_BLOOM_BITS_PER_ITEM.
+    Admitted.
+    Global Typeclasses Opaque value_BLOOM_BITS_PER_ITEM.
     
-    Definition value_BLOOM_SIZE_BYTES : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    Definition value_BLOOM_SIZE_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
-    Axiom Constant_value_BLOOM_SIZE_BYTES :
-      (M.get_constant "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES") = value_BLOOM_SIZE_BYTES.
-    Global Hint Rewrite Constant_value_BLOOM_SIZE_BYTES : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BLOOM_SIZE_BYTES :
+      M.IsFunction.C "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES" value_BLOOM_SIZE_BYTES.
+    Admitted.
+    Global Typeclasses Opaque value_BLOOM_SIZE_BYTES.
     
-    Definition value_BLOOM_SIZE_BITS : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.mul (|
-              M.read (| M.get_constant "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES" |),
-              Value.Integer IntegerKind.Usize 8
-            |)
-          |))).
+    Definition value_BLOOM_SIZE_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
+            M.read (|
+              get_constant (| "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES", Ty.path "usize" |)
+            |),
+            Value.Integer IntegerKind.Usize 8
+          |)
+        |))).
     
-    Axiom Constant_value_BLOOM_SIZE_BITS :
-      (M.get_constant "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS") = value_BLOOM_SIZE_BITS.
-    Global Hint Rewrite Constant_value_BLOOM_SIZE_BITS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BLOOM_SIZE_BITS :
+      M.IsFunction.C "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS" value_BLOOM_SIZE_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BLOOM_SIZE_BITS.
     
-    Definition value_MASK : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.sub (|
-              M.read (| M.get_constant "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS" |),
-              Value.Integer IntegerKind.Usize 1
-            |)
-          |))).
+    Definition value_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.sub (|
+            M.read (|
+              get_constant (| "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS", Ty.path "usize" |)
+            |),
+            Value.Integer IntegerKind.Usize 1
+          |)
+        |))).
     
-    Axiom Constant_value_MASK : (M.get_constant "alloy_primitives::bits::bloom::MASK") = value_MASK.
-    Global Hint Rewrite Constant_value_MASK : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MASK :
+      M.IsFunction.C "alloy_primitives::bits::bloom::MASK" value_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_MASK.
     
-    Definition value_ITEM_BYTES : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.div (|
-              BinOp.Wrap.add (|
-                M.cast
-                  (Ty.path "usize")
-                  (M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
-                    [ M.read (| M.get_constant "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS" |) ]
-                  |)),
-                Value.Integer IntegerKind.Usize 7
-              |),
-              Value.Integer IntegerKind.Usize 8
-            |)
-          |))).
+    Definition value_ITEM_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.div (|
+            BinOp.Wrap.add (|
+              M.cast
+                (Ty.path "usize")
+                (M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
+                  [
+                    M.read (|
+                      get_constant (|
+                        "alloy_primitives::bits::bloom::BLOOM_SIZE_BITS",
+                        Ty.path "usize"
+                      |)
+                    |)
+                  ]
+                |)),
+              Value.Integer IntegerKind.Usize 7
+            |),
+            Value.Integer IntegerKind.Usize 8
+          |)
+        |))).
     
-    Axiom Constant_value_ITEM_BYTES :
-      (M.get_constant "alloy_primitives::bits::bloom::ITEM_BYTES") = value_ITEM_BYTES.
-    Global Hint Rewrite Constant_value_ITEM_BYTES : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ITEM_BYTES :
+      M.IsFunction.C "alloy_primitives::bits::bloom::ITEM_BYTES" value_ITEM_BYTES.
+    Admitted.
+    Global Typeclasses Opaque value_ITEM_BYTES.
     
     (*
     Enum BloomInput
@@ -317,7 +334,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_hash :
-        M.IsAssociatedFunction.Trait Self "into_hash" into_hash.
+        M.IsAssociatedFunction.C Self "into_hash" into_hash.
       Admitted.
       Global Typeclasses Opaque into_hash.
     End Impl_alloy_primitives_bits_bloom_BloomInput.
@@ -339,7 +356,13 @@ Module bits.
             (let input := M.alloc (| input |) in
             M.read (|
               let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
-                M.copy (| M.get_constant "alloy_primitives::bits::bloom::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.path "alloy_primitives::bits::bloom::Bloom",
+                    "ZERO",
+                    Ty.path "alloy_primitives::bits::bloom::Bloom"
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -384,7 +407,13 @@ Module bits.
             (let iter := M.alloc (| iter |) in
             M.read (|
               let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
-                M.copy (| M.get_constant "alloy_primitives::bits::bloom::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.path "alloy_primitives::bits::bloom::Bloom",
+                    "ZERO",
+                    Ty.path "alloy_primitives::bits::bloom::Bloom"
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -648,7 +677,13 @@ Module bits.
             (let logs := M.alloc (| logs |) in
             M.read (|
               let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
-                M.copy (| M.get_constant "alloy_primitives::bits::bloom::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.path "alloy_primitives::bits::bloom::Bloom",
+                    "ZERO",
+                    Ty.path "alloy_primitives::bits::bloom::Bloom"
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -873,7 +908,13 @@ Module bits.
             (let inputs := M.alloc (| inputs |) in
             M.read (|
               let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
-                M.copy (| M.get_constant "alloy_primitives::bits::bloom::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.path "alloy_primitives::bits::bloom::Bloom",
+                    "ZERO",
+                    Ty.path "alloy_primitives::bits::bloom::Bloom"
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -1083,7 +1124,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
       Admitted.
       Global Typeclasses Opaque data.
       
@@ -1123,7 +1164,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_data_mut :
-        M.IsAssociatedFunction.Trait Self "data_mut" data_mut.
+        M.IsAssociatedFunction.C Self "data_mut" data_mut.
       Admitted.
       Global Typeclasses Opaque data_mut.
       
@@ -1177,7 +1218,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_contains_input :
-        M.IsAssociatedFunction.Trait Self "contains_input" contains_input.
+        M.IsAssociatedFunction.C Self "contains_input" contains_input.
       Admitted.
       Global Typeclasses Opaque contains_input.
       
@@ -1224,7 +1265,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_const_contains :
-        M.IsAssociatedFunction.Trait Self "const_contains" const_contains.
+        M.IsAssociatedFunction.C Self "const_contains" const_contains.
       Admitted.
       Global Typeclasses Opaque const_contains.
       
@@ -1278,7 +1319,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_contains :
-        M.IsAssociatedFunction.Trait Self "contains" contains.
+        M.IsAssociatedFunction.C Self "contains" contains.
       Admitted.
       Global Typeclasses Opaque contains.
       
@@ -1432,8 +1473,10 @@ Module bits.
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",
                                                         M.read (|
-                                                          M.get_constant
-                                                            "alloy_primitives::bits::bloom::ITEM_BYTES"
+                                                          get_constant (|
+                                                            "alloy_primitives::bits::bloom::ITEM_BYTES",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -1580,7 +1623,10 @@ Module bits.
                                             BinOp.bit_and
                                               (M.read (| β |))
                                               (M.read (|
-                                                M.get_constant "alloy_primitives::bits::bloom::MASK"
+                                                get_constant (|
+                                                  "alloy_primitives::bits::bloom::MASK",
+                                                  Ty.path "usize"
+                                                |)
                                               |))
                                           |)
                                         |) in
@@ -1615,8 +1661,10 @@ Module bits.
                                                   BinOp.Wrap.sub (|
                                                     BinOp.Wrap.sub (|
                                                       M.read (|
-                                                        M.get_constant
-                                                          "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES"
+                                                        get_constant (|
+                                                          "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |),
                                                       Value.Integer IntegerKind.Usize 1
                                                     |),
@@ -1652,7 +1700,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_accrue : M.IsAssociatedFunction.Trait Self "accrue" accrue.
+      Global Instance AssociatedFunction_accrue : M.IsAssociatedFunction.C Self "accrue" accrue.
       Admitted.
       Global Typeclasses Opaque accrue.
       
@@ -1693,7 +1741,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_accrue_bloom :
-        M.IsAssociatedFunction.Trait Self "accrue_bloom" accrue_bloom.
+        M.IsAssociatedFunction.C Self "accrue_bloom" accrue_bloom.
       Admitted.
       Global Typeclasses Opaque accrue_bloom.
       
@@ -1756,8 +1804,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_m3_2048 :
-        M.IsAssociatedFunction.Trait Self "m3_2048" m3_2048.
+      Global Instance AssociatedFunction_m3_2048 : M.IsAssociatedFunction.C Self "m3_2048" m3_2048.
       Admitted.
       Global Typeclasses Opaque m3_2048.
       
@@ -1954,8 +2001,10 @@ Module bits.
                                                   BinOp.Wrap.sub (|
                                                     BinOp.Wrap.sub (|
                                                       M.read (|
-                                                        M.get_constant
-                                                          "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES"
+                                                        get_constant (|
+                                                          "alloy_primitives::bits::bloom::BLOOM_SIZE_BYTES",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |),
                                                       Value.Integer IntegerKind.Usize 1
                                                     |),
@@ -1992,7 +2041,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_m3_2048_hashed :
-        M.IsAssociatedFunction.Trait Self "m3_2048_hashed" m3_2048_hashed.
+        M.IsAssociatedFunction.C Self "m3_2048_hashed" m3_2048_hashed.
       Admitted.
       Global Typeclasses Opaque m3_2048_hashed.
       
@@ -2266,7 +2315,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_accrue_raw_log :
-        M.IsAssociatedFunction.Trait Self "accrue_raw_log" accrue_raw_log.
+        M.IsAssociatedFunction.C Self "accrue_raw_log" accrue_raw_log.
       Admitted.
       Global Typeclasses Opaque accrue_raw_log.
       
@@ -2357,7 +2406,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_accrue_log :
-        M.IsAssociatedFunction.Trait Self "accrue_log" accrue_log.
+        M.IsAssociatedFunction.C Self "accrue_log" accrue_log.
       Admitted.
       Global Typeclasses Opaque accrue_log.
       
@@ -2432,7 +2481,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_contains_raw_log :
-        M.IsAssociatedFunction.Trait Self "contains_raw_log" contains_raw_log.
+        M.IsAssociatedFunction.C Self "contains_raw_log" contains_raw_log.
       Admitted.
       Global Typeclasses Opaque contains_raw_log.
       
@@ -2523,7 +2572,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_contains_log :
-        M.IsAssociatedFunction.Trait Self "contains_log" contains_log.
+        M.IsAssociatedFunction.C Self "contains_log" contains_log.
       Admitted.
       Global Typeclasses Opaque contains_log.
     End Impl_alloy_primitives_bits_bloom_Bloom.

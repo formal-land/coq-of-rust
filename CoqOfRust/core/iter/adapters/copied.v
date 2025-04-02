@@ -143,7 +143,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_copied_Copied_I.
@@ -209,7 +209,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_copy_fold :
-        M.IsFunction.Trait "core::iter::adapters::copied::copy_fold" copy_fold.
+        M.IsFunction.C "core::iter::adapters::copied::copy_fold" copy_fold.
       Admitted.
       Global Typeclasses Opaque copy_fold.
       
@@ -273,7 +273,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_copy_try_fold :
-        M.IsFunction.Trait "core::iter::adapters::copied::copy_try_fold" copy_try_fold.
+        M.IsFunction.C "core::iter::adapters::copied::copy_try_fold" copy_try_fold.
       Admitted.
       Global Typeclasses Opaque copy_try_fold.
       
@@ -1162,12 +1162,18 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = I::MAY_HAVE_SIDE_EFFECT; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant
-                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+              Ty.path "bool"
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1177,8 +1183,7 @@ Module iter.
             (* Trait polymorphic types *) []
             (Self I)
             (* Instance *)
-            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT I))
-            ].
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT I)) ].
       End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_copied_Copied_I.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_marker_Copy_T_for_core_iter_adapters_copied_Copied_I.
@@ -1347,8 +1352,10 @@ Module iter.
                       M.alloc (|
                         repeat (|
                           M.read (|
-                            M.get_constant
-                              "core::iter::adapters::copied::spec_next_chunk_discriminant"
+                            get_constant (|
+                              "core::iter::adapters::copied::spec_next_chunk_discriminant",
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                            |)
                           |),
                           N
                         |)
@@ -1380,7 +1387,11 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                                M.use
+                                  (get_constant (|
+                                    "core::mem::SizedTypeProperties::IS_ZST",
+                                    Ty.path "bool"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1399,13 +1410,7 @@ Module iter.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.lt (|
-                                                      M.read (| len |),
-                                                      M.read (|
-                                                        M.get_constant
-                                                          "core::iter::adapters::copied::N"
-                                                      |)
-                                                    |)
+                                                    BinOp.lt (| M.read (| len |), N |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1525,9 +1530,7 @@ Module iter.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            M.read (|
-                                              M.get_constant "core::iter::adapters::copied::N"
-                                            |)
+                                            N
                                           ]
                                         |)
                                       |),
@@ -1569,14 +1572,7 @@ Module iter.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| len |),
-                                      M.read (| M.get_constant "core::iter::adapters::copied::N" |)
-                                    |)
-                                  |)) in
+                              (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| len |), N |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1812,7 +1808,7 @@ Module iter.
                                 |),
                                 [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
                               |));
-                            M.read (| M.get_constant "core::iter::adapters::copied::N" |)
+                            N
                           ]
                         |)
                       |) in
@@ -1839,10 +1835,7 @@ Module iter.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.read (| M.get_constant "core::iter::adapters::copied::N" |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [
@@ -2025,22 +2018,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -2051,8 +2064,8 @@ Module iter.
             (Self I)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_copied_Copied_I.
     End copied.

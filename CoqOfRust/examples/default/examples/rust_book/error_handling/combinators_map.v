@@ -307,7 +307,7 @@ Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_peel : M.IsFunction.Trait "combinators_map::peel" peel.
+Global Instance Instance_IsFunction_peel : M.IsFunction.C "combinators_map::peel" peel.
 Admitted.
 Global Typeclasses Opaque peel.
 
@@ -352,7 +352,7 @@ Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_chop : M.IsFunction.Trait "combinators_map::chop" chop.
+Global Instance Instance_IsFunction_chop : M.IsFunction.C "combinators_map::chop" chop.
 Admitted.
 Global Typeclasses Opaque chop.
 
@@ -413,7 +413,7 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_cook : M.IsFunction.Trait "combinators_map::cook" cook.
+Global Instance Instance_IsFunction_cook : M.IsFunction.C "combinators_map::cook" cook.
 Admitted.
 Global Typeclasses Opaque cook.
 
@@ -556,7 +556,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_process : M.IsFunction.Trait "combinators_map::process" process.
+Global Instance Instance_IsFunction_process : M.IsFunction.C "combinators_map::process" process.
 Admitted.
 Global Typeclasses Opaque process.
 
@@ -687,7 +687,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_map::eat" eat.
+Global Instance Instance_IsFunction_eat : M.IsFunction.C "combinators_map::eat" eat.
 Admitted.
 Global Typeclasses Opaque eat.
 
@@ -821,6 +821,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_map::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_map::main" main.
 Admitted.
 Global Typeclasses Opaque main.

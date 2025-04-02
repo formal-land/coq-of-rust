@@ -2,10 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module unicode.
-  Definition value_UNICODE_VERSION : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::unicode::unicode_data::UNICODE_VERSION")).
+  Definition value_UNICODE_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "core::unicode::unicode_data::UNICODE_VERSION",
+        Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ]
+      |))).
   
-  Axiom Constant_value_UNICODE_VERSION :
-    (M.get_constant "core::unicode::UNICODE_VERSION") = value_UNICODE_VERSION.
-  Global Hint Rewrite Constant_value_UNICODE_VERSION : constant_rewrites.
+  Global Instance Instance_IsConstant_value_UNICODE_VERSION :
+    M.IsFunction.C "core::unicode::UNICODE_VERSION" value_UNICODE_VERSION.
+  Admitted.
+  Global Typeclasses Opaque value_UNICODE_VERSION.
 End unicode.

@@ -166,7 +166,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_give_adult :
-  M.IsFunction.Trait "option_and_unwrap::give_adult" give_adult.
+  M.IsFunction.C "option_and_unwrap::give_adult" give_adult.
 Admitted.
 Global Typeclasses Opaque give_adult.
 
@@ -314,7 +314,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "option_and_unwrap::drink" drink.
+Global Instance Instance_IsFunction_drink : M.IsFunction.C "option_and_unwrap::drink" drink.
 Admitted.
 Global Typeclasses Opaque drink.
 
@@ -417,6 +417,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option_and_unwrap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "option_and_unwrap::main" main.
 Admitted.
 Global Typeclasses Opaque main.

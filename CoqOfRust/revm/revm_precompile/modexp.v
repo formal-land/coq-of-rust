@@ -2,48 +2,48 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module modexp.
-  Definition value_BYZANTIUM : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 5 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::modexp::byzantium_run", [], [] |))
-            ]
-        |))).
+  Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 5 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion
+              (M.get_function (| "revm_precompile::modexp::byzantium_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_BYZANTIUM :
-    (M.get_constant "revm_precompile::modexp::BYZANTIUM") = value_BYZANTIUM.
-  Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
+  Global Instance Instance_IsConstant_value_BYZANTIUM :
+    M.IsFunction.C "revm_precompile::modexp::BYZANTIUM" value_BYZANTIUM.
+  Admitted.
+  Global Typeclasses Opaque value_BYZANTIUM.
   
-  Definition value_BERLIN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 5 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::modexp::berlin_run", [], [] |))
-            ]
-        |))).
+  Definition value_BERLIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 5 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion (M.get_function (| "revm_precompile::modexp::berlin_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_BERLIN : (M.get_constant "revm_precompile::modexp::BERLIN") = value_BERLIN.
-  Global Hint Rewrite Constant_value_BERLIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_BERLIN :
+    M.IsFunction.C "revm_precompile::modexp::BERLIN" value_BERLIN.
+  Admitted.
+  Global Typeclasses Opaque value_BERLIN.
   
   (*
   pub fn byzantium_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -289,7 +289,7 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_byzantium_run :
-    M.IsFunction.Trait "revm_precompile::modexp::byzantium_run" byzantium_run.
+    M.IsFunction.C "revm_precompile::modexp::byzantium_run" byzantium_run.
   Admitted.
   Global Typeclasses Opaque byzantium_run.
   
@@ -537,7 +537,7 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_berlin_run :
-    M.IsFunction.Trait "revm_precompile::modexp::berlin_run" berlin_run.
+    M.IsFunction.C "revm_precompile::modexp::berlin_run" berlin_run.
   Admitted.
   Global Typeclasses Opaque berlin_run.
   
@@ -772,9 +772,7 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_calculate_iteration_count :
-    M.IsFunction.Trait
-      "revm_precompile::modexp::calculate_iteration_count"
-      calculate_iteration_count.
+    M.IsFunction.C "revm_precompile::modexp::calculate_iteration_count" calculate_iteration_count.
   Admitted.
   Global Typeclasses Opaque calculate_iteration_count.
   
@@ -1380,8 +1378,10 @@ Module modexp.
                                                     [
                                                       ("start",
                                                         M.read (|
-                                                          M.get_constant
-                                                            "revm_precompile::modexp::run_inner::HEADER_LENGTH"
+                                                          get_constant (|
+                                                            "revm_precompile::modexp::run_inner::HEADER_LENGTH",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -2270,17 +2270,18 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_run_inner :
-    M.IsFunction.Trait "revm_precompile::modexp::run_inner" run_inner.
+    M.IsFunction.C "revm_precompile::modexp::run_inner" run_inner.
   Admitted.
   Global Typeclasses Opaque run_inner.
   
   Module run_inner.
-    Definition value_HEADER_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+    Definition value_HEADER_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
     
-    Axiom Constant_value_HEADER_LENGTH :
-      (M.get_constant "revm_precompile::modexp::run_inner::HEADER_LENGTH") = value_HEADER_LENGTH.
-    Global Hint Rewrite Constant_value_HEADER_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_HEADER_LENGTH :
+      M.IsFunction.C "revm_precompile::modexp::run_inner::HEADER_LENGTH" value_HEADER_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_HEADER_LENGTH.
   End run_inner.
   
   (*
@@ -2468,7 +2469,7 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_byzantium_gas_calc :
-    M.IsFunction.Trait "revm_precompile::modexp::byzantium_gas_calc" byzantium_gas_calc.
+    M.IsFunction.C "revm_precompile::modexp::byzantium_gas_calc" byzantium_gas_calc.
   Admitted.
   Global Typeclasses Opaque byzantium_gas_calc.
   
@@ -2877,9 +2878,7 @@ Module modexp.
       end.
     
     Global Instance Instance_IsFunction_mul_complexity :
-      M.IsFunction.Trait
-        "revm_precompile::modexp::byzantium_gas_calc::mul_complexity"
-        mul_complexity.
+      M.IsFunction.C "revm_precompile::modexp::byzantium_gas_calc::mul_complexity" mul_complexity.
     Admitted.
     Global Typeclasses Opaque mul_complexity.
   End byzantium_gas_calc.
@@ -3064,7 +3063,7 @@ Module modexp.
     end.
   
   Global Instance Instance_IsFunction_berlin_gas_calc :
-    M.IsFunction.Trait "revm_precompile::modexp::berlin_gas_calc" berlin_gas_calc.
+    M.IsFunction.C "revm_precompile::modexp::berlin_gas_calc" berlin_gas_calc.
   Admitted.
   Global Typeclasses Opaque berlin_gas_calc.
   
@@ -3188,7 +3187,7 @@ Module modexp.
       end.
     
     Global Instance Instance_IsFunction_calculate_multiplication_complexity :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_precompile::modexp::berlin_gas_calc::calculate_multiplication_complexity"
         calculate_multiplication_complexity.
     Admitted.

@@ -180,7 +180,9 @@ Module num.
                         "f"
                       |)
                     |))
-                    (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
+                    (M.read (|
+                      get_constant (| "core::num::diy_float::mul::MASK", Ty.path "u64" |)
+                    |))
                 |) in
               let~ c : Ty.path "u64" :=
                 M.alloc (|
@@ -205,7 +207,9 @@ Module num.
                         "f"
                       |)
                     |))
-                    (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
+                    (M.read (|
+                      get_constant (| "core::num::diy_float::mul::MASK", Ty.path "u64" |)
+                    |))
                 |) in
               let~ ac : Ty.path "u64" :=
                 M.alloc (| BinOp.Wrap.mul (| M.read (| a |), M.read (| c |) |) |) in
@@ -223,11 +227,15 @@ Module num.
                         BinOp.Wrap.shr (| M.read (| bd |), Value.Integer IntegerKind.I32 32 |),
                         BinOp.bit_and
                           (M.read (| ad |))
-                          (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
+                          (M.read (|
+                            get_constant (| "core::num::diy_float::mul::MASK", Ty.path "u64" |)
+                          |))
                       |),
                       BinOp.bit_and
                         (M.read (| bc |))
-                        (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
+                        (M.read (|
+                          get_constant (| "core::num::diy_float::mul::MASK", Ty.path "u64" |)
+                        |))
                     |),
                     BinOp.Wrap.shl (|
                       Value.Integer IntegerKind.U64 1,
@@ -279,7 +287,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_mul : M.IsAssociatedFunction.Trait Self "mul" mul.
+      Global Instance AssociatedFunction_mul : M.IsAssociatedFunction.C Self "mul" mul.
       Admitted.
       Global Typeclasses Opaque mul.
       
@@ -656,7 +664,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_normalize :
-        M.IsAssociatedFunction.Trait Self "normalize" normalize.
+        M.IsAssociatedFunction.C Self "normalize" normalize.
       Admitted.
       Global Typeclasses Opaque normalize.
       
@@ -851,7 +859,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_normalize_to :
-        M.IsAssociatedFunction.Trait Self "normalize_to" normalize_to.
+        M.IsAssociatedFunction.C Self "normalize_to" normalize_to.
       Admitted.
       Global Typeclasses Opaque normalize_to.
     End Impl_core_num_diy_float_Fp.

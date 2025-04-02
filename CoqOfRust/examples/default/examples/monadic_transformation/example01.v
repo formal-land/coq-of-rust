@@ -15,7 +15,7 @@ Definition id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_id : M.IsFunction.Trait "example01::id" id.
+Global Instance Instance_IsFunction_id : M.IsFunction.C "example01::id" id.
 Admitted.
 Global Typeclasses Opaque id.
 
@@ -31,7 +31,7 @@ Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_tri : M.IsFunction.Trait "example01::tri" tri.
+Global Instance Instance_IsFunction_tri : M.IsFunction.C "example01::tri" tri.
 Admitted.
 Global Typeclasses Opaque tri.
 
@@ -142,6 +142,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "example01::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "example01::main" main.
 Admitted.
 Global Typeclasses Opaque main.

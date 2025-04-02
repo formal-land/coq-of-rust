@@ -43,7 +43,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_is_null :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_null" (is_null T).
+        M.IsAssociatedFunction.C (Self T) "is_null" (is_null T).
       Admitted.
       Global Typeclasses Opaque is_null.
       
@@ -64,7 +64,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_cast :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "cast" (cast T).
+        M.IsAssociatedFunction.C (Self T) "cast" (cast T).
       Admitted.
       Global Typeclasses Opaque cast.
       
@@ -109,7 +109,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_with_metadata_of :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "with_metadata_of" (with_metadata_of T).
+        M.IsAssociatedFunction.C (Self T) "with_metadata_of" (with_metadata_of T).
       Admitted.
       Global Typeclasses Opaque with_metadata_of.
       
@@ -132,7 +132,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_cast_const :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "cast_const" (cast_const T).
+        M.IsAssociatedFunction.C (Self T) "cast_const" (cast_const T).
       Admitted.
       Global Typeclasses Opaque cast_const.
       
@@ -177,7 +177,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "addr" (addr T).
+        M.IsAssociatedFunction.C (Self T) "addr" (addr T).
       Admitted.
       Global Typeclasses Opaque addr.
       
@@ -214,7 +214,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_expose_provenance :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "expose_provenance" (expose_provenance T).
+        M.IsAssociatedFunction.C (Self T) "expose_provenance" (expose_provenance T).
       Admitted.
       Global Typeclasses Opaque expose_provenance.
       
@@ -280,7 +280,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_with_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "with_addr" (with_addr T).
+        M.IsAssociatedFunction.C (Self T) "with_addr" (with_addr T).
       Admitted.
       Global Typeclasses Opaque with_addr.
       
@@ -341,7 +341,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_map_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "map_addr" (map_addr T).
+        M.IsAssociatedFunction.C (Self T) "map_addr" (map_addr T).
       Admitted.
       Global Typeclasses Opaque map_addr.
       
@@ -384,7 +384,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_to_raw_parts :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "to_raw_parts" (to_raw_parts T).
+        M.IsAssociatedFunction.C (Self T) "to_raw_parts" (to_raw_parts T).
       Admitted.
       Global Typeclasses Opaque to_raw_parts.
       
@@ -450,7 +450,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+        M.IsAssociatedFunction.C (Self T) "as_ref" (as_ref T).
       Admitted.
       Global Typeclasses Opaque as_ref.
       
@@ -480,7 +480,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_ref_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ref_unchecked" (as_ref_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "as_ref_unchecked" (as_ref_unchecked T).
       Admitted.
       Global Typeclasses Opaque as_ref_unchecked.
       
@@ -574,7 +574,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_uninit_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_uninit_ref" (as_uninit_ref T).
+        M.IsAssociatedFunction.C (Self T) "as_uninit_ref" (as_uninit_ref T).
       Admitted.
       Global Typeclasses Opaque as_uninit_ref.
       
@@ -689,7 +689,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "offset" (offset T).
+        M.IsAssociatedFunction.C (Self T) "offset" (offset T).
       Admitted.
       Global Typeclasses Opaque offset.
       
@@ -745,7 +745,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_byte_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "byte_offset" (byte_offset T).
+        M.IsAssociatedFunction.C (Self T) "byte_offset" (byte_offset T).
       Admitted.
       Global Typeclasses Opaque byte_offset.
       
@@ -783,7 +783,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_offset" (wrapping_offset T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_offset" (wrapping_offset T).
       Admitted.
       Global Typeclasses Opaque wrapping_offset.
       
@@ -843,7 +843,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_byte_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_byte_offset" (wrapping_byte_offset T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_byte_offset" (wrapping_byte_offset T).
       Admitted.
       Global Typeclasses Opaque wrapping_byte_offset.
       
@@ -906,7 +906,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_mask :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "mask" (mask T).
+        M.IsAssociatedFunction.C (Self T) "mask" (mask T).
       Admitted.
       Global Typeclasses Opaque mask.
       
@@ -972,7 +972,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+        M.IsAssociatedFunction.C (Self T) "as_mut" (as_mut T).
       Admitted.
       Global Typeclasses Opaque as_mut.
       
@@ -1014,7 +1014,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut_unchecked" (as_mut_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "as_mut_unchecked" (as_mut_unchecked T).
       Admitted.
       Global Typeclasses Opaque as_mut_unchecked.
       
@@ -1113,7 +1113,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_uninit_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_uninit_mut" (as_uninit_mut T).
+        M.IsAssociatedFunction.C (Self T) "as_uninit_mut" (as_uninit_mut T).
       Admitted.
       Global Typeclasses Opaque as_uninit_mut.
       
@@ -1159,7 +1159,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_guaranteed_eq :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "guaranteed_eq" (guaranteed_eq T).
+        M.IsAssociatedFunction.C (Self T) "guaranteed_eq" (guaranteed_eq T).
       Admitted.
       Global Typeclasses Opaque guaranteed_eq.
       
@@ -1205,7 +1205,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_guaranteed_ne :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "guaranteed_ne" (guaranteed_ne T).
+        M.IsAssociatedFunction.C (Self T) "guaranteed_ne" (guaranteed_ne T).
       Admitted.
       Global Typeclasses Opaque guaranteed_ne.
       
@@ -1245,7 +1245,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_offset_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "offset_from" (offset_from T).
+        M.IsAssociatedFunction.C (Self T) "offset_from" (offset_from T).
       Admitted.
       Global Typeclasses Opaque offset_from.
       
@@ -1303,7 +1303,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_byte_offset_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "byte_offset_from" (byte_offset_from T).
+        M.IsAssociatedFunction.C (Self T) "byte_offset_from" (byte_offset_from T).
       Admitted.
       Global Typeclasses Opaque byte_offset_from.
       
@@ -1343,7 +1343,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_sub_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "sub_ptr" (sub_ptr T).
+        M.IsAssociatedFunction.C (Self T) "sub_ptr" (sub_ptr T).
       Admitted.
       Global Typeclasses Opaque sub_ptr.
       
@@ -1385,7 +1385,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_byte_sub_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "byte_sub_ptr" (byte_sub_ptr T).
+        M.IsAssociatedFunction.C (Self T) "byte_sub_ptr" (byte_sub_ptr T).
       Admitted.
       Global Typeclasses Opaque byte_sub_ptr.
       
@@ -1497,7 +1497,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "add" (add T).
+        M.IsAssociatedFunction.C (Self T) "add" (add T).
       Admitted.
       Global Typeclasses Opaque add.
       
@@ -1553,7 +1553,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_byte_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "byte_add" (byte_add T).
+        M.IsAssociatedFunction.C (Self T) "byte_add" (byte_add T).
       Admitted.
       Global Typeclasses Opaque byte_add.
       
@@ -1660,7 +1660,12 @@ Module ptr.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                      (let γ :=
+                        M.use
+                          (get_constant (|
+                            "core::mem::SizedTypeProperties::IS_ZST",
+                            Ty.path "bool"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       self));
                   fun γ =>
@@ -1698,7 +1703,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "sub" (sub T).
+        M.IsAssociatedFunction.C (Self T) "sub" (sub T).
       Admitted.
       Global Typeclasses Opaque sub.
       
@@ -1754,7 +1759,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_byte_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "byte_sub" (byte_sub T).
+        M.IsAssociatedFunction.C (Self T) "byte_sub" (byte_sub T).
       Admitted.
       Global Typeclasses Opaque byte_sub.
       
@@ -1793,7 +1798,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_add" (wrapping_add T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_add" (wrapping_add T).
       Admitted.
       Global Typeclasses Opaque wrapping_add.
       
@@ -1853,7 +1858,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_byte_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_byte_add" (wrapping_byte_add T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_byte_add" (wrapping_byte_add T).
       Admitted.
       Global Typeclasses Opaque wrapping_byte_add.
       
@@ -1899,7 +1904,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_sub" (wrapping_sub T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_sub" (wrapping_sub T).
       Admitted.
       Global Typeclasses Opaque wrapping_sub.
       
@@ -1959,7 +1964,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_wrapping_byte_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrapping_byte_sub" (wrapping_byte_sub T).
+        M.IsAssociatedFunction.C (Self T) "wrapping_byte_sub" (wrapping_byte_sub T).
       Admitted.
       Global Typeclasses Opaque wrapping_byte_sub.
       
@@ -1988,7 +1993,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_read :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "read" (read T).
+        M.IsAssociatedFunction.C (Self T) "read" (read T).
       Admitted.
       Global Typeclasses Opaque read.
       
@@ -2022,7 +2027,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_read_volatile :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "read_volatile" (read_volatile T).
+        M.IsAssociatedFunction.C (Self T) "read_volatile" (read_volatile T).
       Admitted.
       Global Typeclasses Opaque read_volatile.
       
@@ -2056,7 +2061,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_read_unaligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "read_unaligned" (read_unaligned T).
+        M.IsAssociatedFunction.C (Self T) "read_unaligned" (read_unaligned T).
       Admitted.
       Global Typeclasses Opaque read_unaligned.
       
@@ -2091,7 +2096,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_copy_to :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "copy_to" (copy_to T).
+        M.IsAssociatedFunction.C (Self T) "copy_to" (copy_to T).
       Admitted.
       Global Typeclasses Opaque copy_to.
       
@@ -2131,7 +2136,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_copy_to_nonoverlapping :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "copy_to_nonoverlapping" (copy_to_nonoverlapping T).
+        M.IsAssociatedFunction.C (Self T) "copy_to_nonoverlapping" (copy_to_nonoverlapping T).
       Admitted.
       Global Typeclasses Opaque copy_to_nonoverlapping.
       
@@ -2162,7 +2167,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_copy_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "copy_from" (copy_from T).
+        M.IsAssociatedFunction.C (Self T) "copy_from" (copy_from T).
       Admitted.
       Global Typeclasses Opaque copy_from.
       
@@ -2198,10 +2203,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_copy_from_nonoverlapping :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait
-          (Self T)
-          "copy_from_nonoverlapping"
-          (copy_from_nonoverlapping T).
+        M.IsAssociatedFunction.C (Self T) "copy_from_nonoverlapping" (copy_from_nonoverlapping T).
       Admitted.
       Global Typeclasses Opaque copy_from_nonoverlapping.
       
@@ -2232,7 +2234,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_drop_in_place :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "drop_in_place" (drop_in_place T).
+        M.IsAssociatedFunction.C (Self T) "drop_in_place" (drop_in_place T).
       Admitted.
       Global Typeclasses Opaque drop_in_place.
       
@@ -2262,7 +2264,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_write :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "write" (write T).
+        M.IsAssociatedFunction.C (Self T) "write" (write T).
       Admitted.
       Global Typeclasses Opaque write.
       
@@ -2293,7 +2295,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_write_bytes :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "write_bytes" (write_bytes T).
+        M.IsAssociatedFunction.C (Self T) "write_bytes" (write_bytes T).
       Admitted.
       Global Typeclasses Opaque write_bytes.
       
@@ -2328,7 +2330,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_write_volatile :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "write_volatile" (write_volatile T).
+        M.IsAssociatedFunction.C (Self T) "write_volatile" (write_volatile T).
       Admitted.
       Global Typeclasses Opaque write_volatile.
       
@@ -2363,7 +2365,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_write_unaligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "write_unaligned" (write_unaligned T).
+        M.IsAssociatedFunction.C (Self T) "write_unaligned" (write_unaligned T).
       Admitted.
       Global Typeclasses Opaque write_unaligned.
       
@@ -2393,7 +2395,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_replace :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+        M.IsAssociatedFunction.C (Self T) "replace" (replace T).
       Admitted.
       Global Typeclasses Opaque replace.
       
@@ -2423,7 +2425,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+        M.IsAssociatedFunction.C (Self T) "swap" (swap T).
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -2547,7 +2549,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_align_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "align_offset" (align_offset T).
+        M.IsAssociatedFunction.C (Self T) "align_offset" (align_offset T).
       Admitted.
       Global Typeclasses Opaque align_offset.
       
@@ -2587,7 +2589,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_is_aligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_aligned" (is_aligned T).
+        M.IsAssociatedFunction.C (Self T) "is_aligned" (is_aligned T).
       Admitted.
       Global Typeclasses Opaque is_aligned.
       
@@ -2701,7 +2703,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_is_aligned_to :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_aligned_to" (is_aligned_to T).
+        M.IsAssociatedFunction.C (Self T) "is_aligned_to" (is_aligned_to T).
       Admitted.
       Global Typeclasses Opaque is_aligned_to.
     End Impl_pointer_mut_T.
@@ -2735,7 +2737,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_len :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+        M.IsAssociatedFunction.C (Self T) "len" (len T).
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -2768,7 +2770,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_is_empty :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+        M.IsAssociatedFunction.C (Self T) "is_empty" (is_empty T).
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -2821,7 +2823,7 @@ Module ptr.
                                 |),
                                 [ M.read (| self |) ]
                               |),
-                              M.read (| M.get_constant "core::ptr::mut_ptr::as_mut_array::N" |)
+                              N
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2861,7 +2863,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut_array :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut_array" (as_mut_array T).
+        M.IsAssociatedFunction.C (Self T) "as_mut_array" (as_mut_array T).
       Admitted.
       Global Typeclasses Opaque as_mut_array.
       
@@ -2951,7 +2953,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_split_at_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "split_at_mut" (split_at_mut T).
+        M.IsAssociatedFunction.C (Self T) "split_at_mut" (split_at_mut T).
       Admitted.
       Global Typeclasses Opaque split_at_mut.
       
@@ -3041,7 +3043,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_split_at_mut_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "split_at_mut_unchecked" (split_at_mut_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "split_at_mut_unchecked" (split_at_mut_unchecked T).
       Admitted.
       Global Typeclasses Opaque split_at_mut_unchecked.
       
@@ -3062,7 +3064,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut_ptr" (as_mut_ptr T).
+        M.IsAssociatedFunction.C (Self T) "as_mut_ptr" (as_mut_ptr T).
       Admitted.
       Global Typeclasses Opaque as_mut_ptr.
       
@@ -3115,7 +3117,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_get_unchecked_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+        M.IsAssociatedFunction.C (Self T) "get_unchecked_mut" (get_unchecked_mut T).
       Admitted.
       Global Typeclasses Opaque get_unchecked_mut.
       
@@ -3253,7 +3255,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_uninit_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_uninit_slice" (as_uninit_slice T).
+        M.IsAssociatedFunction.C (Self T) "as_uninit_slice" (as_uninit_slice T).
       Admitted.
       Global Typeclasses Opaque as_uninit_slice.
       
@@ -3396,7 +3398,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_uninit_slice_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_uninit_slice_mut" (as_uninit_slice_mut T).
+        M.IsAssociatedFunction.C (Self T) "as_uninit_slice_mut" (as_uninit_slice_mut T).
       Admitted.
       Global Typeclasses Opaque as_uninit_slice_mut.
     End Impl_pointer_mut_slice_T.
@@ -3428,7 +3430,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut_ptr :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "as_mut_ptr" (as_mut_ptr N T).
+        M.IsAssociatedFunction.C (Self N T) "as_mut_ptr" (as_mut_ptr N T).
       Admitted.
       Global Typeclasses Opaque as_mut_ptr.
       
@@ -3455,7 +3457,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut_slice :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "as_mut_slice" (as_mut_slice N T).
+        M.IsAssociatedFunction.C (Self N T) "as_mut_slice" (as_mut_slice N T).
       Admitted.
       Global Typeclasses Opaque as_mut_slice.
     End Impl_pointer_mut_array_N_T.

@@ -428,7 +428,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_is_8digits :
-        M.IsFunction.Trait "core::num::dec2flt::common::is_8digits" is_8digits.
+        M.IsFunction.C "core::num::dec2flt::common::is_8digits" is_8digits.
       Admitted.
       Global Typeclasses Opaque is_8digits.
       
@@ -741,7 +741,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_zero_pow2 :
-          M.IsAssociatedFunction.Trait Self "zero_pow2" zero_pow2.
+          M.IsAssociatedFunction.C Self "zero_pow2" zero_pow2.
         Admitted.
         Global Typeclasses Opaque zero_pow2.
       End Impl_core_num_dec2flt_common_BiasedFp.

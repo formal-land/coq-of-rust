@@ -15,7 +15,7 @@ Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_some_number :
-  M.IsFunction.Trait "match_binding_destructure_enum_variants::some_number" some_number.
+  M.IsFunction.C "match_binding_destructure_enum_variants::some_number" some_number.
 Admitted.
 Global Typeclasses Opaque some_number.
 
@@ -195,6 +195,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "match_binding_destructure_enum_variants::main" main.
+  M.IsFunction.C "match_binding_destructure_enum_variants::main" main.
 Admitted.
 Global Typeclasses Opaque main.

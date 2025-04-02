@@ -100,7 +100,7 @@ Module array.
                           [],
                           []
                         |),
-                        [ M.read (| M.get_constant "core::array::iter::N" |) ]
+                        [ N ]
                       |))
                   ]
               |)
@@ -162,7 +162,7 @@ Module array.
       
       Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+        M.IsAssociatedFunction.C (Self N T) "new" (new N T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -229,7 +229,7 @@ Module array.
       
       Global Instance AssociatedFunction_new_unchecked :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "new_unchecked" (new_unchecked N T).
+        M.IsAssociatedFunction.C (Self N T) "new_unchecked" (new_unchecked N T).
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -262,7 +262,12 @@ Module array.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
                 M.alloc (|
                   repeat (|
-                    M.read (| M.get_constant "core::array::iter::empty_discriminant" |),
+                    M.read (|
+                      get_constant (|
+                        "core::array::iter::empty_discriminant",
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                      |)
+                    |),
                     N
                   |)
                 |) in
@@ -294,7 +299,7 @@ Module array.
       
       Global Instance AssociatedFunction_empty :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "empty" (empty N T).
+        M.IsAssociatedFunction.C (Self N T) "empty" (empty N T).
       Admitted.
       Global Typeclasses Opaque empty.
       
@@ -407,7 +412,7 @@ Module array.
       
       Global Instance AssociatedFunction_as_slice :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "as_slice" (as_slice N T).
+        M.IsAssociatedFunction.C (Self N T) "as_slice" (as_slice N T).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -538,7 +543,7 @@ Module array.
       
       Global Instance AssociatedFunction_as_mut_slice :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "as_mut_slice" (as_mut_slice N T).
+        M.IsAssociatedFunction.C (Self N T) "as_mut_slice" (as_mut_slice N T).
       Admitted.
       Global Typeclasses Opaque as_mut_slice.
     End Impl_core_array_iter_IntoIter_N_T.
@@ -2098,9 +2103,15 @@ Module array.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (N : Value.t) (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self N T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (N : Value.t) (T : Ty.t),
@@ -2110,8 +2121,7 @@ Module array.
           (* Trait polymorphic types *) []
           (Self N T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
-          ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT N T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_array_iter_NonDrop_T_for_core_array_iter_IntoIter_N_T.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_array_iter_IntoIter_N_T.
@@ -2157,7 +2167,12 @@ Module array.
                     [
                       ("data",
                         repeat (|
-                          M.read (| M.get_constant "core::array::iter::clone_discriminant" |),
+                          M.read (|
+                            get_constant (|
+                              "core::array::iter::clone_discriminant",
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                            |)
+                          |),
                           N
                         |));
                       ("alive",

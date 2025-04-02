@@ -125,7 +125,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_consume_u8 :
-      M.IsFunction.Trait "revm_bytecode::eof::decode_helpers::consume_u8" consume_u8.
+      M.IsFunction.C "revm_bytecode::eof::decode_helpers::consume_u8" consume_u8.
     Admitted.
     Global Typeclasses Opaque consume_u8.
     
@@ -273,7 +273,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_consume_u16 :
-      M.IsFunction.Trait "revm_bytecode::eof::decode_helpers::consume_u16" consume_u16.
+      M.IsFunction.C "revm_bytecode::eof::decode_helpers::consume_u16" consume_u16.
     Admitted.
     Global Typeclasses Opaque consume_u16.
   End decode_helpers.

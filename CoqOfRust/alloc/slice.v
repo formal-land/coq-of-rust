@@ -80,7 +80,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_into_vec :
-      M.IsFunction.Trait "alloc::slice::hack::into_vec" into_vec.
+      M.IsFunction.C "alloc::slice::hack::into_vec" into_vec.
     Admitted.
     Global Typeclasses Opaque into_vec.
     
@@ -111,8 +111,7 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_to_vec :
-      M.IsFunction.Trait "alloc::slice::hack::to_vec" to_vec.
+    Global Instance Instance_IsFunction_to_vec : M.IsFunction.C "alloc::slice::hack::to_vec" to_vec.
     Admitted.
     Global Typeclasses Opaque to_vec.
     
@@ -717,7 +716,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort" (sort T).
+      M.IsAssociatedFunction.C (Self T) "sort" (sort T).
     Admitted.
     Global Typeclasses Opaque sort.
     
@@ -872,7 +871,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_by" (sort_by T).
+      M.IsAssociatedFunction.C (Self T) "sort_by" (sort_by T).
     Admitted.
     Global Typeclasses Opaque sort_by.
     
@@ -1046,7 +1045,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_by_key" (sort_by_key T).
+      M.IsAssociatedFunction.C (Self T) "sort_by_key" (sort_by_key T).
     Admitted.
     Global Typeclasses Opaque sort_by_key.
     
@@ -1146,7 +1145,12 @@ Module slice.
                     ]
                   |) in
                 let~ is_using_u32_as_idx_type_helpful : Ty.path "bool" :=
-                  M.copy (| M.get_constant "alloc::slice::sort_by_cached_key_discriminant" |) in
+                  M.copy (|
+                    get_constant (|
+                      "alloc::slice::sort_by_cached_key_discriminant",
+                      Ty.path "bool"
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     Some (Ty.tuple []),
@@ -1164,7 +1168,13 @@ Module slice.
                                       M.read (| len |),
                                       M.cast
                                         (Ty.path "usize")
-                                        (M.read (| M.get_constant "core::num::MAX" |))
+                                        (M.read (|
+                                          get_associated_constant (|
+                                            Ty.path "u32",
+                                            "MAX",
+                                            Ty.path "u32"
+                                          |)
+                                        |))
                                     |)))
                                 |)
                               |)) in
@@ -2318,7 +2328,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_by_cached_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_by_cached_key" (sort_by_cached_key T).
+      M.IsAssociatedFunction.C (Self T) "sort_by_cached_key" (sort_by_cached_key T).
     Admitted.
     Global Typeclasses Opaque sort_by_cached_key.
     
@@ -2354,7 +2364,7 @@ Module slice.
     
     Global Instance AssociatedFunction_to_vec :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "to_vec" (to_vec T).
+      M.IsAssociatedFunction.C (Self T) "to_vec" (to_vec T).
     Admitted.
     Global Typeclasses Opaque to_vec.
     
@@ -2384,7 +2394,7 @@ Module slice.
     
     Global Instance AssociatedFunction_to_vec_in :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "to_vec_in" (to_vec_in T).
+      M.IsAssociatedFunction.C (Self T) "to_vec_in" (to_vec_in T).
     Admitted.
     Global Typeclasses Opaque to_vec_in.
     
@@ -2410,7 +2420,7 @@ Module slice.
     
     Global Instance AssociatedFunction_into_vec :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_vec" (into_vec T).
+      M.IsAssociatedFunction.C (Self T) "into_vec" (into_vec T).
     Admitted.
     Global Typeclasses Opaque into_vec.
     
@@ -2891,7 +2901,7 @@ Module slice.
     
     Global Instance AssociatedFunction_repeat :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "repeat" (repeat T).
+      M.IsAssociatedFunction.C (Self T) "repeat" (repeat T).
     Admitted.
     Global Typeclasses Opaque repeat.
     
@@ -2932,7 +2942,7 @@ Module slice.
     
     Global Instance AssociatedFunction_concat :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "concat" (concat T).
+      M.IsAssociatedFunction.C (Self T) "concat" (concat T).
     Admitted.
     Global Typeclasses Opaque concat.
     
@@ -2974,7 +2984,7 @@ Module slice.
     
     Global Instance AssociatedFunction_join :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "join" (join T).
+      M.IsAssociatedFunction.C (Self T) "join" (join T).
     Admitted.
     Global Typeclasses Opaque join.
     
@@ -3016,7 +3026,7 @@ Module slice.
     
     Global Instance AssociatedFunction_connect :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "connect" (connect T).
+      M.IsAssociatedFunction.C (Self T) "connect" (connect T).
     Admitted.
     Global Typeclasses Opaque connect.
   End Impl_slice_T.
@@ -3101,7 +3111,7 @@ Module slice.
       end.
     
     Global Instance AssociatedFunction_to_ascii_uppercase :
-      M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+      M.IsAssociatedFunction.C Self "to_ascii_uppercase" to_ascii_uppercase.
     Admitted.
     Global Typeclasses Opaque to_ascii_uppercase.
     
@@ -3182,7 +3192,7 @@ Module slice.
       end.
     
     Global Instance AssociatedFunction_to_ascii_lowercase :
-      M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+      M.IsAssociatedFunction.C Self "to_ascii_lowercase" to_ascii_lowercase.
     Admitted.
     Global Typeclasses Opaque to_ascii_lowercase.
   End Impl_slice_u8.
@@ -4894,7 +4904,7 @@ Module slice.
     end.
   
   Global Instance Instance_IsFunction_stable_sort :
-    M.IsFunction.Trait "alloc::slice::stable_sort" stable_sort.
+    M.IsFunction.C "alloc::slice::stable_sort" stable_sort.
   Admitted.
   Global Typeclasses Opaque stable_sort.
   

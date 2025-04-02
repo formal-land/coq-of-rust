@@ -2,93 +2,145 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module vm_status.
-  Definition value_VALIDATION_STATUS_MIN_CODE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 0 |) |))).
+  Definition value_VALIDATION_STATUS_MIN_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 0 |) |))).
   
-  Axiom Constant_value_VALIDATION_STATUS_MIN_CODE :
-    (M.get_constant "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE") =
+  Global Instance Instance_IsConstant_value_VALIDATION_STATUS_MIN_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE"
       value_VALIDATION_STATUS_MIN_CODE.
-  Global Hint Rewrite Constant_value_VALIDATION_STATUS_MIN_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VALIDATION_STATUS_MIN_CODE.
   
-  Definition value_VALIDATION_STATUS_MAX_CODE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 999 |) |))).
+  Definition value_VALIDATION_STATUS_MAX_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 999 |) |))).
   
-  Axiom Constant_value_VALIDATION_STATUS_MAX_CODE :
-    (M.get_constant "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE") =
+  Global Instance Instance_IsConstant_value_VALIDATION_STATUS_MAX_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE"
       value_VALIDATION_STATUS_MAX_CODE.
-  Global Hint Rewrite Constant_value_VALIDATION_STATUS_MAX_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VALIDATION_STATUS_MAX_CODE.
   
-  Definition value_VERIFICATION_STATUS_MIN_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1000 |) |))).
+  Definition value_VERIFICATION_STATUS_MIN_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1000 |) |))).
   
-  Axiom Constant_value_VERIFICATION_STATUS_MIN_CODE :
-    (M.get_constant "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE") =
+  Global Instance Instance_IsConstant_value_VERIFICATION_STATUS_MIN_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE"
       value_VERIFICATION_STATUS_MIN_CODE.
-  Global Hint Rewrite Constant_value_VERIFICATION_STATUS_MIN_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VERIFICATION_STATUS_MIN_CODE.
   
-  Definition value_VERIFICATION_STATUS_MAX_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1999 |) |))).
+  Definition value_VERIFICATION_STATUS_MAX_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1999 |) |))).
   
-  Axiom Constant_value_VERIFICATION_STATUS_MAX_CODE :
-    (M.get_constant "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE") =
+  Global Instance Instance_IsConstant_value_VERIFICATION_STATUS_MAX_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE"
       value_VERIFICATION_STATUS_MAX_CODE.
-  Global Hint Rewrite Constant_value_VERIFICATION_STATUS_MAX_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VERIFICATION_STATUS_MAX_CODE.
   
-  Definition value_INVARIANT_VIOLATION_STATUS_MIN_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2000 |) |))).
+  Definition value_INVARIANT_VIOLATION_STATUS_MIN_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2000 |) |))).
   
-  Axiom Constant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE :
-    (M.get_constant "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE") =
+  Global Instance Instance_IsConstant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE"
       value_INVARIANT_VIOLATION_STATUS_MIN_CODE.
-  Global Hint Rewrite Constant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_INVARIANT_VIOLATION_STATUS_MIN_CODE.
   
-  Definition value_INVARIANT_VIOLATION_STATUS_MAX_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2999 |) |))).
+  Definition value_INVARIANT_VIOLATION_STATUS_MAX_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2999 |) |))).
   
-  Axiom Constant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE :
-    (M.get_constant "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE") =
+  Global Instance Instance_IsConstant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE"
       value_INVARIANT_VIOLATION_STATUS_MAX_CODE.
-  Global Hint Rewrite Constant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_INVARIANT_VIOLATION_STATUS_MAX_CODE.
   
-  Definition value_DESERIALIZATION_STATUS_MIN_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3000 |) |))).
+  Definition value_DESERIALIZATION_STATUS_MIN_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3000 |) |))).
   
-  Axiom Constant_value_DESERIALIZATION_STATUS_MIN_CODE :
-    (M.get_constant "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE") =
+  Global Instance Instance_IsConstant_value_DESERIALIZATION_STATUS_MIN_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE"
       value_DESERIALIZATION_STATUS_MIN_CODE.
-  Global Hint Rewrite Constant_value_DESERIALIZATION_STATUS_MIN_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_DESERIALIZATION_STATUS_MIN_CODE.
   
-  Definition value_DESERIALIZATION_STATUS_MAX_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3999 |) |))).
+  Definition value_DESERIALIZATION_STATUS_MAX_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3999 |) |))).
   
-  Axiom Constant_value_DESERIALIZATION_STATUS_MAX_CODE :
-    (M.get_constant "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE") =
+  Global Instance Instance_IsConstant_value_DESERIALIZATION_STATUS_MAX_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE"
       value_DESERIALIZATION_STATUS_MAX_CODE.
-  Global Hint Rewrite Constant_value_DESERIALIZATION_STATUS_MAX_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_DESERIALIZATION_STATUS_MAX_CODE.
   
-  Definition value_EXECUTION_STATUS_MIN_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4000 |) |))).
+  Definition value_EXECUTION_STATUS_MIN_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4000 |) |))).
   
-  Axiom Constant_value_EXECUTION_STATUS_MIN_CODE :
-    (M.get_constant "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE") =
+  Global Instance Instance_IsConstant_value_EXECUTION_STATUS_MIN_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE"
       value_EXECUTION_STATUS_MIN_CODE.
-  Global Hint Rewrite Constant_value_EXECUTION_STATUS_MIN_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_EXECUTION_STATUS_MIN_CODE.
   
-  Definition value_EXECUTION_STATUS_MAX_CODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4999 |) |))).
+  Definition value_EXECUTION_STATUS_MAX_CODE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4999 |) |))).
   
-  Axiom Constant_value_EXECUTION_STATUS_MAX_CODE :
-    (M.get_constant "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE") =
+  Global Instance Instance_IsConstant_value_EXECUTION_STATUS_MAX_CODE :
+    M.IsFunction.C
+      "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE"
       value_EXECUTION_STATUS_MAX_CODE.
-  Global Hint Rewrite Constant_value_EXECUTION_STATUS_MAX_CODE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_EXECUTION_STATUS_MAX_CODE.
   
   (*
   Enum StatusType
@@ -8443,8 +8495,10 @@ Module vm_status.
                                     M.read (|
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE"
+                                          get_constant (|
+                                            "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -8455,8 +8509,10 @@ Module vm_status.
                                       M.read (|
                                         M.deref (|
                                           M.read (|
-                                            M.get_constant
-                                              "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE"
+                                            get_constant (|
+                                              "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8495,8 +8551,10 @@ Module vm_status.
                                     M.read (|
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE"
+                                          get_constant (|
+                                            "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -8507,8 +8565,10 @@ Module vm_status.
                                       M.read (|
                                         M.deref (|
                                           M.read (|
-                                            M.get_constant
-                                              "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE"
+                                            get_constant (|
+                                              "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8547,8 +8607,10 @@ Module vm_status.
                                     M.read (|
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE"
+                                          get_constant (|
+                                            "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -8559,8 +8621,10 @@ Module vm_status.
                                       M.read (|
                                         M.deref (|
                                           M.read (|
-                                            M.get_constant
-                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE"
+                                            get_constant (|
+                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8599,8 +8663,10 @@ Module vm_status.
                                     M.read (|
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE"
+                                          get_constant (|
+                                            "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -8611,8 +8677,10 @@ Module vm_status.
                                       M.read (|
                                         M.deref (|
                                           M.read (|
-                                            M.get_constant
-                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE"
+                                            get_constant (|
+                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8651,8 +8719,10 @@ Module vm_status.
                                     M.read (|
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE"
+                                          get_constant (|
+                                            "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -8663,8 +8733,10 @@ Module vm_status.
                                       M.read (|
                                         M.deref (|
                                           M.read (|
-                                            M.get_constant
-                                              "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE"
+                                            get_constant (|
+                                              "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8694,7 +8766,7 @@ Module vm_status.
       end.
     
     Global Instance AssociatedFunction_status_type :
-      M.IsAssociatedFunction.Trait Self "status_type" status_type.
+      M.IsAssociatedFunction.C Self "status_type" status_type.
     Admitted.
     Global Typeclasses Opaque status_type.
   End Impl_move_core_types_vm_status_StatusCode.
@@ -8847,28 +8919,40 @@ Module vm_status.
   End Impl_core_convert_From_move_core_types_vm_status_StatusCode_for_u64.
   
   Module sub_status.
-    Definition value_NFE_VECTOR_ERROR_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+    Definition value_NFE_VECTOR_ERROR_BASE
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
     
-    Axiom Constant_value_NFE_VECTOR_ERROR_BASE :
-      (M.get_constant "move_core_types::vm_status::sub_status::NFE_VECTOR_ERROR_BASE") =
+    Global Instance Instance_IsConstant_value_NFE_VECTOR_ERROR_BASE :
+      M.IsFunction.C
+        "move_core_types::vm_status::sub_status::NFE_VECTOR_ERROR_BASE"
         value_NFE_VECTOR_ERROR_BASE.
-    Global Hint Rewrite Constant_value_NFE_VECTOR_ERROR_BASE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_NFE_VECTOR_ERROR_BASE.
     
-    Definition value_NFE_OUT_OF_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NFE_OUT_OF_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
-    Axiom Constant_value_NFE_OUT_OF_GAS :
-      (M.get_constant "move_core_types::vm_status::sub_status::NFE_OUT_OF_GAS") =
-        value_NFE_OUT_OF_GAS.
-    Global Hint Rewrite Constant_value_NFE_OUT_OF_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_NFE_OUT_OF_GAS :
+      M.IsFunction.C "move_core_types::vm_status::sub_status::NFE_OUT_OF_GAS" value_NFE_OUT_OF_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_NFE_OUT_OF_GAS.
     
-    Definition value_NFE_BCS_SERIALIZATION_FAILURE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 453 |))).
+    Definition value_NFE_BCS_SERIALIZATION_FAILURE
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 453 |))).
     
-    Axiom Constant_value_NFE_BCS_SERIALIZATION_FAILURE :
-      (M.get_constant "move_core_types::vm_status::sub_status::NFE_BCS_SERIALIZATION_FAILURE") =
+    Global Instance Instance_IsConstant_value_NFE_BCS_SERIALIZATION_FAILURE :
+      M.IsFunction.C
+        "move_core_types::vm_status::sub_status::NFE_BCS_SERIALIZATION_FAILURE"
         value_NFE_BCS_SERIALIZATION_FAILURE.
-    Global Hint Rewrite Constant_value_NFE_BCS_SERIALIZATION_FAILURE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_NFE_BCS_SERIALIZATION_FAILURE.
   End sub_status.
 End vm_status.
