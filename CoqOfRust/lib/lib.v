@@ -246,14 +246,31 @@ Module BinOp.
     Definition shr : Value.t :=
       make_arithmetic Z.shiftr.
 
+    Definition make_bool_or_arithmetic
+      (bin_op_bool : bool -> bool -> bool)
+      (bin_op_Z : Z -> Z -> Z)
+      : Value.t :=
+      M.closure (fun args =>
+        match args with
+        | [Value.Bool b1; Value.Bool b2] => M.pure (Value.Bool (bin_op_bool b1 b2))
+        | [Value.Integer kind1 v1; Value.Integer kind2 v2] =>
+          if negb (IntegerKind.eqb kind1 kind2) then
+            M.impossible "expected the same kind of integers"
+          else
+            let z := bin_op_Z v1 v2 in
+            M.pure (Value.Integer kind1 (Integer.normalize_wrap kind1 z))
+        | _ => M.impossible "expected two values for bool or arithmetic"
+        end
+      ).
+
     Definition bit_xor : Value.t :=
-      make_arithmetic Z.lxor.
+      make_bool_or_arithmetic xorb Z.lxor.
 
     Definition bit_and : Value.t :=
-      make_arithmetic Z.land.
+      make_bool_or_arithmetic andb Z.land.
 
     Definition bit_or : Value.t :=
-      make_arithmetic Z.lor.
+      make_bool_or_arithmetic orb Z.lor.
   End Wrap.
 End BinOp.
 
