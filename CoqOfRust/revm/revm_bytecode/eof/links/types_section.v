@@ -2,7 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require alloc.links.alloc.
 Require alloc.vec.links.mod.
-Require Import revm.links.dependencies.
 
 Module TypesSection.
   Record t : Set := {

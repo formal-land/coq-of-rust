@@ -38,11 +38,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ExtBytecode" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "base" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ExtBytecode" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "base" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -56,10 +53,7 @@ Module interpreter.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "instruction_pointer" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "instruction_pointer" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -233,7 +227,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.
@@ -483,7 +477,7 @@ Module interpreter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Panic if not legacy" |) |)
+                          M.deref (| mk_str (| "Panic if not legacy" |) |)
                         |)
                       ]
                     |)
@@ -1473,7 +1467,7 @@ Module interpreter.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "eof" |) |)
+                                      M.deref (| mk_str (| "eof" |) |)
                                     |)
                                   ]
                                 |)
@@ -1608,7 +1602,7 @@ Module interpreter.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "eof" |) |)
+                                      M.deref (| mk_str (| "eof" |) |)
                                     |)
                                   ]
                                 |)
@@ -1732,10 +1726,7 @@ Module interpreter.
                                       |)
                                     ]
                                   |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "eof" |) |)
-                                  |)
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "eof" |) |) |)
                                 ]
                               |)
                             |)
@@ -2114,9 +2105,8 @@ Module interpreter.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: !self.base.is_eof()"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code: !self.base.is_eof()"
                                                                 |)
                                                               ]
                                                           |)
@@ -2306,9 +2296,8 @@ Module interpreter.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: !self.base.is_eof()"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code: !self.base.is_eof()"
                                                                 |)
                                                               ]
                                                           |)

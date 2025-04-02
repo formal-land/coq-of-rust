@@ -41,7 +41,7 @@ Module my.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_struct_visibility_my_ClosedBox_T.
@@ -85,7 +85,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
-              [ ("contents", M.read (| Value.String "public information" |)) ]
+              [ ("contents", mk_str (| "public information" |)) ]
           |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
@@ -110,11 +110,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "The open box contains: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "The open box contains: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -182,7 +179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "classified information" |) ]
+              [ mk_str (| "classified information" |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -190,6 +187,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "struct_visibility::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "struct_visibility::main" main.
 Admitted.
 Global Typeclasses Opaque main.

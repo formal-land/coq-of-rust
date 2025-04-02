@@ -40,12 +40,8 @@ Module Animal.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String " says " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "" |); mk_str (| " says " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -178,8 +174,7 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_is_naked :
-    M.IsAssociatedFunction.Trait Self "is_naked" is_naked.
+  Global Instance AssociatedFunction_is_naked : M.IsAssociatedFunction.C Self "is_naked" is_naked.
   Admitted.
   Global Typeclasses Opaque is_naked.
   (*
@@ -247,11 +242,8 @@ Module Impl_traits_Sheep.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String " is already naked...
-" |)
-                                          ]
+                                          [ mk_str (| "" |); mk_str (| " is already naked...
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -346,11 +338,8 @@ Module Impl_traits_Sheep.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String " gets a haircut!
-" |)
-                                          ]
+                                          [ mk_str (| "" |); mk_str (| " gets a haircut!
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -416,7 +405,7 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_shear : M.IsAssociatedFunction.Trait Self "shear" shear.
+  Global Instance AssociatedFunction_shear : M.IsAssociatedFunction.C Self "shear" shear.
   Admitted.
   Global Typeclasses Opaque shear.
 End Impl_traits_Sheep.
@@ -499,8 +488,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  Value.String "baaaaah?"));
-              fun γ => ltac:(M.monadic (Value.String "baaaaah!"))
+                  M.alloc (| mk_str (| "baaaaah?" |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "baaaaah!" |) |)))
             ]
           |)
         |)))
@@ -543,9 +532,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String " pauses briefly... " |);
-                                    M.read (| Value.String "
+                                    mk_str (| "" |);
+                                    mk_str (| " pauses briefly... " |);
+                                    mk_str (| "
 " |)
                                   ]
                               |)
@@ -684,7 +673,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "Dolly" |) ]
+              [ mk_str (| "Dolly" |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -732,6 +721,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "traits::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "traits::main" main.
 Admitted.
 Global Typeclasses Opaque main.

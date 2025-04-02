@@ -52,7 +52,14 @@ Module div.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, rhs |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -94,7 +101,7 @@ Module div.
     
     Global Instance AssociatedFunction_checked_div :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_div" (checked_div BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_div" (checked_div BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_div.
     
@@ -144,7 +151,14 @@ Module div.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, rhs |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -186,7 +200,7 @@ Module div.
     
     Global Instance AssociatedFunction_checked_rem :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_rem" (checked_rem BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_rem" (checked_rem BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_rem.
     
@@ -238,7 +252,14 @@ Module div.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, rhs |);
-                                  M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
                                 ]
                               |)
                             |)
@@ -265,8 +286,7 @@ Module div.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "Division by zero" |) ]
+                                          Value.Array [ mk_str (| "Division by zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -327,7 +347,14 @@ Module div.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, r |);
-                                      M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -373,7 +400,7 @@ Module div.
     
     Global Instance AssociatedFunction_div_ceil :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "div_ceil" (div_ceil BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "div_ceil" (div_ceil BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque div_ceil.
     
@@ -421,7 +448,14 @@ Module div.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, rhs |);
-                                  M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
                                 ]
                               |)
                             |)
@@ -448,8 +482,7 @@ Module div.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "Division by zero" |) ]
+                                          Value.Array [ mk_str (| "Division by zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -497,7 +530,7 @@ Module div.
     
     Global Instance AssociatedFunction_div_rem :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "div_rem" (div_rem BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "div_rem" (div_rem BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque div_rem.
     
@@ -544,7 +577,7 @@ Module div.
     
     Global Instance AssociatedFunction_wrapping_div :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_div" (wrapping_div BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_div" (wrapping_div BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_div.
     
@@ -591,7 +624,7 @@ Module div.
     
     Global Instance AssociatedFunction_wrapping_rem :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_rem" (wrapping_rem BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_rem" (wrapping_rem BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_rem.
   End Impl_ruint_Uint_BITS_LIMBS.

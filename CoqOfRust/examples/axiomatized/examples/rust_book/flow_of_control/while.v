@@ -3,5 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "while::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "while::main" main.
 Admitted.

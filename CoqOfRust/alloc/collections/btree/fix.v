@@ -129,7 +129,10 @@ Module collections.
                               BinOp.ge (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_constant "alloc::collections::btree::map::MIN_LEN"
+                                  get_constant (|
+                                    "alloc::collections::btree::map::MIN_LEN",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -361,8 +364,10 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, left_parent_kv |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
-                                                    M.get_constant
-                                                      "alloc::collections::btree::map::MIN_LEN"
+                                                    get_constant (|
+                                                      "alloc::collections::btree::map::MIN_LEN",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |),
                                                   M.read (| len |)
                                                 |)
@@ -518,8 +523,10 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, right_parent_kv |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
-                                                    M.get_constant
-                                                      "alloc::collections::btree::map::MIN_LEN"
+                                                    get_constant (|
+                                                      "alloc::collections::btree::map::MIN_LEN",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |),
                                                   M.read (| len |)
                                                 |)
@@ -616,7 +623,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_node_through_parent :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "fix_node_through_parent"
             (fix_node_through_parent K V).
@@ -808,7 +815,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_node_and_affected_ancestors :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "fix_node_and_affected_ancestors"
             (fix_node_and_affected_ancestors K V).
@@ -979,7 +986,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_top :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "fix_top" (fix_top K V).
+          M.IsAssociatedFunction.C (Self K V) "fix_top" (fix_top K V).
         Admitted.
         Global Typeclasses Opaque fix_top.
         
@@ -1214,7 +1221,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_right_border :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "fix_right_border" (fix_right_border K V).
+          M.IsAssociatedFunction.C (Self K V) "fix_right_border" (fix_right_border K V).
         Admitted.
         Global Typeclasses Opaque fix_right_border.
         
@@ -1449,7 +1456,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_left_border :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "fix_left_border" (fix_left_border K V).
+          M.IsAssociatedFunction.C (Self K V) "fix_left_border" (fix_left_border K V).
         Admitted.
         Global Typeclasses Opaque fix_left_border.
         
@@ -1699,8 +1706,10 @@ Module collections.
                                                           |),
                                                           BinOp.Wrap.mul (|
                                                             M.read (|
-                                                              M.get_constant
-                                                                "alloc::collections::btree::map::MIN_LEN"
+                                                              get_constant (|
+                                                                "alloc::collections::btree::map::MIN_LEN",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.Usize 2
                                                           |)
@@ -1722,9 +1731,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
+                                                        mk_str (|
+                                                          "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
                                                         |)
                                                       ]
                                                     |)
@@ -1766,8 +1774,10 @@ Module collections.
                                             BinOp.lt (|
                                               M.read (| right_child_len |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::btree::map::MIN_LEN"
+                                                get_constant (|
+                                                  "alloc::collections::btree::map::MIN_LEN",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1794,8 +1804,10 @@ Module collections.
                                               M.borrow (| Pointer.Kind.MutRef, last_kv |);
                                               BinOp.Wrap.sub (|
                                                 M.read (|
-                                                  M.get_constant
-                                                    "alloc::collections::btree::map::MIN_LEN"
+                                                  get_constant (|
+                                                    "alloc::collections::btree::map::MIN_LEN",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |),
                                                 M.read (| right_child_len |)
                                               |)
@@ -1856,7 +1868,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_right_border_of_plentiful :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "fix_right_border_of_plentiful"
             (fix_right_border_of_plentiful K V).
@@ -2223,8 +2235,10 @@ Module collections.
                                                             ]
                                                           |),
                                                           M.read (|
-                                                            M.get_constant
-                                                              "alloc::collections::btree::map::MIN_LEN"
+                                                            get_constant (|
+                                                              "alloc::collections::btree::map::MIN_LEN",
+                                                              Ty.path "usize"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -2244,9 +2258,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
+                                                        mk_str (|
+                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                         |)
                                                       ]
                                                     |)
@@ -2280,7 +2293,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_left_border_of_left_edge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "fix_left_border_of_left_edge"
             (fix_left_border_of_left_edge K V).
@@ -2628,8 +2641,10 @@ Module collections.
                                                             ]
                                                           |),
                                                           M.read (|
-                                                            M.get_constant
-                                                              "alloc::collections::btree::map::MIN_LEN"
+                                                            get_constant (|
+                                                              "alloc::collections::btree::map::MIN_LEN",
+                                                              Ty.path "usize"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -2649,9 +2664,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
+                                                        mk_str (|
+                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                         |)
                                                       ]
                                                     |)
@@ -2685,7 +2699,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_right_border_of_right_edge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "fix_right_border_of_right_edge"
             (fix_right_border_of_right_edge K V).
@@ -2831,8 +2845,10 @@ Module collections.
                                                 [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::btree::map::MIN_LEN"
+                                                get_constant (|
+                                                  "alloc::collections::btree::map::MIN_LEN",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -2848,9 +2864,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
+                                            mk_str (|
+                                              "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
                                             |)
                                           ]
                                         |)
@@ -2935,7 +2950,10 @@ Module collections.
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
-                                    M.get_constant "alloc::collections::btree::map::MIN_LEN"
+                                    get_constant (|
+                                      "alloc::collections::btree::map::MIN_LEN",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 1
                                 |);
@@ -3018,7 +3036,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_left_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "fix_left_child" (fix_left_child K V).
+          M.IsAssociatedFunction.C (Self K V) "fix_left_child" (fix_left_child K V).
         Admitted.
         Global Typeclasses Opaque fix_left_child.
         
@@ -3142,8 +3160,10 @@ Module collections.
                                                 [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::btree::map::MIN_LEN"
+                                                get_constant (|
+                                                  "alloc::collections::btree::map::MIN_LEN",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -3159,9 +3179,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
+                                            mk_str (|
+                                              "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
                                             |)
                                           ]
                                         |)
@@ -3246,7 +3265,10 @@ Module collections.
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
-                                    M.get_constant "alloc::collections::btree::map::MIN_LEN"
+                                    get_constant (|
+                                      "alloc::collections::btree::map::MIN_LEN",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 1
                                 |);
@@ -3329,7 +3351,7 @@ Module collections.
         
         Global Instance AssociatedFunction_fix_right_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "fix_right_child" (fix_right_child K V).
+          M.IsAssociatedFunction.C (Self K V) "fix_right_child" (fix_right_child K V).
         Admitted.
         Global Typeclasses Opaque fix_right_child.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.

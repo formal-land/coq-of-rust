@@ -351,7 +351,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_ModuleHandleIndex.
@@ -390,10 +390,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -486,11 +483,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "ModuleHandleIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "ModuleHandleIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -553,10 +546,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -588,7 +580,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_ModuleHandleIndex.
@@ -940,7 +932,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructHandleIndex.
@@ -979,10 +971,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1075,11 +1064,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "StructHandleIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "StructHandleIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -1142,10 +1127,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructHandle" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructHandle" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -1177,7 +1161,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_StructHandleIndex.
@@ -1529,7 +1513,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionHandleIndex.
@@ -1568,10 +1552,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1664,11 +1645,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "FunctionHandleIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "FunctionHandleIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -1731,10 +1708,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -1766,7 +1742,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_FunctionHandleIndex.
@@ -2118,7 +2094,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FieldHandleIndex.
@@ -2157,10 +2133,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2253,11 +2226,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "FieldHandleIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "FieldHandleIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -2320,10 +2289,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -2355,7 +2323,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_FieldHandleIndex.
@@ -2717,7 +2685,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructDefInstantiationIndex.
@@ -2757,10 +2725,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2855,10 +2820,7 @@ Module file_format.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (| Value.String "StructDefInstantiationIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                            [ mk_str (| "StructDefInstantiationIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -2922,12 +2884,11 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" []
-          |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -2959,7 +2920,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_StructDefInstantiationIndex.
@@ -3311,7 +3272,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionInstantiationIndex.
@@ -3350,10 +3311,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -3447,10 +3405,7 @@ Module file_format.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (| Value.String "FunctionInstantiationIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                            [ mk_str (| "FunctionInstantiationIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -3513,12 +3468,11 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" []
-          |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -3550,7 +3504,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_FunctionInstantiationIndex.
@@ -3902,7 +3856,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FieldInstantiationIndex.
@@ -3941,10 +3895,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -4037,11 +3988,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "FieldInstantiationIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "FieldInstantiationIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -4104,10 +4051,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -4139,7 +4085,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_FieldInstantiationIndex.
@@ -4489,7 +4435,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_IdentifierIndex.
@@ -4528,10 +4474,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -4624,11 +4567,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "IdentifierIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "IdentifierIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -4691,10 +4630,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Identifier" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Identifier" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -4726,7 +4664,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_IdentifierIndex.
@@ -5078,7 +5016,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_AddressIdentifierIndex.
@@ -5117,10 +5055,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -5213,11 +5148,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "AddressIdentifierIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "AddressIdentifierIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -5280,10 +5211,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::AddressIdentifier" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::AddressIdentifier" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -5315,7 +5245,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_AddressIdentifierIndex.
@@ -5667,7 +5597,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_ConstantPoolIndex.
@@ -5706,10 +5636,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -5802,11 +5729,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "ConstantPoolIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "ConstantPoolIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -5869,10 +5792,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -5904,7 +5826,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_ConstantPoolIndex.
@@ -6252,7 +6174,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_SignatureIndex.
@@ -6291,10 +6213,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -6387,11 +6306,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "SignatureIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "SignatureIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -6454,10 +6369,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Signature" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Signature" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -6489,7 +6403,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_SignatureIndex.
@@ -6841,7 +6755,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructDefinitionIndex.
@@ -6880,10 +6794,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -6976,11 +6887,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "StructDefinitionIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "StructDefinitionIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -7043,10 +6950,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -7078,7 +6984,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_StructDefinitionIndex.
@@ -7430,7 +7336,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionDefinitionIndex.
@@ -7469,10 +7375,7 @@ Module file_format.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -7565,11 +7468,7 @@ Module file_format.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "FunctionDefinitionIndex(" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "FunctionDefinitionIndex(" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)
@@ -7632,10 +7531,9 @@ Module file_format.
     
     (*             const KIND: IndexKind = IndexKind::$kind; *)
     (* Ty.path "move_binary_format::IndexKind" *)
-    Definition value_KIND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [] |))).
+    Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -7667,7 +7565,7 @@ Module file_format.
         Self
         (* Instance *)
         [
-          ("value_KIND", InstanceField.Constant value_KIND);
+          ("value_KIND", InstanceField.Method value_KIND);
           ("into_index", InstanceField.Method into_index)
         ].
   End Impl_move_binary_format_internals_ModuleIndex_for_move_binary_format_file_format_FunctionDefinitionIndex.
@@ -7738,7 +7636,7 @@ Module file_format.
                 [],
                 []
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "<SELF>" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<SELF>" |) |) |) ]
             |)
           |)
         |)))
@@ -7746,22 +7644,22 @@ Module file_format.
     end.
   
   Global Instance Instance_IsFunction_self_module_name :
-    M.IsFunction.Trait "move_binary_format::file_format::self_module_name" self_module_name.
+    M.IsFunction.C "move_binary_format::file_format::self_module_name" self_module_name.
   Admitted.
   Global Typeclasses Opaque self_module_name.
   
-  Definition value_NO_TYPE_ARGUMENTS : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "move_binary_format::file_format::SignatureIndex"
-            [ Value.Integer IntegerKind.U16 0 ]
-        |))).
+  Definition value_NO_TYPE_ARGUMENTS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "move_binary_format::file_format::SignatureIndex"
+          [ Value.Integer IntegerKind.U16 0 ]
+      |))).
   
-  Axiom Constant_value_NO_TYPE_ARGUMENTS :
-    (M.get_constant "move_binary_format::file_format::NO_TYPE_ARGUMENTS") = value_NO_TYPE_ARGUMENTS.
-  Global Hint Rewrite Constant_value_NO_TYPE_ARGUMENTS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NO_TYPE_ARGUMENTS :
+    M.IsFunction.C "move_binary_format::file_format::NO_TYPE_ARGUMENTS" value_NO_TYPE_ARGUMENTS.
+  Admitted.
+  Global Typeclasses Opaque value_NO_TYPE_ARGUMENTS.
   
   (* StructRecord
     {
@@ -7879,11 +7777,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ModuleHandle" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleHandle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -7897,7 +7792,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -8595,11 +8490,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "StructHandle" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "module" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructHandle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -8613,7 +8505,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -8627,7 +8519,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "abilities" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "abilities" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -8641,10 +8533,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -9742,7 +9631,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_type_param_constraints :
-      M.IsAssociatedFunction.Trait Self "type_param_constraints" type_param_constraints.
+      M.IsAssociatedFunction.C Self "type_param_constraints" type_param_constraints.
     Admitted.
     Global Typeclasses Opaque type_param_constraints.
   End Impl_move_binary_format_file_format_StructHandle.
@@ -9830,14 +9719,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "StructTypeParameter" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "constraints" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructTypeParameter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "constraints" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -9851,7 +9734,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_phantom" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_phantom" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -10394,7 +10277,7 @@ Module file_format.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "StructTypeParameter" |);
+                              mk_str (| "StructTypeParameter" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -10470,7 +10353,7 @@ Module file_format.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "constraints" |);
+                            mk_str (| "constraints" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -10551,7 +10434,7 @@ Module file_format.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "is_phantom" |);
+                            mk_str (| "is_phantom" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -10663,9 +10546,20 @@ Module file_format.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "StructTypeParameter" |);
+                mk_str (| "StructTypeParameter" |);
                 M.read (|
-                  M.get_constant "move_binary_format::file_format::_'1::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::file_format::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'1::deserialize::__Visitor"
@@ -10735,9 +10629,9 @@ Module file_format.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "Visibility" |);
+                            mk_str (| "Visibility" |);
                             Value.Integer IntegerKind.U32 0;
-                            M.read (| Value.String "Private" |)
+                            mk_str (| "Private" |)
                           ]
                         |)
                       |)));
@@ -10768,9 +10662,9 @@ Module file_format.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "Visibility" |);
+                            mk_str (| "Visibility" |);
                             Value.Integer IntegerKind.U32 1;
-                            M.read (| Value.String "Public" |)
+                            mk_str (| "Public" |)
                           ]
                         |)
                       |)));
@@ -10801,9 +10695,9 @@ Module file_format.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "Visibility" |);
+                            mk_str (| "Visibility" |);
                             Value.Integer IntegerKind.U32 2;
-                            M.read (| Value.String "Friend" |)
+                            mk_str (| "Friend" |)
                           ]
                         |)
                       |)))
@@ -10849,9 +10743,20 @@ Module file_format.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "Visibility" |);
+                mk_str (| "Visibility" |);
                 M.read (|
-                  M.get_constant "move_binary_format::file_format::_'3::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_binary_format::file_format::_'3::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'3::deserialize::__Visitor"
@@ -10901,7 +10806,7 @@ Module file_format.
               |),
               [
                 M.read (| __serializer |);
-                M.read (| Value.String "AbilitySet" |);
+                mk_str (| "AbilitySet" |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -10956,7 +10861,7 @@ Module file_format.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "AbilitySet" |);
+                mk_str (| "AbilitySet" |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'5::deserialize::__Visitor"
                   [
@@ -11201,11 +11106,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FunctionHandle" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "module" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionHandle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11219,7 +11121,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11233,7 +11135,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "parameters" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11247,7 +11149,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "return_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11261,10 +11163,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11864,11 +11763,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FieldHandle" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "owner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldHandle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "owner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -11882,7 +11778,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "field" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "field" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -12282,10 +12178,7 @@ Module file_format.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Native" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Native" |) |) |)
                         ]
                       |)
                     |)));
@@ -12313,10 +12206,7 @@ Module file_format.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Declared" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Declared" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -12628,11 +12518,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "StructDefInstantiation" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "def" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructDefInstantiation" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "def" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -12646,10 +12533,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13022,11 +12906,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FunctionInstantiation" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "handle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionInstantiation" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "handle" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13040,10 +12921,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13416,11 +13294,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FieldInstantiation" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "handle" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldInstantiation" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "handle" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13434,10 +13309,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13810,14 +13682,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "StructDefinition" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "struct_handle" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructDefinition" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "struct_handle" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -13831,10 +13697,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "field_information" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "field_information" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -14092,9 +13955,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.deref (|
-                                      M.read (|
-                                        Value.String "Looking for field in native structure"
-                                      |)
+                                      mk_str (| "Looking for field in native structure" |)
                                     |)
                                   |)
                                 ]
@@ -14144,7 +14005,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_declared_field_count :
-      M.IsAssociatedFunction.Trait Self "declared_field_count" declared_field_count.
+      M.IsAssociatedFunction.C Self "declared_field_count" declared_field_count.
     Admitted.
     Global Typeclasses Opaque declared_field_count.
     
@@ -14268,7 +14129,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_field : M.IsAssociatedFunction.Trait Self "field" field.
+    Global Instance AssociatedFunction_field : M.IsAssociatedFunction.C Self "field" field.
     Admitted.
     Global Typeclasses Opaque field.
     
@@ -14377,7 +14238,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.Trait Self "fields" fields.
+    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.C Self "fields" fields.
     Admitted.
     Global Typeclasses Opaque fields.
   End Impl_move_binary_format_file_format_StructDefinition.
@@ -14498,11 +14359,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FieldDefinition" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldDefinition" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -14516,7 +14374,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "signature" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "signature" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -14804,10 +14662,7 @@ Module file_format.
                             "move_binary_format::file_format::Visibility::Private"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Private" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Private" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -14818,10 +14673,7 @@ Module file_format.
                             "move_binary_format::file_format::Visibility::Public"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Public" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Public" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -14832,10 +14684,7 @@ Module file_format.
                             "move_binary_format::file_format::Visibility::Friend"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Friend" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Friend" |) |) |)
                         |)))
                   ]
                 |)
@@ -15085,11 +14934,11 @@ Module file_format.
     
     (*     pub const DEPRECATED_SCRIPT: u8 = 0x2; *)
     (* Ty.path "u8" *)
-    Definition value_DEPRECATED_SCRIPT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
+    Definition value_DEPRECATED_SCRIPT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
     Global Instance AssociatedConstant_value_DEPRECATED_SCRIPT :
-      M.IsAssociatedConstant.Trait Self "value_DEPRECATED_SCRIPT" value_DEPRECATED_SCRIPT.
+      M.IsAssociatedFunction.C Self "DEPRECATED_SCRIPT" value_DEPRECATED_SCRIPT.
     Admitted.
     Global Typeclasses Opaque value_DEPRECATED_SCRIPT.
   End Impl_move_binary_format_file_format_Visibility.
@@ -15134,8 +14983,12 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant
-                                "move_binary_format::file_format::Visibility::Private_discriminant",
+                              M.read (|
+                                get_constant (|
+                                  "move_binary_format::file_format::Visibility::Private_discriminant",
+                                  Ty.path "u8"
+                                |)
+                              |),
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -15160,8 +15013,12 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant
-                                "move_binary_format::file_format::Visibility::Public_discriminant",
+                              M.read (|
+                                get_constant (|
+                                  "move_binary_format::file_format::Visibility::Public_discriminant",
+                                  Ty.path "u8"
+                                |)
+                              |),
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -15183,8 +15040,12 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant
-                                "move_binary_format::file_format::Visibility::Friend_discriminant",
+                              M.read (|
+                                get_constant (|
+                                  "move_binary_format::file_format::Visibility::Friend_discriminant",
+                                  Ty.path "u8"
+                                |)
+                              |),
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -15449,11 +15310,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FunctionDefinition" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "function" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionDefinition" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "function" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -15467,7 +15325,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "visibility" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "visibility" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -15481,7 +15339,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_entry" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_entry" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -15497,7 +15355,7 @@ Module file_format.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "acquires_global_resources" |) |)
+                M.deref (| mk_str (| "acquires_global_resources" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -15512,7 +15370,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -15969,37 +15827,41 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_native :
-      M.IsAssociatedFunction.Trait Self "is_native" is_native.
+      M.IsAssociatedFunction.C Self "is_native" is_native.
     Admitted.
     Global Typeclasses Opaque is_native.
     
     (*     pub const DEPRECATED_PUBLIC_BIT: u8 = 0b01; *)
     (* Ty.path "u8" *)
-    Definition value_DEPRECATED_PUBLIC_BIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    Definition value_DEPRECATED_PUBLIC_BIT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
     
     Global Instance AssociatedConstant_value_DEPRECATED_PUBLIC_BIT :
-      M.IsAssociatedConstant.Trait Self "value_DEPRECATED_PUBLIC_BIT" value_DEPRECATED_PUBLIC_BIT.
+      M.IsAssociatedFunction.C Self "DEPRECATED_PUBLIC_BIT" value_DEPRECATED_PUBLIC_BIT.
     Admitted.
     Global Typeclasses Opaque value_DEPRECATED_PUBLIC_BIT.
     
     (*     pub const NATIVE: u8 = 0b10; *)
     (* Ty.path "u8" *)
-    Definition value_NATIVE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
+    Definition value_NATIVE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
     Global Instance AssociatedConstant_value_NATIVE :
-      M.IsAssociatedConstant.Trait Self "value_NATIVE" value_NATIVE.
+      M.IsAssociatedFunction.C Self "NATIVE" value_NATIVE.
     Admitted.
     Global Typeclasses Opaque value_NATIVE.
     
     (*     pub const ENTRY: u8 = 0b100; *)
     (* Ty.path "u8" *)
-    Definition value_ENTRY : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
+    Definition value_ENTRY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
     
     Global Instance AssociatedConstant_value_ENTRY :
-      M.IsAssociatedConstant.Trait Self "value_ENTRY" value_ENTRY.
+      M.IsAssociatedFunction.C Self "ENTRY" value_ENTRY.
     Admitted.
     Global Typeclasses Opaque value_ENTRY.
   End Impl_move_binary_format_file_format_FunctionDefinition.
@@ -16087,10 +15949,7 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TypeSignature" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypeSignature" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -16472,11 +16331,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FunctionSignature" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "return_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionSignature" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -16490,7 +16346,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "parameters" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -16504,10 +16360,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_parameters" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -17000,7 +16853,7 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Signature" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signature" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -17434,7 +17287,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -17476,8 +17329,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
   End Impl_move_binary_format_file_format_Signature.
@@ -17553,10 +17405,7 @@ Module file_format.
                             "move_binary_format::file_format::Ability::Copy"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Copy" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Copy" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -17567,10 +17416,7 @@ Module file_format.
                             "move_binary_format::file_format::Ability::Drop"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Drop" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Drop" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -17581,10 +17427,7 @@ Module file_format.
                             "move_binary_format::file_format::Ability::Store"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Store" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Store" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -17595,10 +17438,7 @@ Module file_format.
                             "move_binary_format::file_format::Ability::Key"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Key" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Key" |) |) |)
                         |)))
                   ]
                 |)
@@ -18016,8 +17856,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
     
@@ -18078,8 +17917,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_requires :
-      M.IsAssociatedFunction.Trait Self "requires" requires.
+    Global Instance AssociatedFunction_requires : M.IsAssociatedFunction.C Self "requires" requires.
     Admitted.
     Global Typeclasses Opaque requires.
     
@@ -18120,7 +17958,13 @@ Module file_format.
                           []
                         |),
                         [
-                          M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.path "move_binary_format::file_format::AbilitySet",
+                              "EMPTY",
+                              Ty.path "move_binary_format::file_format::AbilitySet"
+                            |)
+                          |);
                           Value.StructTuple "move_binary_format::file_format::Ability::Copy" []
                         ]
                       |)
@@ -18142,7 +17986,13 @@ Module file_format.
                           []
                         |),
                         [
-                          M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.path "move_binary_format::file_format::AbilitySet",
+                              "EMPTY",
+                              Ty.path "move_binary_format::file_format::AbilitySet"
+                            |)
+                          |);
                           Value.StructTuple "move_binary_format::file_format::Ability::Drop" []
                         ]
                       |)
@@ -18179,7 +18029,13 @@ Module file_format.
                               []
                             |),
                             [
-                              M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "move_binary_format::file_format::AbilitySet",
+                                  "EMPTY",
+                                  Ty.path "move_binary_format::file_format::AbilitySet"
+                                |)
+                              |);
                               Value.StructTuple "move_binary_format::file_format::Ability::Store" []
                             ]
                           |);
@@ -18191,7 +18047,11 @@ Module file_format.
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Ability::Key" |) in
-                    M.get_constant "move_binary_format::file_format::EMPTY"))
+                    get_associated_constant (|
+                      Ty.path "move_binary_format::file_format::AbilitySet",
+                      "EMPTY",
+                      Ty.path "move_binary_format::file_format::AbilitySet"
+                    |)))
               ]
             |)
           |)))
@@ -18199,7 +18059,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_required_by :
-      M.IsAssociatedFunction.Trait Self "required_by" required_by.
+      M.IsAssociatedFunction.C Self "required_by" required_by.
     Admitted.
     Global Typeclasses Opaque required_by.
   End Impl_move_binary_format_file_format_Ability.
@@ -18500,17 +18360,16 @@ Module file_format.
     
     (*     pub const EMPTY: Self = Self(0); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_EMPTY : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [ Value.Integer IntegerKind.U8 0 ]
-          |))).
+    Definition value_EMPTY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [ Value.Integer IntegerKind.U8 0 ]
+        |))).
     
     Global Instance AssociatedConstant_value_EMPTY :
-      M.IsAssociatedConstant.Trait Self "value_EMPTY" value_EMPTY.
+      M.IsAssociatedFunction.C Self "EMPTY" value_EMPTY.
     Admitted.
     Global Typeclasses Opaque value_EMPTY.
     
@@ -18519,93 +18378,118 @@ Module file_format.
             Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
     *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_PRIMITIVES : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [
-                BinOp.bit_or
-                  (BinOp.bit_or
-                    (M.cast
-                      (Ty.path "u8")
-                      (BinOp.Wrap.add (|
-                        M.get_constant
-                          "move_binary_format::file_format::Ability::Copy_discriminant",
-                        Value.Integer IntegerKind.U8 0
-                      |)))
-                    (M.cast
-                      (Ty.path "u8")
-                      (BinOp.Wrap.add (|
-                        M.get_constant
-                          "move_binary_format::file_format::Ability::Drop_discriminant",
-                        Value.Integer IntegerKind.U8 0
-                      |))))
+    Definition value_PRIMITIVES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [
+              BinOp.bit_or
+                (BinOp.bit_or
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant "move_binary_format::file_format::Ability::Store_discriminant",
+                      M.read (|
+                        get_constant (|
+                          "move_binary_format::file_format::Ability::Copy_discriminant",
+                          Ty.path "u8"
+                        |)
+                      |),
                       Value.Integer IntegerKind.U8 0
                     |)))
-              ]
-          |))).
+                  (M.cast
+                    (Ty.path "u8")
+                    (BinOp.Wrap.add (|
+                      M.read (|
+                        get_constant (|
+                          "move_binary_format::file_format::Ability::Drop_discriminant",
+                          Ty.path "u8"
+                        |)
+                      |),
+                      Value.Integer IntegerKind.U8 0
+                    |))))
+                (M.cast
+                  (Ty.path "u8")
+                  (BinOp.Wrap.add (|
+                    M.read (|
+                      get_constant (|
+                        "move_binary_format::file_format::Ability::Store_discriminant",
+                        Ty.path "u8"
+                      |)
+                    |),
+                    Value.Integer IntegerKind.U8 0
+                  |)))
+            ]
+        |))).
     
     Global Instance AssociatedConstant_value_PRIMITIVES :
-      M.IsAssociatedConstant.Trait Self "value_PRIMITIVES" value_PRIMITIVES.
+      M.IsAssociatedFunction.C Self "PRIMITIVES" value_PRIMITIVES.
     Admitted.
     Global Typeclasses Opaque value_PRIMITIVES.
     
     (*     pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8)); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_REFERENCES : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [
-                BinOp.bit_or
-                  (M.cast
-                    (Ty.path "u8")
-                    (BinOp.Wrap.add (|
-                      M.get_constant "move_binary_format::file_format::Ability::Copy_discriminant",
-                      Value.Integer IntegerKind.U8 0
-                    |)))
-                  (M.cast
-                    (Ty.path "u8")
-                    (BinOp.Wrap.add (|
-                      M.get_constant "move_binary_format::file_format::Ability::Drop_discriminant",
-                      Value.Integer IntegerKind.U8 0
-                    |)))
-              ]
-          |))).
+    Definition value_REFERENCES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [
+              BinOp.bit_or
+                (M.cast
+                  (Ty.path "u8")
+                  (BinOp.Wrap.add (|
+                    M.read (|
+                      get_constant (|
+                        "move_binary_format::file_format::Ability::Copy_discriminant",
+                        Ty.path "u8"
+                      |)
+                    |),
+                    Value.Integer IntegerKind.U8 0
+                  |)))
+                (M.cast
+                  (Ty.path "u8")
+                  (BinOp.Wrap.add (|
+                    M.read (|
+                      get_constant (|
+                        "move_binary_format::file_format::Ability::Drop_discriminant",
+                        Ty.path "u8"
+                      |)
+                    |),
+                    Value.Integer IntegerKind.U8 0
+                  |)))
+            ]
+        |))).
     
     Global Instance AssociatedConstant_value_REFERENCES :
-      M.IsAssociatedConstant.Trait Self "value_REFERENCES" value_REFERENCES.
+      M.IsAssociatedFunction.C Self "REFERENCES" value_REFERENCES.
     Admitted.
     Global Typeclasses Opaque value_REFERENCES.
     
     (*     pub const SIGNER: AbilitySet = Self(Ability::Drop as u8); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_SIGNER : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [
-                M.cast
-                  (Ty.path "u8")
-                  (BinOp.Wrap.add (|
-                    M.get_constant "move_binary_format::file_format::Ability::Drop_discriminant",
-                    Value.Integer IntegerKind.U8 0
-                  |))
-              ]
-          |))).
+    Definition value_SIGNER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [
+              M.cast
+                (Ty.path "u8")
+                (BinOp.Wrap.add (|
+                  M.read (|
+                    get_constant (|
+                      "move_binary_format::file_format::Ability::Drop_discriminant",
+                      Ty.path "u8"
+                    |)
+                  |),
+                  Value.Integer IntegerKind.U8 0
+                |))
+            ]
+        |))).
     
     Global Instance AssociatedConstant_value_SIGNER :
-      M.IsAssociatedConstant.Trait Self "value_SIGNER" value_SIGNER.
+      M.IsAssociatedFunction.C Self "SIGNER" value_SIGNER.
     Admitted.
     Global Typeclasses Opaque value_SIGNER.
     
@@ -18614,40 +18498,52 @@ Module file_format.
             Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
     *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_VECTOR : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [
-                BinOp.bit_or
-                  (BinOp.bit_or
-                    (M.cast
-                      (Ty.path "u8")
-                      (BinOp.Wrap.add (|
-                        M.get_constant
-                          "move_binary_format::file_format::Ability::Copy_discriminant",
-                        Value.Integer IntegerKind.U8 0
-                      |)))
-                    (M.cast
-                      (Ty.path "u8")
-                      (BinOp.Wrap.add (|
-                        M.get_constant
-                          "move_binary_format::file_format::Ability::Drop_discriminant",
-                        Value.Integer IntegerKind.U8 0
-                      |))))
+    Definition value_VECTOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [
+              BinOp.bit_or
+                (BinOp.bit_or
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant "move_binary_format::file_format::Ability::Store_discriminant",
+                      M.read (|
+                        get_constant (|
+                          "move_binary_format::file_format::Ability::Copy_discriminant",
+                          Ty.path "u8"
+                        |)
+                      |),
                       Value.Integer IntegerKind.U8 0
                     |)))
-              ]
-          |))).
+                  (M.cast
+                    (Ty.path "u8")
+                    (BinOp.Wrap.add (|
+                      M.read (|
+                        get_constant (|
+                          "move_binary_format::file_format::Ability::Drop_discriminant",
+                          Ty.path "u8"
+                        |)
+                      |),
+                      Value.Integer IntegerKind.U8 0
+                    |))))
+                (M.cast
+                  (Ty.path "u8")
+                  (BinOp.Wrap.add (|
+                    M.read (|
+                      get_constant (|
+                        "move_binary_format::file_format::Ability::Store_discriminant",
+                        Ty.path "u8"
+                      |)
+                    |),
+                    Value.Integer IntegerKind.U8 0
+                  |)))
+            ]
+        |))).
     
     Global Instance AssociatedConstant_value_VECTOR :
-      M.IsAssociatedConstant.Trait Self "value_VECTOR" value_VECTOR.
+      M.IsAssociatedFunction.C Self "VECTOR" value_VECTOR.
     Admitted.
     Global Typeclasses Opaque value_VECTOR.
     
@@ -18661,48 +18557,63 @@ Module file_format.
         );
     *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
-    Definition value_ALL : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_binary_format::file_format::AbilitySet"
-              [
-                BinOp.bit_or
+    Definition value_ALL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_binary_format::file_format::AbilitySet"
+            [
+              BinOp.bit_or
+                (BinOp.bit_or
                   (BinOp.bit_or
-                    (BinOp.bit_or
-                      (M.cast
-                        (Ty.path "u8")
-                        (BinOp.Wrap.add (|
-                          M.get_constant
-                            "move_binary_format::file_format::Ability::Copy_discriminant",
-                          Value.Integer IntegerKind.U8 0
-                        |)))
-                      (M.cast
-                        (Ty.path "u8")
-                        (BinOp.Wrap.add (|
-                          M.get_constant
-                            "move_binary_format::file_format::Ability::Drop_discriminant",
-                          Value.Integer IntegerKind.U8 0
-                        |))))
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant
-                          "move_binary_format::file_format::Ability::Store_discriminant",
+                        M.read (|
+                          get_constant (|
+                            "move_binary_format::file_format::Ability::Copy_discriminant",
+                            Ty.path "u8"
+                          |)
+                        |),
+                        Value.Integer IntegerKind.U8 0
+                      |)))
+                    (M.cast
+                      (Ty.path "u8")
+                      (BinOp.Wrap.add (|
+                        M.read (|
+                          get_constant (|
+                            "move_binary_format::file_format::Ability::Drop_discriminant",
+                            Ty.path "u8"
+                          |)
+                        |),
                         Value.Integer IntegerKind.U8 0
                       |))))
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant "move_binary_format::file_format::Ability::Key_discriminant",
+                      M.read (|
+                        get_constant (|
+                          "move_binary_format::file_format::Ability::Store_discriminant",
+                          Ty.path "u8"
+                        |)
+                      |),
                       Value.Integer IntegerKind.U8 0
-                    |)))
-              ]
-          |))).
+                    |))))
+                (M.cast
+                  (Ty.path "u8")
+                  (BinOp.Wrap.add (|
+                    M.read (|
+                      get_constant (|
+                        "move_binary_format::file_format::Ability::Key_discriminant",
+                        Ty.path "u8"
+                      |)
+                    |),
+                    Value.Integer IntegerKind.U8 0
+                  |)))
+            ]
+        |))).
     
-    Global Instance AssociatedConstant_value_ALL :
-      M.IsAssociatedConstant.Trait Self "value_ALL" value_ALL.
+    Global Instance AssociatedConstant_value_ALL : M.IsAssociatedFunction.C Self "ALL" value_ALL.
     Admitted.
     Global Typeclasses Opaque value_ALL.
     
@@ -18723,7 +18634,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_singleton :
-      M.IsAssociatedFunction.Trait Self "singleton" singleton.
+      M.IsAssociatedFunction.C Self "singleton" singleton.
     Admitted.
     Global Typeclasses Opaque singleton.
     
@@ -18760,7 +18671,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_has_ability :
-      M.IsAssociatedFunction.Trait Self "has_ability" has_ability.
+      M.IsAssociatedFunction.C Self "has_ability" has_ability.
     Admitted.
     Global Typeclasses Opaque has_ability.
     
@@ -18790,8 +18701,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_has_copy :
-      M.IsAssociatedFunction.Trait Self "has_copy" has_copy.
+    Global Instance AssociatedFunction_has_copy : M.IsAssociatedFunction.C Self "has_copy" has_copy.
     Admitted.
     Global Typeclasses Opaque has_copy.
     
@@ -18821,8 +18731,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_has_drop :
-      M.IsAssociatedFunction.Trait Self "has_drop" has_drop.
+    Global Instance AssociatedFunction_has_drop : M.IsAssociatedFunction.C Self "has_drop" has_drop.
     Admitted.
     Global Typeclasses Opaque has_drop.
     
@@ -18853,7 +18762,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_has_store :
-      M.IsAssociatedFunction.Trait Self "has_store" has_store.
+      M.IsAssociatedFunction.C Self "has_store" has_store.
     Admitted.
     Global Typeclasses Opaque has_store.
     
@@ -18883,8 +18792,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_has_key :
-      M.IsAssociatedFunction.Trait Self "has_key" has_key.
+    Global Instance AssociatedFunction_has_key : M.IsAssociatedFunction.C Self "has_key" has_key.
     Admitted.
     Global Typeclasses Opaque has_key.
     
@@ -18915,7 +18823,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_remove : M.IsAssociatedFunction.Trait Self "remove" remove.
+    Global Instance AssociatedFunction_remove : M.IsAssociatedFunction.C Self "remove" remove.
     Admitted.
     Global Typeclasses Opaque remove.
     
@@ -18953,7 +18861,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_intersect :
-      M.IsAssociatedFunction.Trait Self "intersect" intersect.
+      M.IsAssociatedFunction.C Self "intersect" intersect.
     Admitted.
     Global Typeclasses Opaque intersect.
     
@@ -18990,7 +18898,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_union : M.IsAssociatedFunction.Trait Self "union" union.
+    Global Instance AssociatedFunction_union : M.IsAssociatedFunction.C Self "union" union.
     Admitted.
     Global Typeclasses Opaque union.
     
@@ -19010,7 +18918,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_subset_bits :
-      M.IsAssociatedFunction.Trait Self "is_subset_bits" is_subset_bits.
+      M.IsAssociatedFunction.C Self "is_subset_bits" is_subset_bits.
     Admitted.
     Global Typeclasses Opaque is_subset_bits.
     
@@ -19054,7 +18962,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_subset :
-      M.IsAssociatedFunction.Trait Self "is_subset" is_subset.
+      M.IsAssociatedFunction.C Self "is_subset" is_subset.
     Admitted.
     Global Typeclasses Opaque is_subset.
     
@@ -19264,9 +19172,8 @@ Module file_format.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
-                                                  M.read (|
-                                                    Value.String
-                                                      "the length of `declared_phantom_parameters` doesn't match the length of `type_arguments`"
+                                                  mk_str (|
+                                                    "the length of `declared_phantom_parameters` doesn't match the length of `type_arguments`"
                                                   |)
                                                 |)
                                               |)
@@ -19841,8 +19748,13 @@ Module file_format.
                                                     ]
                                                   |);
                                                   M.read (|
-                                                    M.get_constant
-                                                      "move_binary_format::file_format::EMPTY"
+                                                    get_associated_constant (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet",
+                                                      "EMPTY",
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    |)
                                                   |);
                                                   M.get_associated_function (|
                                                     Ty.path
@@ -19932,7 +19844,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_polymorphic_abilities :
-      M.IsAssociatedFunction.Trait Self "polymorphic_abilities" polymorphic_abilities.
+      M.IsAssociatedFunction.C Self "polymorphic_abilities" polymorphic_abilities.
     Admitted.
     Global Typeclasses Opaque polymorphic_abilities.
     
@@ -19980,7 +19892,11 @@ Module file_format.
                               M.read (| byte |);
                               M.read (|
                                 M.SubPointer.get_struct_tuple_field (|
-                                  M.get_constant "move_binary_format::file_format::ALL",
+                                  get_associated_constant (|
+                                    Ty.path "move_binary_format::file_format::AbilitySet",
+                                    "ALL",
+                                    Ty.path "move_binary_format::file_format::AbilitySet"
+                                  |),
                                   "move_binary_format::file_format::AbilitySet",
                                   0
                                 |)
@@ -20006,8 +19922,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
     
@@ -20031,8 +19946,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_into_u8 :
-      M.IsAssociatedFunction.Trait Self "into_u8" into_u8.
+    Global Instance AssociatedFunction_into_u8 : M.IsAssociatedFunction.C Self "into_u8" into_u8.
     Admitted.
     Global Typeclasses Opaque into_u8.
   End Impl_move_binary_format_file_format_AbilitySet.
@@ -20437,7 +20351,7 @@ Module file_format.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String "[" |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| "[" |) ] |)
                                       |)
                                     |)
                                   |)
@@ -20645,12 +20559,8 @@ Module file_format.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String ""
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String ", "
-                                                                        |)
+                                                                        mk_str (| "" |);
+                                                                        mk_str (| ", " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -20800,7 +20710,7 @@ Module file_format.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ M.read (| Value.String "]" |) ] |)
+                                M.alloc (| Value.Array [ mk_str (| "]" |) ] |)
                               |)
                             |)
                           |)
@@ -24340,7 +24250,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Bool" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Bool" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24385,7 +24295,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U8" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U8" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24430,7 +24340,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U16" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U16" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24475,7 +24385,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U32" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U32" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24520,7 +24430,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U64" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U64" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24565,7 +24475,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U128" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U128" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24610,7 +24520,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "U256" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "U256" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24655,9 +24565,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "Address" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "Address" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24702,7 +24610,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Signer" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Signer" |) ] |)
                                   |)
                                 |)
                               |)
@@ -24751,11 +24659,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Vector(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Vector(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -24847,11 +24751,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Struct(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Struct(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -24957,9 +24857,9 @@ Module file_format.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (| Value.String "StructInstantiation(" |);
-                                                  M.read (| Value.String ", " |);
-                                                  M.read (| Value.String ")" |)
+                                                  mk_str (| "StructInstantiation(" |);
+                                                  mk_str (| ", " |);
+                                                  mk_str (| ")" |)
                                                 ]
                                             |)
                                           |)
@@ -25081,11 +24981,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Reference(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Reference(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -25178,10 +25074,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MutableReference(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MutableReference(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -25274,10 +25167,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "TypeParameter(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "TypeParameter(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -25543,7 +25433,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_signature_token_kind :
-      M.IsAssociatedFunction.Trait Self "signature_token_kind" signature_token_kind.
+      M.IsAssociatedFunction.C Self "signature_token_kind" signature_token_kind.
     Admitted.
     Global Typeclasses Opaque signature_token_kind.
     
@@ -25748,7 +25638,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_integer :
-      M.IsAssociatedFunction.Trait Self "is_integer" is_integer.
+      M.IsAssociatedFunction.C Self "is_integer" is_integer.
     Admitted.
     Global Typeclasses Opaque is_integer.
     
@@ -25810,7 +25700,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_reference :
-      M.IsAssociatedFunction.Trait Self "is_reference" is_reference.
+      M.IsAssociatedFunction.C Self "is_reference" is_reference.
     Admitted.
     Global Typeclasses Opaque is_reference.
     
@@ -25849,7 +25739,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_mutable_reference :
-      M.IsAssociatedFunction.Trait Self "is_mutable_reference" is_mutable_reference.
+      M.IsAssociatedFunction.C Self "is_mutable_reference" is_mutable_reference.
     Admitted.
     Global Typeclasses Opaque is_mutable_reference.
     
@@ -25887,7 +25777,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_signer :
-      M.IsAssociatedFunction.Trait Self "is_signer" is_signer.
+      M.IsAssociatedFunction.C Self "is_signer" is_signer.
     Admitted.
     Global Typeclasses Opaque is_signer.
     
@@ -26108,7 +25998,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_valid_for_constant :
-      M.IsAssociatedFunction.Trait Self "is_valid_for_constant" is_valid_for_constant.
+      M.IsAssociatedFunction.C Self "is_valid_for_constant" is_valid_for_constant.
     Admitted.
     Global Typeclasses Opaque is_valid_for_constant.
     
@@ -26318,10 +26208,8 @@ Module file_format.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "debug_set_sh_idx (to " |);
-                                            M.read (|
-                                              Value.String ") called for non-struct token "
-                                            |)
+                                            mk_str (| "debug_set_sh_idx (to " |);
+                                            mk_str (| ") called for non-struct token " |)
                                           ]
                                       |)
                                     |)
@@ -26398,7 +26286,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_debug_set_sh_idx :
-      M.IsAssociatedFunction.Trait Self "debug_set_sh_idx" debug_set_sh_idx.
+      M.IsAssociatedFunction.C Self "debug_set_sh_idx" debug_set_sh_idx.
     Admitted.
     Global Typeclasses Opaque debug_set_sh_idx.
     
@@ -26494,7 +26382,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_preorder_traversal :
-      M.IsAssociatedFunction.Trait Self "preorder_traversal" preorder_traversal.
+      M.IsAssociatedFunction.C Self "preorder_traversal" preorder_traversal.
     Admitted.
     Global Typeclasses Opaque preorder_traversal.
     
@@ -26624,10 +26512,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_preorder_traversal_with_depth :
-      M.IsAssociatedFunction.Trait
-        Self
-        "preorder_traversal_with_depth"
-        preorder_traversal_with_depth.
+      M.IsAssociatedFunction.C Self "preorder_traversal_with_depth" preorder_traversal_with_depth.
     Admitted.
     Global Typeclasses Opaque preorder_traversal_with_depth.
   End Impl_move_binary_format_file_format_SignatureToken.
@@ -26758,8 +26643,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Constant" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Constant" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -26773,7 +26658,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -27173,8 +27058,8 @@ Module file_format.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "CodeUnit" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "locals" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CodeUnit" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "locals" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -27188,7 +27073,7 @@ Module file_format.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -31097,11 +30982,11 @@ Module file_format.
     
     (* VariantCount *)
     (* Ty.path "usize" *)
-    Definition value_VARIANT_COUNT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 77 |))).
+    Definition value_VARIANT_COUNT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 77 |))).
     
     Global Instance AssociatedConstant_value_VARIANT_COUNT :
-      M.IsAssociatedConstant.Trait Self "value_VARIANT_COUNT" value_VARIANT_COUNT.
+      M.IsAssociatedFunction.C Self "VARIANT_COUNT" value_VARIANT_COUNT.
     Admitted.
     Global Typeclasses Opaque value_VARIANT_COUNT.
     (*
@@ -31168,7 +31053,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_unconditional_branch :
-      M.IsAssociatedFunction.Trait Self "is_unconditional_branch" is_unconditional_branch.
+      M.IsAssociatedFunction.C Self "is_unconditional_branch" is_unconditional_branch.
     Admitted.
     Global Typeclasses Opaque is_unconditional_branch.
     
@@ -31228,7 +31113,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_conditional_branch :
-      M.IsAssociatedFunction.Trait Self "is_conditional_branch" is_conditional_branch.
+      M.IsAssociatedFunction.C Self "is_conditional_branch" is_conditional_branch.
     Admitted.
     Global Typeclasses Opaque is_conditional_branch.
     
@@ -31269,7 +31154,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_is_branch :
-      M.IsAssociatedFunction.Trait Self "is_branch" is_branch.
+      M.IsAssociatedFunction.C Self "is_branch" is_branch.
     Admitted.
     Global Typeclasses Opaque is_branch.
     
@@ -31362,7 +31247,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_offset : M.IsAssociatedFunction.Trait Self "offset" offset.
+    Global Instance AssociatedFunction_offset : M.IsAssociatedFunction.C Self "offset" offset.
     Admitted.
     Global Typeclasses Opaque offset.
     
@@ -31422,7 +31307,13 @@ Module file_format.
                                   LogicalOp.and (|
                                     BinOp.lt (|
                                       M.read (| pc |),
-                                      M.read (| M.get_constant "core::num::MAX" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "u16",
+                                          "MAX",
+                                          Ty.path "u16"
+                                        |)
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.lt (|
@@ -31474,11 +31365,7 @@ Module file_format.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Program counter out of bounds"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "Program counter out of bounds" |) ]
                                             |)
                                           |)
                                         |)
@@ -31866,7 +31753,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_get_successors :
-      M.IsAssociatedFunction.Trait Self "get_successors" get_successors.
+      M.IsAssociatedFunction.C Self "get_successors" get_successors.
     Admitted.
     Global Typeclasses Opaque get_successors.
   End Impl_move_binary_format_file_format_Bytecode.
@@ -34170,7 +34057,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Pop" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Pop" |) ] |)
                                   |)
                                 |)
                               |)
@@ -34212,7 +34099,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Ret" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Ret" |) ] |)
                                   |)
                                 |)
                               |)
@@ -34261,11 +34148,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "BrTrue(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "BrTrue(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34343,11 +34226,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "BrFalse(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "BrFalse(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34425,11 +34304,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Branch(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Branch(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34507,11 +34382,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU8(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU8(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34589,11 +34460,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU16(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU16(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34671,11 +34538,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU32(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU32(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34753,11 +34616,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU64(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU64(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34835,11 +34694,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU128(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU128(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -34930,11 +34785,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdU256(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdU256(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35021,7 +34872,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "CastU8" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU8" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35066,9 +34917,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "CastU16" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU16" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35113,9 +34962,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "CastU32" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU32" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35160,9 +35007,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "CastU64" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU64" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35207,9 +35052,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "CastU128" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU128" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35254,9 +35097,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "CastU256" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "CastU256" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35305,11 +35146,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "LdConst(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "LdConst(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35391,7 +35228,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "LdTrue" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "LdTrue" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35436,9 +35273,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "LdFalse" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "LdFalse" |) ] |)
                                   |)
                                 |)
                               |)
@@ -35487,11 +35322,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "CopyLoc(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "CopyLoc(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35569,11 +35400,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "MoveLoc(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "MoveLoc(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35651,11 +35478,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "StLoc(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "StLoc(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35733,11 +35556,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Call(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Call(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35823,11 +35642,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "CallGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "CallGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -35913,11 +35728,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Pack(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Pack(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36003,11 +35814,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "PackGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "PackGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36093,11 +35900,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Unpack(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Unpack(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36184,10 +35987,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "UnpackGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "UnpackGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36269,9 +36069,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "ReadRef" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "ReadRef" |) ] |)
                                   |)
                                 |)
                               |)
@@ -36316,9 +36114,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "WriteRef" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "WriteRef" |) ] |)
                                   |)
                                 |)
                               |)
@@ -36363,9 +36159,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "FreezeRef" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "FreezeRef" |) ] |)
                                   |)
                                 |)
                               |)
@@ -36414,11 +36208,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "MutBorrowLoc(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "MutBorrowLoc(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36496,11 +36286,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "ImmBorrowLoc(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "ImmBorrowLoc(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36579,10 +36365,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MutBorrowField(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MutBorrowField(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36669,10 +36452,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MutBorrowFieldGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MutBorrowFieldGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36759,10 +36539,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ImmBorrowField(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "ImmBorrowField(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36849,10 +36626,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ImmBorrowFieldGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "ImmBorrowFieldGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -36939,10 +36713,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MutBorrowGlobal(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MutBorrowGlobal(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -37029,10 +36800,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MutBorrowGlobalGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MutBorrowGlobalGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -37119,10 +36887,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ImmBorrowGlobal(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "ImmBorrowGlobal(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -37209,10 +36974,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ImmBorrowGlobalGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "ImmBorrowGlobalGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -37291,7 +37053,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Add" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Add" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37333,7 +37095,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Sub" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Sub" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37375,7 +37137,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Mul" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Mul" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37417,7 +37179,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Mod" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Mod" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37459,7 +37221,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Div" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Div" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37504,7 +37266,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "BitOr" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "BitOr" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37549,7 +37311,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "BitAnd" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "BitAnd" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37591,7 +37353,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Xor" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Xor" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37633,7 +37395,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Shl" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Shl" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37675,7 +37437,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Shr" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Shr" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37717,7 +37479,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Or" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Or" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37759,7 +37521,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "And" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "And" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37801,7 +37563,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Not" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Not" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37843,7 +37605,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Eq" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Eq" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37885,7 +37647,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Neq" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Neq" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37927,7 +37689,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Lt" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Lt" |) ] |)
                                   |)
                                 |)
                               |)
@@ -37969,7 +37731,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Gt" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Gt" |) ] |)
                                   |)
                                 |)
                               |)
@@ -38011,7 +37773,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Le" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Le" |) ] |)
                                   |)
                                 |)
                               |)
@@ -38053,7 +37815,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Ge" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Ge" |) ] |)
                                   |)
                                 |)
                               |)
@@ -38098,7 +37860,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Abort" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Abort" |) ] |)
                                   |)
                                 |)
                               |)
@@ -38140,7 +37902,7 @@ Module file_format.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "Nop" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "Nop" |) ] |)
                                   |)
                                 |)
                               |)
@@ -38189,11 +37951,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Exists(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Exists(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38280,10 +38038,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ExistsGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "ExistsGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38369,11 +38124,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "MoveFrom(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "MoveFrom(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38460,10 +38211,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MoveFromGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MoveFromGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38549,11 +38297,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "MoveTo(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "MoveTo(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38640,10 +38384,7 @@ Module file_format.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "MoveToGeneric(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                        [ mk_str (| "MoveToGeneric(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38738,9 +38479,9 @@ Module file_format.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "VecPack(" |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ")" |)
+                                          mk_str (| "VecPack(" |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ")" |)
                                         ]
                                     |)
                                   |)
@@ -38842,11 +38583,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecLen(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecLen(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -38932,11 +38669,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecImmBorrow(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecImmBorrow(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -39022,11 +38755,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecMutBorrow(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecMutBorrow(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -39112,11 +38841,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecPushBack(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecPushBack(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -39202,11 +38927,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecPopBack(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecPopBack(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -39301,9 +39022,9 @@ Module file_format.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "VecUnpack(" |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ")" |)
+                                          mk_str (| "VecUnpack(" |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ")" |)
                                         ]
                                     |)
                                   |)
@@ -39405,11 +39126,7 @@ Module file_format.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "VecSwap(" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "VecSwap(" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -40303,70 +40020,67 @@ Module file_format.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "version" |);
+                            mk_str (| "version" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "self_module_handle_idx" |) |)
+                              M.deref (| mk_str (| "self_module_handle_idx" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "module_handles" |) |)
+                              M.deref (| mk_str (| "module_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                              M.deref (| mk_str (| "struct_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                              M.deref (| mk_str (| "function_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                              M.deref (| mk_str (| "field_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                              M.deref (| mk_str (| "friend_decls" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                              M.deref (| mk_str (| "struct_def_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                              M.deref (| mk_str (| "function_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                              M.deref (| mk_str (| "field_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "signatures" |) |)
+                              M.deref (| mk_str (| "signatures" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                              M.deref (| mk_str (| "identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                              M.deref (| mk_str (| "address_identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                              M.deref (| mk_str (| "constant_pool" |) |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "metadata" |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| mk_str (| "struct_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "metadata" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_defs" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                              M.deref (| mk_str (| "function_defs" |) |)
                             |)
                           ]
                       |)
@@ -40639,10 +40353,7 @@ Module file_format.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CompiledModule" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CompiledModule" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -42224,9 +41935,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: !matches!(kind, IndexKind::LocalPool | IndexKind::CodeDefinition |
+                                        mk_str (|
+                                          "assertion failed: !matches!(kind, IndexKind::LocalPool | IndexKind::CodeDefinition |
         IndexKind::FieldDefinition | IndexKind::TypeParameter |
         IndexKind::MemberCount)"
                                         |)
@@ -42782,9 +42492,8 @@ Module file_format.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: invalid kind for count: "
+                                                      mk_str (|
+                                                        "internal error: entered unreachable code: invalid kind for count: "
                                                       |)
                                                     ]
                                                 |)
@@ -42838,7 +42547,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_kind_count :
-      M.IsAssociatedFunction.Trait Self "kind_count" kind_count.
+      M.IsAssociatedFunction.C Self "kind_count" kind_count.
     Admitted.
     Global Typeclasses Opaque kind_count.
     
@@ -42863,7 +42572,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_self_handle_idx :
-      M.IsAssociatedFunction.Trait Self "self_handle_idx" self_handle_idx.
+      M.IsAssociatedFunction.C Self "self_handle_idx" self_handle_idx.
     Admitted.
     Global Typeclasses Opaque self_handle_idx.
     
@@ -42996,9 +42705,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.address.into_index() < self.address_identifiers.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.address.into_index() < self.address_identifiers.len()"
                                         |)
                                       ]
                                     |)
@@ -43093,9 +42801,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.name.into_index() < self.identifiers.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.name.into_index() < self.identifiers.len()"
                                         |)
                                       ]
                                     |)
@@ -43114,7 +42821,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_self_handle :
-      M.IsAssociatedFunction.Trait Self "self_handle" self_handle.
+      M.IsAssociatedFunction.C Self "self_handle" self_handle.
     Admitted.
     Global Typeclasses Opaque self_handle.
     
@@ -43169,7 +42876,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -43227,8 +42934,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
     
@@ -43329,7 +43035,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_name :
-      M.IsAssociatedFunction.Trait Self "struct_name" struct_name.
+      M.IsAssociatedFunction.C Self "struct_name" struct_name.
     Admitted.
     Global Typeclasses Opaque struct_name.
     
@@ -43487,9 +43193,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.address.into_index() < self.address_identifiers.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.address.into_index() < self.address_identifiers.len()"
                                         |)
                                       ]
                                     |)
@@ -43584,9 +43289,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.name.into_index() < self.identifiers.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.name.into_index() < self.identifiers.len()"
                                         |)
                                       ]
                                     |)
@@ -43605,7 +43309,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_module_handle_at :
-      M.IsAssociatedFunction.Trait Self "module_handle_at" module_handle_at.
+      M.IsAssociatedFunction.C Self "module_handle_at" module_handle_at.
     Admitted.
     Global Typeclasses Opaque module_handle_at.
     
@@ -43762,9 +43466,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.module.into_index() < self.module_handles.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.module.into_index() < self.module_handles.len()"
                                         |)
                                       ]
                                     |)
@@ -43783,7 +43486,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_handle_at :
-      M.IsAssociatedFunction.Trait Self "struct_handle_at" struct_handle_at.
+      M.IsAssociatedFunction.C Self "struct_handle_at" struct_handle_at.
     Admitted.
     Global Typeclasses Opaque struct_handle_at.
     
@@ -43941,9 +43644,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.parameters.into_index() < self.signatures.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.parameters.into_index() < self.signatures.len()"
                                         |)
                                       ]
                                     |)
@@ -44039,9 +43741,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.return_.into_index() < self.signatures.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.return_.into_index() < self.signatures.len()"
                                         |)
                                       ]
                                     |)
@@ -44060,7 +43761,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_handle_at :
-      M.IsAssociatedFunction.Trait Self "function_handle_at" function_handle_at.
+      M.IsAssociatedFunction.C Self "function_handle_at" function_handle_at.
     Admitted.
     Global Typeclasses Opaque function_handle_at.
     
@@ -44217,9 +43918,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: handle.owner.into_index() < self.struct_defs.len()"
+                                        mk_str (|
+                                          "assertion failed: handle.owner.into_index() < self.struct_defs.len()"
                                         |)
                                       ]
                                     |)
@@ -44238,7 +43938,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_field_handle_at :
-      M.IsAssociatedFunction.Trait Self "field_handle_at" field_handle_at.
+      M.IsAssociatedFunction.C Self "field_handle_at" field_handle_at.
     Admitted.
     Global Typeclasses Opaque field_handle_at.
     
@@ -44314,7 +44014,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_instantiation_at :
-      M.IsAssociatedFunction.Trait Self "struct_instantiation_at" struct_instantiation_at.
+      M.IsAssociatedFunction.C Self "struct_instantiation_at" struct_instantiation_at.
     Admitted.
     Global Typeclasses Opaque struct_instantiation_at.
     
@@ -44394,7 +44094,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_instantiation_at :
-      M.IsAssociatedFunction.Trait Self "function_instantiation_at" function_instantiation_at.
+      M.IsAssociatedFunction.C Self "function_instantiation_at" function_instantiation_at.
     Admitted.
     Global Typeclasses Opaque function_instantiation_at.
     
@@ -44467,7 +44167,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_field_instantiation_at :
-      M.IsAssociatedFunction.Trait Self "field_instantiation_at" field_instantiation_at.
+      M.IsAssociatedFunction.C Self "field_instantiation_at" field_instantiation_at.
     Admitted.
     Global Typeclasses Opaque field_instantiation_at.
     
@@ -44540,7 +44240,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_signature_at :
-      M.IsAssociatedFunction.Trait Self "signature_at" signature_at.
+      M.IsAssociatedFunction.C Self "signature_at" signature_at.
     Admitted.
     Global Typeclasses Opaque signature_at.
     
@@ -44632,7 +44332,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_identifier_at :
-      M.IsAssociatedFunction.Trait Self "identifier_at" identifier_at.
+      M.IsAssociatedFunction.C Self "identifier_at" identifier_at.
     Admitted.
     Global Typeclasses Opaque identifier_at.
     
@@ -44705,7 +44405,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_address_identifier_at :
-      M.IsAssociatedFunction.Trait Self "address_identifier_at" address_identifier_at.
+      M.IsAssociatedFunction.C Self "address_identifier_at" address_identifier_at.
     Admitted.
     Global Typeclasses Opaque address_identifier_at.
     
@@ -44778,7 +44478,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_constant_at :
-      M.IsAssociatedFunction.Trait Self "constant_at" constant_at.
+      M.IsAssociatedFunction.C Self "constant_at" constant_at.
     Admitted.
     Global Typeclasses Opaque constant_at.
     
@@ -44851,7 +44551,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_def_at :
-      M.IsAssociatedFunction.Trait Self "struct_def_at" struct_def_at.
+      M.IsAssociatedFunction.C Self "struct_def_at" struct_def_at.
     Admitted.
     Global Typeclasses Opaque struct_def_at.
     
@@ -45035,9 +44735,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: result.function.into_index() < self.function_handles().len()"
+                                        mk_str (|
+                                          "assertion failed: result.function.into_index() < self.function_handles().len()"
                                         |)
                                       ]
                                     |)
@@ -45194,9 +44893,8 @@ Module file_format.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: match &result.code {
+                                        mk_str (|
+                                          "assertion failed: match &result.code {
     Some(code) => code.locals.into_index() < self.signatures().len(),
     None => true,
 }"
@@ -45218,7 +44916,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_def_at :
-      M.IsAssociatedFunction.Trait Self "function_def_at" function_def_at.
+      M.IsAssociatedFunction.C Self "function_def_at" function_def_at.
     Admitted.
     Global Typeclasses Opaque function_def_at.
     
@@ -45282,7 +44980,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_module_handles :
-      M.IsAssociatedFunction.Trait Self "module_handles" module_handles.
+      M.IsAssociatedFunction.C Self "module_handles" module_handles.
     Admitted.
     Global Typeclasses Opaque module_handles.
     
@@ -45346,7 +45044,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_handles :
-      M.IsAssociatedFunction.Trait Self "struct_handles" struct_handles.
+      M.IsAssociatedFunction.C Self "struct_handles" struct_handles.
     Admitted.
     Global Typeclasses Opaque struct_handles.
     
@@ -45410,7 +45108,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_handles :
-      M.IsAssociatedFunction.Trait Self "function_handles" function_handles.
+      M.IsAssociatedFunction.C Self "function_handles" function_handles.
     Admitted.
     Global Typeclasses Opaque function_handles.
     
@@ -45474,7 +45172,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_field_handles :
-      M.IsAssociatedFunction.Trait Self "field_handles" field_handles.
+      M.IsAssociatedFunction.C Self "field_handles" field_handles.
     Admitted.
     Global Typeclasses Opaque field_handles.
     
@@ -45538,7 +45236,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_instantiations :
-      M.IsAssociatedFunction.Trait Self "struct_instantiations" struct_instantiations.
+      M.IsAssociatedFunction.C Self "struct_instantiations" struct_instantiations.
     Admitted.
     Global Typeclasses Opaque struct_instantiations.
     
@@ -45602,7 +45300,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_instantiations :
-      M.IsAssociatedFunction.Trait Self "function_instantiations" function_instantiations.
+      M.IsAssociatedFunction.C Self "function_instantiations" function_instantiations.
     Admitted.
     Global Typeclasses Opaque function_instantiations.
     
@@ -45666,7 +45364,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_field_instantiations :
-      M.IsAssociatedFunction.Trait Self "field_instantiations" field_instantiations.
+      M.IsAssociatedFunction.C Self "field_instantiations" field_instantiations.
     Admitted.
     Global Typeclasses Opaque field_instantiations.
     
@@ -45730,7 +45428,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_signatures :
-      M.IsAssociatedFunction.Trait Self "signatures" signatures.
+      M.IsAssociatedFunction.C Self "signatures" signatures.
     Admitted.
     Global Typeclasses Opaque signatures.
     
@@ -45794,7 +45492,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_constant_pool :
-      M.IsAssociatedFunction.Trait Self "constant_pool" constant_pool.
+      M.IsAssociatedFunction.C Self "constant_pool" constant_pool.
     Admitted.
     Global Typeclasses Opaque constant_pool.
     
@@ -45858,7 +45556,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_identifiers :
-      M.IsAssociatedFunction.Trait Self "identifiers" identifiers.
+      M.IsAssociatedFunction.C Self "identifiers" identifiers.
     Admitted.
     Global Typeclasses Opaque identifiers.
     
@@ -45922,7 +45620,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_address_identifiers :
-      M.IsAssociatedFunction.Trait Self "address_identifiers" address_identifiers.
+      M.IsAssociatedFunction.C Self "address_identifiers" address_identifiers.
     Admitted.
     Global Typeclasses Opaque address_identifiers.
     
@@ -45986,7 +45684,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_struct_defs :
-      M.IsAssociatedFunction.Trait Self "struct_defs" struct_defs.
+      M.IsAssociatedFunction.C Self "struct_defs" struct_defs.
     Admitted.
     Global Typeclasses Opaque struct_defs.
     
@@ -46050,7 +45748,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_function_defs :
-      M.IsAssociatedFunction.Trait Self "function_defs" function_defs.
+      M.IsAssociatedFunction.C Self "function_defs" function_defs.
     Admitted.
     Global Typeclasses Opaque function_defs.
     
@@ -46114,7 +45812,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_friend_decls :
-      M.IsAssociatedFunction.Trait Self "friend_decls" friend_decls.
+      M.IsAssociatedFunction.C Self "friend_decls" friend_decls.
     Admitted.
     Global Typeclasses Opaque friend_decls.
     
@@ -46138,8 +45836,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_version :
-      M.IsAssociatedFunction.Trait Self "version" version.
+    Global Instance AssociatedFunction_version : M.IsAssociatedFunction.C Self "version" version.
     Admitted.
     Global Typeclasses Opaque version.
     
@@ -46570,7 +46267,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_immediate_dependencies :
-      M.IsAssociatedFunction.Trait Self "immediate_dependencies" immediate_dependencies.
+      M.IsAssociatedFunction.C Self "immediate_dependencies" immediate_dependencies.
     Admitted.
     Global Typeclasses Opaque immediate_dependencies.
     
@@ -46775,7 +46472,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_immediate_friends :
-      M.IsAssociatedFunction.Trait Self "immediate_friends" immediate_friends.
+      M.IsAssociatedFunction.C Self "immediate_friends" immediate_friends.
     Admitted.
     Global Typeclasses Opaque immediate_friends.
     
@@ -46941,7 +46638,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_find_struct_def :
-      M.IsAssociatedFunction.Trait Self "find_struct_def" find_struct_def.
+      M.IsAssociatedFunction.C Self "find_struct_def" find_struct_def.
     Admitted.
     Global Typeclasses Opaque find_struct_def.
     
@@ -47180,7 +46877,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_find_struct_def_by_name :
-      M.IsAssociatedFunction.Trait Self "find_struct_def_by_name" find_struct_def_by_name.
+      M.IsAssociatedFunction.C Self "find_struct_def_by_name" find_struct_def_by_name.
     Admitted.
     Global Typeclasses Opaque find_struct_def_by_name.
     
@@ -47333,8 +47030,11 @@ Module file_format.
                                       "core::result::Result::Ok"
                                       [
                                         M.read (|
-                                          M.get_constant
-                                            "move_binary_format::file_format::PRIMITIVES"
+                                          get_associated_constant (|
+                                            Ty.path "move_binary_format::file_format::AbilitySet",
+                                            "PRIMITIVES",
+                                            Ty.path "move_binary_format::file_format::AbilitySet"
+                                          |)
                                         |)
                                       ]
                                   |)))
@@ -47377,8 +47077,11 @@ Module file_format.
                                       "core::result::Result::Ok"
                                       [
                                         M.read (|
-                                          M.get_constant
-                                            "move_binary_format::file_format::REFERENCES"
+                                          get_associated_constant (|
+                                            Ty.path "move_binary_format::file_format::AbilitySet",
+                                            "REFERENCES",
+                                            Ty.path "move_binary_format::file_format::AbilitySet"
+                                          |)
                                         |)
                                       ]
                                   |)))
@@ -47396,7 +47099,14 @@ Module file_format.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.read (| M.get_constant "move_binary_format::file_format::SIGNER" |)
+                            [
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "move_binary_format::file_format::AbilitySet",
+                                  "SIGNER",
+                                  Ty.path "move_binary_format::file_format::AbilitySet"
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -47461,7 +47171,13 @@ Module file_format.
                               ]
                             |),
                             [
-                              M.read (| M.get_constant "move_binary_format::file_format::VECTOR" |);
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "move_binary_format::file_format::AbilitySet",
+                                  "VECTOR",
+                                  Ty.path "move_binary_format::file_format::AbilitySet"
+                                |)
+                              |);
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -48506,7 +48222,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_abilities :
-      M.IsAssociatedFunction.Trait Self "abilities" abilities.
+      M.IsAssociatedFunction.C Self "abilities" abilities.
     Admitted.
     Global Typeclasses Opaque abilities.
     
@@ -48606,7 +48322,7 @@ Module file_format.
       end.
     
     Global Instance AssociatedFunction_module_id_for_handle :
-      M.IsAssociatedFunction.Trait Self "module_id_for_handle" module_id_for_handle.
+      M.IsAssociatedFunction.C Self "module_id_for_handle" module_id_for_handle.
     Admitted.
     Global Typeclasses Opaque module_id_for_handle.
     
@@ -48653,8 +48369,7 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_self_id :
-      M.IsAssociatedFunction.Trait Self "self_id" self_id.
+    Global Instance AssociatedFunction_self_id : M.IsAssociatedFunction.C Self "self_id" self_id.
     Admitted.
     Global Typeclasses Opaque self_id.
   End Impl_move_binary_format_file_format_CompiledModule.
@@ -48693,7 +48408,12 @@ Module file_format.
           "move_binary_format::file_format::CompiledModule"
           [
             ("version",
-              M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
+              M.read (|
+                get_constant (|
+                  "move_binary_format::file_format_common::VERSION_MAX",
+                  Ty.path "u32"
+                |)
+              |));
             ("module_handles",
               M.call_closure (|
                 Ty.apply
@@ -48904,7 +48624,15 @@ Module file_format.
                       [
                         M.alloc (|
                           Value.Array
-                            [ M.read (| M.get_constant "move_core_types::account_address::ZERO" |) ]
+                            [
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "move_core_types::account_address::AccountAddress",
+                                  "ZERO",
+                                  Ty.path "move_core_types::account_address::AccountAddress"
+                                |)
+                              |)
+                            ]
                         |)
                       ]
                     |)
@@ -49247,7 +48975,7 @@ Module file_format.
     end.
   
   Global Instance Instance_IsFunction_empty_module :
-    M.IsFunction.Trait "move_binary_format::file_format::empty_module" empty_module.
+    M.IsFunction.C "move_binary_format::file_format::empty_module" empty_module.
   Admitted.
   Global Typeclasses Opaque empty_module.
   
@@ -49474,12 +49202,7 @@ Module file_format.
                               [],
                               []
                             |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "foo" |) |)
-                              |)
-                            ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "foo" |) |) |) ]
                           |)
                         ]
                       |)
@@ -49696,7 +49419,13 @@ Module file_format.
                               |))
                           ]);
                       ("abilities",
-                        M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
+                        M.read (|
+                          get_associated_constant (|
+                            Ty.path "move_binary_format::file_format::AbilitySet",
+                            "EMPTY",
+                            Ty.path "move_binary_format::file_format::AbilitySet"
+                          |)
+                        |));
                       ("type_parameters",
                         M.call_closure (|
                           Ty.apply
@@ -49788,12 +49517,7 @@ Module file_format.
                               [],
                               []
                             |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Bar" |) |)
-                              |)
-                            ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bar" |) |) |) ]
                           |)
                         ]
                       |)
@@ -50014,12 +49738,7 @@ Module file_format.
                               [],
                               []
                             |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "x" |) |)
-                              |)
-                            ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |) ]
                           |)
                         ]
                       |)
@@ -50034,7 +49753,7 @@ Module file_format.
     end.
   
   Global Instance Instance_IsFunction_basic_test_module :
-    M.IsFunction.Trait "move_binary_format::file_format::basic_test_module" basic_test_module.
+    M.IsFunction.C "move_binary_format::file_format::basic_test_module" basic_test_module.
   Admitted.
   Global Typeclasses Opaque basic_test_module.
 End file_format.

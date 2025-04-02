@@ -63,16 +63,16 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 Parameter origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_origin : M.IsFunction.Trait "box_stack_heap::origin" origin.
+Global Instance Instance_IsFunction_origin : M.IsFunction.C "box_stack_heap::origin" origin.
 Admitted.
 
 Parameter boxed_origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_boxed_origin :
-  M.IsFunction.Trait "box_stack_heap::boxed_origin" boxed_origin.
+  M.IsFunction.C "box_stack_heap::boxed_origin" boxed_origin.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "box_stack_heap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "box_stack_heap::main" main.
 Admitted.

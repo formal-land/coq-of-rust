@@ -50,7 +50,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.read (| Value.String "Alice" |) ]
+                    [ mk_str (| "Alice" |) ]
                   |));
                 ("age",
                   M.call_closure (|
@@ -115,11 +115,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "The person's age is " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "The person's age is " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -193,11 +190,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "The person's name is " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "The person's name is " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -261,10 +255,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String "The person's age from person struct is "
-                                          |);
-                                          M.read (| Value.String "
+                                          mk_str (| "The person's age from person struct is " |);
+                                          mk_str (| "
 " |)
                                         ]
                                     |)
@@ -327,7 +319,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_ownership_and_rules_partial_moves::main" main.
+  M.IsFunction.C "scoping_rules_ownership_and_rules_partial_moves::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -372,8 +364,8 @@ Module main.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Person" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Person" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -387,7 +379,7 @@ Module main.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "age" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "age" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

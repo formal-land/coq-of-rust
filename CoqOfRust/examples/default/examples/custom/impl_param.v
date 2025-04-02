@@ -91,7 +91,6 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_with_impls :
-  M.IsFunction.Trait "impl_param::with_impls" with_impls.
+Global Instance Instance_IsFunction_with_impls : M.IsFunction.C "impl_param::with_impls" with_impls.
 Admitted.
 Global Typeclasses Opaque with_impls.

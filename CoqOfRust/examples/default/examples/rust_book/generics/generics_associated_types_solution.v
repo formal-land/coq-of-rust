@@ -214,7 +214,7 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_difference :
-  M.IsFunction.Trait "generics_associated_types_solution::difference" difference.
+  M.IsFunction.C "generics_associated_types_solution::difference" difference.
 Admitted.
 Global Typeclasses Opaque difference.
 
@@ -245,7 +245,7 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_get_a :
-  M.IsFunction.Trait "generics_associated_types_solution::get_a" get_a.
+  M.IsFunction.C "generics_associated_types_solution::get_a" get_a.
 Admitted.
 Global Typeclasses Opaque get_a.
 
@@ -335,7 +335,7 @@ Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_get_output :
-  M.IsFunction.Trait "generics_associated_types_solution::get_output" get_output.
+  M.IsFunction.C "generics_associated_types_solution::get_output" get_output.
 Admitted.
 Global Typeclasses Opaque get_output.
 
@@ -397,10 +397,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Does container contain " |);
-                                  M.read (| Value.String " and " |);
-                                  M.read (| Value.String ": " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "Does container contain " |);
+                                  mk_str (| " and " |);
+                                  mk_str (| ": " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -537,12 +537,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "First number: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "First number: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -623,12 +619,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Last number: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Last number: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -709,12 +701,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The difference is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "The difference is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -800,12 +788,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Get output.0: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Get output.0: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -878,6 +862,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_associated_types_solution::main" main.
+  M.IsFunction.C "generics_associated_types_solution::main" main.
 Admitted.
 Global Typeclasses Opaque main.

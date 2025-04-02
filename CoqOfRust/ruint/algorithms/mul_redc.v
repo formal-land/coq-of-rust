@@ -128,8 +128,7 @@ Module algorithms.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: !m.is_empty()" |)
-                                      ]
+                                      [ mk_str (| "assertion failed: !m.is_empty()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -598,7 +597,10 @@ Module algorithms.
                                     |)
                                   |)
                                 |);
-                                M.borrow (| Pointer.Kind.Ref, M.get_constant "core::num::MAX" |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                           |),
                           [
@@ -1487,9 +1489,8 @@ Module algorithms.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: carry == 0"
+                                                                  mk_str (|
+                                                                    "assertion failed: carry == 0"
                                                                   |)
                                                                 ]
                                                               |)
@@ -1588,11 +1589,7 @@ Module algorithms.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: temp[temp.len() - 1] <= 1"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: temp[temp.len() - 1] <= 1" |) ]
                                     |)
                                   |)
                                 |)));
@@ -2585,9 +2582,8 @@ Module algorithms.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: carry == 0 || temp[temp.len() - 1] == 1"
+                                                mk_str (|
+                                                  "assertion failed: carry == 0 || temp[temp.len() - 1] == 1"
                                                 |)
                                               ]
                                             |)
@@ -2609,7 +2605,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_mul_redc :
-      M.IsFunction.Trait "ruint::algorithms::mul_redc::mul_redc" mul_redc.
+      M.IsFunction.C "ruint::algorithms::mul_redc::mul_redc" mul_redc.
     Admitted.
     Global Typeclasses Opaque mul_redc.
   End mul_redc.

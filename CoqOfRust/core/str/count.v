@@ -3,27 +3,28 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module str.
   Module count.
-    Definition value_USIZE_SIZE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
-              []
-            |)
-          |))).
+    Definition value_USIZE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+            []
+          |)
+        |))).
     
-    Axiom Constant_value_USIZE_SIZE :
-      (M.get_constant "core::str::count::USIZE_SIZE") = value_USIZE_SIZE.
-    Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_USIZE_SIZE :
+      M.IsFunction.C "core::str::count::USIZE_SIZE" value_USIZE_SIZE.
+    Admitted.
+    Global Typeclasses Opaque value_USIZE_SIZE.
     
-    Definition value_UNROLL_INNER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+    Definition value_UNROLL_INNER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
-    Axiom Constant_value_UNROLL_INNER :
-      (M.get_constant "core::str::count::UNROLL_INNER") = value_UNROLL_INNER.
-    Global Hint Rewrite Constant_value_UNROLL_INNER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_UNROLL_INNER :
+      M.IsFunction.C "core::str::count::UNROLL_INNER" value_UNROLL_INNER.
+    Admitted.
+    Global Typeclasses Opaque value_UNROLL_INNER.
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
@@ -63,8 +64,18 @@ Module str.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |),
                                 BinOp.Wrap.mul (|
-                                  M.read (| M.get_constant "core::str::count::USIZE_SIZE" |),
-                                  M.read (| M.get_constant "core::str::count::UNROLL_INNER" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "core::str::count::USIZE_SIZE",
+                                      Ty.path "usize"
+                                    |)
+                                  |),
+                                  M.read (|
+                                    get_constant (|
+                                      "core::str::count::UNROLL_INNER",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)))
                           |)
@@ -107,7 +118,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_count_chars :
-      M.IsFunction.Trait "core::str::count::count_chars" count_chars.
+      M.IsFunction.C "core::str::count::count_chars" count_chars.
     Admitted.
     Global Typeclasses Opaque count_chars.
     
@@ -297,7 +308,10 @@ Module str.
                                                       ]
                                                     |),
                                                     M.read (|
-                                                      M.get_constant "core::str::count::USIZE_SIZE"
+                                                      get_constant (|
+                                                        "core::str::count::USIZE_SIZE",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   |)))
                                               |),
@@ -322,7 +336,10 @@ Module str.
                                                     ]
                                                   |),
                                                   M.read (|
-                                                    M.get_constant "core::str::count::USIZE_SIZE"
+                                                    get_constant (|
+                                                      "core::str::count::USIZE_SIZE",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |)
                                                 |)))
                                             |)
@@ -446,8 +463,10 @@ Module str.
                                           M.deref (| M.read (| body |) |)
                                         |);
                                         M.read (|
-                                          M.get_constant
-                                            "core::str::count::do_count_chars::CHUNK_SIZE"
+                                          get_constant (|
+                                            "core::str::count::do_count_chars::CHUNK_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1248,17 +1267,18 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_do_count_chars :
-      M.IsFunction.Trait "core::str::count::do_count_chars" do_count_chars.
+      M.IsFunction.C "core::str::count::do_count_chars" do_count_chars.
     Admitted.
     Global Typeclasses Opaque do_count_chars.
     
     Module do_count_chars.
-      Definition value_CHUNK_SIZE : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 192 |))).
+      Definition value_CHUNK_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 192 |))).
       
-      Axiom Constant_value_CHUNK_SIZE :
-        (M.get_constant "core::str::count::do_count_chars::CHUNK_SIZE") = value_CHUNK_SIZE.
-      Global Hint Rewrite Constant_value_CHUNK_SIZE : constant_rewrites.
+      Global Instance Instance_IsConstant_value_CHUNK_SIZE :
+        M.IsFunction.C "core::str::count::do_count_chars::CHUNK_SIZE" value_CHUNK_SIZE.
+      Admitted.
+      Global Typeclasses Opaque value_CHUNK_SIZE.
     End do_count_chars.
     
     (*
@@ -1280,32 +1300,37 @@ Module str.
             (BinOp.bit_or
               (BinOp.Wrap.shr (| UnOp.not (| M.read (| w |) |), Value.Integer IntegerKind.I32 7 |))
               (BinOp.Wrap.shr (| M.read (| w |), Value.Integer IntegerKind.I32 6 |)))
-            (M.read (| M.get_constant "core::str::count::contains_non_continuation_byte::LSB" |))))
+            (M.read (|
+              get_constant (|
+                "core::str::count::contains_non_continuation_byte::LSB",
+                Ty.path "usize"
+              |)
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_contains_non_continuation_byte :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::str::count::contains_non_continuation_byte"
         contains_non_continuation_byte.
     Admitted.
     Global Typeclasses Opaque contains_non_continuation_byte.
     
     Module contains_non_continuation_byte.
-      Definition value_LSB : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
-                [ Value.Integer IntegerKind.U8 1 ]
-              |)
-            |))).
+      Definition value_LSB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
+              [ Value.Integer IntegerKind.U8 1 ]
+            |)
+          |))).
       
-      Axiom Constant_value_LSB :
-        (M.get_constant "core::str::count::contains_non_continuation_byte::LSB") = value_LSB.
-      Global Hint Rewrite Constant_value_LSB : constant_rewrites.
+      Global Instance Instance_IsConstant_value_LSB :
+        M.IsFunction.C "core::str::count::contains_non_continuation_byte::LSB" value_LSB.
+      Admitted.
+      Global Typeclasses Opaque value_LSB.
     End contains_non_continuation_byte.
     
     (*
@@ -1329,11 +1354,19 @@ Module str.
                   BinOp.bit_and
                     (M.read (| values |))
                     (M.read (|
-                      M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES"
+                      get_constant (|
+                        "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
+                        Ty.path "usize"
+                      |)
                     |)),
                   BinOp.bit_and
                     (BinOp.Wrap.shr (| M.read (| values |), Value.Integer IntegerKind.I32 8 |))
-                    (M.read (| M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |))
+                    (M.read (|
+                      get_constant (|
+                        "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
+                        Ty.path "usize"
+                      |)
+                    |))
                 |)
               |) in
             M.alloc (|
@@ -1343,12 +1376,17 @@ Module str.
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| pair_sum |);
-                    M.read (| M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS" |)
+                    M.read (|
+                      get_constant (|
+                        "core::str::count::sum_bytes_in_usize::LSB_SHORTS",
+                        Ty.path "usize"
+                      |)
+                    |)
                   ]
                 |),
                 BinOp.Wrap.mul (|
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant "core::str::count::USIZE_SIZE" |),
+                    M.read (| get_constant (| "core::str::count::USIZE_SIZE", Ty.path "usize" |) |),
                     Value.Integer IntegerKind.Usize 2
                   |),
                   Value.Integer IntegerKind.Usize 8
@@ -1360,40 +1398,40 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_sum_bytes_in_usize :
-      M.IsFunction.Trait "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
+      M.IsFunction.C "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
     Admitted.
     Global Typeclasses Opaque sum_bytes_in_usize.
     
     Module sum_bytes_in_usize.
-      Definition value_LSB_SHORTS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
-                [ Value.Integer IntegerKind.U16 1 ]
-              |)
-            |))).
+      Definition value_LSB_SHORTS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
+              [ Value.Integer IntegerKind.U16 1 ]
+            |)
+          |))).
       
-      Axiom Constant_value_LSB_SHORTS :
-        (M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS") = value_LSB_SHORTS.
-      Global Hint Rewrite Constant_value_LSB_SHORTS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_LSB_SHORTS :
+        M.IsFunction.C "core::str::count::sum_bytes_in_usize::LSB_SHORTS" value_LSB_SHORTS.
+      Admitted.
+      Global Typeclasses Opaque value_LSB_SHORTS.
       
-      Definition value_SKIP_BYTES : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
-                [ Value.Integer IntegerKind.U16 255 ]
-              |)
-            |))).
+      Definition value_SKIP_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
+              [ Value.Integer IntegerKind.U16 255 ]
+            |)
+          |))).
       
-      Axiom Constant_value_SKIP_BYTES :
-        (M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES") = value_SKIP_BYTES.
-      Global Hint Rewrite Constant_value_SKIP_BYTES : constant_rewrites.
+      Global Instance Instance_IsConstant_value_SKIP_BYTES :
+        M.IsFunction.C "core::str::count::sum_bytes_in_usize::SKIP_BYTES" value_SKIP_BYTES.
+      Admitted.
+      Global Typeclasses Opaque value_SKIP_BYTES.
     End sum_bytes_in_usize.
     
     (*
@@ -1520,7 +1558,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_char_count_general_case :
-      M.IsFunction.Trait "core::str::count::char_count_general_case" char_count_general_case.
+      M.IsFunction.C "core::str::count::char_count_general_case" char_count_general_case.
     Admitted.
     Global Typeclasses Opaque char_count_general_case.
   End count.

@@ -66,17 +66,16 @@ End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "other_uses_of_question_mark::double_first" double_first.
+  M.IsFunction.C "other_uses_of_question_mark::double_first" double_first.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "other_uses_of_question_mark::print" print.
+  M.IsFunction.C "other_uses_of_question_mark::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "other_uses_of_question_mark::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "other_uses_of_question_mark::main" main.
 Admitted.

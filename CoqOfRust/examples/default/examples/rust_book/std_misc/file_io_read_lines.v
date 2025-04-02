@@ -98,7 +98,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_read_lines :
-  M.IsFunction.Trait "file_io_read_lines::read_lines" read_lines.
+  M.IsFunction.C "file_io_read_lines::read_lines" read_lines.
 Admitted.
 Global Typeclasses Opaque read_lines.
 
@@ -151,12 +151,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     []
                   |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "./hosts" |) |)
-                    |)
-                  ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "./hosts" |) |) |) ]
                 |)
               ]
             |)
@@ -284,11 +279,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (| Value.String "
-" |)
-                                                        ]
+                                                        [ mk_str (| "" |); mk_str (| "
+" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -364,6 +356,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "file_io_read_lines::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "file_io_read_lines::main" main.
 Admitted.
 Global Typeclasses Opaque main.

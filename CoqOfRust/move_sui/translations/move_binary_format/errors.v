@@ -160,10 +160,7 @@ Module errors.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Undefined" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Undefined" |) |) |)
                         ]
                       |)
                     |)));
@@ -191,10 +188,7 @@ Module errors.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Module" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Module" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -745,14 +739,8 @@ Module errors.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ExecutionState" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "stack_trace" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ExecutionState" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "stack_trace" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1084,7 +1072,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1115,7 +1103,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_stack_trace :
-      M.IsAssociatedFunction.Trait Self "stack_trace" stack_trace.
+      M.IsAssociatedFunction.C Self "stack_trace" stack_trace.
     Admitted.
     Global Typeclasses Opaque stack_trace.
   End Impl_move_binary_format_errors_ExecutionState.
@@ -3158,7 +3146,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_major_status :
-      M.IsAssociatedFunction.Trait Self "major_status" major_status.
+      M.IsAssociatedFunction.C Self "major_status" major_status.
     Admitted.
     Global Typeclasses Opaque major_status.
     
@@ -3191,7 +3179,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_sub_status :
-      M.IsAssociatedFunction.Trait Self "sub_status" sub_status.
+      M.IsAssociatedFunction.C Self "sub_status" sub_status.
     Admitted.
     Global Typeclasses Opaque sub_status.
     
@@ -3238,8 +3226,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_message :
-      M.IsAssociatedFunction.Trait Self "message" message.
+    Global Instance AssociatedFunction_message : M.IsAssociatedFunction.C Self "message" message.
     Admitted.
     Global Typeclasses Opaque message.
     
@@ -3291,7 +3278,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_exec_state :
-      M.IsAssociatedFunction.Trait Self "exec_state" exec_state.
+      M.IsAssociatedFunction.C Self "exec_state" exec_state.
     Admitted.
     Global Typeclasses Opaque exec_state.
     
@@ -3331,7 +3318,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_remove_exec_state :
-      M.IsAssociatedFunction.Trait Self "remove_exec_state" remove_exec_state.
+      M.IsAssociatedFunction.C Self "remove_exec_state" remove_exec_state.
     Admitted.
     Global Typeclasses Opaque remove_exec_state.
     
@@ -3369,8 +3356,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_location :
-      M.IsAssociatedFunction.Trait Self "location" location.
+    Global Instance AssociatedFunction_location : M.IsAssociatedFunction.C Self "location" location.
     Admitted.
     Global Typeclasses Opaque location.
     
@@ -3408,8 +3394,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_indices :
-      M.IsAssociatedFunction.Trait Self "indices" indices.
+    Global Instance AssociatedFunction_indices : M.IsAssociatedFunction.C Self "indices" indices.
     Admitted.
     Global Typeclasses Opaque indices.
     
@@ -3447,8 +3432,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_offsets :
-      M.IsAssociatedFunction.Trait Self "offsets" offsets.
+    Global Instance AssociatedFunction_offsets : M.IsAssociatedFunction.C Self "offsets" offsets.
     Admitted.
     Global Typeclasses Opaque offsets.
     
@@ -3492,7 +3476,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_status_type :
-      M.IsAssociatedFunction.Trait Self "status_type" status_type.
+      M.IsAssociatedFunction.C Self "status_type" status_type.
     Admitted.
     Global Typeclasses Opaque status_type.
     
@@ -3615,8 +3599,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_all_data :
-      M.IsAssociatedFunction.Trait Self "all_data" all_data.
+    Global Instance AssociatedFunction_all_data : M.IsAssociatedFunction.C Self "all_data" all_data.
     Admitted.
     Global Typeclasses Opaque all_data.
     
@@ -3749,7 +3732,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_to_partial :
-      M.IsAssociatedFunction.Trait Self "to_partial" to_partial.
+      M.IsAssociatedFunction.C Self "to_partial" to_partial.
     Admitted.
     Global Typeclasses Opaque to_partial.
   End Impl_move_binary_format_errors_VMError.
@@ -4061,9 +4044,8 @@ Module errors.
                                                                                           M.borrow (|
                                                                                             Pointer.Kind.Ref,
                                                                                             M.deref (|
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "VMError"
+                                                                                              mk_str (|
+                                                                                                "VMError"
                                                                                               |)
                                                                                             |)
                                                                                           |)
@@ -4074,9 +4056,8 @@ Module errors.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "major_status"
+                                                                                      mk_str (|
+                                                                                        "major_status"
                                                                                       |)
                                                                                     |)
                                                                                   |);
@@ -4095,9 +4076,8 @@ Module errors.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "sub_status"
+                                                                              mk_str (|
+                                                                                "sub_status"
                                                                               |)
                                                                             |)
                                                                           |);
@@ -4116,9 +4096,7 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String "message"
-                                                                      |)
+                                                                      mk_str (| "message" |)
                                                                     |)
                                                                   |);
                                                                   M.borrow (|
@@ -4133,9 +4111,7 @@ Module errors.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "exec_state" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "exec_state" |) |)
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -4147,9 +4123,7 @@ Module errors.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (| Value.String "location" |)
-                                                    |)
+                                                    M.deref (| mk_str (| "location" |) |)
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
@@ -4161,7 +4135,7 @@ Module errors.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "indices" |) |)
+                                            M.deref (| mk_str (| "indices" |) |)
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -4173,7 +4147,7 @@ Module errors.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "offsets" |) |)
+                                    M.deref (| mk_str (| "offsets" |) |)
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -4676,8 +4650,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_all_data :
-      M.IsAssociatedFunction.Trait Self "all_data" all_data.
+    Global Instance AssociatedFunction_all_data : M.IsAssociatedFunction.C Self "all_data" all_data.
     Admitted.
     Global Typeclasses Opaque all_data.
     
@@ -4811,7 +4784,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+    Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
     Admitted.
     Global Typeclasses Opaque finish.
     
@@ -4926,7 +4899,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -4959,7 +4932,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_major_status :
-      M.IsAssociatedFunction.Trait Self "major_status" major_status.
+      M.IsAssociatedFunction.C Self "major_status" major_status.
     Admitted.
     Global Typeclasses Opaque major_status.
     
@@ -5039,11 +5012,7 @@ Module errors.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: self.0.sub_status.is_none()"
-                                        |)
+                                      [ mk_str (| "assertion failed: self.0.sub_status.is_none()" |)
                                       ]
                                     |)
                                   |)
@@ -5080,7 +5049,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_with_sub_status :
-      M.IsAssociatedFunction.Trait Self "with_sub_status" with_sub_status.
+      M.IsAssociatedFunction.C Self "with_sub_status" with_sub_status.
     Admitted.
     Global Typeclasses Opaque with_sub_status.
     
@@ -5160,11 +5129,7 @@ Module errors.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: self.0.message.is_none()"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: self.0.message.is_none()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -5200,7 +5165,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_with_message :
-      M.IsAssociatedFunction.Trait Self "with_message" with_message.
+      M.IsAssociatedFunction.C Self "with_message" with_message.
     Admitted.
     Global Typeclasses Opaque with_message.
     
@@ -5281,11 +5246,7 @@ Module errors.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: self.0.exec_state.is_none()"
-                                        |)
+                                      [ mk_str (| "assertion failed: self.0.exec_state.is_none()" |)
                                       ]
                                     |)
                                   |)
@@ -5322,7 +5283,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_with_exec_state :
-      M.IsAssociatedFunction.Trait Self "with_exec_state" with_exec_state.
+      M.IsAssociatedFunction.C Self "with_exec_state" with_exec_state.
     Admitted.
     Global Typeclasses Opaque with_exec_state.
     
@@ -5382,8 +5343,7 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_at_index :
-      M.IsAssociatedFunction.Trait Self "at_index" at_index.
+    Global Instance AssociatedFunction_at_index : M.IsAssociatedFunction.C Self "at_index" at_index.
     Admitted.
     Global Typeclasses Opaque at_index.
     
@@ -5454,7 +5414,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_at_indices :
-      M.IsAssociatedFunction.Trait Self "at_indices" at_indices.
+      M.IsAssociatedFunction.C Self "at_indices" at_indices.
     Admitted.
     Global Typeclasses Opaque at_indices.
     
@@ -5519,7 +5479,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_at_code_offset :
-      M.IsAssociatedFunction.Trait Self "at_code_offset" at_code_offset.
+      M.IsAssociatedFunction.C Self "at_code_offset" at_code_offset.
     Admitted.
     Global Typeclasses Opaque at_code_offset.
     
@@ -5607,7 +5567,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_at_code_offsets :
-      M.IsAssociatedFunction.Trait Self "at_code_offsets" at_code_offsets.
+      M.IsAssociatedFunction.C Self "at_code_offsets" at_code_offsets.
     Admitted.
     Global Typeclasses Opaque at_code_offsets.
     
@@ -5817,10 +5777,7 @@ Module errors.
       end.
     
     Global Instance AssociatedFunction_append_message_with_separator :
-      M.IsAssociatedFunction.Trait
-        Self
-        "append_message_with_separator"
-        append_message_with_separator.
+      M.IsAssociatedFunction.C Self "append_message_with_separator" append_message_with_separator.
     Admitted.
     Global Typeclasses Opaque append_message_with_separator.
   End Impl_move_binary_format_errors_PartialVMError.
@@ -5887,9 +5844,7 @@ Module errors.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "UNDEFINED" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "UNDEFINED" |) ] |)
                                   |)
                                 |)
                               |)
@@ -5937,9 +5892,7 @@ Module errors.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "Module " |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "Module " |) ] |)
                                   |)
                                 |)
                               |);
@@ -6066,12 +6019,7 @@ Module errors.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "PartialVMError with status "
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "PartialVMError with status " |) ]
                                         |)
                                       |)
                                     |)
@@ -6245,10 +6193,8 @@ Module errors.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (|
-                                                            Value.String " with sub status "
-                                                          |)
+                                                          mk_str (| "" |);
+                                                          mk_str (| " with sub status " |)
                                                         ]
                                                     |)
                                                   |)
@@ -6395,8 +6341,8 @@ Module errors.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (| Value.String " and message " |)
+                                                          mk_str (| "" |);
+                                                          mk_str (| " and message " |)
                                                         ]
                                                     |)
                                                   |)
@@ -6641,16 +6587,9 @@ Module errors.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " at index "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String " for "
-                                                                          |)
+                                                                          mk_str (| "" |);
+                                                                          mk_str (| " at index " |);
+                                                                          mk_str (| " for " |)
                                                                         ]
                                                                     |)
                                                                   |)
@@ -6949,16 +6888,12 @@ Module errors.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
+                                                                          mk_str (| "" |);
+                                                                          mk_str (|
+                                                                            " at code offset "
                                                                           |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " at code offset "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " in function definition "
+                                                                          mk_str (|
+                                                                            " in function definition "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -7101,7 +7036,7 @@ Module errors.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                           |)
                         |)
                       |);
@@ -7220,8 +7155,7 @@ Module errors.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "VMError with status " |) ]
+                                          Value.Array [ mk_str (| "VMError with status " |) ]
                                         |)
                                       |)
                                     |)
@@ -7395,10 +7329,8 @@ Module errors.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (|
-                                                            Value.String " with sub status "
-                                                          |)
+                                                          mk_str (| "" |);
+                                                          mk_str (| " with sub status " |)
                                                         ]
                                                     |)
                                                   |)
@@ -7510,10 +7442,7 @@ Module errors.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             Value.Array
-                                              [
-                                                M.read (| Value.String "" |);
-                                                M.read (| Value.String " at location " |)
-                                              ]
+                                              [ mk_str (| "" |); mk_str (| " at location " |) ]
                                           |)
                                         |)
                                       |)
@@ -7665,8 +7594,8 @@ Module errors.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (| Value.String " and message " |)
+                                                          mk_str (| "" |);
+                                                          mk_str (| " and message " |)
                                                         ]
                                                     |)
                                                   |)
@@ -7911,16 +7840,9 @@ Module errors.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " at index "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String " for "
-                                                                          |)
+                                                                          mk_str (| "" |);
+                                                                          mk_str (| " at index " |);
+                                                                          mk_str (| " for " |)
                                                                         ]
                                                                     |)
                                                                   |)
@@ -8219,16 +8141,12 @@ Module errors.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
+                                                                          mk_str (| "" |);
+                                                                          mk_str (|
+                                                                            " at code offset "
                                                                           |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " at code offset "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " in function definition "
+                                                                          mk_str (|
+                                                                            " in function definition "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -8371,7 +8289,7 @@ Module errors.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                           |)
                         |)
                       |);
@@ -8487,11 +8405,11 @@ Module errors.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "Index " |);
-                                            M.read (| Value.String " out of bounds for " |);
-                                            M.read (| Value.String " at bytecode offset " |);
-                                            M.read (| Value.String " in function " |);
-                                            M.read (| Value.String " while indexing " |)
+                                            mk_str (| "Index " |);
+                                            mk_str (| " out of bounds for " |);
+                                            mk_str (| " at bytecode offset " |);
+                                            mk_str (| " in function " |);
+                                            mk_str (| " while indexing " |)
                                           ]
                                       |)
                                     |)
@@ -8653,7 +8571,7 @@ Module errors.
     end.
   
   Global Instance Instance_IsFunction_offset_out_of_bounds :
-    M.IsFunction.Trait "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
+    M.IsFunction.C "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
   Admitted.
   Global Typeclasses Opaque offset_out_of_bounds.
   
@@ -8719,9 +8637,9 @@ Module errors.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "Index " |);
-                                            M.read (| Value.String " out of bounds for " |);
-                                            M.read (| Value.String " while indexing " |)
+                                            mk_str (| "Index " |);
+                                            mk_str (| " out of bounds for " |);
+                                            mk_str (| " while indexing " |)
                                           ]
                                       |)
                                     |)
@@ -8839,7 +8757,7 @@ Module errors.
     end.
   
   Global Instance Instance_IsFunction_bounds_error :
-    M.IsFunction.Trait "move_binary_format::errors::bounds_error" bounds_error.
+    M.IsFunction.C "move_binary_format::errors::bounds_error" bounds_error.
   Admitted.
   Global Typeclasses Opaque bounds_error.
   
@@ -8882,7 +8800,7 @@ Module errors.
     end.
   
   Global Instance Instance_IsFunction_verification_error :
-    M.IsFunction.Trait "move_binary_format::errors::verification_error" verification_error.
+    M.IsFunction.C "move_binary_format::errors::verification_error" verification_error.
   Admitted.
   Global Typeclasses Opaque verification_error.
   
@@ -9166,9 +9084,8 @@ Module errors.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "PartialVMError"
+                                                                                      mk_str (|
+                                                                                        "PartialVMError"
                                                                                       |)
                                                                                     |)
                                                                                   |)
@@ -9179,9 +9096,8 @@ Module errors.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "major_status"
+                                                                              mk_str (|
+                                                                                "major_status"
                                                                               |)
                                                                             |)
                                                                           |);
@@ -9200,9 +9116,7 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String "sub_status"
-                                                                      |)
+                                                                      mk_str (| "sub_status" |)
                                                                     |)
                                                                   |);
                                                                   M.borrow (|
@@ -9217,9 +9131,7 @@ Module errors.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "message" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "message" |) |)
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -9231,9 +9143,7 @@ Module errors.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (| Value.String "exec_state" |)
-                                                    |)
+                                                    M.deref (| mk_str (| "exec_state" |) |)
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
@@ -9245,7 +9155,7 @@ Module errors.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "indices" |) |)
+                                            M.deref (| mk_str (| "indices" |) |)
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -9257,7 +9167,7 @@ Module errors.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "offsets" |) |)
+                                    M.deref (| mk_str (| "offsets" |) |)
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,

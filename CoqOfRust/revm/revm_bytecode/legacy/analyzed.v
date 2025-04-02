@@ -150,9 +150,9 @@ Module legacy.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "LegacyAnalyzedBytecode" |) |)
+                  M.deref (| mk_str (| "LegacyAnalyzedBytecode" |) |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytecode" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytecode" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -166,10 +166,7 @@ Module legacy.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "original_len" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "original_len" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -183,10 +180,7 @@ Module legacy.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "jump_table" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "jump_table" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1052,8 +1046,10 @@ Module legacy.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "revm_bytecode::legacy::analyzed::default::ELEM"
+                                                                  get_constant (|
+                                                                    "revm_bytecode::legacy::analyzed::default::ELEM",
+                                                                    Ty.path "u8"
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -1072,8 +1068,10 @@ Module legacy.
                                             [
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_bytecode::legacy::analyzed::default::BITS"
+                                                  get_constant (|
+                                                    "revm_bytecode::legacy::analyzed::default::BITS",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -1129,7 +1127,7 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1160,7 +1158,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_bytecode :
-        M.IsAssociatedFunction.Trait Self "bytecode" bytecode.
+        M.IsAssociatedFunction.C Self "bytecode" bytecode.
       Admitted.
       Global Typeclasses Opaque bytecode.
       
@@ -1185,7 +1183,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_original_len :
-        M.IsAssociatedFunction.Trait Self "original_len" original_len.
+        M.IsAssociatedFunction.C Self "original_len" original_len.
       Admitted.
       Global Typeclasses Opaque original_len.
       
@@ -1234,7 +1232,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_original_bytes :
-        M.IsAssociatedFunction.Trait Self "original_bytes" original_bytes.
+        M.IsAssociatedFunction.C Self "original_bytes" original_bytes.
       Admitted.
       Global Typeclasses Opaque original_bytes.
       
@@ -1337,7 +1335,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_original_byte_slice :
-        M.IsAssociatedFunction.Trait Self "original_byte_slice" original_byte_slice.
+        M.IsAssociatedFunction.C Self "original_byte_slice" original_byte_slice.
       Admitted.
       Global Typeclasses Opaque original_byte_slice.
       
@@ -1368,7 +1366,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_jump_table :
-        M.IsAssociatedFunction.Trait Self "jump_table" jump_table.
+        M.IsAssociatedFunction.C Self "jump_table" jump_table.
       Admitted.
       Global Typeclasses Opaque jump_table.
     End Impl_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.

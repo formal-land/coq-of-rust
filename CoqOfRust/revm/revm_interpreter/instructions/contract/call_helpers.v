@@ -576,7 +576,7 @@ Module instructions.
         end.
       
       Global Instance Instance_IsFunction_get_memory_input_and_out_ranges :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges"
           get_memory_input_and_out_ranges.
       Admitted.
@@ -666,7 +666,11 @@ Module instructions.
                                                       M.cast
                                                         (Ty.path "u64")
                                                         (M.read (|
-                                                          M.get_constant "core::num::MAX"
+                                                          get_associated_constant (|
+                                                            Ty.path "usize",
+                                                            "MAX",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |))
                                                     |))
                                                     (BinOp.ne (|
@@ -840,8 +844,11 @@ Module instructions.
                                                                   M.cast
                                                                     (Ty.path "u64")
                                                                     (M.read (|
-                                                                      M.get_constant
-                                                                        "core::num::MAX"
+                                                                      get_associated_constant (|
+                                                                        Ty.path "usize",
+                                                                        "MAX",
+                                                                        Ty.path "usize"
+                                                                      |)
                                                                     |))
                                                                 |))
                                                                 (BinOp.ne (|
@@ -1122,7 +1129,13 @@ Module instructions.
                                   ]
                                 |) in
                               offset));
-                          fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
+                          fun γ =>
+                            ltac:(M.monadic
+                              (get_associated_constant (|
+                                Ty.path "usize",
+                                "MAX",
+                                Ty.path "usize"
+                              |)))
                         ]
                       |)
                     |) in
@@ -1144,7 +1157,7 @@ Module instructions.
         end.
       
       Global Instance Instance_IsFunction_resize_memory :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "revm_interpreter::instructions::contract::call_helpers::resize_memory"
           resize_memory.
       Admitted.
@@ -1460,7 +1473,7 @@ Module instructions.
         end.
       
       Global Instance Instance_IsFunction_calc_call_gas :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "revm_interpreter::instructions::contract::call_helpers::calc_call_gas"
           calc_call_gas.
       Admitted.

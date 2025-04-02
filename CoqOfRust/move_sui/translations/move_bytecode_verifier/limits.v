@@ -123,7 +123,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -745,7 +745,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
     
@@ -1120,7 +1120,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_struct_handles :
-      M.IsAssociatedFunction.Trait Self "verify_struct_handles" verify_struct_handles.
+      M.IsAssociatedFunction.C Self "verify_struct_handles" verify_struct_handles.
     Admitted.
     Global Typeclasses Opaque verify_struct_handles.
     
@@ -1657,7 +1657,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_function_handles :
-      M.IsAssociatedFunction.Trait Self "verify_function_handles" verify_function_handles.
+      M.IsAssociatedFunction.C Self "verify_function_handles" verify_function_handles.
     Admitted.
     Global Typeclasses Opaque verify_function_handles.
     
@@ -2868,7 +2868,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_type_nodes :
-      M.IsAssociatedFunction.Trait Self "verify_type_nodes" verify_type_nodes.
+      M.IsAssociatedFunction.C Self "verify_type_nodes" verify_type_nodes.
     Admitted.
     Global Typeclasses Opaque verify_type_nodes.
     
@@ -3082,8 +3082,10 @@ Module limits.
                                                                           BinOp.Wrap.add (|
                                                                             M.read (| β |),
                                                                             M.read (|
-                                                                              M.get_constant
-                                                                                "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
+                                                                              get_constant (|
+                                                                                "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT",
+                                                                                Ty.path "usize"
+                                                                              |)
                                                                             |)
                                                                           |)
                                                                         |)
@@ -3108,8 +3110,10 @@ Module limits.
                                                                 BinOp.Wrap.add (|
                                                                   M.read (| β |),
                                                                   M.read (|
-                                                                    M.get_constant
-                                                                      "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT"
+                                                                    get_constant (|
+                                                                      "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT",
+                                                                      Ty.path "usize"
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -3194,7 +3198,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_type_node :
-      M.IsAssociatedFunction.Trait Self "verify_type_node" verify_type_node.
+      M.IsAssociatedFunction.C Self "verify_type_node" verify_type_node.
     Admitted.
     Global Typeclasses Opaque verify_type_node.
     
@@ -3767,7 +3771,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_definitions :
-      M.IsAssociatedFunction.Trait Self "verify_definitions" verify_definitions.
+      M.IsAssociatedFunction.C Self "verify_definitions" verify_definitions.
     Admitted.
     Global Typeclasses Opaque verify_definitions.
     
@@ -4427,9 +4431,8 @@ Module limits.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "vector size limit is "
+                                                                                                                        mk_str (|
+                                                                                                                          "vector size limit is "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -4555,7 +4558,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_constants :
-      M.IsAssociatedFunction.Trait Self "verify_constants" verify_constants.
+      M.IsAssociatedFunction.C Self "verify_constants" verify_constants.
     Admitted.
     Global Typeclasses Opaque verify_constants.
     
@@ -4926,7 +4929,7 @@ Module limits.
       end.
     
     Global Instance AssociatedFunction_verify_identifiers :
-      M.IsAssociatedFunction.Trait Self "verify_identifiers" verify_identifiers.
+      M.IsAssociatedFunction.C Self "verify_identifiers" verify_identifiers.
     Admitted.
     Global Typeclasses Opaque verify_identifiers.
   End Impl_move_bytecode_verifier_limits_LimitsVerifier.

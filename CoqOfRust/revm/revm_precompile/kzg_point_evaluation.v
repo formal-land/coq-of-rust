@@ -2,73 +2,87 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module kzg_point_evaluation.
-  Definition value_POINT_EVALUATION : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.read (| M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS" |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |))
-            ]
-        |))).
+  Definition value_POINT_EVALUATION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.read (|
+              get_constant (|
+                "revm_precompile::kzg_point_evaluation::ADDRESS",
+                Ty.path "alloy_primitives::bits::address::Address"
+              |)
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion
+              (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_POINT_EVALUATION :
-    (M.get_constant "revm_precompile::kzg_point_evaluation::POINT_EVALUATION") =
-      value_POINT_EVALUATION.
-  Global Hint Rewrite Constant_value_POINT_EVALUATION : constant_rewrites.
+  Global Instance Instance_IsConstant_value_POINT_EVALUATION :
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::POINT_EVALUATION" value_POINT_EVALUATION.
+  Admitted.
+  Global Typeclasses Opaque value_POINT_EVALUATION.
   
-  Definition value_ADDRESS : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
-            Ty.path "alloy_primitives::bits::address::Address",
-            M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-            [ Value.Integer IntegerKind.U64 10 ]
-          |)
-        |))).
+  Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.path "alloy_primitives::bits::address::Address",
+          M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+          [ Value.Integer IntegerKind.U64 10 ]
+        |)
+      |))).
   
-  Axiom Constant_value_ADDRESS :
-    (M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS") = value_ADDRESS.
-  Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_ADDRESS :
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::ADDRESS" value_ADDRESS.
+  Admitted.
+  Global Typeclasses Opaque value_ADDRESS.
   
-  Definition value_GAS_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
+  Definition value_GAS_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
   
-  Axiom Constant_value_GAS_COST :
-    (M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST") = value_GAS_COST.
-  Global Hint Rewrite Constant_value_GAS_COST : constant_rewrites.
+  Global Instance Instance_IsConstant_value_GAS_COST :
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::GAS_COST" value_GAS_COST.
+  Admitted.
+  Global Typeclasses Opaque value_GAS_COST.
   
-  Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  Definition value_VERSIONED_HASH_VERSION_KZG
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
-  Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
-    (M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG") =
+  Global Instance Instance_IsConstant_value_VERSIONED_HASH_VERSION_KZG :
+    M.IsFunction.C
+      "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
       value_VERSIONED_HASH_VERSION_KZG.
-  Global Hint Rewrite Constant_value_VERSIONED_HASH_VERSION_KZG : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_VERSIONED_HASH_VERSION_KZG.
   
-  Definition value_RETURN_VALUE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES"
+  Definition value_RETURN_VALUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.borrow (|
+          Pointer.Kind.Ref,
+          M.deref (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              get_constant (|
+                "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES",
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ Ty.path "u8" ]
               |)
             |)
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_RETURN_VALUE :
-    (M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE") = value_RETURN_VALUE.
-  Global Hint Rewrite Constant_value_RETURN_VALUE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_RETURN_VALUE :
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::RETURN_VALUE" value_RETURN_VALUE.
+  Admitted.
+  Global Typeclasses Opaque value_RETURN_VALUE.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -123,7 +137,10 @@ Module kzg_point_evaluation.
                               BinOp.lt (|
                                 M.read (| gas_limit |),
                                 M.read (|
-                                  M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST"
+                                  get_constant (|
+                                    "revm_precompile::kzg_point_evaluation::GAS_COST",
+                                    Ty.path "u64"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -877,7 +894,10 @@ Module kzg_point_evaluation.
                       |),
                       [
                         M.read (|
-                          M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST"
+                          get_constant (|
+                            "revm_precompile::kzg_point_evaluation::GAS_COST",
+                            Ty.path "u64"
+                          |)
                         |);
                         M.call_closure (|
                           Ty.path "alloy_primitives::bytes_::Bytes",
@@ -903,8 +923,18 @@ Module kzg_point_evaluation.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.read (|
-                                  M.get_constant
-                                    "revm_precompile::kzg_point_evaluation::RETURN_VALUE"
+                                  get_constant (|
+                                    "revm_precompile::kzg_point_evaluation::RETURN_VALUE",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 64 ]
+                                          [ Ty.path "u8" ]
+                                      ]
+                                  |)
                                 |)
                               |)
                             |)
@@ -920,7 +950,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_run :
-    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::run" run.
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::run" run.
   Admitted.
   Global Typeclasses Opaque run.
   
@@ -1111,7 +1141,10 @@ Module kzg_point_evaluation.
               M.write (|
                 M.SubPointer.get_array_field (| hash, Value.Integer IntegerKind.Usize 0 |),
                 M.read (|
-                  M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
+                  get_constant (|
+                    "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG",
+                    Ty.path "u8"
+                  |)
                 |)
               |)
             |) in
@@ -1121,7 +1154,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_kzg_to_versioned_hash :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash"
       kzg_to_versioned_hash.
   Admitted.
@@ -1199,7 +1232,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_verify_kzg_proof :
-    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::verify_kzg_proof" verify_kzg_proof.
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::verify_kzg_proof" verify_kzg_proof.
   Admitted.
   Global Typeclasses Opaque verify_kzg_proof.
   
@@ -1249,7 +1282,7 @@ Module kzg_point_evaluation.
             |);
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "slice with incorrect length" |) |)
+              M.deref (| mk_str (| "slice with incorrect length" |) |)
             |)
           ]
         |)))
@@ -1257,7 +1290,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_as_array :
-    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_array" as_array.
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::as_array" as_array.
   Admitted.
   Global Typeclasses Opaque as_array.
   
@@ -1330,7 +1363,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_as_bytes32 :
-    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_bytes32" as_bytes32.
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::as_bytes32" as_bytes32.
   Admitted.
   Global Typeclasses Opaque as_bytes32.
   
@@ -1403,7 +1436,7 @@ Module kzg_point_evaluation.
     end.
   
   Global Instance Instance_IsFunction_as_bytes48 :
-    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_bytes48" as_bytes48.
+    M.IsFunction.C "revm_precompile::kzg_point_evaluation::as_bytes48" as_bytes48.
   Admitted.
   Global Typeclasses Opaque as_bytes48.
 End kzg_point_evaluation.

@@ -3,64 +3,99 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module num.
   Module int_sqrt.
-    Definition value_U8_ISQRT_WITH_REMAINDER : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (let~ result :
-              Ty.apply
-                (Ty.path "array")
-                [ Value.Integer IntegerKind.Usize 256 ]
-                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ] :=
-            M.alloc (|
-              repeat (|
-                Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ],
-                Value.Integer IntegerKind.Usize 256
-              |)
-            |) in
-          let~ n : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-          let~ isqrt_n : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-          let~ _ : Ty.tuple [] :=
-            M.loop (|
-              Ty.tuple [],
-              ltac:(M.monadic
-                (M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| n |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
-                                    "len",
-                                    [],
+    Definition value_U8_ISQRT_WITH_REMAINDER
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic
+        (let~ result :
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 256 ]
+              [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ] :=
+          M.alloc (|
+            repeat (|
+              Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ],
+              Value.Integer IntegerKind.Usize 256
+            |)
+          |) in
+        let~ n : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+        let~ isqrt_n : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+        let~ _ : Ty.tuple [] :=
+          M.loop (|
+            Ty.tuple [],
+            ltac:(M.monadic
+              (M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.lt (|
+                              M.read (| n |),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, result |) ]
-                                |)
+                                    [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, result |) ]
                               |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
-                            M.write (|
-                              M.SubPointer.get_array_field (| result, M.read (| n |) |),
-                              Value.Tuple
-                                [
-                                  M.cast (Ty.path "u8") (M.read (| isqrt_n |));
-                                  M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.Wrap.sub (|
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_array_field (| result, M.read (| n |) |),
+                            Value.Tuple
+                              [
+                                M.cast (Ty.path "u8") (M.read (| isqrt_n |));
+                                M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.Wrap.sub (|
+                                    M.read (| n |),
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "pow",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| isqrt_n |); Value.Integer IntegerKind.U32 2 ]
+                                    |)
+                                  |))
+                              ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := n in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          |)
+                        |) in
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.eq (|
                                       M.read (| n |),
                                       M.call_closure (|
                                         Ty.path "usize",
@@ -70,89 +105,56 @@ Module num.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| isqrt_n |); Value.Integer IntegerKind.U32 2 ]
-                                      |)
-                                    |))
-                                ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
-                            let β := n in
-                            M.write (|
-                              β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
-                            |)
-                          |) in
-                        M.match_operator (|
-                          Some (Ty.tuple []),
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      BinOp.eq (|
-                                        M.read (| n |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.path "usize",
-                                            "pow",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            BinOp.Wrap.add (|
-                                              M.read (| isqrt_n |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |);
-                                            Value.Integer IntegerKind.U32 2
-                                          ]
-                                        |)
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.alloc (|
-                                    let β := isqrt_n in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                        [
+                                          BinOp.Wrap.add (|
+                                            M.read (| isqrt_n |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |);
+                                          Value.Integer IntegerKind.U32 2
+                                        ]
                                       |)
                                     |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
                               let~ _ : Ty.tuple [] :=
-                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                              M.alloc (| Value.Tuple [] |)
-                            |)
+                                M.alloc (|
+                                  let β := isqrt_n in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.never_to_any (|
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                            M.alloc (| Value.Tuple [] |)
                           |)
-                        |)))
-                  ]
-                |)))
-            |) in
-          result)).
+                        |)
+                      |)))
+                ]
+              |)))
+          |) in
+        result)).
     
-    Axiom Constant_value_U8_ISQRT_WITH_REMAINDER :
-      (M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER") =
-        value_U8_ISQRT_WITH_REMAINDER.
-    Global Hint Rewrite Constant_value_U8_ISQRT_WITH_REMAINDER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_U8_ISQRT_WITH_REMAINDER :
+      M.IsFunction.C "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" value_U8_ISQRT_WITH_REMAINDER.
+    Admitted.
+    Global Typeclasses Opaque value_U8_ISQRT_WITH_REMAINDER.
     
     (*
     pub const fn u8(n: u8) -> u8 {
@@ -167,7 +169,13 @@ Module num.
           M.read (|
             M.SubPointer.get_tuple_field (|
               M.SubPointer.get_array_field (|
-                M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                get_constant (|
+                  "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
+                    [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                |),
                 M.cast (Ty.path "usize") (M.read (| n |))
               |),
               0
@@ -176,7 +184,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u8 : M.IsFunction.Trait "core::num::int_sqrt::u8" u8.
+    Global Instance Instance_IsFunction_u8 : M.IsFunction.C "core::num::int_sqrt::u8" u8.
     Admitted.
     Global Typeclasses Opaque u8.
     
@@ -246,9 +254,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -281,7 +288,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i8 : M.IsFunction.Trait "core::num::int_sqrt::i8" i8.
+    Global Instance Instance_IsFunction_i8 : M.IsFunction.C "core::num::int_sqrt::i8" i8.
     Admitted.
     Global Typeclasses Opaque i8.
     
@@ -351,9 +358,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -386,7 +392,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i16 : M.IsFunction.Trait "core::num::int_sqrt::i16" i16.
+    Global Instance Instance_IsFunction_i16 : M.IsFunction.C "core::num::int_sqrt::i16" i16.
     Admitted.
     Global Typeclasses Opaque i16.
     
@@ -456,9 +462,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -491,7 +496,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i32 : M.IsFunction.Trait "core::num::int_sqrt::i32" i32.
+    Global Instance Instance_IsFunction_i32 : M.IsFunction.C "core::num::int_sqrt::i32" i32.
     Admitted.
     Global Typeclasses Opaque i32.
     
@@ -561,9 +566,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -596,7 +600,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i64 : M.IsFunction.Trait "core::num::int_sqrt::i64" i64.
+    Global Instance Instance_IsFunction_i64 : M.IsFunction.C "core::num::int_sqrt::i64" i64.
     Admitted.
     Global Typeclasses Opaque i64.
     
@@ -666,9 +670,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -701,7 +704,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i128 : M.IsFunction.Trait "core::num::int_sqrt::i128" i128.
+    Global Instance Instance_IsFunction_i128 : M.IsFunction.C "core::num::int_sqrt::i128" i128.
     Admitted.
     Global Typeclasses Opaque i128.
     
@@ -774,9 +777,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -800,13 +802,21 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant "core::num::int_sqrt::u16_stages::N_SHIFT" |)
+                    M.read (|
+                      get_constant (| "core::num::int_sqrt::u16_stages::N_SHIFT", Ty.path "u32" |)
+                    |)
                   |)
                 |) in
               M.match_operator (|
                 None,
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                  get_constant (|
+                    "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                  |),
                   M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
@@ -896,9 +906,8 @@ Module num.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "`$s` is  zero in `last_stage!`."
+                                                                mk_str (|
+                                                                  "`$s` is  zero in `last_stage!`."
                                                                 |)
                                                               ]
                                                           |)
@@ -923,7 +932,10 @@ Module num.
                         BinOp.bit_and
                           (M.read (| n |))
                           (M.read (|
-                            M.get_constant "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS"
+                            get_constant (|
+                              "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS",
+                              Ty.path "u16"
+                            |)
                           |))
                       |) in
                     let~ numerator : Ty.path "u16" :=
@@ -932,13 +944,19 @@ Module num.
                           (BinOp.Wrap.shl (|
                             M.cast (Ty.path "u16") (M.read (| r |)),
                             M.read (|
-                              M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
+                              get_constant (|
+                                "core::num::int_sqrt::u16_stages::QUARTER_BITS",
+                                Ty.path "u32"
+                              |)
                             |)
                           |))
                           (BinOp.Wrap.shr (|
                             M.read (| lo |),
                             M.read (|
-                              M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
+                              get_constant (|
+                                "core::num::int_sqrt::u16_stages::QUARTER_BITS",
+                                Ty.path "u32"
+                              |)
                             |)
                           |))
                       |) in
@@ -961,7 +979,10 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.read (| s |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u16_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |)),
                           M.read (| q |)
@@ -1032,67 +1053,72 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_u16_stages :
-      M.IsFunction.Trait "core::num::int_sqrt::u16_stages" u16_stages.
+      M.IsFunction.C "core::num::int_sqrt::u16_stages" u16_stages.
     Admitted.
     Global Typeclasses Opaque u16_stages.
     
     Module u16_stages.
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 16, Value.Integer IntegerKind.U32 8 |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 16, Value.Integer IntegerKind.U32 8 |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u16_stages::N_SHIFT") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u16_stages::N_SHIFT" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u16_stages::HALF_BITS") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u16_stages::HALF_BITS" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u16_stages::QUARTER_BITS" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u16_stages::HALF_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u16_stages::HALF_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS") =
-          value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS" value_LOWER_HALF_1_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
     End u16_stages.
     
     (*
@@ -1165,9 +1191,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -1191,13 +1216,21 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT" |)
+                    M.read (|
+                      get_constant (| "core::num::int_sqrt::u32_stages::N_SHIFT", Ty.path "u32" |)
+                    |)
                   |)
                 |) in
               M.match_operator (|
                 None,
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                  get_constant (|
+                    "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                  |),
                   M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
@@ -1289,9 +1322,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -1318,7 +1350,10 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT'1"
+                                get_constant (|
+                                  "core::num::int_sqrt::u32_stages::N_SHIFT'1",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -1327,7 +1362,10 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS"
+                              get_constant (|
+                                "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS",
+                                Ty.path "u16"
+                              |)
                             |))
                         |) in
                       let~ numerator : Ty.path "u16" :=
@@ -1336,13 +1374,19 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u32_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u32_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -1369,7 +1413,10 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
+                                  get_constant (|
+                                    "core::num::int_sqrt::u32_stages::QUARTER_BITS",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)),
                             M.read (| q |)
@@ -1391,14 +1438,19 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u32_stages::QUARTER_BITS",
+                                      Ty.path "u32"
+                                    |)
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant
-                                      "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS",
+                                      Ty.path "u16"
+                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -1545,9 +1597,8 @@ Module num.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "`$s` is  zero in `last_stage!`."
+                                                                        mk_str (|
+                                                                          "`$s` is  zero in `last_stage!`."
                                                                         |)
                                                                       ]
                                                                   |)
@@ -1572,8 +1623,10 @@ Module num.
                                 BinOp.bit_and
                                   (M.read (| n |))
                                   (M.read (|
-                                    M.get_constant
-                                      "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1",
+                                      Ty.path "u32"
+                                    |)
                                   |))
                               |) in
                             let~ numerator : Ty.path "u32" :=
@@ -1582,15 +1635,19 @@ Module num.
                                   (BinOp.Wrap.shl (|
                                     M.cast (Ty.path "u32") (M.read (| r |)),
                                     M.read (|
-                                      M.get_constant
-                                        "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
+                                      get_constant (|
+                                        "core::num::int_sqrt::u32_stages::QUARTER_BITS'1",
+                                        Ty.path "u32"
+                                      |)
                                     |)
                                   |))
                                   (BinOp.Wrap.shr (|
                                     M.read (| lo |),
                                     M.read (|
-                                      M.get_constant
-                                        "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
+                                      get_constant (|
+                                        "core::num::int_sqrt::u32_stages::QUARTER_BITS'1",
+                                        Ty.path "u32"
+                                      |)
                                     |)
                                   |))
                               |) in
@@ -1616,8 +1673,10 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.read (| s |),
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u32_stages::QUARTER_BITS'1",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |)),
                                   M.read (| q |)
@@ -1695,145 +1754,164 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_u32_stages :
-      M.IsFunction.Trait "core::num::int_sqrt::u32_stages" u32_stages.
+      M.IsFunction.C "core::num::int_sqrt::u32_stages" u32_stages.
     Admitted.
     Global Typeclasses Opaque u32_stages.
     
     Module u32_stages.
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 32, Value.Integer IntegerKind.U32 8 |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 32, Value.Integer IntegerKind.U32 8 |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::N_SHIFT" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 32,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 32,
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT'1") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::N_SHIFT'1" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::HALF_BITS" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::QUARTER_BITS" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u32_stages::HALF_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS") =
-          value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS" value_LOWER_HALF_1_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS'1") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::HALF_BITS'1" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u32_stages::QUARTER_BITS'1" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS'1" |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u32_stages::HALF_BITS'1", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U32 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
     End u32_stages.
     
     (*
@@ -1907,9 +1985,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -1933,13 +2010,21 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT" |)
+                    M.read (|
+                      get_constant (| "core::num::int_sqrt::u64_stages::N_SHIFT", Ty.path "u32" |)
+                    |)
                   |)
                 |) in
               M.match_operator (|
                 None,
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                  get_constant (|
+                    "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                  |),
                   M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
@@ -2031,9 +2116,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -2060,7 +2144,10 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'1"
+                                get_constant (|
+                                  "core::num::int_sqrt::u64_stages::N_SHIFT'1",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -2069,7 +2156,10 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS"
+                              get_constant (|
+                                "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS",
+                                Ty.path "u16"
+                              |)
                             |))
                         |) in
                       let~ numerator : Ty.path "u16" :=
@@ -2078,13 +2168,19 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u64_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u64_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -2111,7 +2207,10 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
+                                  get_constant (|
+                                    "core::num::int_sqrt::u64_stages::QUARTER_BITS",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)),
                             M.read (| q |)
@@ -2133,14 +2232,19 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u64_stages::QUARTER_BITS",
+                                      Ty.path "u32"
+                                    |)
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant
-                                      "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS",
+                                      Ty.path "u16"
+                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -2289,9 +2393,8 @@ Module num.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          mk_str (|
+                                                                            "`$s` is  zero in `middle_stage!`."
                                                                           |)
                                                                         ]
                                                                     |)
@@ -2319,7 +2422,10 @@ Module num.
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
-                                        M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'2"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u64_stages::N_SHIFT'2",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                 |) in
@@ -2328,8 +2434,10 @@ Module num.
                                   BinOp.bit_and
                                     (M.read (| n |))
                                     (M.read (|
-                                      M.get_constant
-                                        "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1"
+                                      get_constant (|
+                                        "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1",
+                                        Ty.path "u32"
+                                      |)
                                     |))
                                 |) in
                               let~ numerator : Ty.path "u32" :=
@@ -2338,15 +2446,19 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u64_stages::QUARTER_BITS'1",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                     (BinOp.Wrap.shr (|
                                       M.read (| lo |),
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u64_stages::QUARTER_BITS'1",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                 |) in
@@ -2379,8 +2491,10 @@ Module num.
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
+                                          get_constant (|
+                                            "core::num::int_sqrt::u64_stages::QUARTER_BITS'1",
+                                            Ty.path "u32"
+                                          |)
                                         |)
                                       |)),
                                     M.read (| q |)
@@ -2402,15 +2516,19 @@ Module num.
                                         (BinOp.Wrap.shl (|
                                           M.read (| u |),
                                           M.read (|
-                                            M.get_constant
-                                              "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
+                                            get_constant (|
+                                              "core::num::int_sqrt::u64_stages::QUARTER_BITS'1",
+                                              Ty.path "u32"
+                                            |)
                                           |)
                                         |))
                                         (BinOp.bit_and
                                           (M.read (| lo |))
                                           (M.read (|
-                                            M.get_constant
-                                              "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1"
+                                            get_constant (|
+                                              "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1",
+                                              Ty.path "u32"
+                                            |)
                                           |)));
                                       BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                     ]
@@ -2569,9 +2687,8 @@ Module num.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "`$s` is  zero in `last_stage!`."
+                                                                                mk_str (|
+                                                                                  "`$s` is  zero in `last_stage!`."
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -2598,8 +2715,10 @@ Module num.
                                         BinOp.bit_and
                                           (M.read (| n |))
                                           (M.read (|
-                                            M.get_constant
-                                              "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2"
+                                            get_constant (|
+                                              "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2",
+                                              Ty.path "u64"
+                                            |)
                                           |))
                                       |) in
                                     let~ numerator : Ty.path "u64" :=
@@ -2608,15 +2727,19 @@ Module num.
                                           (BinOp.Wrap.shl (|
                                             M.cast (Ty.path "u64") (M.read (| r |)),
                                             M.read (|
-                                              M.get_constant
-                                                "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
+                                              get_constant (|
+                                                "core::num::int_sqrt::u64_stages::QUARTER_BITS'2",
+                                                Ty.path "u32"
+                                              |)
                                             |)
                                           |))
                                           (BinOp.Wrap.shr (|
                                             M.read (| lo |),
                                             M.read (|
-                                              M.get_constant
-                                                "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
+                                              get_constant (|
+                                                "core::num::int_sqrt::u64_stages::QUARTER_BITS'2",
+                                                Ty.path "u32"
+                                              |)
                                             |)
                                           |))
                                       |) in
@@ -2642,8 +2765,10 @@ Module num.
                                             (BinOp.Wrap.shl (|
                                               M.read (| s |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
+                                                get_constant (|
+                                                  "core::num::int_sqrt::u64_stages::QUARTER_BITS'2",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             |)),
                                           M.read (| q |)
@@ -2724,223 +2849,259 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_u64_stages :
-      M.IsFunction.Trait "core::num::int_sqrt::u64_stages" u64_stages.
+      M.IsFunction.C "core::num::int_sqrt::u64_stages" u64_stages.
     Admitted.
     Global Typeclasses Opaque u64_stages.
     
     Module u64_stages.
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 64, Value.Integer IntegerKind.U32 8 |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 64, Value.Integer IntegerKind.U32 8 |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::N_SHIFT" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 64,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 64,
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'1") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::N_SHIFT'1" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::HALF_BITS" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::QUARTER_BITS" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS") =
-          value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS" value_LOWER_HALF_1_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 64,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 64,
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'2") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::N_SHIFT'2" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'1") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::HALF_BITS'1" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::QUARTER_BITS'1" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'1" |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS'1", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U32 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'1" |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.read (|
+                  get_constant (|
+                    "core::num::int_sqrt::u64_stages::QUARTER_BITS'1",
+                    Ty.path "u32"
+                  |)
+                |)
+              |),
+              Value.Integer IntegerKind.U32 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'2") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::HALF_BITS'2" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u64_stages::QUARTER_BITS'2" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U64 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'2" |)
-                |),
-                Value.Integer IntegerKind.U64 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U64 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS'2", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U64 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
     End u64_stages.
     
     (*
@@ -3015,9 +3176,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -3041,13 +3201,21 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT" |)
+                    M.read (|
+                      get_constant (| "core::num::int_sqrt::u128_stages::N_SHIFT", Ty.path "u32" |)
+                    |)
                   |)
                 |) in
               M.match_operator (|
                 None,
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                  get_constant (|
+                    "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                  |),
                   M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
@@ -3139,9 +3307,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -3168,7 +3335,10 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'1"
+                                get_constant (|
+                                  "core::num::int_sqrt::u128_stages::N_SHIFT'1",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -3177,7 +3347,10 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS"
+                              get_constant (|
+                                "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS",
+                                Ty.path "u16"
+                              |)
                             |))
                         |) in
                       let~ numerator : Ty.path "u16" :=
@@ -3186,13 +3359,19 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
+                                get_constant (|
+                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS",
+                                  Ty.path "u32"
+                                |)
                               |)
                             |))
                         |) in
@@ -3219,7 +3398,10 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
+                                  get_constant (|
+                                    "core::num::int_sqrt::u128_stages::QUARTER_BITS",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)),
                             M.read (| q |)
@@ -3241,14 +3423,19 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u128_stages::QUARTER_BITS",
+                                      Ty.path "u32"
+                                    |)
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant
-                                      "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS"
+                                    get_constant (|
+                                      "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS",
+                                      Ty.path "u16"
+                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -3397,9 +3584,8 @@ Module num.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          mk_str (|
+                                                                            "`$s` is  zero in `middle_stage!`."
                                                                           |)
                                                                         ]
                                                                     |)
@@ -3427,7 +3613,10 @@ Module num.
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
-                                        M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'2"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u128_stages::N_SHIFT'2",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                 |) in
@@ -3436,8 +3625,10 @@ Module num.
                                   BinOp.bit_and
                                     (M.read (| n |))
                                     (M.read (|
-                                      M.get_constant
-                                        "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1"
+                                      get_constant (|
+                                        "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1",
+                                        Ty.path "u32"
+                                      |)
                                     |))
                                 |) in
                               let~ numerator : Ty.path "u32" :=
@@ -3446,15 +3637,19 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'1",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                     (BinOp.Wrap.shr (|
                                       M.read (| lo |),
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
+                                        get_constant (|
+                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'1",
+                                          Ty.path "u32"
+                                        |)
                                       |)
                                     |))
                                 |) in
@@ -3487,8 +3682,10 @@ Module num.
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
+                                          get_constant (|
+                                            "core::num::int_sqrt::u128_stages::QUARTER_BITS'1",
+                                            Ty.path "u32"
+                                          |)
                                         |)
                                       |)),
                                     M.read (| q |)
@@ -3510,15 +3707,19 @@ Module num.
                                         (BinOp.Wrap.shl (|
                                           M.read (| u |),
                                           M.read (|
-                                            M.get_constant
-                                              "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
+                                            get_constant (|
+                                              "core::num::int_sqrt::u128_stages::QUARTER_BITS'1",
+                                              Ty.path "u32"
+                                            |)
                                           |)
                                         |))
                                         (BinOp.bit_and
                                           (M.read (| lo |))
                                           (M.read (|
-                                            M.get_constant
-                                              "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1"
+                                            get_constant (|
+                                              "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1",
+                                              Ty.path "u32"
+                                            |)
                                           |)));
                                       BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                     ]
@@ -3680,9 +3881,8 @@ Module num.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                                  mk_str (|
+                                                                                    "`$s` is  zero in `middle_stage!`."
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -3711,8 +3911,10 @@ Module num.
                                             (BinOp.Wrap.shr (|
                                               M.read (| n |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::int_sqrt::u128_stages::N_SHIFT'3"
+                                                get_constant (|
+                                                  "core::num::int_sqrt::u128_stages::N_SHIFT'3",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             |))
                                         |) in
@@ -3721,8 +3923,10 @@ Module num.
                                           BinOp.bit_and
                                             (M.read (| n |))
                                             (M.read (|
-                                              M.get_constant
-                                                "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2"
+                                              get_constant (|
+                                                "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2",
+                                                Ty.path "u64"
+                                              |)
                                             |))
                                         |) in
                                       let~ numerator : Ty.path "u64" :=
@@ -3731,15 +3935,19 @@ Module num.
                                             (BinOp.Wrap.shl (|
                                               M.cast (Ty.path "u64") (M.read (| r |)),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
+                                                get_constant (|
+                                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS'2",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             |))
                                             (BinOp.Wrap.shr (|
                                               M.read (| lo |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
+                                                get_constant (|
+                                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS'2",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             |))
                                         |) in
@@ -3772,8 +3980,10 @@ Module num.
                                               (BinOp.Wrap.shl (|
                                                 M.read (| s |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
+                                                  get_constant (|
+                                                    "core::num::int_sqrt::u128_stages::QUARTER_BITS'2",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
                                               |)),
                                             M.read (| q |)
@@ -3795,15 +4005,19 @@ Module num.
                                                 (BinOp.Wrap.shl (|
                                                   M.read (| u |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
+                                                    get_constant (|
+                                                      "core::num::int_sqrt::u128_stages::QUARTER_BITS'2",
+                                                      Ty.path "u32"
+                                                    |)
                                                   |)
                                                 |))
                                                 (BinOp.bit_and
                                                   (M.read (| lo |))
                                                   (M.read (|
-                                                    M.get_constant
-                                                      "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2"
+                                                    get_constant (|
+                                                      "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2",
+                                                      Ty.path "u64"
+                                                    |)
                                                   |)));
                                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                             ]
@@ -3974,9 +4188,8 @@ Module num.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "`$s` is  zero in `last_stage!`."
+                                                                                        mk_str (|
+                                                                                          "`$s` is  zero in `last_stage!`."
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -4004,8 +4217,10 @@ Module num.
                                                 BinOp.bit_and
                                                   (M.read (| n |))
                                                   (M.read (|
-                                                    M.get_constant
-                                                      "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3"
+                                                    get_constant (|
+                                                      "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3",
+                                                      Ty.path "u128"
+                                                    |)
                                                   |))
                                               |) in
                                             let~ numerator : Ty.path "u128" :=
@@ -4014,15 +4229,19 @@ Module num.
                                                   (BinOp.Wrap.shl (|
                                                     M.cast (Ty.path "u128") (M.read (| r |)),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
+                                                      get_constant (|
+                                                        "core::num::int_sqrt::u128_stages::QUARTER_BITS'3",
+                                                        Ty.path "u32"
+                                                      |)
                                                     |)
                                                   |))
                                                   (BinOp.Wrap.shr (|
                                                     M.read (| lo |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
+                                                      get_constant (|
+                                                        "core::num::int_sqrt::u128_stages::QUARTER_BITS'3",
+                                                        Ty.path "u32"
+                                                      |)
                                                     |)
                                                   |))
                                               |) in
@@ -4048,8 +4267,10 @@ Module num.
                                                     (BinOp.Wrap.shl (|
                                                       M.read (| s |),
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
+                                                        get_constant (|
+                                                          "core::num::int_sqrt::u128_stages::QUARTER_BITS'3",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)),
                                                   M.read (| q |)
@@ -4137,304 +4358,356 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_u128_stages :
-      M.IsFunction.Trait "core::num::int_sqrt::u128_stages" u128_stages.
+      M.IsFunction.C "core::num::int_sqrt::u128_stages" u128_stages.
     Admitted.
     Global Typeclasses Opaque u128_stages.
     
     Module u128_stages.
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 128,
-                Value.Integer IntegerKind.U32 8
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 128, Value.Integer IntegerKind.U32 8 |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::N_SHIFT" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 128,
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'1") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::N_SHIFT'1" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::HALF_BITS" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::QUARTER_BITS" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS" |)
-                |),
-                Value.Integer IntegerKind.U16 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u128_stages::QUARTER_BITS", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U16 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 128,
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'2") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::N_SHIFT'2" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'1") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::HALF_BITS'1" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::QUARTER_BITS'1" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'1" |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'1", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U32 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'1" |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.read (|
+                  get_constant (|
+                    "core::num::int_sqrt::u128_stages::QUARTER_BITS'1",
+                    Ty.path "u32"
+                  |)
+                |)
+              |),
+              Value.Integer IntegerKind.U32 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_N_SHIFT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant "core::num::BITS" |)
-              |)
-            |))).
+      Definition value_N_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 128,
+              M.read (| get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |) |)
+            |)
+          |))).
       
-      Axiom Constant_value_N_SHIFT :
-        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'3") = value_N_SHIFT.
-      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
+      Global Instance Instance_IsConstant_value_N_SHIFT :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::N_SHIFT'3" value_N_SHIFT.
+      Admitted.
+      Global Typeclasses Opaque value_N_SHIFT.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'2") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::HALF_BITS'2" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::QUARTER_BITS'2" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U64 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'2" |)
-                |),
-                Value.Integer IntegerKind.U64 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U64 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'2", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U64 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
       
-      Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U64 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'2" |)
-                |),
-                Value.Integer IntegerKind.U64 1
-              |)
-            |))).
+      Definition value_LOWEST_QUARTER_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U64 1,
+                M.read (|
+                  get_constant (|
+                    "core::num::int_sqrt::u128_stages::QUARTER_BITS'2",
+                    Ty.path "u32"
+                  |)
+                |)
+              |),
+              Value.Integer IntegerKind.U64 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2") =
+      Global Instance Instance_IsConstant_value_LOWEST_QUARTER_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2"
           value_LOWEST_QUARTER_1_BITS.
-      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWEST_QUARTER_1_BITS.
       
-      Definition value_HALF_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 1
-              |)
-            |))).
+      Definition value_HALF_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u128", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 1
+            |)
+          |))).
       
-      Axiom Constant_value_HALF_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'3") = value_HALF_BITS.
-      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_HALF_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::HALF_BITS'3" value_HALF_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_HALF_BITS.
       
-      Definition value_QUARTER_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.shr (|
-                M.read (| M.get_constant "core::num::BITS" |),
-                Value.Integer IntegerKind.I32 2
-              |)
-            |))).
+      Definition value_QUARTER_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.shr (|
+              M.read (| get_associated_constant (| Ty.path "u128", "BITS", Ty.path "u32" |) |),
+              Value.Integer IntegerKind.I32 2
+            |)
+          |))).
       
-      Axiom Constant_value_QUARTER_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'3") = value_QUARTER_BITS.
-      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
+      Global Instance Instance_IsConstant_value_QUARTER_BITS :
+        M.IsFunction.C "core::num::int_sqrt::u128_stages::QUARTER_BITS'3" value_QUARTER_BITS.
+      Admitted.
+      Global Typeclasses Opaque value_QUARTER_BITS.
       
-      Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.shl (|
-                  Value.Integer IntegerKind.U128 1,
-                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'3" |)
-                |),
-                Value.Integer IntegerKind.U128 1
-              |)
-            |))).
+      Definition value_LOWER_HALF_1_BITS
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U128 1,
+                M.read (|
+                  get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'3", Ty.path "u32" |)
+                |)
+              |),
+              Value.Integer IntegerKind.U128 1
+            |)
+          |))).
       
-      Axiom Constant_value_LOWER_HALF_1_BITS :
-        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3") =
+      Global Instance Instance_IsConstant_value_LOWER_HALF_1_BITS :
+        M.IsFunction.C
+          "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3"
           value_LOWER_HALF_1_BITS.
-      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_LOWER_HALF_1_BITS.
     End u128_stages.
     
     (*
@@ -4500,7 +4773,11 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast (Ty.path "u16") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u16")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4524,7 +4801,10 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK"
+                            get_constant (|
+                              "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK",
+                              Ty.path "u32"
+                            |)
                           |))
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -4559,19 +4839,22 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u16 : M.IsFunction.Trait "core::num::int_sqrt::u16" u16.
+    Global Instance Instance_IsFunction_u16 : M.IsFunction.C "core::num::int_sqrt::u16" u16.
     Admitted.
     Global Typeclasses Opaque u16.
     
     Module u16.
-      Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      Definition value_EVEN_MAKING_BITMASK
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
       
-      Axiom Constant_value_EVEN_MAKING_BITMASK :
-        (M.get_constant "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK") =
-          value_EVEN_MAKING_BITMASK.
-      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
+      Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
+        M.IsFunction.C "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
+      Admitted.
+      Global Typeclasses Opaque value_EVEN_MAKING_BITMASK.
     End u16.
     
     (*
@@ -4637,7 +4920,11 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u32")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4661,7 +4948,10 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK"
+                            get_constant (|
+                              "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK",
+                              Ty.path "u32"
+                            |)
                           |))
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -4696,19 +4986,22 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u32 : M.IsFunction.Trait "core::num::int_sqrt::u32" u32.
+    Global Instance Instance_IsFunction_u32 : M.IsFunction.C "core::num::int_sqrt::u32" u32.
     Admitted.
     Global Typeclasses Opaque u32.
     
     Module u32.
-      Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      Definition value_EVEN_MAKING_BITMASK
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
       
-      Axiom Constant_value_EVEN_MAKING_BITMASK :
-        (M.get_constant "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK") =
-          value_EVEN_MAKING_BITMASK.
-      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
+      Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
+        M.IsFunction.C "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
+      Admitted.
+      Global Typeclasses Opaque value_EVEN_MAKING_BITMASK.
     End u32.
     
     (*
@@ -4774,7 +5067,11 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4798,7 +5095,10 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK"
+                            get_constant (|
+                              "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK",
+                              Ty.path "u32"
+                            |)
                           |))
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -4833,19 +5133,22 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u64 : M.IsFunction.Trait "core::num::int_sqrt::u64" u64.
+    Global Instance Instance_IsFunction_u64 : M.IsFunction.C "core::num::int_sqrt::u64" u64.
     Admitted.
     Global Typeclasses Opaque u64.
     
     Module u64.
-      Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      Definition value_EVEN_MAKING_BITMASK
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
       
-      Axiom Constant_value_EVEN_MAKING_BITMASK :
-        (M.get_constant "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK") =
-          value_EVEN_MAKING_BITMASK.
-      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
+      Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
+        M.IsFunction.C "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
+      Admitted.
+      Global Typeclasses Opaque value_EVEN_MAKING_BITMASK.
     End u64.
     
     (*
@@ -4911,7 +5214,11 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4935,7 +5242,10 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK"
+                            get_constant (|
+                              "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK",
+                              Ty.path "u32"
+                            |)
                           |))
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -4970,19 +5280,22 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u128 : M.IsFunction.Trait "core::num::int_sqrt::u128" u128.
+    Global Instance Instance_IsFunction_u128 : M.IsFunction.C "core::num::int_sqrt::u128" u128.
     Admitted.
     Global Typeclasses Opaque u128.
     
     Module u128.
-      Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run_constant
-          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      Definition value_EVEN_MAKING_BITMASK
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
       
-      Axiom Constant_value_EVEN_MAKING_BITMASK :
-        (M.get_constant "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK") =
-          value_EVEN_MAKING_BITMASK.
-      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
+      Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
+        M.IsFunction.C "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
+      Admitted.
+      Global Typeclasses Opaque value_EVEN_MAKING_BITMASK.
     End u128.
     
     (*
@@ -5018,11 +5331,7 @@ Module num.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "argument of integer square root cannot be negative"
-                              |)
-                            ]
+                            [ mk_str (| "argument of integer square root cannot be negative" |) ]
                         |)
                       |)
                     |)
@@ -5035,9 +5344,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_panic_for_negative_argument :
-      M.IsFunction.Trait
-        "core::num::int_sqrt::panic_for_negative_argument"
-        panic_for_negative_argument.
+      M.IsFunction.C "core::num::int_sqrt::panic_for_negative_argument" panic_for_negative_argument.
     Admitted.
     Global Typeclasses Opaque panic_for_negative_argument.
   End int_sqrt.

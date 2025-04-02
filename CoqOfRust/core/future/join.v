@@ -113,11 +113,7 @@ Module future.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "internal error: entered unreachable code"
-                                      |)
-                                    ]
+                                    [ mk_str (| "internal error: entered unreachable code" |) ]
                                   |)
                                 |)
                               |)))
@@ -134,7 +130,7 @@ Module future.
       
       Global Instance AssociatedFunction_take_output :
         forall (F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self F) "take_output" (take_output F).
+        M.IsAssociatedFunction.C (Self F) "take_output" (take_output F).
       Admitted.
       Global Typeclasses Opaque take_output.
     End Impl_core_future_join_MaybeDone_F.
@@ -382,11 +378,7 @@ Module future.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [
-                                    M.read (|
-                                      Value.String "internal error: entered unreachable code"
-                                    |)
-                                  ]
+                                  [ mk_str (| "internal error: entered unreachable code" |) ]
                                 |)
                               |)
                             |)))

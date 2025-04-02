@@ -166,9 +166,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_slice_start_index_len_fail :
-      M.IsFunction.Trait
-        "core::slice::index::slice_start_index_len_fail"
-        slice_start_index_len_fail.
+      M.IsFunction.C "core::slice::index::slice_start_index_len_fail" slice_start_index_len_fail.
     Admitted.
     Global Typeclasses Opaque slice_start_index_len_fail.
     
@@ -197,7 +195,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_slice_end_index_len_fail :
-      M.IsFunction.Trait "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
+      M.IsFunction.C "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
     Admitted.
     Global Typeclasses Opaque slice_end_index_len_fail.
     
@@ -226,7 +224,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_slice_index_order_fail :
-      M.IsFunction.Trait "core::slice::index::slice_index_order_fail" slice_index_order_fail.
+      M.IsFunction.C "core::slice::index::slice_index_order_fail" slice_index_order_fail.
     Admitted.
     Global Typeclasses Opaque slice_index_order_fail.
     
@@ -263,11 +261,7 @@ Module slice.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "attempted to index slice from after maximum usize"
-                              |)
-                            ]
+                            [ mk_str (| "attempted to index slice from after maximum usize" |) ]
                         |)
                       |)
                     |)
@@ -280,7 +274,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_slice_start_index_overflow_fail :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::slice::index::slice_start_index_overflow_fail"
         slice_start_index_overflow_fail.
     Admitted.
@@ -319,11 +313,7 @@ Module slice.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "attempted to index slice up to maximum usize"
-                              |)
-                            ]
+                            [ mk_str (| "attempted to index slice up to maximum usize" |) ]
                         |)
                       |)
                     |)
@@ -336,7 +326,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_slice_end_index_overflow_fail :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::slice::index::slice_end_index_overflow_fail"
         slice_end_index_overflow_fail.
     Admitted.
@@ -374,7 +364,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_get_noubcheck :
-      M.IsFunction.Trait "core::slice::index::get_noubcheck" get_noubcheck.
+      M.IsFunction.C "core::slice::index::get_noubcheck" get_noubcheck.
     Admitted.
     Global Typeclasses Opaque get_noubcheck.
     
@@ -410,7 +400,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_get_mut_noubcheck :
-      M.IsFunction.Trait "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
+      M.IsFunction.C "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
     Admitted.
     Global Typeclasses Opaque get_mut_noubcheck.
     
@@ -461,7 +451,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_get_offset_len_noubcheck :
-      M.IsFunction.Trait "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
+      M.IsFunction.C "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
     Admitted.
     Global Typeclasses Opaque get_offset_len_noubcheck.
     
@@ -516,7 +506,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_get_offset_len_mut_noubcheck :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::slice::index::get_offset_len_mut_noubcheck"
         get_offset_len_mut_noubcheck.
     Admitted.
@@ -4579,7 +4569,13 @@ Module slice.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4669,7 +4665,13 @@ Module slice.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4852,7 +4854,13 @@ Module slice.
                                     |)
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -4959,7 +4967,13 @@ Module slice.
                                         |)
                                       |)
                                     |),
-                                    M.read (| M.get_constant "core::num::MAX" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -6055,8 +6069,7 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_range :
-      M.IsFunction.Trait "core::slice::index::range" range.
+    Global Instance Instance_IsFunction_range : M.IsFunction.C "core::slice::index::range" range.
     Admitted.
     Global Typeclasses Opaque range.
     
@@ -6462,7 +6475,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_try_range :
-      M.IsFunction.Trait "core::slice::index::try_range" try_range.
+      M.IsFunction.C "core::slice::index::try_range" try_range.
     Admitted.
     Global Typeclasses Opaque try_range.
     
@@ -6592,7 +6605,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_into_range_unchecked :
-      M.IsFunction.Trait "core::slice::index::into_range_unchecked" into_range_unchecked.
+      M.IsFunction.C "core::slice::index::into_range_unchecked" into_range_unchecked.
     Admitted.
     Global Typeclasses Opaque into_range_unchecked.
     
@@ -6946,7 +6959,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_into_range :
-      M.IsFunction.Trait "core::slice::index::into_range" into_range.
+      M.IsFunction.C "core::slice::index::into_range" into_range.
     Admitted.
     Global Typeclasses Opaque into_range.
     
@@ -7187,7 +7200,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_into_slice_range :
-      M.IsFunction.Trait "core::slice::index::into_slice_range" into_slice_range.
+      M.IsFunction.C "core::slice::index::into_slice_range" into_slice_range.
     Admitted.
     Global Typeclasses Opaque into_slice_range.
     

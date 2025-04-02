@@ -177,7 +177,20 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
+      ltac:(M.monadic
+        (let value := M.alloc (| value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -406,7 +419,7 @@ Module Impl_payment_channel_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -415,65 +428,152 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
   
   (*
       fn terminate_contract(&self, sender: AccountId) {
           unimplemented!()
       }
   *)
-  Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition terminate_contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; sender ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let sender := M.alloc (| sender |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_terminate_contract :
-    M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
+    M.IsAssociatedFunction.C Self "terminate_contract" terminate_contract.
   Admitted.
+  Global Typeclasses Opaque terminate_contract.
   
   (*
       fn transfer(&self, recipient: AccountId, amount: Balance) -> Result<()> {
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; recipient; amount ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let recipient := M.alloc (| recipient |) in
+        let amount := M.alloc (| amount |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
+  Global Typeclasses Opaque transfer.
   
   (*
       fn block_timestamp(&self) -> Timestamp {
           unimplemented!()
       }
   *)
-  Parameter block_timestamp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition block_timestamp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_block_timestamp :
-    M.IsAssociatedFunction.Trait Self "block_timestamp" block_timestamp.
+    M.IsAssociatedFunction.C Self "block_timestamp" block_timestamp.
   Admitted.
+  Global Typeclasses Opaque block_timestamp.
   
   (*
       fn balance(&self) -> Balance {
           unimplemented!()
       }
   *)
-  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.C Self "balance" balance.
   Admitted.
+  Global Typeclasses Opaque balance.
   
   (*
       fn account_id(&self) -> AccountId {
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition account_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_account_id :
-    M.IsAssociatedFunction.Trait Self "account_id" account_id.
+    M.IsAssociatedFunction.C Self "account_id" account_id.
   Admitted.
+  Global Typeclasses Opaque account_id.
 End Impl_payment_channel_Env.
 
 (* Trait *)
@@ -490,11 +590,26 @@ where
     unimplemented!()
 }
 *)
-Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+Definition hash_encoded (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ H; T ], [ input; output ] =>
+    ltac:(M.monadic
+      (let input := M.alloc (| input |) in
+      let output := M.alloc (| output |) in
+      M.never_to_any (|
+        M.call_closure (|
+          Ty.path "never",
+          M.get_function (| "core::panicking::panic", [], [] |),
+          [ mk_str (| "not implemented" |) ]
+        |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Global Instance Instance_IsFunction_hash_encoded :
-  M.IsFunction.Trait "payment_channel::hash_encoded" hash_encoded.
+  M.IsFunction.C "payment_channel::hash_encoded" hash_encoded.
 Admitted.
+Global Typeclasses Opaque hash_encoded.
 
 (*
 pub fn ecdsa_recover(
@@ -505,11 +620,27 @@ pub fn ecdsa_recover(
     unimplemented!()
 }
 *)
-Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+Definition ecdsa_recover (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ signature; message_hash; output ] =>
+    ltac:(M.monadic
+      (let signature := M.alloc (| signature |) in
+      let message_hash := M.alloc (| message_hash |) in
+      let output := M.alloc (| output |) in
+      M.never_to_any (|
+        M.call_closure (|
+          Ty.path "never",
+          M.get_function (| "core::panicking::panic", [], [] |),
+          [ mk_str (| "not implemented" |) ]
+        |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Global Instance Instance_IsFunction_ecdsa_recover :
-  M.IsFunction.Trait "payment_channel::ecdsa_recover" ecdsa_recover.
+  M.IsFunction.C "payment_channel::ecdsa_recover" ecdsa_recover.
 Admitted.
+Global Typeclasses Opaque ecdsa_recover.
 
 (*
 Enum Sha2x256
@@ -623,7 +754,21 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -642,7 +787,21 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -661,7 +820,21 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -680,7 +853,21 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -699,11 +886,23 @@ Module Impl_payment_channel_PaymentChannel.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -728,7 +927,7 @@ Module Impl_payment_channel_PaymentChannel.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -896,7 +1095,7 @@ Module Impl_payment_channel_PaymentChannel.
                                           [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
-                                        [ M.read (| Value.String "recover failed: {err:?}" |) ]
+                                        [ mk_str (| "recover failed: {err:?}" |) ]
                                       |)
                                     |)))
                               ]
@@ -986,7 +1185,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_is_signature_valid :
-    M.IsAssociatedFunction.Trait Self "is_signature_valid" is_signature_valid.
+    M.IsAssociatedFunction.C Self "is_signature_valid" is_signature_valid.
   Admitted.
   Global Typeclasses Opaque is_signature_valid.
   
@@ -1040,7 +1239,7 @@ Module Impl_payment_channel_PaymentChannel.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -1444,7 +1643,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_close_inner :
-    M.IsAssociatedFunction.Trait Self "close_inner" close_inner.
+    M.IsAssociatedFunction.C Self "close_inner" close_inner.
   Admitted.
   Global Typeclasses Opaque close_inner.
   
@@ -1614,7 +1813,7 @@ Module Impl_payment_channel_PaymentChannel.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_close : M.IsAssociatedFunction.Trait Self "close" close.
+  Global Instance AssociatedFunction_close : M.IsAssociatedFunction.C Self "close" close.
   Admitted.
   Global Typeclasses Opaque close.
   
@@ -1838,7 +2037,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_start_sender_close :
-    M.IsAssociatedFunction.Trait Self "start_sender_close" start_sender_close.
+    M.IsAssociatedFunction.C Self "start_sender_close" start_sender_close.
   Admitted.
   Global Typeclasses Opaque start_sender_close.
   
@@ -2020,7 +2219,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_claim_timeout :
-    M.IsAssociatedFunction.Trait Self "claim_timeout" claim_timeout.
+    M.IsAssociatedFunction.C Self "claim_timeout" claim_timeout.
   Admitted.
   Global Typeclasses Opaque claim_timeout.
   
@@ -2444,8 +2643,7 @@ Module Impl_payment_channel_PaymentChannel.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_withdraw :
-    M.IsAssociatedFunction.Trait Self "withdraw" withdraw.
+  Global Instance AssociatedFunction_withdraw : M.IsAssociatedFunction.C Self "withdraw" withdraw.
   Admitted.
   Global Typeclasses Opaque withdraw.
   
@@ -2470,7 +2668,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_sender :
-    M.IsAssociatedFunction.Trait Self "get_sender" get_sender.
+    M.IsAssociatedFunction.C Self "get_sender" get_sender.
   Admitted.
   Global Typeclasses Opaque get_sender.
   
@@ -2495,7 +2693,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_recipient :
-    M.IsAssociatedFunction.Trait Self "get_recipient" get_recipient.
+    M.IsAssociatedFunction.C Self "get_recipient" get_recipient.
   Admitted.
   Global Typeclasses Opaque get_recipient.
   
@@ -2520,7 +2718,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_expiration :
-    M.IsAssociatedFunction.Trait Self "get_expiration" get_expiration.
+    M.IsAssociatedFunction.C Self "get_expiration" get_expiration.
   Admitted.
   Global Typeclasses Opaque get_expiration.
   
@@ -2545,7 +2743,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_withdrawn :
-    M.IsAssociatedFunction.Trait Self "get_withdrawn" get_withdrawn.
+    M.IsAssociatedFunction.C Self "get_withdrawn" get_withdrawn.
   Admitted.
   Global Typeclasses Opaque get_withdrawn.
   
@@ -2570,7 +2768,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_close_duration :
-    M.IsAssociatedFunction.Trait Self "get_close_duration" get_close_duration.
+    M.IsAssociatedFunction.C Self "get_close_duration" get_close_duration.
   Admitted.
   Global Typeclasses Opaque get_close_duration.
   
@@ -2609,7 +2807,7 @@ Module Impl_payment_channel_PaymentChannel.
     end.
   
   Global Instance AssociatedFunction_get_balance :
-    M.IsAssociatedFunction.Trait Self "get_balance" get_balance.
+    M.IsAssociatedFunction.C Self "get_balance" get_balance.
   Admitted.
   Global Typeclasses Opaque get_balance.
 End Impl_payment_channel_PaymentChannel.

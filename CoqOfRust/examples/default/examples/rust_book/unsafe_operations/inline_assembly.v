@@ -21,6 +21,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "inline_assembly::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "inline_assembly::main" main.
 Admitted.
 Global Typeclasses Opaque main.

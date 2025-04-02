@@ -33,7 +33,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_forget : M.IsFunction.Trait "core::mem::forget" forget.
+  Global Instance Instance_IsFunction_forget : M.IsFunction.C "core::mem::forget" forget.
   Admitted.
   Global Typeclasses Opaque forget.
   
@@ -56,7 +56,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_forget_unsized :
-    M.IsFunction.Trait "core::mem::forget_unsized" forget_unsized.
+    M.IsFunction.C "core::mem::forget_unsized" forget_unsized.
   Admitted.
   Global Typeclasses Opaque forget_unsized.
   
@@ -77,7 +77,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_size_of : M.IsFunction.Trait "core::mem::size_of" size_of.
+  Global Instance Instance_IsFunction_size_of : M.IsFunction.C "core::mem::size_of" size_of.
   Admitted.
   Global Typeclasses Opaque size_of.
   
@@ -101,7 +101,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_size_of_val :
-    M.IsFunction.Trait "core::mem::size_of_val" size_of_val.
+    M.IsFunction.C "core::mem::size_of_val" size_of_val.
   Admitted.
   Global Typeclasses Opaque size_of_val.
   
@@ -125,7 +125,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_size_of_val_raw :
-    M.IsFunction.Trait "core::mem::size_of_val_raw" size_of_val_raw.
+    M.IsFunction.C "core::mem::size_of_val_raw" size_of_val_raw.
   Admitted.
   Global Typeclasses Opaque size_of_val_raw.
   
@@ -147,7 +147,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_min_align_of :
-    M.IsFunction.Trait "core::mem::min_align_of" min_align_of.
+    M.IsFunction.C "core::mem::min_align_of" min_align_of.
   Admitted.
   Global Typeclasses Opaque min_align_of.
   
@@ -171,7 +171,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_min_align_of_val :
-    M.IsFunction.Trait "core::mem::min_align_of_val" min_align_of_val.
+    M.IsFunction.C "core::mem::min_align_of_val" min_align_of_val.
   Admitted.
   Global Typeclasses Opaque min_align_of_val.
   
@@ -192,7 +192,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_align_of : M.IsFunction.Trait "core::mem::align_of" align_of.
+  Global Instance Instance_IsFunction_align_of : M.IsFunction.C "core::mem::align_of" align_of.
   Admitted.
   Global Typeclasses Opaque align_of.
   
@@ -216,7 +216,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_align_of_val :
-    M.IsFunction.Trait "core::mem::align_of_val" align_of_val.
+    M.IsFunction.C "core::mem::align_of_val" align_of_val.
   Admitted.
   Global Typeclasses Opaque align_of_val.
   
@@ -240,7 +240,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_align_of_val_raw :
-    M.IsFunction.Trait "core::mem::align_of_val_raw" align_of_val_raw.
+    M.IsFunction.C "core::mem::align_of_val_raw" align_of_val_raw.
   Admitted.
   Global Typeclasses Opaque align_of_val_raw.
   
@@ -262,7 +262,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_needs_drop :
-    M.IsFunction.Trait "core::mem::needs_drop" needs_drop.
+    M.IsFunction.C "core::mem::needs_drop" needs_drop.
   Admitted.
   Global Typeclasses Opaque needs_drop.
   
@@ -315,7 +315,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_zeroed : M.IsFunction.Trait "core::mem::zeroed" zeroed.
+  Global Instance Instance_IsFunction_zeroed : M.IsFunction.C "core::mem::zeroed" zeroed.
   Admitted.
   Global Typeclasses Opaque zeroed.
   
@@ -418,7 +418,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_uninitialized :
-    M.IsFunction.Trait "core::mem::uninitialized" uninitialized.
+    M.IsFunction.C "core::mem::uninitialized" uninitialized.
   Admitted.
   Global Typeclasses Opaque uninitialized.
   
@@ -446,7 +446,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_swap : M.IsFunction.Trait "core::mem::swap" swap.
+  Global Instance Instance_IsFunction_swap : M.IsFunction.C "core::mem::swap" swap.
   Admitted.
   Global Typeclasses Opaque swap.
   
@@ -475,7 +475,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_take : M.IsFunction.Trait "core::mem::take" take.
+  Global Instance Instance_IsFunction_take : M.IsFunction.C "core::mem::take" take.
   Admitted.
   Global Typeclasses Opaque take.
   
@@ -526,7 +526,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_replace : M.IsFunction.Trait "core::mem::replace" replace.
+  Global Instance Instance_IsFunction_replace : M.IsFunction.C "core::mem::replace" replace.
   Admitted.
   Global Typeclasses Opaque replace.
   
@@ -540,7 +540,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_drop : M.IsFunction.Trait "core::mem::drop" drop.
+  Global Instance Instance_IsFunction_drop : M.IsFunction.C "core::mem::drop" drop.
   Admitted.
   Global Typeclasses Opaque drop.
   
@@ -558,7 +558,7 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_copy : M.IsFunction.Trait "core::mem::copy" copy.
+  Global Instance Instance_IsFunction_copy : M.IsFunction.C "core::mem::copy" copy.
   Admitted.
   Global Typeclasses Opaque copy.
   
@@ -637,9 +637,8 @@ Module mem.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "cannot transmute_copy if Dst is larger than Src"
+                                            mk_str (|
+                                              "cannot transmute_copy if Dst is larger than Src"
                                             |)
                                           ]
                                       |)
@@ -725,7 +724,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_transmute_copy :
-    M.IsFunction.Trait "core::mem::transmute_copy" transmute_copy.
+    M.IsFunction.C "core::mem::transmute_copy" transmute_copy.
   Admitted.
   Global Typeclasses Opaque transmute_copy.
   
@@ -960,7 +959,7 @@ Module mem.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Discriminant" |) |)
+                                M.deref (| mk_str (| "Discriminant" |) |)
                               |)
                             ]
                           |)
@@ -1021,7 +1020,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_discriminant :
-    M.IsFunction.Trait "core::mem::discriminant" discriminant.
+    M.IsFunction.C "core::mem::discriminant" discriminant.
   Admitted.
   Global Typeclasses Opaque discriminant.
   
@@ -1043,7 +1042,7 @@ Module mem.
     end.
   
   Global Instance Instance_IsFunction_variant_count :
-    M.IsFunction.Trait "core::mem::variant_count" variant_count.
+    M.IsFunction.C "core::mem::variant_count" variant_count.
   Admitted.
   Global Typeclasses Opaque variant_count.
   

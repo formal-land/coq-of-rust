@@ -54,30 +54,21 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                       let _ :=
                         M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "CordonBleu" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CordonBleu" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Steak" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Steak" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Steak" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Sushi" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Sushi" |) |) |)
                       |)))
                 ]
               |)
@@ -148,30 +139,21 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Monday" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Monday" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Monday" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Tuesday" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Tuesday" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tuesday" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Wednesday" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Wednesday" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Wednesday" |) |) |)
                       |)))
                 ]
               |)
@@ -225,7 +207,7 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   end.
 
 Global Instance Instance_IsFunction_have_ingredients :
-  M.IsFunction.Trait "combinators_and_then::have_ingredients" have_ingredients.
+  M.IsFunction.C "combinators_and_then::have_ingredients" have_ingredients.
 Admitted.
 Global Typeclasses Opaque have_ingredients.
 
@@ -264,7 +246,7 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_have_recipe :
-  M.IsFunction.Trait "combinators_and_then::have_recipe" have_recipe.
+  M.IsFunction.C "combinators_and_then::have_recipe" have_recipe.
 Admitted.
 Global Typeclasses Opaque have_recipe.
 
@@ -347,7 +329,7 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_cookable_v1 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v1" cookable_v1.
+  M.IsFunction.C "combinators_and_then::cookable_v1" cookable_v1.
 Admitted.
 Global Typeclasses Opaque cookable_v1.
 
@@ -390,7 +372,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_cookable_v2 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v2" cookable_v2.
+  M.IsFunction.C "combinators_and_then::cookable_v2" cookable_v2.
 Admitted.
 Global Typeclasses Opaque cookable_v2.
 
@@ -448,9 +430,9 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Yay! On " |);
-                                        M.read (| Value.String " we get to eat " |);
-                                        M.read (| Value.String ".
+                                        mk_str (| "Yay! On " |);
+                                        mk_str (| " we get to eat " |);
+                                        mk_str (| ".
 " |)
                                       ]
                                   |)
@@ -533,8 +515,8 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Oh no. We don't get to eat on " |);
-                                        M.read (| Value.String "?
+                                        mk_str (| "Oh no. We don't get to eat on " |);
+                                        mk_str (| "?
 " |)
                                       ]
                                   |)
@@ -581,7 +563,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_and_then::eat" eat.
+Global Instance Instance_IsFunction_eat : M.IsFunction.C "combinators_and_then::eat" eat.
 Admitted.
 Global Typeclasses Opaque eat.
 
@@ -658,6 +640,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_and_then::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_and_then::main" main.
 Admitted.
 Global Typeclasses Opaque main.

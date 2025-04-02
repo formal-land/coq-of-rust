@@ -49,7 +49,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "description() is deprecated; use Display" |) |)
+            M.deref (| mk_str (| "description() is deprecated; use Display" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -113,7 +113,7 @@ Module error.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Internal" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Internal" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -208,7 +208,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -286,7 +286,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -367,7 +367,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
     (*
@@ -403,8 +403,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_sources :
-      M.IsAssociatedFunction.Trait Self "sources" sources.
+    Global Instance AssociatedFunction_sources : M.IsAssociatedFunction.C Self "sources" sources.
     Admitted.
     Global Typeclasses Opaque sources.
   End Impl_Dyn_core_error_Error_Trait.
@@ -436,7 +435,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -464,7 +463,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -492,7 +491,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
@@ -529,7 +528,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -557,7 +556,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -585,7 +584,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
@@ -617,7 +616,7 @@ Module error.
     end.
   
   Global Instance Instance_IsFunction_request_value :
-    M.IsFunction.Trait "core::error::request_value" request_value.
+    M.IsFunction.C "core::error::request_value" request_value.
   Admitted.
   Global Typeclasses Opaque request_value.
   
@@ -653,7 +652,7 @@ Module error.
     end.
   
   Global Instance Instance_IsFunction_request_ref :
-    M.IsFunction.Trait "core::error::request_ref" request_ref.
+    M.IsFunction.C "core::error::request_ref" request_ref.
   Admitted.
   Global Typeclasses Opaque request_ref.
   
@@ -740,7 +739,7 @@ Module error.
     end.
   
   Global Instance Instance_IsFunction_request_by_type_tag :
-    M.IsFunction.Trait "core::error::request_by_type_tag" request_by_type_tag.
+    M.IsFunction.C "core::error::request_by_type_tag" request_by_type_tag.
   Admitted.
   Global Typeclasses Opaque request_by_type_tag.
   
@@ -802,7 +801,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_provide_value :
-      M.IsAssociatedFunction.Trait Self "provide_value" provide_value.
+      M.IsAssociatedFunction.C Self "provide_value" provide_value.
     Admitted.
     Global Typeclasses Opaque provide_value.
     
@@ -850,7 +849,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_provide_value_with :
-      M.IsAssociatedFunction.Trait Self "provide_value_with" provide_value_with.
+      M.IsAssociatedFunction.C Self "provide_value_with" provide_value_with.
     Admitted.
     Global Typeclasses Opaque provide_value_with.
     
@@ -897,7 +896,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_provide_ref :
-      M.IsAssociatedFunction.Trait Self "provide_ref" provide_ref.
+      M.IsAssociatedFunction.C Self "provide_ref" provide_ref.
     Admitted.
     Global Typeclasses Opaque provide_ref.
     
@@ -948,7 +947,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_provide_ref_with :
-      M.IsAssociatedFunction.Trait Self "provide_ref_with" provide_ref_with.
+      M.IsAssociatedFunction.C Self "provide_ref_with" provide_ref_with.
     Admitted.
     Global Typeclasses Opaque provide_ref_with.
     
@@ -1052,8 +1051,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_provide :
-      M.IsAssociatedFunction.Trait Self "provide" provide.
+    Global Instance AssociatedFunction_provide : M.IsAssociatedFunction.C Self "provide" provide.
     Admitted.
     Global Typeclasses Opaque provide.
     
@@ -1177,7 +1175,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_provide_with :
-      M.IsAssociatedFunction.Trait Self "provide_with" provide_with.
+      M.IsAssociatedFunction.C Self "provide_with" provide_with.
     Admitted.
     Global Typeclasses Opaque provide_with.
     
@@ -1212,10 +1210,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_would_be_satisfied_by_value_of :
-      M.IsAssociatedFunction.Trait
-        Self
-        "would_be_satisfied_by_value_of"
-        would_be_satisfied_by_value_of.
+      M.IsAssociatedFunction.C Self "would_be_satisfied_by_value_of" would_be_satisfied_by_value_of.
     Admitted.
     Global Typeclasses Opaque would_be_satisfied_by_value_of.
     
@@ -1255,7 +1250,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_would_be_satisfied_by_ref_of :
-      M.IsAssociatedFunction.Trait Self "would_be_satisfied_by_ref_of" would_be_satisfied_by_ref_of.
+      M.IsAssociatedFunction.C Self "would_be_satisfied_by_ref_of" would_be_satisfied_by_ref_of.
     Admitted.
     Global Typeclasses Opaque would_be_satisfied_by_ref_of.
     
@@ -1333,7 +1328,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_would_be_satisfied_by :
-      M.IsAssociatedFunction.Trait Self "would_be_satisfied_by" would_be_satisfied_by.
+      M.IsAssociatedFunction.C Self "would_be_satisfied_by" would_be_satisfied_by.
     Admitted.
     Global Typeclasses Opaque would_be_satisfied_by.
   End Impl_core_error_Request.
@@ -1377,10 +1372,7 @@ Module error.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "Request" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Request" |) |) |)
                     ]
                   |)
                 |)
@@ -1455,7 +1447,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Value" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Value" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1538,10 +1530,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "MaybeSizedValue" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MaybeSizedValue" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1624,7 +1613,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ref" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1770,7 +1759,7 @@ Module error.
     
     Global Instance AssociatedFunction_as_request :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "as_request" (as_request I).
+      M.IsAssociatedFunction.C (Self I) "as_request" (as_request I).
     Admitted.
     Global Typeclasses Opaque as_request.
   End Impl_core_error_Tagged_core_error_TaggedOption_I.
@@ -1963,8 +1952,7 @@ Module error.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_downcast :
-      M.IsAssociatedFunction.Trait Self "downcast" downcast.
+    Global Instance AssociatedFunction_downcast : M.IsAssociatedFunction.C Self "downcast" downcast.
     Admitted.
     Global Typeclasses Opaque downcast.
     
@@ -2132,7 +2120,7 @@ Module error.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
   End Impl_core_error_Tagged_Dyn_core_error_Erased_Trait.
@@ -2235,8 +2223,8 @@ Module error.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Source" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "current" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Source" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2642,7 +2630,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "an error occurred when formatting an argument" |) |)
+            M.deref (| mk_str (| "an error occurred when formatting an argument" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2669,10 +2657,7 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "already mutably borrowed" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already mutably borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2698,10 +2683,7 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "already borrowed" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2729,7 +2711,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "converted integer out of range for `char`" |) |)
+            M.deref (| mk_str (| "converted integer out of range for `char`" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

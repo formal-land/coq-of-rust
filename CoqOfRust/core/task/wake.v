@@ -121,8 +121,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "RawWaker" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RawWaker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -136,7 +136,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "vtable" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -189,7 +189,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -209,34 +209,36 @@ Module task.
           };
       *)
       (* Ty.path "core::task::wake::RawWaker" *)
-      Definition value_NOOP : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "core::task::wake::RawWaker",
-                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                    M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
-                    []
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.get_constant "core::task::wake::NOOP::VTABLE"
+      Definition value_NOOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "core::task::wake::RawWaker",
+              M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                  M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
+                  []
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      get_constant (|
+                        "core::task::wake::NOOP::VTABLE",
+                        Ty.path "core::task::wake::RawWakerVTable"
                       |)
                     |)
                   |)
-                ]
-              |)
-            |))).
+                |)
+              ]
+            |)
+          |))).
       
       Global Instance AssociatedConstant_value_NOOP :
-        M.IsAssociatedConstant.Trait Self "value_NOOP" value_NOOP.
+        M.IsAssociatedFunction.C Self "NOOP" value_NOOP.
       Admitted.
       Global Typeclasses Opaque value_NOOP.
     End Impl_core_task_wake_RawWaker.
@@ -456,11 +458,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RawWakerVTable" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "clone" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RawWakerVTable" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "clone" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -474,7 +473,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "wake" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "wake" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -488,10 +487,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "wake_by_ref" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "wake_by_ref" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -505,7 +501,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drop" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "drop" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -570,7 +566,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_task_wake_RawWakerVTable.
@@ -642,10 +638,7 @@ Module task.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Some" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -677,10 +670,7 @@ Module task.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "None" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -772,7 +762,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_from_waker :
-        M.IsAssociatedFunction.Trait Self "from_waker" from_waker.
+        M.IsAssociatedFunction.C Self "from_waker" from_waker.
       Admitted.
       Global Typeclasses Opaque from_waker.
       
@@ -806,7 +796,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.Trait Self "waker" waker.
+      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.C Self "waker" waker.
       Admitted.
       Global Typeclasses Opaque waker.
       
@@ -841,7 +831,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_local_waker :
-        M.IsAssociatedFunction.Trait Self "local_waker" local_waker.
+        M.IsAssociatedFunction.C Self "local_waker" local_waker.
       Admitted.
       Global Typeclasses Opaque local_waker.
       
@@ -927,7 +917,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.Trait Self "ext" ext.
+      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.C Self "ext" ext.
       Admitted.
       Global Typeclasses Opaque ext.
     End Impl_core_task_wake_Context.
@@ -985,16 +975,13 @@ Module task.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Context" |) |)
+                                  M.deref (| mk_str (| "Context" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "waker" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "waker" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -1076,11 +1063,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ContextBuilder" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "waker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ContextBuilder" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "waker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1094,10 +1078,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "local_waker" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "local_waker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1111,7 +1092,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ext" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ext" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1125,7 +1106,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1139,7 +1120,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker2" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker2" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1226,7 +1207,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_from_waker :
-        M.IsAssociatedFunction.Trait Self "from_waker" from_waker.
+        M.IsAssociatedFunction.C Self "from_waker" from_waker.
       Admitted.
       Global Typeclasses Opaque from_waker.
       
@@ -1344,7 +1325,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from : M.IsAssociatedFunction.Trait Self "from" from.
+      Global Instance AssociatedFunction_from : M.IsAssociatedFunction.C Self "from" from.
       Admitted.
       Global Typeclasses Opaque from.
       
@@ -1363,7 +1344,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.Trait Self "waker" waker.
+      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.C Self "waker" waker.
       Admitted.
       Global Typeclasses Opaque waker.
       
@@ -1385,7 +1366,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_local_waker :
-        M.IsAssociatedFunction.Trait Self "local_waker" local_waker.
+        M.IsAssociatedFunction.C Self "local_waker" local_waker.
       Admitted.
       Global Typeclasses Opaque local_waker.
       
@@ -1411,7 +1392,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.Trait Self "ext" ext.
+      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.C Self "ext" ext.
       Admitted.
       Global Typeclasses Opaque ext.
       
@@ -1493,7 +1474,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_build : M.IsAssociatedFunction.Trait Self "build" build.
+      Global Instance AssociatedFunction_build : M.IsAssociatedFunction.C Self "build" build.
       Admitted.
       Global Typeclasses Opaque build.
     End Impl_core_task_wake_ContextBuilder.
@@ -1665,7 +1646,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.Trait Self "wake" wake.
+      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.C Self "wake" wake.
       Admitted.
       Global Typeclasses Opaque wake.
       
@@ -1722,7 +1703,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_wake_by_ref :
-        M.IsAssociatedFunction.Trait Self "wake_by_ref" wake_by_ref.
+        M.IsAssociatedFunction.C Self "wake_by_ref" wake_by_ref.
       Admitted.
       Global Typeclasses Opaque wake_by_ref.
       
@@ -1823,7 +1804,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_will_wake :
-        M.IsAssociatedFunction.Trait Self "will_wake" will_wake.
+        M.IsAssociatedFunction.C Self "will_wake" will_wake.
       Admitted.
       Global Typeclasses Opaque will_wake.
       
@@ -1849,7 +1830,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1868,7 +1849,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_from_raw :
-        M.IsAssociatedFunction.Trait Self "from_raw" from_raw.
+        M.IsAssociatedFunction.C Self "from_raw" from_raw.
       Admitted.
       Global Typeclasses Opaque from_raw.
       
@@ -1881,11 +1862,17 @@ Module task.
       Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant "core::task::wake::noop::WAKER" |)))
+          ltac:(M.monadic
+            (M.read (|
+              get_constant (|
+                "core::task::wake::noop::WAKER",
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.Trait Self "noop" noop.
+      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.C Self "noop" noop.
       Admitted.
       Global Typeclasses Opaque noop.
       
@@ -1913,7 +1900,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
       Admitted.
       Global Typeclasses Opaque data.
       
@@ -1941,7 +1928,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.Trait Self "vtable" vtable.
+      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.C Self "vtable" vtable.
       Admitted.
       Global Typeclasses Opaque vtable.
     End Impl_core_task_wake_Waker.
@@ -2251,7 +2238,7 @@ Module task.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (| M.read (| Value.String "Waker" |) |)
+                                              M.deref (| mk_str (| "Waker" |) |)
                                             |)
                                           ]
                                         |)
@@ -2259,7 +2246,7 @@ Module task.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "data" |) |)
+                                      M.deref (| mk_str (| "data" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -2282,10 +2269,7 @@ Module task.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "vtable" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)
@@ -2459,7 +2443,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.Trait Self "wake" wake.
+      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.C Self "wake" wake.
       Admitted.
       Global Typeclasses Opaque wake.
       
@@ -2516,7 +2500,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_wake_by_ref :
-        M.IsAssociatedFunction.Trait Self "wake_by_ref" wake_by_ref.
+        M.IsAssociatedFunction.C Self "wake_by_ref" wake_by_ref.
       Admitted.
       Global Typeclasses Opaque wake_by_ref.
       
@@ -2617,7 +2601,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_will_wake :
-        M.IsAssociatedFunction.Trait Self "will_wake" will_wake.
+        M.IsAssociatedFunction.C Self "will_wake" will_wake.
       Admitted.
       Global Typeclasses Opaque will_wake.
       
@@ -2643,7 +2627,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2662,7 +2646,7 @@ Module task.
         end.
       
       Global Instance AssociatedFunction_from_raw :
-        M.IsAssociatedFunction.Trait Self "from_raw" from_raw.
+        M.IsAssociatedFunction.C Self "from_raw" from_raw.
       Admitted.
       Global Typeclasses Opaque from_raw.
       
@@ -2675,11 +2659,17 @@ Module task.
       Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant "core::task::wake::noop::WAKER" |)))
+          ltac:(M.monadic
+            (M.read (|
+              get_constant (|
+                "core::task::wake::noop::WAKER",
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.Trait Self "noop" noop.
+      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.C Self "noop" noop.
       Admitted.
       Global Typeclasses Opaque noop.
       
@@ -2707,7 +2697,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
       Admitted.
       Global Typeclasses Opaque data.
       
@@ -2735,7 +2725,7 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.Trait Self "vtable" vtable.
+      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.C Self "vtable" vtable.
       Admitted.
       Global Typeclasses Opaque vtable.
     End Impl_core_task_wake_LocalWaker.
@@ -3083,7 +3073,7 @@ Module task.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (| M.read (| Value.String "LocalWaker" |) |)
+                                              M.deref (| mk_str (| "LocalWaker" |) |)
                                             |)
                                           ]
                                         |)
@@ -3091,7 +3081,7 @@ Module task.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "data" |) |)
+                                      M.deref (| mk_str (| "data" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -3114,10 +3104,7 @@ Module task.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "vtable" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)

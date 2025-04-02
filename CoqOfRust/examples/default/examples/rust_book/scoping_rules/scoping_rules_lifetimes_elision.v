@@ -34,12 +34,8 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`elided_input`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`elided_input`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -84,7 +80,7 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_elided_input :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_input" elided_input.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::elided_input" elided_input.
 Admitted.
 Global Typeclasses Opaque elided_input.
 
@@ -121,12 +117,8 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`annotated_input`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`annotated_input`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -171,7 +163,7 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
   end.
 
 Global Instance Instance_IsFunction_annotated_input :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
 Admitted.
 Global Typeclasses Opaque annotated_input.
 
@@ -190,7 +182,7 @@ Definition elided_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_elided_pass :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
 Admitted.
 Global Typeclasses Opaque elided_pass.
 
@@ -209,7 +201,7 @@ Definition annotated_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Global Instance Instance_IsFunction_annotated_pass :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
 Admitted.
 Global Typeclasses Opaque annotated_pass.
 
@@ -268,12 +260,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`elided_pass`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`elided_pass`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -354,12 +342,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`annotated_pass`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`annotated_pass`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -424,6 +408,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::main" main.
 Admitted.
 Global Typeclasses Opaque main.

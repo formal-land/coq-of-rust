@@ -46,8 +46,10 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant
-                                "alloc::vec::in_place_collect::in_place_collectible_discriminant") in
+                              (get_constant (|
+                                "alloc::vec::in_place_collect::in_place_collectible_discriminant",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -131,7 +133,7 @@ Module vec.
       end.
     
     Global Instance Instance_IsFunction_in_place_collectible :
-      M.IsFunction.Trait "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
+      M.IsFunction.C "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
     Admitted.
     Global Typeclasses Opaque in_place_collectible.
     
@@ -176,8 +178,10 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant
-                                "alloc::vec::in_place_collect::needs_realloc_discriminant") in
+                              (get_constant (|
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -203,9 +207,8 @@ Module vec.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "in_place_collectible() prevents this"
+                                                  mk_str (|
+                                                    "in_place_collectible() prevents this"
                                                   |)
                                                 ]
                                             |)
@@ -230,8 +233,10 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant
-                                "alloc::vec::in_place_collect::needs_realloc_discriminant") in
+                              (get_constant (|
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -270,7 +275,7 @@ Module vec.
       end.
     
     Global Instance Instance_IsFunction_needs_realloc :
-      M.IsFunction.Trait "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
+      M.IsFunction.C "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
     Admitted.
     Global Typeclasses Opaque needs_realloc.
     
@@ -335,7 +340,15 @@ Module vec.
                       []
                       [ T; Ty.path "alloc::alloc::Global" ]) :=
                 M.copy (|
-                  M.get_constant "alloc::vec::in_place_collect::from_iter_discriminant"
+                  get_constant (|
+                    "alloc::vec::in_place_collect::from_iter_discriminant",
+                    Ty.function
+                      [ I ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ])
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1252,9 +1265,8 @@ Module vec.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "InPlaceIterable contract violation, write pointer advanced beyond read pointer"
+                                                                          mk_str (|
+                                                                            "InPlaceIterable contract violation, write pointer advanced beyond read pointer"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -2047,7 +2059,7 @@ Module vec.
       end.
     
     Global Instance Instance_IsFunction_from_iter_in_place :
-      M.IsFunction.Trait "alloc::vec::in_place_collect::from_iter_in_place" from_iter_in_place.
+      M.IsFunction.C "alloc::vec::in_place_collect::from_iter_in_place" from_iter_in_place.
     Admitted.
     Global Typeclasses Opaque from_iter_in_place.
     
@@ -2217,9 +2229,8 @@ Module vec.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "InPlaceIterable contract violation"
+                                                                                    mk_str (|
+                                                                                      "InPlaceIterable contract violation"
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -2305,7 +2316,7 @@ Module vec.
       end.
     
     Global Instance Instance_IsFunction_write_in_place_with_drop :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "alloc::vec::in_place_collect::write_in_place_with_drop"
         write_in_place_with_drop.
     Admitted.
@@ -2735,9 +2746,8 @@ Module vec.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "InPlaceIterable contract violation"
+                                                                                    mk_str (|
+                                                                                      "InPlaceIterable contract violation"
                                                                                     |)
                                                                                   ]
                                                                               |)

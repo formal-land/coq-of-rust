@@ -29,7 +29,7 @@ Module alloc.
       end.
     
     Global Instance Instance_IsFunction_size_align :
-      M.IsFunction.Trait "core::alloc::layout::size_align" size_align.
+      M.IsFunction.C "core::alloc::layout::size_align" size_align.
     Admitted.
     Global Typeclasses Opaque size_align.
     
@@ -113,8 +113,8 @@ Module alloc.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Layout" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "size" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Layout" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -128,7 +128,7 @@ Module alloc.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "align" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "align" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -453,7 +453,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_from_size_align :
-        M.IsAssociatedFunction.Trait Self "from_size_align" from_size_align.
+        M.IsAssociatedFunction.C Self "from_size_align" from_size_align.
       Admitted.
       Global Typeclasses Opaque from_size_align.
       
@@ -548,7 +548,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_is_size_align_valid :
-        M.IsAssociatedFunction.Trait Self "is_size_align_valid" is_size_align_valid.
+        M.IsAssociatedFunction.C Self "is_size_align_valid" is_size_align_valid.
       Admitted.
       Global Typeclasses Opaque is_size_align_valid.
       
@@ -584,7 +584,11 @@ Module alloc.
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (|
+                      get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |)
+                    |)),
                   Value.Integer IntegerKind.Usize 1
                 |);
                 M.call_closure (|
@@ -603,7 +607,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_max_size_for_align :
-        M.IsAssociatedFunction.Trait Self "max_size_for_align" max_size_for_align.
+        M.IsAssociatedFunction.C Self "max_size_for_align" max_size_for_align.
       Admitted.
       Global Typeclasses Opaque max_size_for_align.
       
@@ -681,7 +685,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_from_size_alignment :
-        M.IsAssociatedFunction.Trait Self "from_size_alignment" from_size_alignment.
+        M.IsAssociatedFunction.C Self "from_size_alignment" from_size_alignment.
       Admitted.
       Global Typeclasses Opaque from_size_alignment.
       
@@ -768,7 +772,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_from_size_align_unchecked :
-        M.IsAssociatedFunction.Trait Self "from_size_align_unchecked" from_size_align_unchecked.
+        M.IsAssociatedFunction.C Self "from_size_align_unchecked" from_size_align_unchecked.
       Admitted.
       Global Typeclasses Opaque from_size_align_unchecked.
       
@@ -792,7 +796,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.C Self "size" size.
       Admitted.
       Global Typeclasses Opaque size.
       
@@ -827,7 +831,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_align : M.IsAssociatedFunction.Trait Self "align" align.
+      Global Instance AssociatedFunction_align : M.IsAssociatedFunction.C Self "align" align.
       Admitted.
       Global Typeclasses Opaque align.
       
@@ -879,7 +883,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -939,7 +943,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_for_value :
-        M.IsAssociatedFunction.Trait Self "for_value" for_value.
+        M.IsAssociatedFunction.C Self "for_value" for_value.
       Admitted.
       Global Typeclasses Opaque for_value.
       
@@ -1000,7 +1004,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_for_value_raw :
-        M.IsAssociatedFunction.Trait Self "for_value_raw" for_value_raw.
+        M.IsAssociatedFunction.C Self "for_value_raw" for_value_raw.
       Admitted.
       Global Typeclasses Opaque for_value_raw.
       
@@ -1046,7 +1050,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_dangling :
-        M.IsAssociatedFunction.Trait Self "dangling" dangling.
+        M.IsAssociatedFunction.C Self "dangling" dangling.
       Admitted.
       Global Typeclasses Opaque dangling.
       
@@ -1161,7 +1165,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_align_to :
-        M.IsAssociatedFunction.Trait Self "align_to" align_to.
+        M.IsAssociatedFunction.C Self "align_to" align_to.
       Admitted.
       Global Typeclasses Opaque align_to.
       
@@ -1251,7 +1255,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_padding_needed_for :
-        M.IsAssociatedFunction.Trait Self "padding_needed_for" padding_needed_for.
+        M.IsAssociatedFunction.C Self "padding_needed_for" padding_needed_for.
       Admitted.
       Global Typeclasses Opaque padding_needed_for.
       
@@ -1342,7 +1346,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_size_rounded_up_to_custom_align :
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           Self
           "size_rounded_up_to_custom_align"
           size_rounded_up_to_custom_align.
@@ -1418,7 +1422,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_pad_to_align :
-        M.IsAssociatedFunction.Trait Self "pad_to_align" pad_to_align.
+        M.IsAssociatedFunction.C Self "pad_to_align" pad_to_align.
       Admitted.
       Global Typeclasses Opaque pad_to_align.
       
@@ -1524,7 +1528,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.Trait Self "repeat" repeat.
+      Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.C Self "repeat" repeat.
       Admitted.
       Global Typeclasses Opaque repeat.
       
@@ -1677,7 +1681,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+      Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.C Self "extend" extend.
       Admitted.
       Global Typeclasses Opaque extend.
       
@@ -1776,7 +1780,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_repeat_packed :
-        M.IsAssociatedFunction.Trait Self "repeat_packed" repeat_packed.
+        M.IsAssociatedFunction.C Self "repeat_packed" repeat_packed.
       Admitted.
       Global Typeclasses Opaque repeat_packed.
       
@@ -1851,7 +1855,7 @@ Module alloc.
         end.
       
       Global Instance AssociatedFunction_extend_packed :
-        M.IsAssociatedFunction.Trait Self "extend_packed" extend_packed.
+        M.IsAssociatedFunction.C Self "extend_packed" extend_packed.
       Admitted.
       Global Typeclasses Opaque extend_packed.
       
@@ -1907,7 +1911,12 @@ Module alloc.
                           ],
                         M.get_associated_function (| Self, "inner.array", [], [] |),
                         [
-                          M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |);
+                          M.read (|
+                            get_constant (|
+                              "core::mem::SizedTypeProperties::LAYOUT",
+                              Ty.path "core::alloc::layout::Layout"
+                            |)
+                          |);
                           M.read (| n |)
                         ]
                       |)
@@ -1918,7 +1927,7 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_array : M.IsAssociatedFunction.Trait Self "array" array.
+      Global Instance AssociatedFunction_array : M.IsAssociatedFunction.C Self "array" array.
       Admitted.
       Global Typeclasses Opaque array.
     End Impl_core_alloc_layout_Layout.
@@ -2036,10 +2045,7 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "LayoutError" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LayoutError" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2090,9 +2096,7 @@ Module alloc.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
-                  |)
+                  M.deref (| mk_str (| "invalid parameters to Layout::from_size_align" |) |)
                 |)
               ]
             |)))

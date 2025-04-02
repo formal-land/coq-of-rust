@@ -222,9 +222,8 @@ Module clone.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          mk_str (|
+                                                                            "clone_to_uninit() source and destination must have equal lengths"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -645,9 +644,8 @@ Module clone.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          mk_str (|
+                                                                            "clone_to_uninit() source and destination must have equal lengths"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -773,7 +771,7 @@ Module clone.
       
       Global Instance AssociatedFunction_from_fully_uninit :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_fully_uninit" (from_fully_uninit T).
+        M.IsAssociatedFunction.C (Self T) "from_fully_uninit" (from_fully_uninit T).
       Admitted.
       Global Typeclasses Opaque from_fully_uninit.
       
@@ -852,7 +850,7 @@ Module clone.
       
       Global Instance AssociatedFunction_push :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "push" (push T).
+        M.IsAssociatedFunction.C (Self T) "push" (push T).
       Admitted.
       Global Typeclasses Opaque push.
     End Impl_core_clone_uninit_InitializingSlice_T.

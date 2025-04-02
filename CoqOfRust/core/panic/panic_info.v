@@ -40,11 +40,8 @@ Module panic.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "PanicInfo" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "message" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PanicInfo" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "message" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -58,7 +55,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "location" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "location" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -72,10 +69,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "can_unwind" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "can_unwind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -89,10 +83,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "force_no_backtrace" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "force_no_backtrace" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -165,7 +156,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -199,8 +190,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_message :
-        M.IsAssociatedFunction.Trait Self "message" message.
+      Global Instance AssociatedFunction_message : M.IsAssociatedFunction.C Self "message" message.
       Admitted.
       Global Typeclasses Opaque message.
       
@@ -241,7 +231,7 @@ Module panic.
         end.
       
       Global Instance AssociatedFunction_location :
-        M.IsAssociatedFunction.Trait Self "location" location.
+        M.IsAssociatedFunction.C Self "location" location.
       Admitted.
       Global Typeclasses Opaque location.
       
@@ -275,8 +265,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_payload :
-        M.IsAssociatedFunction.Trait Self "payload" payload.
+      Global Instance AssociatedFunction_payload : M.IsAssociatedFunction.C Self "payload" payload.
       Admitted.
       Global Typeclasses Opaque payload.
       
@@ -301,7 +290,7 @@ Module panic.
         end.
       
       Global Instance AssociatedFunction_can_unwind :
-        M.IsAssociatedFunction.Trait Self "can_unwind" can_unwind.
+        M.IsAssociatedFunction.C Self "can_unwind" can_unwind.
       Admitted.
       Global Typeclasses Opaque can_unwind.
       
@@ -326,7 +315,7 @@ Module panic.
         end.
       
       Global Instance AssociatedFunction_force_no_backtrace :
-        M.IsAssociatedFunction.Trait Self "force_no_backtrace" force_no_backtrace.
+        M.IsAssociatedFunction.C Self "force_no_backtrace" force_no_backtrace.
       Admitted.
       Global Typeclasses Opaque force_no_backtrace.
     End Impl_core_panic_panic_info_PanicInfo.
@@ -398,7 +387,7 @@ Module panic.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "panicked at " |) |)
+                                  M.deref (| mk_str (| "panicked at " |) |)
                                 |)
                               ]
                             |)
@@ -627,11 +616,8 @@ Module panic.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| formatter |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String ":
-" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ":
+" |) |) |)
                               ]
                             |)
                           ]
@@ -863,7 +849,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
     End Impl_core_panic_panic_info_PanicMessage.

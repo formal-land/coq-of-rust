@@ -73,7 +73,7 @@ Module loop_summary.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "NodeId" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NodeId" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2012,7 +2012,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2105,7 +2105,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_is_descendant :
-      M.IsAssociatedFunction.Trait Self "is_descendant" is_descendant.
+      M.IsAssociatedFunction.C Self "is_descendant" is_descendant.
     Admitted.
     Global Typeclasses Opaque is_descendant.
     
@@ -2202,8 +2202,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_preorder :
-      M.IsAssociatedFunction.Trait Self "preorder" preorder.
+    Global Instance AssociatedFunction_preorder : M.IsAssociatedFunction.C Self "preorder" preorder.
     Admitted.
     Global Typeclasses Opaque preorder.
     
@@ -2263,7 +2262,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_block : M.IsAssociatedFunction.Trait Self "block" block.
+    Global Instance AssociatedFunction_block : M.IsAssociatedFunction.C Self "block" block.
     Admitted.
     Global Typeclasses Opaque block.
     
@@ -2350,7 +2349,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_back_edges :
-      M.IsAssociatedFunction.Trait Self "back_edges" back_edges.
+      M.IsAssociatedFunction.C Self "back_edges" back_edges.
     Admitted.
     Global Typeclasses Opaque back_edges.
     
@@ -2437,7 +2436,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_pred_edges :
-      M.IsAssociatedFunction.Trait Self "pred_edges" pred_edges.
+      M.IsAssociatedFunction.C Self "pred_edges" pred_edges.
     Admitted.
     Global Typeclasses Opaque pred_edges.
   End Impl_move_bytecode_verifier_loop_summary_LoopSummary.
@@ -2598,7 +2597,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -3000,7 +2999,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_containing_loop :
-      M.IsAssociatedFunction.Trait Self "containing_loop" containing_loop.
+      M.IsAssociatedFunction.C Self "containing_loop" containing_loop.
     Admitted.
     Global Typeclasses Opaque containing_loop.
     
@@ -3590,7 +3589,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_collapse_loop :
-      M.IsAssociatedFunction.Trait Self "collapse_loop" collapse_loop.
+      M.IsAssociatedFunction.C Self "collapse_loop" collapse_loop.
     Admitted.
     Global Typeclasses Opaque collapse_loop.
     
@@ -3656,7 +3655,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_parent : M.IsAssociatedFunction.Trait Self "parent" parent.
+    Global Instance AssociatedFunction_parent : M.IsAssociatedFunction.C Self "parent" parent.
     Admitted.
     Global Typeclasses Opaque parent.
     
@@ -3734,7 +3733,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_parent_mut :
-      M.IsAssociatedFunction.Trait Self "parent_mut" parent_mut.
+      M.IsAssociatedFunction.C Self "parent_mut" parent_mut.
     Admitted.
     Global Typeclasses Opaque parent_mut.
     
@@ -3794,7 +3793,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_depth : M.IsAssociatedFunction.Trait Self "depth" depth.
+    Global Instance AssociatedFunction_depth : M.IsAssociatedFunction.C Self "depth" depth.
     Admitted.
     Global Typeclasses Opaque depth.
     
@@ -3866,7 +3865,7 @@ Module loop_summary.
       end.
     
     Global Instance AssociatedFunction_depth_mut :
-      M.IsAssociatedFunction.Trait Self "depth_mut" depth_mut.
+      M.IsAssociatedFunction.C Self "depth_mut" depth_mut.
     Admitted.
     Global Typeclasses Opaque depth_mut.
   End Impl_move_bytecode_verifier_loop_summary_LoopPartition.
@@ -3907,7 +3906,7 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_bump : M.IsAssociatedFunction.Trait Self "bump" bump.
+    Global Instance AssociatedFunction_bump : M.IsAssociatedFunction.C Self "bump" bump.
     Admitted.
     Global Typeclasses Opaque bump.
   End Impl_move_bytecode_verifier_loop_summary_NodeId.

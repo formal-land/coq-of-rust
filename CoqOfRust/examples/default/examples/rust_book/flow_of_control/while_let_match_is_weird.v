@@ -89,12 +89,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "Greater than 9, quit!
-"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "Greater than 9, quit!
+" |) ]
                                                 |)
                                               |)
                                             |)
@@ -142,8 +138,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (| Value.String "`i` is `" |);
-                                                      M.read (| Value.String "`. Try again.
+                                                      mk_str (| "`i` is `" |);
+                                                      mk_str (| "`. Try again.
 " |)
                                                     ]
                                                 |)
@@ -212,6 +208,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "while_let_match_is_weird::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "while_let_match_is_weird::main" main.
 Admitted.
 Global Typeclasses Opaque main.

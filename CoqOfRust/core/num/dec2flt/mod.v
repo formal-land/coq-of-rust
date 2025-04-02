@@ -108,11 +108,8 @@ Module num.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ParseFloatError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseFloatError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -351,10 +348,7 @@ Module num.
                               "core::num::dec2flt::FloatErrorKind::Empty"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Empty" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -365,10 +359,7 @@ Module num.
                               "core::num::dec2flt::FloatErrorKind::Invalid"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Invalid" |) |) |)
                           |)))
                     ]
                   |)
@@ -552,9 +543,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "cannot parse float from empty string" |)
-                          |)
+                          M.deref (| mk_str (| "cannot parse float from empty string" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -564,7 +553,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid float literal" |) |)
+                          M.deref (| mk_str (| "invalid float literal" |) |)
                         |)
                       |)))
                 ]
@@ -653,7 +642,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_pfe_empty :
-      M.IsFunction.Trait "core::num::dec2flt::pfe_empty" pfe_empty.
+      M.IsFunction.C "core::num::dec2flt::pfe_empty" pfe_empty.
     Admitted.
     Global Typeclasses Opaque pfe_empty.
     
@@ -673,7 +662,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_pfe_invalid :
-      M.IsFunction.Trait "core::num::dec2flt::pfe_invalid" pfe_invalid.
+      M.IsFunction.C "core::num::dec2flt::pfe_invalid" pfe_invalid.
     Admitted.
     Global Typeclasses Opaque pfe_invalid.
     
@@ -716,7 +705,10 @@ Module num.
                           |)
                         |)),
                       M.read (|
-                        M.get_constant "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                        get_constant (|
+                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                          Ty.path "usize"
+                        |)
                       |)
                     |))
                 |)
@@ -741,7 +733,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_biased_fp_to_float :
-      M.IsFunction.Trait "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
+      M.IsFunction.C "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
     Admitted.
     Global Typeclasses Opaque biased_fp_to_float.
     
@@ -1358,7 +1350,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_dec2flt :
-      M.IsFunction.Trait "core::num::dec2flt::dec2flt" dec2flt.
+      M.IsFunction.C "core::num::dec2flt::dec2flt" dec2flt.
     Admitted.
     Global Typeclasses Opaque dec2flt.
   End dec2flt.

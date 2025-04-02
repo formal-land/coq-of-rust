@@ -42,5 +42,5 @@ End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "provided_method::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "provided_method::main" main.
 Admitted.

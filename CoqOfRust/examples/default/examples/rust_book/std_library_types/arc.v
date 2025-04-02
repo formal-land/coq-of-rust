@@ -47,7 +47,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "the same apple" |) ]
+              [ mk_str (| "the same apple" |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -228,13 +228,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            ""
+                                                                                        mk_str (|
+                                                                                          ""
                                                                                         |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "
+                                                                                        mk_str (|
+                                                                                          "
 "
                                                                                         |)
                                                                                       ]
@@ -340,6 +338,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "arc::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "arc::main" main.
 Admitted.
 Global Typeclasses Opaque main.

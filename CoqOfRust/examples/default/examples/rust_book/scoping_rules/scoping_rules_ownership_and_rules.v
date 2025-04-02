@@ -37,11 +37,8 @@ Definition destroy_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Destroying a box that contains " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Destroying a box that contains " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -91,7 +88,7 @@ Definition destroy_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_destroy_box :
-  M.IsFunction.Trait "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+  M.IsFunction.C "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
 Admitted.
 Global Typeclasses Opaque destroy_box.
 
@@ -162,10 +159,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "x is " |);
-                                  M.read (| Value.String ", and y is " |);
-                                  M.read (| Value.String "
+                                [ mk_str (| "x is " |); mk_str (| ", and y is " |); mk_str (| "
 " |)
                                 ]
                             |)
@@ -266,12 +260,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "a contains: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "a contains: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -335,6 +325,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_ownership_and_rules::main" main.
+  M.IsFunction.C "scoping_rules_ownership_and_rules::main" main.
 Admitted.
 Global Typeclasses Opaque main.

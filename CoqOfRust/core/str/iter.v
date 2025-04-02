@@ -249,7 +249,10 @@ Module str.
                               BinOp.ge (|
                                 M.read (| remainder |),
                                 M.read (|
-                                  M.get_constant "core::str::iter::advance_by::CHUNK_SIZE"
+                                  get_constant (|
+                                    "core::str::iter::advance_by::CHUNK_SIZE",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -324,8 +327,10 @@ Module str.
                                             BinOp.gt (|
                                               M.read (| remainder |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::str::iter::advance_by::CHUNK_SIZE"
+                                                get_constant (|
+                                                  "core::str::iter::advance_by::CHUNK_SIZE",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -381,8 +386,10 @@ Module str.
                                             BinOp.Wrap.add (|
                                               M.read (| β |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::str::iter::advance_by::CHUNK_SIZE"
+                                                get_constant (|
+                                                  "core::str::iter::advance_by::CHUNK_SIZE",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -427,8 +434,10 @@ Module str.
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",
                                                         M.read (|
-                                                          M.get_constant
-                                                            "core::str::iter::advance_by::CHUNK_SIZE"
+                                                          get_constant (|
+                                                            "core::str::iter::advance_by::CHUNK_SIZE",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -1328,9 +1337,7 @@ Module str.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "Chars(" |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| "Chars(" |) ] |)
                                         |)
                                       |)
                                     |)
@@ -1612,9 +1619,7 @@ Module str.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String ")" |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| ")" |) ] |)
                                         |)
                                       |)
                                     |)
@@ -1852,7 +1857,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
     End Impl_core_str_iter_Chars.
@@ -1969,14 +1974,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharIndices" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "front_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharIndices" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "front_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1990,7 +1989,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2490,7 +2489,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
       
@@ -2514,7 +2513,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_offset : M.IsAssociatedFunction.Trait Self "offset" offset.
+      Global Instance AssociatedFunction_offset : M.IsAssociatedFunction.C Self "offset" offset.
       Admitted.
       Global Typeclasses Opaque offset.
     End Impl_core_str_iter_CharIndices.
@@ -2614,7 +2613,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bytes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3389,8 +3388,12 @@ Module str.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -3399,7 +3402,7 @@ Module str.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_str_iter_Bytes.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInternal_P.
@@ -3610,9 +3613,7 @@ Module str.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
-                                                                    M.read (|
-                                                                      Value.String "SplitInternal"
-                                                                    |)
+                                                                    mk_str (| "SplitInternal" |)
                                                                   |)
                                                                 |)
                                                               ]
@@ -3621,9 +3622,7 @@ Module str.
                                                         |);
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (| Value.String "start" |)
-                                                          |)
+                                                          M.deref (| mk_str (| "start" |) |)
                                                         |);
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
@@ -3644,7 +3643,7 @@ Module str.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "end" |) |)
+                                                  M.deref (| mk_str (| "end" |) |)
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
@@ -3665,7 +3664,7 @@ Module str.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "matcher" |) |)
+                                          M.deref (| mk_str (| "matcher" |) |)
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -3686,7 +3685,7 @@ Module str.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "allow_trailing_empty" |) |)
+                                  M.deref (| mk_str (| "allow_trailing_empty" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3705,10 +3704,7 @@ Module str.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -3948,7 +3944,7 @@ Module str.
       
       Global Instance AssociatedFunction_get_end :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "get_end" (get_end P).
+        M.IsAssociatedFunction.C (Self P) "get_end" (get_end P).
       Admitted.
       Global Typeclasses Opaque get_end.
       
@@ -4156,7 +4152,7 @@ Module str.
       
       Global Instance AssociatedFunction_next :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next" (next P).
+        M.IsAssociatedFunction.C (Self P) "next" (next P).
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -4370,7 +4366,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_inclusive :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_inclusive" (next_inclusive P).
+        M.IsAssociatedFunction.C (Self P) "next_inclusive" (next_inclusive P).
       Admitted.
       Global Typeclasses Opaque next_inclusive.
       
@@ -4788,7 +4784,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_back :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_back" (next_back P).
+        M.IsAssociatedFunction.C (Self P) "next_back" (next_back P).
       Admitted.
       Global Typeclasses Opaque next_back.
       
@@ -5216,7 +5212,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_back_inclusive :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_back_inclusive" (next_back_inclusive P).
+        M.IsAssociatedFunction.C (Self P) "next_back_inclusive" (next_back_inclusive P).
       Admitted.
       Global Typeclasses Opaque next_back_inclusive.
       
@@ -5352,7 +5348,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitInternal_P.
@@ -5419,10 +5415,7 @@ Module str.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Split" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Split" |) |) |)
                               ]
                             |)
                           |)
@@ -5627,10 +5620,7 @@ Module str.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RSplit" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RSplit" |) |) |)
                               ]
                             |)
                           |)
@@ -5938,7 +5928,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_Split_P.
@@ -5984,7 +5974,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_RSplit_P.
@@ -6054,7 +6044,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "SplitTerminator" |) |)
+                                  M.deref (| mk_str (| "SplitTerminator" |) |)
                                 |)
                               ]
                             |)
@@ -6265,7 +6255,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RSplitTerminator" |) |)
+                                  M.deref (| mk_str (| "RSplitTerminator" |) |)
                                 |)
                               ]
                             |)
@@ -6581,7 +6571,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitTerminator_P.
@@ -6628,7 +6618,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_RSplitTerminator_P.
@@ -6787,16 +6777,13 @@ Module str.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "SplitNInternal" |) |)
+                                          M.deref (| mk_str (| "SplitNInternal" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "iter" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -6814,10 +6801,7 @@ Module str.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "count" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -6985,7 +6969,7 @@ Module str.
       
       Global Instance AssociatedFunction_next :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next" (next P).
+        M.IsAssociatedFunction.C (Self P) "next" (next P).
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -7123,7 +7107,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_back :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_back" (next_back P).
+        M.IsAssociatedFunction.C (Self P) "next_back" (next_back P).
       Admitted.
       Global Typeclasses Opaque next_back.
       
@@ -7165,7 +7149,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitNInternal_P.
@@ -7232,10 +7216,7 @@ Module str.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "SplitN" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitN" |) |) |)
                               ]
                             |)
                           |)
@@ -7442,7 +7423,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RSplitN" |) |)
+                                  M.deref (| mk_str (| "RSplitN" |) |)
                                 |)
                               ]
                             |)
@@ -7653,7 +7634,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitN_P.
@@ -7699,7 +7680,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_RSplitN_P.
@@ -7832,7 +7813,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "MatchIndicesInternal" |) |)
+                                  M.deref (| mk_str (| "MatchIndicesInternal" |) |)
                                 |)
                               ]
                             |)
@@ -8023,7 +8004,7 @@ Module str.
       
       Global Instance AssociatedFunction_next :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next" (next P).
+        M.IsAssociatedFunction.C (Self P) "next" (next P).
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -8179,7 +8160,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_back :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_back" (next_back P).
+        M.IsAssociatedFunction.C (Self P) "next_back" (next_back P).
       Admitted.
       Global Typeclasses Opaque next_back.
     End Impl_core_str_iter_MatchIndicesInternal_P.
@@ -8249,7 +8230,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "MatchIndices" |) |)
+                                  M.deref (| mk_str (| "MatchIndices" |) |)
                                 |)
                               ]
                             |)
@@ -8461,7 +8442,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RMatchIndices" |) |)
+                                  M.deref (| mk_str (| "RMatchIndices" |) |)
                                 |)
                               ]
                             |)
@@ -8864,7 +8845,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "MatchesInternal" |) |)
+                                  M.deref (| mk_str (| "MatchesInternal" |) |)
                                 |)
                               ]
                             |)
@@ -9047,7 +9028,7 @@ Module str.
       
       Global Instance AssociatedFunction_next :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next" (next P).
+        M.IsAssociatedFunction.C (Self P) "next" (next P).
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -9195,7 +9176,7 @@ Module str.
       
       Global Instance AssociatedFunction_next_back :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "next_back" (next_back P).
+        M.IsAssociatedFunction.C (Self P) "next_back" (next_back P).
       Admitted.
       Global Typeclasses Opaque next_back.
     End Impl_core_str_iter_MatchesInternal_P.
@@ -9264,7 +9245,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Matches" |) |)
+                                  M.deref (| mk_str (| "Matches" |) |)
                                 |)
                               ]
                             |)
@@ -9472,7 +9453,7 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RMatches" |) |)
+                                  M.deref (| mk_str (| "RMatches" |) |)
                                 |)
                               ]
                             |)
@@ -9844,7 +9825,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Lines" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lines" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -10125,7 +10106,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_remainder :
-        M.IsAssociatedFunction.Trait Self "remainder" remainder.
+        M.IsAssociatedFunction.C Self "remainder" remainder.
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_Lines.
@@ -10213,7 +10194,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "LinesAny" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LinesAny" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -10518,11 +10499,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SplitWhitespace" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitWhitespace" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -10688,11 +10666,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SplitAsciiWhitespace" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitAsciiWhitespace" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -10993,7 +10968,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_remainder :
-        M.IsAssociatedFunction.Trait Self "remainder" remainder.
+        M.IsAssociatedFunction.C Self "remainder" remainder.
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitWhitespace.
@@ -11345,7 +11320,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_remainder :
-        M.IsAssociatedFunction.Trait Self "remainder" remainder.
+        M.IsAssociatedFunction.C Self "remainder" remainder.
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitAsciiWhitespace.
@@ -11459,16 +11434,13 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "SplitInclusive" |) |)
+                                  M.deref (| mk_str (| "SplitInclusive" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "0" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "0" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -11661,7 +11633,7 @@ Module str.
       
       Global Instance AssociatedFunction_remainder :
         forall (P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self P) "remainder" (remainder P).
+        M.IsAssociatedFunction.C (Self P) "remainder" (remainder P).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_str_iter_SplitInclusive_P.
@@ -11794,10 +11766,7 @@ Module str.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "EncodeUtf16" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EncodeUtf16" |) |) |)
                       ]
                     |)
                   |)
@@ -12371,11 +12340,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EscapeDebug" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDebug" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -12517,11 +12483,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EscapeDefault" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDefault" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -12663,11 +12626,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EscapeUnicode" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeUnicode" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

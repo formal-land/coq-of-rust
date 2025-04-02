@@ -49,9 +49,7 @@ Module identifier.
     end.
   
   Global Instance Instance_IsFunction_is_valid_identifier_char :
-    M.IsFunction.Trait
-      "move_core_types::identifier::is_valid_identifier_char"
-      is_valid_identifier_char.
+    M.IsFunction.C "move_core_types::identifier::is_valid_identifier_char" is_valid_identifier_char.
   Admitted.
   Global Typeclasses Opaque is_valid_identifier_char.
   
@@ -189,7 +187,7 @@ Module identifier.
     end.
   
   Global Instance Instance_IsFunction_all_bytes_valid :
-    M.IsFunction.Trait "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
+    M.IsFunction.C "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
   Admitted.
   Global Typeclasses Opaque all_bytes_valid.
   
@@ -350,7 +348,7 @@ Module identifier.
     end.
   
   Global Instance Instance_IsFunction_is_valid :
-    M.IsFunction.Trait "move_core_types::identifier::is_valid" is_valid.
+    M.IsFunction.C "move_core_types::identifier::is_valid" is_valid.
   Admitted.
   Global Typeclasses Opaque is_valid.
   
@@ -449,7 +447,7 @@ Module identifier.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Identifier" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Identifier" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -810,7 +808,7 @@ Module identifier.
               |),
               [
                 M.read (| __serializer |);
-                M.read (| Value.String "Identifier" |);
+                mk_str (| "Identifier" |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -865,7 +863,7 @@ Module identifier.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "Identifier" |);
+                mk_str (| "Identifier" |);
                 Value.StructRecord
                   "move_core_types::identifier::_'2::deserialize::__Visitor"
                   [
@@ -1040,11 +1038,10 @@ Module identifier.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Invalid identifier '"
+                                                                      mk_str (|
+                                                                        "Invalid identifier '"
                                                                       |);
-                                                                      M.read (| Value.String "'" |)
+                                                                      mk_str (| "'" |)
                                                                     ]
                                                                 |)
                                                               |)
@@ -1118,7 +1115,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1159,8 +1156,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_valid :
-      M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+    Global Instance AssociatedFunction_is_valid : M.IsAssociatedFunction.C Self "is_valid" is_valid.
     Admitted.
     Global Typeclasses Opaque is_valid.
     
@@ -1203,14 +1199,13 @@ Module identifier.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, Value.String "<SELF>" |)
+              M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "<SELF>" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_self :
-      M.IsAssociatedFunction.Trait Self "is_self" is_self.
+    Global Instance AssociatedFunction_is_self : M.IsAssociatedFunction.C Self "is_self" is_self.
     Admitted.
     Global Typeclasses Opaque is_self.
     
@@ -1368,7 +1363,7 @@ Module identifier.
       end.
     
     Global Instance AssociatedFunction_from_utf8 :
-      M.IsAssociatedFunction.Trait Self "from_utf8" from_utf8.
+      M.IsAssociatedFunction.C Self "from_utf8" from_utf8.
     Admitted.
     Global Typeclasses Opaque from_utf8.
     
@@ -1404,7 +1399,7 @@ Module identifier.
       end.
     
     Global Instance AssociatedFunction_as_ident_str :
-      M.IsAssociatedFunction.Trait Self "as_ident_str" as_ident_str.
+      M.IsAssociatedFunction.C Self "as_ident_str" as_ident_str.
     Admitted.
     Global Typeclasses Opaque as_ident_str.
     
@@ -1446,7 +1441,7 @@ Module identifier.
       end.
     
     Global Instance AssociatedFunction_into_string :
-      M.IsAssociatedFunction.Trait Self "into_string" into_string.
+      M.IsAssociatedFunction.C Self "into_string" into_string.
     Admitted.
     Global Typeclasses Opaque into_string.
     
@@ -1483,7 +1478,7 @@ Module identifier.
       end.
     
     Global Instance AssociatedFunction_into_bytes :
-      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      M.IsAssociatedFunction.C Self "into_bytes" into_bytes.
     Admitted.
     Global Typeclasses Opaque into_bytes.
   End Impl_move_core_types_identifier_Identifier.
@@ -1713,10 +1708,7 @@ Module identifier.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1818,7 +1810,7 @@ Module identifier.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IdentStr" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IdentStr" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2130,11 +2122,19 @@ Module identifier.
                       [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                     |),
                     [
-                      M.read (| Value.String "IdentStr" |);
-                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
-                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
-                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
-                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |)
+                      mk_str (| "IdentStr" |);
+                      M.read (|
+                        get_constant (| "ref_cast::layout::LayoutUnsized::SIZE", Ty.path "usize" |)
+                      |);
+                      M.read (|
+                        get_constant (| "ref_cast::layout::LayoutUnsized::SIZE", Ty.path "usize" |)
+                      |);
+                      M.read (|
+                        get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN", Ty.path "usize" |)
+                      |);
+                      M.read (|
+                        get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN", Ty.path "usize" |)
+                      |)
                     ]
                   |)
                 |) in
@@ -2190,11 +2190,31 @@ Module identifier.
                           [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                         |),
                         [
-                          M.read (| Value.String "IdentStr" |);
-                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
-                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
-                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
-                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |)
+                          mk_str (| "IdentStr" |);
+                          M.read (|
+                            get_constant (|
+                              "ref_cast::layout::LayoutUnsized::SIZE",
+                              Ty.path "usize"
+                            |)
+                          |);
+                          M.read (|
+                            get_constant (|
+                              "ref_cast::layout::LayoutUnsized::SIZE",
+                              Ty.path "usize"
+                            |)
+                          |);
+                          M.read (|
+                            get_constant (|
+                              "ref_cast::layout::LayoutUnsized::ALIGN",
+                              Ty.path "usize"
+                            |)
+                          |);
+                          M.read (|
+                            get_constant (|
+                              "ref_cast::layout::LayoutUnsized::ALIGN",
+                              Ty.path "usize"
+                            |)
+                          |)
                         ]
                       |)
                     |) in
@@ -2387,11 +2407,10 @@ Module identifier.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Invalid identifier '"
+                                                                      mk_str (|
+                                                                        "Invalid identifier '"
                                                                       |);
-                                                                      M.read (| Value.String "'" |)
+                                                                      mk_str (| "'" |)
                                                                     ]
                                                                 |)
                                                               |)
@@ -2460,7 +2479,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2501,8 +2520,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_valid :
-      M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+    Global Instance AssociatedFunction_is_valid : M.IsAssociatedFunction.C Self "is_valid" is_valid.
     Admitted.
     Global Typeclasses Opaque is_valid.
     
@@ -2533,7 +2551,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -2564,8 +2582,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -2595,7 +2612,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -2631,8 +2648,7 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_bytes :
-      M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+    Global Instance AssociatedFunction_as_bytes : M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
     Admitted.
     Global Typeclasses Opaque as_bytes.
     
@@ -2683,10 +2699,7 @@ Module identifier.
       end.
     
     Global Instance AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction.Trait
-        Self
-        "abstract_size_for_gas_metering"
-        abstract_size_for_gas_metering.
+      M.IsAssociatedFunction.C Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
     Admitted.
     Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_identifier_IdentStr.
@@ -2831,10 +2844,7 @@ Module identifier.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|

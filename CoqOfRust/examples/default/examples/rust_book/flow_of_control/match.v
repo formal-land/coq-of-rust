@@ -60,12 +60,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Tell me about " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Tell me about " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -136,7 +132,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "One!
+                                    M.alloc (| Value.Array [ mk_str (| "One!
 " |) ] |)
                                   |)
                                 |)
@@ -219,8 +215,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "This is a prime
+                                                Value.Array [ mk_str (| "This is a prime
 " |) ]
                                               |)
                                             |)
@@ -257,10 +252,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "A teen
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "A teen
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -292,10 +285,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "Ain't special
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "Ain't special
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -347,13 +338,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " -> " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "" |); mk_str (| " -> " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -412,6 +398,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "match::main" main.
 Admitted.
 Global Typeclasses Opaque main.

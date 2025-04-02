@@ -6,299 +6,295 @@ Module intrinsics.
     Parameter simd_insert : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_insert :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_insert" simd_insert.
+      M.IsFunction.C "core::intrinsics::simd::simd_insert" simd_insert.
     Admitted.
     
     Parameter simd_extract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_extract :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_extract" simd_extract.
+      M.IsFunction.C "core::intrinsics::simd::simd_extract" simd_extract.
     Admitted.
     
     Parameter simd_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_add :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_add" simd_add.
+      M.IsFunction.C "core::intrinsics::simd::simd_add" simd_add.
     Admitted.
     
     Parameter simd_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_sub :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_sub" simd_sub.
+      M.IsFunction.C "core::intrinsics::simd::simd_sub" simd_sub.
     Admitted.
     
     Parameter simd_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_mul :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_mul" simd_mul.
+      M.IsFunction.C "core::intrinsics::simd::simd_mul" simd_mul.
     Admitted.
     
     Parameter simd_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_div :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_div" simd_div.
+      M.IsFunction.C "core::intrinsics::simd::simd_div" simd_div.
     Admitted.
     
     Parameter simd_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_rem :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_rem" simd_rem.
+      M.IsFunction.C "core::intrinsics::simd::simd_rem" simd_rem.
     Admitted.
     
     Parameter simd_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_shl :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_shl" simd_shl.
+      M.IsFunction.C "core::intrinsics::simd::simd_shl" simd_shl.
     Admitted.
     
     Parameter simd_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_shr :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_shr" simd_shr.
+      M.IsFunction.C "core::intrinsics::simd::simd_shr" simd_shr.
     Admitted.
     
     Parameter simd_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_and :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_and" simd_and.
+      M.IsFunction.C "core::intrinsics::simd::simd_and" simd_and.
     Admitted.
     
     Parameter simd_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_or :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_or" simd_or.
+      M.IsFunction.C "core::intrinsics::simd::simd_or" simd_or.
     Admitted.
     
     Parameter simd_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_xor :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_xor" simd_xor.
+      M.IsFunction.C "core::intrinsics::simd::simd_xor" simd_xor.
     Admitted.
     
     Parameter simd_cast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_cast :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_cast" simd_cast.
+      M.IsFunction.C "core::intrinsics::simd::simd_cast" simd_cast.
     Admitted.
     
     Parameter simd_as : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_as :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_as" simd_as.
+      M.IsFunction.C "core::intrinsics::simd::simd_as" simd_as.
     Admitted.
     
     Parameter simd_neg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_neg :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_neg" simd_neg.
+      M.IsFunction.C "core::intrinsics::simd::simd_neg" simd_neg.
     Admitted.
     
     Parameter simd_fabs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fabs :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fabs" simd_fabs.
+      M.IsFunction.C "core::intrinsics::simd::simd_fabs" simd_fabs.
     Admitted.
     
     Parameter simd_fmin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fmin :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fmin" simd_fmin.
+      M.IsFunction.C "core::intrinsics::simd::simd_fmin" simd_fmin.
     Admitted.
     
     Parameter simd_fmax : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fmax :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fmax" simd_fmax.
+      M.IsFunction.C "core::intrinsics::simd::simd_fmax" simd_fmax.
     Admitted.
     
     Parameter simd_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_eq :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_eq" simd_eq.
+      M.IsFunction.C "core::intrinsics::simd::simd_eq" simd_eq.
     Admitted.
     
     Parameter simd_ne : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_ne :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_ne" simd_ne.
+      M.IsFunction.C "core::intrinsics::simd::simd_ne" simd_ne.
     Admitted.
     
     Parameter simd_lt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_lt :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_lt" simd_lt.
+      M.IsFunction.C "core::intrinsics::simd::simd_lt" simd_lt.
     Admitted.
     
     Parameter simd_le : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_le :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_le" simd_le.
+      M.IsFunction.C "core::intrinsics::simd::simd_le" simd_le.
     Admitted.
     
     Parameter simd_gt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_gt :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_gt" simd_gt.
+      M.IsFunction.C "core::intrinsics::simd::simd_gt" simd_gt.
     Admitted.
     
     Parameter simd_ge : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_ge :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_ge" simd_ge.
+      M.IsFunction.C "core::intrinsics::simd::simd_ge" simd_ge.
     Admitted.
     
     Parameter simd_shuffle : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_shuffle :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_shuffle" simd_shuffle.
+      M.IsFunction.C "core::intrinsics::simd::simd_shuffle" simd_shuffle.
     Admitted.
     
     Parameter simd_gather : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_gather :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_gather" simd_gather.
+      M.IsFunction.C "core::intrinsics::simd::simd_gather" simd_gather.
     Admitted.
     
     Parameter simd_scatter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_scatter :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_scatter" simd_scatter.
+      M.IsFunction.C "core::intrinsics::simd::simd_scatter" simd_scatter.
     Admitted.
     
     Parameter simd_masked_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_masked_load :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_masked_load" simd_masked_load.
+      M.IsFunction.C "core::intrinsics::simd::simd_masked_load" simd_masked_load.
     Admitted.
     
     Parameter simd_masked_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_masked_store :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_masked_store" simd_masked_store.
+      M.IsFunction.C "core::intrinsics::simd::simd_masked_store" simd_masked_store.
     Admitted.
     
     Parameter simd_saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_saturating_add :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_saturating_add" simd_saturating_add.
+      M.IsFunction.C "core::intrinsics::simd::simd_saturating_add" simd_saturating_add.
     Admitted.
     
     Parameter simd_saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_saturating_sub :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_saturating_sub" simd_saturating_sub.
+      M.IsFunction.C "core::intrinsics::simd::simd_saturating_sub" simd_saturating_sub.
     Admitted.
     
     Parameter simd_reduce_add_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_add_ordered :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_add_ordered" simd_reduce_add_ordered.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_add_ordered" simd_reduce_add_ordered.
     Admitted.
     
     Parameter simd_reduce_add_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_add_unordered :
-      M.IsFunction.Trait
-        "core::intrinsics::simd::simd_reduce_add_unordered"
-        simd_reduce_add_unordered.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_add_unordered" simd_reduce_add_unordered.
     Admitted.
     
     Parameter simd_reduce_mul_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_mul_ordered :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_mul_ordered" simd_reduce_mul_ordered.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_mul_ordered" simd_reduce_mul_ordered.
     Admitted.
     
     Parameter simd_reduce_mul_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_mul_unordered :
-      M.IsFunction.Trait
-        "core::intrinsics::simd::simd_reduce_mul_unordered"
-        simd_reduce_mul_unordered.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_mul_unordered" simd_reduce_mul_unordered.
     Admitted.
     
     Parameter simd_reduce_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_all :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_all" simd_reduce_all.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_all" simd_reduce_all.
     Admitted.
     
     Parameter simd_reduce_any : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_any :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_any" simd_reduce_any.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_any" simd_reduce_any.
     Admitted.
     
     Parameter simd_reduce_max : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_max :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_max" simd_reduce_max.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_max" simd_reduce_max.
     Admitted.
     
     Parameter simd_reduce_min : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_min :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_min" simd_reduce_min.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_min" simd_reduce_min.
     Admitted.
     
     Parameter simd_reduce_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_and :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_and" simd_reduce_and.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_and" simd_reduce_and.
     Admitted.
     
     Parameter simd_reduce_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_or :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_or" simd_reduce_or.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_or" simd_reduce_or.
     Admitted.
     
     Parameter simd_reduce_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_reduce_xor :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_xor" simd_reduce_xor.
+      M.IsFunction.C "core::intrinsics::simd::simd_reduce_xor" simd_reduce_xor.
     Admitted.
     
     Parameter simd_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_bitmask :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_bitmask" simd_bitmask.
+      M.IsFunction.C "core::intrinsics::simd::simd_bitmask" simd_bitmask.
     Admitted.
     
     Parameter simd_select : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_select :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_select" simd_select.
+      M.IsFunction.C "core::intrinsics::simd::simd_select" simd_select.
     Admitted.
     
     Parameter simd_select_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_select_bitmask :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_select_bitmask" simd_select_bitmask.
+      M.IsFunction.C "core::intrinsics::simd::simd_select_bitmask" simd_select_bitmask.
     Admitted.
     
     Parameter simd_arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_arith_offset :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_arith_offset" simd_arith_offset.
+      M.IsFunction.C "core::intrinsics::simd::simd_arith_offset" simd_arith_offset.
     Admitted.
     
     Parameter simd_cast_ptr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_cast_ptr :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_cast_ptr" simd_cast_ptr.
+      M.IsFunction.C "core::intrinsics::simd::simd_cast_ptr" simd_cast_ptr.
     Admitted.
     
     Parameter simd_expose_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_expose_provenance :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_expose_provenance" simd_expose_provenance.
+      M.IsFunction.C "core::intrinsics::simd::simd_expose_provenance" simd_expose_provenance.
     Admitted.
     
     Parameter simd_with_exposed_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_with_exposed_provenance :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::intrinsics::simd::simd_with_exposed_provenance"
         simd_with_exposed_provenance.
     Admitted.
@@ -306,115 +302,115 @@ Module intrinsics.
     Parameter simd_bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_bswap :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_bswap" simd_bswap.
+      M.IsFunction.C "core::intrinsics::simd::simd_bswap" simd_bswap.
     Admitted.
     
     Parameter simd_bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_bitreverse :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_bitreverse" simd_bitreverse.
+      M.IsFunction.C "core::intrinsics::simd::simd_bitreverse" simd_bitreverse.
     Admitted.
     
     Parameter simd_ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_ctlz :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_ctlz" simd_ctlz.
+      M.IsFunction.C "core::intrinsics::simd::simd_ctlz" simd_ctlz.
     Admitted.
     
     Parameter simd_ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_ctpop :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_ctpop" simd_ctpop.
+      M.IsFunction.C "core::intrinsics::simd::simd_ctpop" simd_ctpop.
     Admitted.
     
     Parameter simd_cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_cttz :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_cttz" simd_cttz.
+      M.IsFunction.C "core::intrinsics::simd::simd_cttz" simd_cttz.
     Admitted.
     
     Parameter simd_ceil : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_ceil :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_ceil" simd_ceil.
+      M.IsFunction.C "core::intrinsics::simd::simd_ceil" simd_ceil.
     Admitted.
     
     Parameter simd_floor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_floor :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_floor" simd_floor.
+      M.IsFunction.C "core::intrinsics::simd::simd_floor" simd_floor.
     Admitted.
     
     Parameter simd_round : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_round :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_round" simd_round.
+      M.IsFunction.C "core::intrinsics::simd::simd_round" simd_round.
     Admitted.
     
     Parameter simd_trunc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_trunc :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_trunc" simd_trunc.
+      M.IsFunction.C "core::intrinsics::simd::simd_trunc" simd_trunc.
     Admitted.
     
     Parameter simd_fsqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fsqrt :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fsqrt" simd_fsqrt.
+      M.IsFunction.C "core::intrinsics::simd::simd_fsqrt" simd_fsqrt.
     Admitted.
     
     Parameter simd_fma : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fma :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fma" simd_fma.
+      M.IsFunction.C "core::intrinsics::simd::simd_fma" simd_fma.
     Admitted.
     
     Parameter simd_relaxed_fma : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_relaxed_fma :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_relaxed_fma" simd_relaxed_fma.
+      M.IsFunction.C "core::intrinsics::simd::simd_relaxed_fma" simd_relaxed_fma.
     Admitted.
     
     Parameter simd_fsin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fsin :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fsin" simd_fsin.
+      M.IsFunction.C "core::intrinsics::simd::simd_fsin" simd_fsin.
     Admitted.
     
     Parameter simd_fcos : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fcos :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fcos" simd_fcos.
+      M.IsFunction.C "core::intrinsics::simd::simd_fcos" simd_fcos.
     Admitted.
     
     Parameter simd_fexp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fexp :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fexp" simd_fexp.
+      M.IsFunction.C "core::intrinsics::simd::simd_fexp" simd_fexp.
     Admitted.
     
     Parameter simd_fexp2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fexp2 :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_fexp2" simd_fexp2.
+      M.IsFunction.C "core::intrinsics::simd::simd_fexp2" simd_fexp2.
     Admitted.
     
     Parameter simd_flog10 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_flog10 :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_flog10" simd_flog10.
+      M.IsFunction.C "core::intrinsics::simd::simd_flog10" simd_flog10.
     Admitted.
     
     Parameter simd_flog2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_flog2 :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_flog2" simd_flog2.
+      M.IsFunction.C "core::intrinsics::simd::simd_flog2" simd_flog2.
     Admitted.
     
     Parameter simd_flog : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_flog :
-      M.IsFunction.Trait "core::intrinsics::simd::simd_flog" simd_flog.
+      M.IsFunction.C "core::intrinsics::simd::simd_flog" simd_flog.
     Admitted.
   End simd.
 End intrinsics.

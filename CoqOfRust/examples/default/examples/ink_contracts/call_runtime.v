@@ -118,7 +118,20 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
           unimplemented!()
       }
   *)
-  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -234,10 +247,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "CallRuntimeFailed" |) |)
-            |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallRuntimeFailed" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -377,7 +387,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Unexpected error from `pallet-contracts`." |) ]
+                        [ mk_str (| "Unexpected error from `pallet-contracts`." |) ]
                       |)
                     |)
                   |)))
@@ -404,11 +414,26 @@ Module Impl_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition call_runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ Call ], [ self; _call ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _call := M.alloc (| _call |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_call_runtime :
-    M.IsAssociatedFunction.Trait Self "call_runtime" call_runtime.
+    M.IsAssociatedFunction.C Self "call_runtime" call_runtime.
   Admitted.
+  Global Typeclasses Opaque call_runtime.
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -419,11 +444,23 @@ Module Impl_call_runtime_RuntimeCaller.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -443,7 +480,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -472,7 +509,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -602,7 +639,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Global Instance AssociatedFunction_transfer_through_runtime :
-    M.IsAssociatedFunction.Trait Self "transfer_through_runtime" transfer_through_runtime.
+    M.IsAssociatedFunction.C Self "transfer_through_runtime" transfer_through_runtime.
   Admitted.
   Global Typeclasses Opaque transfer_through_runtime.
   
@@ -684,7 +721,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
-    M.IsAssociatedFunction.Trait Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
+    M.IsAssociatedFunction.C Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
   Admitted.
   Global Typeclasses Opaque call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.

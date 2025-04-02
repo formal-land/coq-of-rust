@@ -44,11 +44,8 @@ Module vec.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ExtractIf" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "vec" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ExtractIf" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vec" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -62,7 +59,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "idx" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "idx" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -76,7 +73,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "del" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "del" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -90,7 +87,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "old_len" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "old_len" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -104,7 +101,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "pred" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pred" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -191,7 +188,7 @@ Module vec.
       
       Global Instance AssociatedFunction_allocator :
         forall (T F A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F A) "allocator" (allocator T F A).
+        M.IsAssociatedFunction.C (Self T F A) "allocator" (allocator T F A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_vec_extract_if_ExtractIf_T_F_A.

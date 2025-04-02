@@ -21,7 +21,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_poll_fn :
-      M.IsFunction.Trait "core::future::poll_fn::poll_fn" poll_fn.
+      M.IsFunction.C "core::future::poll_fn::poll_fn" poll_fn.
     Admitted.
     Global Typeclasses Opaque poll_fn.
     
@@ -88,10 +88,7 @@ Module future.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "PollFn" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PollFn" |) |) |)
                       ]
                     |)
                   |)

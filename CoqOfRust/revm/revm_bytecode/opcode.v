@@ -73,7 +73,7 @@ Module opcode.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "OpCode" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OpCode" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -429,7 +429,18 @@ Module opcode.
                   ltac:(M.monadic
                     (let γ :=
                       M.SubPointer.get_array_field (|
-                        M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                        get_constant (|
+                          "revm_bytecode::opcode::OPCODE_INFO",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 256 ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                            ]
+                        |),
                         M.cast (Ty.path "usize") (M.read (| n |))
                       |) in
                     let γ0_0 :=
@@ -502,11 +513,7 @@ Module opcode.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "UNKNOWN(0x" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "UNKNOWN(0x" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -627,7 +634,18 @@ Module opcode.
                   []
                   [ Ty.path "revm_bytecode::opcode::OpCode" ]),
               M.SubPointer.get_array_field (|
-                M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                get_constant (|
+                  "revm_bytecode::opcode::OPCODE_INFO",
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                    ]
+                |),
                 M.cast (Ty.path "usize") (M.read (| opcode |))
               |),
               [
@@ -655,7 +673,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -674,7 +692,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_jumpdest :
-      M.IsAssociatedFunction.Trait Self "is_jumpdest" is_jumpdest.
+      M.IsAssociatedFunction.C Self "is_jumpdest" is_jumpdest.
     Admitted.
     Global Typeclasses Opaque is_jumpdest.
     
@@ -742,7 +760,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_jumpdest_by_op :
-      M.IsAssociatedFunction.Trait Self "is_jumpdest_by_op" is_jumpdest_by_op.
+      M.IsAssociatedFunction.C Self "is_jumpdest_by_op" is_jumpdest_by_op.
     Admitted.
     Global Typeclasses Opaque is_jumpdest_by_op.
     
@@ -760,8 +778,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_jump :
-      M.IsAssociatedFunction.Trait Self "is_jump" is_jump.
+    Global Instance AssociatedFunction_is_jump : M.IsAssociatedFunction.C Self "is_jump" is_jump.
     Admitted.
     Global Typeclasses Opaque is_jump.
     
@@ -829,7 +846,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_jump_by_op :
-      M.IsAssociatedFunction.Trait Self "is_jump_by_op" is_jump_by_op.
+      M.IsAssociatedFunction.C Self "is_jump_by_op" is_jump_by_op.
     Admitted.
     Global Typeclasses Opaque is_jump_by_op.
     
@@ -847,8 +864,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_push :
-      M.IsAssociatedFunction.Trait Self "is_push" is_push.
+    Global Instance AssociatedFunction_is_push : M.IsAssociatedFunction.C Self "is_push" is_push.
     Admitted.
     Global Typeclasses Opaque is_push.
     
@@ -916,7 +932,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_push_by_op :
-      M.IsAssociatedFunction.Trait Self "is_push_by_op" is_push_by_op.
+      M.IsAssociatedFunction.C Self "is_push_by_op" is_push_by_op.
     Admitted.
     Global Typeclasses Opaque is_push_by_op.
     
@@ -935,7 +951,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_new_unchecked :
-      M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
     Admitted.
     Global Typeclasses Opaque new_unchecked.
     
@@ -978,7 +994,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -1038,7 +1054,7 @@ Module opcode.
                         [ M.read (| opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (Value.String "Unknown"))
+                fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "Unknown" |) |)))
               ]
             |)
           |)))
@@ -1046,7 +1062,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_name_by_op :
-      M.IsAssociatedFunction.Trait Self "name_by_op" name_by_op.
+      M.IsAssociatedFunction.C Self "name_by_op" name_by_op.
     Admitted.
     Global Typeclasses Opaque name_by_op.
     
@@ -1089,7 +1105,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.Trait Self "inputs" inputs.
+    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.C Self "inputs" inputs.
     Admitted.
     Global Typeclasses Opaque inputs.
     
@@ -1132,8 +1148,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_outputs :
-      M.IsAssociatedFunction.Trait Self "outputs" outputs.
+    Global Instance AssociatedFunction_outputs : M.IsAssociatedFunction.C Self "outputs" outputs.
     Admitted.
     Global Typeclasses Opaque outputs.
     
@@ -1176,8 +1191,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_io_diff :
-      M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+    Global Instance AssociatedFunction_io_diff : M.IsAssociatedFunction.C Self "io_diff" io_diff.
     Admitted.
     Global Typeclasses Opaque io_diff.
     
@@ -1254,7 +1268,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_info_by_op :
-      M.IsAssociatedFunction.Trait Self "info_by_op" info_by_op.
+      M.IsAssociatedFunction.C Self "info_by_op" info_by_op.
     Admitted.
     Global Typeclasses Opaque info_by_op.
     
@@ -1280,8 +1294,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_usize :
-      M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+    Global Instance AssociatedFunction_as_usize : M.IsAssociatedFunction.C Self "as_usize" as_usize.
     Admitted.
     Global Typeclasses Opaque as_usize.
     
@@ -1308,7 +1321,18 @@ Module opcode.
                   ltac:(M.monadic
                     (let γ :=
                       M.SubPointer.get_array_field (|
-                        M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                        get_constant (|
+                          "revm_bytecode::opcode::OPCODE_INFO",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 256 ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                            ]
+                        |),
                         M.cast
                           (Ty.path "usize")
                           (M.read (|
@@ -1349,9 +1373,7 @@ Module opcode.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "opcode not found" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "opcode not found" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -1367,7 +1389,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_info : M.IsAssociatedFunction.Trait Self "info" info.
+    Global Instance AssociatedFunction_info : M.IsAssociatedFunction.C Self "info" info.
     Admitted.
     Global Typeclasses Opaque info.
     
@@ -1420,7 +1442,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_input_output :
-      M.IsAssociatedFunction.Trait Self "input_output" input_output.
+      M.IsAssociatedFunction.C Self "input_output" input_output.
     Admitted.
     Global Typeclasses Opaque input_output.
     
@@ -1440,7 +1462,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+    Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -1459,48 +1481,43 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_modifies_memory :
-      M.IsAssociatedFunction.Trait Self "modifies_memory" modifies_memory.
+      M.IsAssociatedFunction.C Self "modifies_memory" modifies_memory.
     Admitted.
     Global Typeclasses Opaque modifies_memory.
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
-    Definition value_STOP : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 0 ]
-          |))).
+    Definition value_STOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 0 ]
+        |))).
     
-    Global Instance AssociatedConstant_value_STOP :
-      M.IsAssociatedConstant.Trait Self "value_STOP" value_STOP.
+    Global Instance AssociatedConstant_value_STOP : M.IsAssociatedFunction.C Self "STOP" value_STOP.
     Admitted.
     Global Typeclasses Opaque value_STOP.
     
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
-    Definition value_ADD : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 1 ]
-          |))).
+    Definition value_ADD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 1 ]
+        |))).
     
-    Global Instance AssociatedConstant_value_ADD :
-      M.IsAssociatedConstant.Trait Self "value_ADD" value_ADD.
+    Global Instance AssociatedConstant_value_ADD : M.IsAssociatedFunction.C Self "ADD" value_ADD.
     Admitted.
     Global Typeclasses Opaque value_ADD.
     
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
-    Definition value_BALANCE : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 49 ]
-          |))).
+    Definition value_BALANCE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 49 ]
+        |))).
     
     Global Instance AssociatedConstant_value_BALANCE :
-      M.IsAssociatedConstant.Trait Self "value_BALANCE" value_BALANCE.
+      M.IsAssociatedFunction.C Self "BALANCE" value_BALANCE.
     Admitted.
     Global Typeclasses Opaque value_BALANCE.
   End Impl_revm_bytecode_opcode_OpCode.
@@ -3083,10 +3100,7 @@ Module opcode.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "OpCodeInfo"
-                                                                          |)
+                                                                          mk_str (| "OpCodeInfo" |)
                                                                         |)
                                                                       |)
                                                                     ]
@@ -3095,9 +3109,7 @@ Module opcode.
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| Value.String "name" |)
-                                                                |)
+                                                                M.deref (| mk_str (| "name" |) |)
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
@@ -3136,9 +3148,7 @@ Module opcode.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "inputs" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "inputs" |) |)
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
@@ -3172,7 +3182,7 @@ Module opcode.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "outputs" |) |)
+                                                M.deref (| mk_str (| "outputs" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -3206,7 +3216,7 @@ Module opcode.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "not_eof" |) |)
+                                        M.deref (| mk_str (| "not_eof" |) |)
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -3239,7 +3249,7 @@ Module opcode.
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "terminating" |) |)
+                                M.deref (| mk_str (| "terminating" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -3270,10 +3280,7 @@ Module opcode.
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "immediate_size" |) |)
-                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "immediate_size" |) |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
@@ -3379,8 +3386,7 @@ Module opcode.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "opcode name is too long" |) ]
+                                          Value.Array [ mk_str (| "opcode name is too long" |) ]
                                         |)
                                       |)
                                     |)
@@ -3445,7 +3451,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -3520,7 +3526,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -3557,8 +3563,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_io_diff :
-      M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+    Global Instance AssociatedFunction_io_diff : M.IsAssociatedFunction.C Self "io_diff" io_diff.
     Admitted.
     Global Typeclasses Opaque io_diff.
     
@@ -3582,7 +3587,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.Trait Self "inputs" inputs.
+    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.C Self "inputs" inputs.
     Admitted.
     Global Typeclasses Opaque inputs.
     
@@ -3606,8 +3611,7 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_outputs :
-      M.IsAssociatedFunction.Trait Self "outputs" outputs.
+    Global Instance AssociatedFunction_outputs : M.IsAssociatedFunction.C Self "outputs" outputs.
     Admitted.
     Global Typeclasses Opaque outputs.
     
@@ -3632,7 +3636,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_disabled_in_eof :
-      M.IsAssociatedFunction.Trait Self "is_disabled_in_eof" is_disabled_in_eof.
+      M.IsAssociatedFunction.C Self "is_disabled_in_eof" is_disabled_in_eof.
     Admitted.
     Global Typeclasses Opaque is_disabled_in_eof.
     
@@ -3657,7 +3661,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_is_terminating :
-      M.IsAssociatedFunction.Trait Self "is_terminating" is_terminating.
+      M.IsAssociatedFunction.C Self "is_terminating" is_terminating.
     Admitted.
     Global Typeclasses Opaque is_terminating.
     
@@ -3682,7 +3686,7 @@ Module opcode.
       end.
     
     Global Instance AssociatedFunction_immediate_size :
-      M.IsAssociatedFunction.Trait Self "immediate_size" immediate_size.
+      M.IsAssociatedFunction.C Self "immediate_size" immediate_size.
     Admitted.
     Global Typeclasses Opaque immediate_size.
   End Impl_revm_bytecode_opcode_OpCodeInfo.
@@ -3716,7 +3720,7 @@ Module opcode.
     end.
   
   Global Instance Instance_IsFunction_not_eof :
-    M.IsFunction.Trait "revm_bytecode::opcode::not_eof" not_eof.
+    M.IsFunction.C "revm_bytecode::opcode::not_eof" not_eof.
   Admitted.
   Global Typeclasses Opaque not_eof.
   
@@ -3750,7 +3754,7 @@ Module opcode.
     end.
   
   Global Instance Instance_IsFunction_immediate_size :
-    M.IsFunction.Trait "revm_bytecode::opcode::immediate_size" immediate_size.
+    M.IsFunction.C "revm_bytecode::opcode::immediate_size" immediate_size.
   Admitted.
   Global Typeclasses Opaque immediate_size.
   
@@ -3783,7 +3787,7 @@ Module opcode.
     end.
   
   Global Instance Instance_IsFunction_terminating :
-    M.IsFunction.Trait "revm_bytecode::opcode::terminating" terminating.
+    M.IsFunction.C "revm_bytecode::opcode::terminating" terminating.
   Admitted.
   Global Typeclasses Opaque terminating.
   
@@ -3830,395 +3834,401 @@ Module opcode.
     end.
   
   Global Instance Instance_IsFunction_stack_io :
-    M.IsFunction.Trait "revm_bytecode::opcode::stack_io" stack_io.
+    M.IsFunction.C "revm_bytecode::opcode::stack_io" stack_io.
   Admitted.
   Global Typeclasses Opaque stack_io.
   
-  Definition value_STOP : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+  Definition value_STOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Axiom Constant_value_STOP : (M.get_constant "revm_bytecode::opcode::STOP") = value_STOP.
-  Global Hint Rewrite Constant_value_STOP : constant_rewrites.
+  Global Instance Instance_IsConstant_value_STOP :
+    M.IsFunction.C "revm_bytecode::opcode::STOP" value_STOP.
+  Admitted.
+  Global Typeclasses Opaque value_STOP.
   
-  Definition value_ADD : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  Definition value_ADD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
-  Axiom Constant_value_ADD : (M.get_constant "revm_bytecode::opcode::ADD") = value_ADD.
-  Global Hint Rewrite Constant_value_ADD : constant_rewrites.
+  Global Instance Instance_IsConstant_value_ADD :
+    M.IsFunction.C "revm_bytecode::opcode::ADD" value_ADD.
+  Admitted.
+  Global Typeclasses Opaque value_ADD.
   
-  Definition value_BALANCE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 49 |))).
+  Definition value_BALANCE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 49 |))).
   
-  Axiom Constant_value_BALANCE : (M.get_constant "revm_bytecode::opcode::BALANCE") = value_BALANCE.
-  Global Hint Rewrite Constant_value_BALANCE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_BALANCE :
+    M.IsFunction.C "revm_bytecode::opcode::BALANCE" value_BALANCE.
+  Admitted.
+  Global Typeclasses Opaque value_BALANCE.
   
   
-  Definition value_OPCODE_INFO : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (let~ map :
-            Ty.apply
-              (Ty.path "array")
-              [ Value.Integer IntegerKind.Usize 256 ]
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-              ] :=
-          M.alloc (|
-            repeat (|
-              Value.StructTuple "core::option::Option::None" [],
-              Value.Integer IntegerKind.Usize 256
-            |)
-          |) in
-        let~ prev : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-        let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
+  Definition value_OPCODE_INFO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (let~ map :
+          Ty.apply
+            (Ty.path "array")
+            [ Value.Integer IntegerKind.Usize 256 ]
             [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          LogicalOp.or (|
-                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
-                          |)
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                        [
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_associated_function (|
-                Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                "new",
-                [],
+              Ty.apply
+                (Ty.path "core::option::Option")
                 []
-              |),
-              [ M.read (| Value.String "STOP" |) ]
-            |)
-          |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
-            |)
-          |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_function (| "revm_bytecode::opcode::terminating", [], [] |),
-              [ M.read (| info |) ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.write (|
-              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
-              Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
-            |)
-          |) in
-        let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          LogicalOp.or (|
-                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
-                          |)
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                        [
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_associated_function (|
-                Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                "new",
-                [],
-                []
-              |),
-              [ M.read (| Value.String "ADD" |) ]
-            |)
-          |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.write (|
-              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
-              Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
-            |)
-          |) in
-        let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 49 |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          LogicalOp.or (|
-                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
-                          |)
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                        [
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_associated_function (|
-                Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                "new",
-                [],
-                []
-              |),
-              [ M.read (| Value.String "BALANCE" |) ]
-            |)
-          |) in
-        let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.write (|
-              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
-              Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
-            |)
-          |) in
-        M.match_operator (| None, prev, [ fun γ => ltac:(M.monadic map) ] |))).
-  
-  Axiom Constant_value_OPCODE_INFO :
-    (M.get_constant "revm_bytecode::opcode::OPCODE_INFO") = value_OPCODE_INFO.
-  Global Hint Rewrite Constant_value_OPCODE_INFO : constant_rewrites.
-  
-  Definition value_NAME_TO_OPCODE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            Value.StructRecord
-              "phf::map::Map"
-              [
-                ("key", Value.Integer IntegerKind.U64 15467950696543387533);
-                ("disps",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.Tuple
-                                [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]
-                            ]
-                        |)
-                      |)
-                    |)
-                  |));
-                ("entries",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.Tuple
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "STOP" |) |)
-                                  |);
-                                  M.read (| M.get_constant "revm_bytecode::opcode::STOP" |)
-                                ];
-                              Value.Tuple
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "ADD" |) |)
-                                  |);
-                                  M.read (| M.get_constant "revm_bytecode::opcode::ADD" |)
-                                ];
-                              Value.Tuple
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "BALANCE" |) |)
-                                  |);
-                                  M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |)
-                                ]
-                            ]
-                        |)
-                      |)
-                    |)
-                  |))
-              ]
+                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+            ] :=
+        M.alloc (|
+          repeat (|
+            Value.StructTuple "core::option::Option::None" [],
+            Value.Integer IntegerKind.Usize 256
           |)
-        |))).
+        |) in
+      let~ prev : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
+      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
+      let~ _ : Ty.tuple [] :=
+        M.match_operator (|
+          Some (Ty.tuple []),
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      UnOp.not (|
+                        LogicalOp.or (|
+                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                        |)
+                      |)
+                    |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            [ Value.Integer IntegerKind.Usize 1 ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |)
+                |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+          ]
+        |) in
+      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_associated_function (|
+              Ty.path "revm_bytecode::opcode::OpCodeInfo",
+              "new",
+              [],
+              []
+            |),
+            [ mk_str (| "STOP" |) ]
+          |)
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+            [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
+          |)
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_function (| "revm_bytecode::opcode::terminating", [], [] |),
+            [ M.read (| info |) ]
+          |)
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.alloc (|
+          M.write (|
+            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
+            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+          |)
+        |) in
+      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
+      let~ _ : Ty.tuple [] :=
+        M.match_operator (|
+          Some (Ty.tuple []),
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      UnOp.not (|
+                        LogicalOp.or (|
+                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                        |)
+                      |)
+                    |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            [ Value.Integer IntegerKind.Usize 1 ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |)
+                |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+          ]
+        |) in
+      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_associated_function (|
+              Ty.path "revm_bytecode::opcode::OpCodeInfo",
+              "new",
+              [],
+              []
+            |),
+            [ mk_str (| "ADD" |) ]
+          |)
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+            [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
+          |)
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.alloc (|
+          M.write (|
+            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
+            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+          |)
+        |) in
+      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 49 |) in
+      let~ _ : Ty.tuple [] :=
+        M.match_operator (|
+          Some (Ty.tuple []),
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      UnOp.not (|
+                        LogicalOp.or (|
+                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                        |)
+                      |)
+                    |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            [ Value.Integer IntegerKind.Usize 1 ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |)
+                |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+          ]
+        |) in
+      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_associated_function (|
+              Ty.path "revm_bytecode::opcode::OpCodeInfo",
+              "new",
+              [],
+              []
+            |),
+            [ mk_str (| "BALANCE" |) ]
+          |)
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+            [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
+          |)
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.alloc (|
+          M.write (|
+            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
+            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+          |)
+        |) in
+      M.match_operator (| None, prev, [ fun γ => ltac:(M.monadic map) ] |))).
   
-  Axiom Constant_value_NAME_TO_OPCODE :
-    (M.get_constant "revm_bytecode::opcode::NAME_TO_OPCODE") = value_NAME_TO_OPCODE.
-  Global Hint Rewrite Constant_value_NAME_TO_OPCODE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_OPCODE_INFO :
+    M.IsFunction.C "revm_bytecode::opcode::OPCODE_INFO" value_OPCODE_INFO.
+  Admitted.
+  Global Typeclasses Opaque value_OPCODE_INFO.
+  
+  Definition value_NAME_TO_OPCODE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          Value.StructRecord
+            "phf::map::Map"
+            [
+              ("key", Value.Integer IntegerKind.U64 15467950696543387533);
+              ("disps",
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            Value.Tuple
+                              [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]
+                          ]
+                      |)
+                    |)
+                  |)
+                |));
+              ("entries",
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            Value.Tuple
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STOP" |) |) |);
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "revm_bytecode::opcode::OpCode",
+                                    "STOP",
+                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                  |)
+                                |)
+                              ];
+                            Value.Tuple
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |);
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "revm_bytecode::opcode::OpCode",
+                                    "ADD",
+                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                  |)
+                                |)
+                              ];
+                            Value.Tuple
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| mk_str (| "BALANCE" |) |)
+                                |);
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "revm_bytecode::opcode::OpCode",
+                                    "BALANCE",
+                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                  |)
+                                |)
+                              ]
+                          ]
+                      |)
+                    |)
+                  |)
+                |))
+            ]
+        |)
+      |))).
+  
+  Global Instance Instance_IsConstant_value_NAME_TO_OPCODE :
+    M.IsFunction.C "revm_bytecode::opcode::NAME_TO_OPCODE" value_NAME_TO_OPCODE.
+  Admitted.
+  Global Typeclasses Opaque value_NAME_TO_OPCODE.
 End opcode.

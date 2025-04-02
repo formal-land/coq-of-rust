@@ -20,7 +20,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.read (|
             let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-              M.copy (| Value.String "10" |) in
+              M.alloc (| mk_str (| "10" |) |) in
             let~ number : Ty.path "i32" :=
               M.copy (|
                 M.match_operator (|
@@ -88,11 +88,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                               |)
                             |)
                           |);
@@ -136,6 +133,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "result_use_in_main::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "result_use_in_main::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -26,7 +26,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _ :=
-                  M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.String "lemonade" |) in
+                  M.is_constant_or_break_match (| M.read (| γ0_0 |), mk_str (| "lemonade" |) |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -47,10 +47,8 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Yuck! Too sugary.
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "Yuck! Too sugary.
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -87,12 +85,8 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "? How nice.
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "" |); mk_str (| "? How nice.
+" |) ]
                                   |)
                                 |)
                               |)
@@ -154,10 +148,8 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "No drink? Oh well.
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "No drink? Oh well.
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -174,7 +166,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_give_adult :
-  M.IsFunction.Trait "option_and_unwrap::give_adult" give_adult.
+  M.IsFunction.C "option_and_unwrap::give_adult" give_adult.
 Admitted.
 Global Typeclasses Opaque give_adult.
 
@@ -234,7 +226,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, inside |);
-                            M.borrow (| Pointer.Kind.Ref, Value.String "lemonade" |)
+                            M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "lemonade" |) |) |)
                           ]
                         |)
                       |)) in
@@ -248,7 +240,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
+                        [ mk_str (| "AAAaaaaa!!!!" |) ]
                       |)
                     |)
                   |)));
@@ -277,12 +269,8 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "I love " |);
-                                  M.read (| Value.String "s!!!!!
-" |)
-                                ]
+                              Value.Array [ mk_str (| "I love " |); mk_str (| "s!!!!!
+" |) ]
                             |)
                           |)
                         |)
@@ -326,7 +314,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "option_and_unwrap::drink" drink.
+Global Instance Instance_IsFunction_drink : M.IsFunction.C "option_and_unwrap::drink" drink.
 Admitted.
 Global Typeclasses Opaque drink.
 
@@ -357,16 +345,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "water" |) ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "water" |) ] |) in
         let~ lemonade :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "lemonade" |) ]
+            Value.StructTuple "core::option::Option::Some" [ mk_str (| "lemonade" |) ]
           |) in
         let~ void :
             Ty.apply
@@ -403,9 +389,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "coffee" |) ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "coffee" |) ] |) in
         let~ nothing :
             Ty.apply
               (Ty.path "core::option::Option")
@@ -433,6 +417,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option_and_unwrap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "option_and_unwrap::main" main.
 Admitted.
 Global Typeclasses Opaque main.

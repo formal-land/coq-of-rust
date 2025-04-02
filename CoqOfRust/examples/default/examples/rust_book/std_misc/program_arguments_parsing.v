@@ -33,11 +33,8 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -91,7 +88,7 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_increase :
-  M.IsFunction.Trait "program_arguments_parsing::increase" increase.
+  M.IsFunction.C "program_arguments_parsing::increase" increase.
 Admitted.
 Global Typeclasses Opaque increase.
 
@@ -127,11 +124,8 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -185,7 +179,7 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_decrease :
-  M.IsFunction.Trait "program_arguments_parsing::decrease" decrease.
+  M.IsFunction.C "program_arguments_parsing::decrease" decrease.
 Admitted.
 Global Typeclasses Opaque decrease.
 
@@ -229,9 +223,8 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "usage:
+                                  mk_str (|
+                                    "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
@@ -254,8 +247,7 @@ match_args {increase|decrease} <integer>
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_help :
-  M.IsFunction.Trait "program_arguments_parsing::help" help.
+Global Instance Instance_IsFunction_help : M.IsFunction.C "program_arguments_parsing::help" help.
 Admitted.
 Global Typeclasses Opaque help.
 
@@ -394,9 +386,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "My name is 'match_args'. Try passing some arguments!
+                                              mk_str (|
+                                                "My name is 'match_args'. Try passing some arguments!
 "
                                               |)
                                             ]
@@ -520,10 +511,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "This is the answer!
-" |)
-                                                  ]
+                                                Value.Array [ mk_str (| "This is the answer!
+" |) ]
                                               |)
                                             |)
                                           |)
@@ -558,12 +547,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "This is not the answer.
-"
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "This is not the answer.
+" |) ]
                                               |)
                                             |)
                                           |)
@@ -732,9 +717,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "error: second argument not an integer
+                                                                mk_str (|
+                                                                  "error: second argument not an integer
 "
                                                                 |)
                                                               ]
@@ -798,7 +782,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             (let _ :=
                               M.is_constant_or_break_match (|
                                 M.read (| γ |),
-                                Value.String "increase"
+                                mk_str (| "increase" |)
                               |) in
                             M.alloc (|
                               M.call_closure (|
@@ -812,7 +796,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             (let _ :=
                               M.is_constant_or_break_match (|
                                 M.read (| γ |),
-                                Value.String "decrease"
+                                mk_str (| "decrease" |)
                               |) in
                             M.alloc (|
                               M.call_closure (|
@@ -846,12 +830,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "error: invalid command
-"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "error: invalid command
+" |) ]
                                                 |)
                                               |)
                                             |)
@@ -891,7 +871,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "program_arguments_parsing::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "program_arguments_parsing::main" main.
 Admitted.
 Global Typeclasses Opaque main.

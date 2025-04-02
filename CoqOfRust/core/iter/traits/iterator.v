@@ -19,7 +19,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction__assert_is_dyn_compatible :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::iter::traits::iterator::_assert_is_dyn_compatible"
           _assert_is_dyn_compatible.
       Admitted.
@@ -5898,9 +5898,8 @@ Module iter.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "internal error: entered unreachable code: Always specialized"
+                                    mk_str (|
+                                      "internal error: entered unreachable code: Always specialized"
                                     |)
                                   ]
                               |)
@@ -6124,7 +6123,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_iter_compare :
-        M.IsFunction.Trait "core::iter::traits::iterator::iter_compare" iter_compare.
+        M.IsFunction.C "core::iter::traits::iterator::iter_compare" iter_compare.
       Admitted.
       Global Typeclasses Opaque iter_compare.
       
@@ -6327,7 +6326,7 @@ Module iter.
           end.
         
         Global Instance Instance_IsFunction_compare :
-          M.IsFunction.Trait "core::iter::traits::iterator::iter_compare::compare" compare.
+          M.IsFunction.C "core::iter::traits::iterator::iter_compare::compare" compare.
         Admitted.
         Global Typeclasses Opaque compare.
       End iter_compare.

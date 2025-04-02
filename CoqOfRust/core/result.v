@@ -619,10 +619,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Ok" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ok" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -650,10 +647,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Err" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Err" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -808,7 +802,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "is_ok" (is_ok T E).
+      M.IsAssociatedFunction.C (Self T E) "is_ok" (is_ok T E).
     Admitted.
     Global Typeclasses Opaque is_ok.
     
@@ -865,7 +859,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_ok_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "is_ok_and" (is_ok_and T E).
+      M.IsAssociatedFunction.C (Self T E) "is_ok_and" (is_ok_and T E).
     Admitted.
     Global Typeclasses Opaque is_ok_and.
     
@@ -897,7 +891,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "is_err" (is_err T E).
+      M.IsAssociatedFunction.C (Self T E) "is_err" (is_err T E).
     Admitted.
     Global Typeclasses Opaque is_err.
     
@@ -954,7 +948,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_err_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "is_err_and" (is_err_and T E).
+      M.IsAssociatedFunction.C (Self T E) "is_err_and" (is_err_and T E).
     Admitted.
     Global Typeclasses Opaque is_err_and.
     
@@ -998,7 +992,7 @@ Module result.
     
     Global Instance AssociatedFunction_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "ok" (ok T E).
+      M.IsAssociatedFunction.C (Self T E) "ok" (ok T E).
     Admitted.
     Global Typeclasses Opaque ok.
     
@@ -1042,7 +1036,7 @@ Module result.
     
     Global Instance AssociatedFunction_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "err" (err T E).
+      M.IsAssociatedFunction.C (Self T E) "err" (err T E).
     Admitted.
     Global Typeclasses Opaque err.
     
@@ -1097,7 +1091,7 @@ Module result.
     
     Global Instance AssociatedFunction_as_ref :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "as_ref" (as_ref T E).
+      M.IsAssociatedFunction.C (Self T E) "as_ref" (as_ref T E).
     Admitted.
     Global Typeclasses Opaque as_ref.
     
@@ -1152,7 +1146,7 @@ Module result.
     
     Global Instance AssociatedFunction_as_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "as_mut" (as_mut T E).
+      M.IsAssociatedFunction.C (Self T E) "as_mut" (as_mut T E).
     Admitted.
     Global Typeclasses Opaque as_mut.
     
@@ -1214,7 +1208,7 @@ Module result.
     
     Global Instance AssociatedFunction_map :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "map" (map T E).
+      M.IsAssociatedFunction.C (Self T E) "map" (map T E).
     Admitted.
     Global Typeclasses Opaque map.
     
@@ -1272,7 +1266,7 @@ Module result.
     
     Global Instance AssociatedFunction_map_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "map_or" (map_or T E).
+      M.IsAssociatedFunction.C (Self T E) "map_or" (map_or T E).
     Admitted.
     Global Typeclasses Opaque map_or.
     
@@ -1345,7 +1339,7 @@ Module result.
     
     Global Instance AssociatedFunction_map_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "map_or_else" (map_or_else T E).
+      M.IsAssociatedFunction.C (Self T E) "map_or_else" (map_or_else T E).
     Admitted.
     Global Typeclasses Opaque map_or_else.
     
@@ -1407,7 +1401,7 @@ Module result.
     
     Global Instance AssociatedFunction_map_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+      M.IsAssociatedFunction.C (Self T E) "map_err" (map_err T E).
     Admitted.
     Global Typeclasses Opaque map_err.
     
@@ -1474,7 +1468,7 @@ Module result.
     
     Global Instance AssociatedFunction_inspect :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "inspect" (inspect T E).
+      M.IsAssociatedFunction.C (Self T E) "inspect" (inspect T E).
     Admitted.
     Global Typeclasses Opaque inspect.
     
@@ -1541,7 +1535,7 @@ Module result.
     
     Global Instance AssociatedFunction_inspect_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "inspect_err" (inspect_err T E).
+      M.IsAssociatedFunction.C (Self T E) "inspect_err" (inspect_err T E).
     Admitted.
     Global Typeclasses Opaque inspect_err.
     
@@ -1658,7 +1652,7 @@ Module result.
     
     Global Instance AssociatedFunction_as_deref :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "as_deref" (as_deref T E).
+      M.IsAssociatedFunction.C (Self T E) "as_deref" (as_deref T E).
     Admitted.
     Global Typeclasses Opaque as_deref.
     
@@ -1781,7 +1775,7 @@ Module result.
     
     Global Instance AssociatedFunction_as_deref_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "as_deref_mut" (as_deref_mut T E).
+      M.IsAssociatedFunction.C (Self T E) "as_deref_mut" (as_deref_mut T E).
     Admitted.
     Global Typeclasses Opaque as_deref_mut.
     
@@ -1833,7 +1827,7 @@ Module result.
     
     Global Instance AssociatedFunction_iter :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "iter" (iter T E).
+      M.IsAssociatedFunction.C (Self T E) "iter" (iter T E).
     Admitted.
     Global Typeclasses Opaque iter.
     
@@ -1888,7 +1882,7 @@ Module result.
     
     Global Instance AssociatedFunction_iter_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "iter_mut" (iter_mut T E).
+      M.IsAssociatedFunction.C (Self T E) "iter_mut" (iter_mut T E).
     Admitted.
     Global Typeclasses Opaque iter_mut.
     
@@ -1949,7 +1943,7 @@ Module result.
     
     Global Instance AssociatedFunction_expect :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "expect" (expect T E).
+      M.IsAssociatedFunction.C (Self T E) "expect" (expect T E).
     Admitted.
     Global Typeclasses Opaque expect.
     
@@ -1995,9 +1989,7 @@ Module result.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "called `Result::unwrap()` on an `Err` value"
-                                |)
+                                mk_str (| "called `Result::unwrap()` on an `Err` value" |)
                               |)
                             |);
                             M.borrow (|
@@ -2016,7 +2008,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap" (unwrap T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap" (unwrap T E).
     Admitted.
     Global Typeclasses Opaque unwrap.
     
@@ -2080,7 +2072,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_or_default :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or_default" (unwrap_or_default T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_or_default" (unwrap_or_default T E).
     Admitted.
     Global Typeclasses Opaque unwrap_or_default.
     
@@ -2141,7 +2133,7 @@ Module result.
     
     Global Instance AssociatedFunction_expect_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "expect_err" (expect_err T E).
+      M.IsAssociatedFunction.C (Self T E) "expect_err" (expect_err T E).
     Admitted.
     Global Typeclasses Opaque expect_err.
     
@@ -2181,9 +2173,7 @@ Module result.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "called `Result::unwrap_err()` on an `Ok` value"
-                                |)
+                                mk_str (| "called `Result::unwrap_err()` on an `Ok` value" |)
                               |)
                             |);
                             M.borrow (|
@@ -2208,7 +2198,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_err" (unwrap_err T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_err" (unwrap_err T E).
     Admitted.
     Global Typeclasses Opaque unwrap_err.
     
@@ -2270,7 +2260,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "into_ok" (into_ok T E).
+      M.IsAssociatedFunction.C (Self T E) "into_ok" (into_ok T E).
     Admitted.
     Global Typeclasses Opaque into_ok.
     
@@ -2332,7 +2322,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "into_err" (into_err T E).
+      M.IsAssociatedFunction.C (Self T E) "into_err" (into_err T E).
     Admitted.
     Global Typeclasses Opaque into_err.
     
@@ -2375,7 +2365,7 @@ Module result.
     
     Global Instance AssociatedFunction_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "and" (and T E).
+      M.IsAssociatedFunction.C (Self T E) "and" (and T E).
     Admitted.
     Global Typeclasses Opaque and.
     
@@ -2433,7 +2423,7 @@ Module result.
     
     Global Instance AssociatedFunction_and_then :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "and_then" (and_then T E).
+      M.IsAssociatedFunction.C (Self T E) "and_then" (and_then T E).
     Admitted.
     Global Typeclasses Opaque and_then.
     
@@ -2476,7 +2466,7 @@ Module result.
     
     Global Instance AssociatedFunction_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "or" (or T E).
+      M.IsAssociatedFunction.C (Self T E) "or" (or T E).
     Admitted.
     Global Typeclasses Opaque or.
     
@@ -2534,7 +2524,7 @@ Module result.
     
     Global Instance AssociatedFunction_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "or_else" (or_else T E).
+      M.IsAssociatedFunction.C (Self T E) "or_else" (or_else T E).
     Admitted.
     Global Typeclasses Opaque or_else.
     
@@ -2577,7 +2567,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or" (unwrap_or T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_or" (unwrap_or T E).
     Admitted.
     Global Typeclasses Opaque unwrap_or.
     
@@ -2640,7 +2630,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or_else" (unwrap_or_else T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_or_else" (unwrap_or_else T E).
     Admitted.
     Global Typeclasses Opaque unwrap_or_else.
     
@@ -2696,7 +2686,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_unchecked :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_unchecked" (unwrap_unchecked T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_unchecked" (unwrap_unchecked T E).
     Admitted.
     Global Typeclasses Opaque unwrap_unchecked.
     
@@ -2752,7 +2742,7 @@ Module result.
     
     Global Instance AssociatedFunction_unwrap_err_unchecked :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "unwrap_err_unchecked" (unwrap_err_unchecked T E).
+      M.IsAssociatedFunction.C (Self T E) "unwrap_err_unchecked" (unwrap_err_unchecked T E).
     Admitted.
     Global Typeclasses Opaque unwrap_err_unchecked.
   End Impl_core_result_Result_T_E.
@@ -2806,7 +2796,7 @@ Module result.
     
     Global Instance AssociatedFunction_copied :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "copied" (copied T E).
+      M.IsAssociatedFunction.C (Self T E) "copied" (copied T E).
     Admitted.
     Global Typeclasses Opaque copied.
     
@@ -2871,7 +2861,7 @@ Module result.
     
     Global Instance AssociatedFunction_cloned :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "cloned" (cloned T E).
+      M.IsAssociatedFunction.C (Self T E) "cloned" (cloned T E).
     Admitted.
     Global Typeclasses Opaque cloned.
   End Impl_core_result_Result_ref__T_E.
@@ -2925,7 +2915,7 @@ Module result.
     
     Global Instance AssociatedFunction_copied :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "copied" (copied T E).
+      M.IsAssociatedFunction.C (Self T E) "copied" (copied T E).
     Admitted.
     Global Typeclasses Opaque copied.
     
@@ -2993,7 +2983,7 @@ Module result.
     
     Global Instance AssociatedFunction_cloned :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "cloned" (cloned T E).
+      M.IsAssociatedFunction.C (Self T E) "cloned" (cloned T E).
     Admitted.
     Global Typeclasses Opaque cloned.
   End Impl_core_result_Result_ref_mut_T_E.
@@ -3069,7 +3059,7 @@ Module result.
     
     Global Instance AssociatedFunction_transpose :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "transpose" (transpose T E).
+      M.IsAssociatedFunction.C (Self T E) "transpose" (transpose T E).
     Admitted.
     Global Typeclasses Opaque transpose.
   End Impl_core_result_Result_core_option_Option_T_E.
@@ -3121,7 +3111,7 @@ Module result.
     
     Global Instance AssociatedFunction_flatten :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T E) "flatten" (flatten T E).
+      M.IsAssociatedFunction.C (Self T E) "flatten" (flatten T E).
     Admitted.
     Global Typeclasses Opaque flatten.
   End Impl_core_result_Result_core_result_Result_T_E_E.
@@ -3155,9 +3145,7 @@ Module result.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
-                      |)
+                      M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| ": " |) ] |)
                     |)
                   |)
                 |);
@@ -3217,7 +3205,7 @@ Module result.
     end.
   
   Global Instance Instance_IsFunction_unwrap_failed :
-    M.IsFunction.Trait "core::result::unwrap_failed" unwrap_failed.
+    M.IsFunction.C "core::result::unwrap_failed" unwrap_failed.
   Admitted.
   Global Typeclasses Opaque unwrap_failed.
   
@@ -3628,8 +3616,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Iter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3940,8 +3928,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IterMut" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IterMut" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4264,8 +4252,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IntoIter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

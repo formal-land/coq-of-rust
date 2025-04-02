@@ -98,11 +98,8 @@ Module num.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Decoded" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "mant" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Decoded" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "mant" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -116,7 +113,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "minus" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "minus" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -130,7 +127,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "plus" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "plus" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -144,7 +141,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "exp" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "exp" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -158,10 +155,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "inclusive" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inclusive" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -486,10 +480,7 @@ Module num.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Nan" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Nan" |) |) |)
                             ]
                           |)
                         |)));
@@ -515,10 +506,7 @@ Module num.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Infinite" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Infinite" |) |) |)
                             ]
                           |)
                         |)));
@@ -544,10 +532,7 @@ Module num.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Zero" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
                             ]
                           |)
                         |)));
@@ -575,10 +560,7 @@ Module num.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Finite" |) |)
-                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Finite" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -768,7 +750,11 @@ Module num.
         *)
         Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::f32::MIN_POSITIVE" |)))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (M.read (|
+                get_associated_constant (| Ty.path "f32", "MIN_POSITIVE", Ty.path "f32" |)
+              |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -791,7 +777,11 @@ Module num.
         *)
         Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::f64::MIN_POSITIVE" |)))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (M.read (|
+                get_associated_constant (| Ty.path "f64", "MIN_POSITIVE", Ty.path "f64" |)
+              |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -1073,7 +1063,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_decode :
-        M.IsFunction.Trait "core::num::flt2dec::decoder::decode" decode.
+        M.IsFunction.C "core::num::flt2dec::decoder::decode" decode.
       Admitted.
       Global Typeclasses Opaque decode.
     End decoder.

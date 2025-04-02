@@ -3,12 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module num.
   Module flt2dec.
-    Definition value_MAX_SIG_DIGITS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 17 |))).
+    Definition value_MAX_SIG_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 17 |))).
     
-    Axiom Constant_value_MAX_SIG_DIGITS :
-      (M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS") = value_MAX_SIG_DIGITS.
-    Global Hint Rewrite Constant_value_MAX_SIG_DIGITS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MAX_SIG_DIGITS :
+      M.IsFunction.C "core::num::flt2dec::MAX_SIG_DIGITS" value_MAX_SIG_DIGITS.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_SIG_DIGITS.
     
     (*
     pub fn round_up(d: &mut [u8]) -> Option<u8> {
@@ -413,7 +414,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_round_up :
-      M.IsFunction.Trait "core::num::flt2dec::round_up" round_up.
+      M.IsFunction.C "core::num::flt2dec::round_up" round_up.
     Admitted.
     Global Typeclasses Opaque round_up.
     
@@ -528,7 +529,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
+                            [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
                       |)));
@@ -563,7 +564,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
+                            [ mk_str (| "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
                       |)));
@@ -615,7 +616,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -1898,7 +1899,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_digits_to_dec_str :
-      M.IsFunction.Trait "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
+      M.IsFunction.C "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
     Admitted.
     Global Typeclasses Opaque digits_to_dec_str.
     
@@ -1984,7 +1985,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
+                            [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
                       |)));
@@ -2019,7 +2020,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
+                            [ mk_str (| "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
                       |)));
@@ -2071,7 +2072,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -2700,7 +2701,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_digits_to_exp_str :
-      M.IsFunction.Trait "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
+      M.IsFunction.C "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
     Admitted.
     Global Typeclasses Opaque digits_to_exp_str.
     
@@ -2876,10 +2877,7 @@ Module num.
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::Minus" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Minus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Minus" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -2887,10 +2885,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::MinusPlus" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MinusPlus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MinusPlus" |) |) |)
                           |)))
                     ]
                   |)
@@ -2953,7 +2948,7 @@ Module num.
                         γ0_0,
                         "core::num::flt2dec::decoder::FullDecoded::Nan"
                       |) in
-                    Value.String ""));
+                    M.alloc (| mk_str (| "" |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2968,8 +2963,8 @@ Module num.
                             (let γ := M.use negative in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            Value.String "-"));
-                        fun γ => ltac:(M.monadic (Value.String ""))
+                            M.alloc (| mk_str (| "-" |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "" |) |)))
                       ]
                     |)));
                 fun γ =>
@@ -2986,8 +2981,8 @@ Module num.
                             (let γ := M.use negative in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            Value.String "-"));
-                        fun γ => ltac:(M.monadic (Value.String "+"))
+                            M.alloc (| mk_str (| "-" |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "+" |) |)))
                       ]
                     |)))
               ]
@@ -2997,7 +2992,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_determine_sign :
-      M.IsFunction.Trait "core::num::flt2dec::determine_sign" determine_sign.
+      M.IsFunction.C "core::num::flt2dec::determine_sign" determine_sign.
     Admitted.
     Global Typeclasses Opaque determine_sign.
     
@@ -3112,7 +3107,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -3150,7 +3145,12 @@ Module num.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                                   ]
                                 |),
-                                M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::num::flt2dec::MAX_SIG_DIGITS",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -3160,11 +3160,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |) ]
                           |)
                         |)
                       |)));
@@ -3970,7 +3966,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_to_shortest_str :
-      M.IsFunction.Trait "core::num::flt2dec::to_shortest_str" to_shortest_str.
+      M.IsFunction.C "core::num::flt2dec::to_shortest_str" to_shortest_str.
     Admitted.
     Global Typeclasses Opaque to_shortest_str.
     
@@ -4084,7 +4080,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -4122,7 +4118,12 @@ Module num.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                                   ]
                                 |),
-                                M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::num::flt2dec::MAX_SIG_DIGITS",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -4132,11 +4133,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |) ]
                           |)
                         |)
                       |)));
@@ -4166,11 +4163,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: dec_bounds.0 <= dec_bounds.1"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: dec_bounds.0 <= dec_bounds.1" |) ]
                           |)
                         |)
                       |)));
@@ -4998,7 +4991,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_to_shortest_exp_str :
-      M.IsFunction.Trait "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
+      M.IsFunction.C "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
     Admitted.
     Global Typeclasses Opaque to_shortest_exp_str.
     
@@ -5046,7 +5039,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_estimate_max_buf_len :
-      M.IsFunction.Trait "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
+      M.IsFunction.C "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
     Admitted.
     Global Typeclasses Opaque estimate_max_buf_len.
     
@@ -5168,7 +5161,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -5195,7 +5188,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: ndigits > 0" |) ]
+                            [ mk_str (| "assertion failed: ndigits > 0" |) ]
                           |)
                         |)
                       |)));
@@ -6097,9 +6090,8 @@ Module num.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: buf.len() >= ndigits || buf.len() >= maxlen"
+                                              mk_str (|
+                                                "assertion failed: buf.len() >= ndigits || buf.len() >= maxlen"
                                               |)
                                             ]
                                           |)
@@ -6245,7 +6237,13 @@ Module num.
                                             |)
                                           |)
                                         |);
-                                        M.read (| M.get_constant "core::num::MIN" |)
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.path "i16",
+                                            "MIN",
+                                            Ty.path "i16"
+                                          |)
+                                        |)
                                       ]
                                   ]
                                 |)
@@ -6314,7 +6312,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_to_exact_exp_str :
-      M.IsFunction.Trait "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
+      M.IsFunction.C "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
     Admitted.
     Global Typeclasses Opaque to_exact_exp_str.
     
@@ -6459,7 +6457,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -7213,11 +7211,7 @@ Module num.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: buf.len() >= maxlen"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: buf.len() >= maxlen" |) ]
                                           |)
                                         |)
                                       |)));
@@ -7250,7 +7244,13 @@ Module num.
                                             M.cast (Ty.path "i16") (M.read (| frac_digits |))
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (get_associated_constant (|
+                                          Ty.path "i16",
+                                          "MIN",
+                                          Ty.path "i16"
+                                        |)))
                                   ]
                                 |)
                               |) in
@@ -8021,7 +8021,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_to_exact_fixed_str :
-      M.IsFunction.Trait "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
+      M.IsFunction.C "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
     Admitted.
     Global Typeclasses Opaque to_exact_fixed_str.
   End flt2dec.

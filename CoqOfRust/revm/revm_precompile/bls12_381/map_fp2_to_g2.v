@@ -3,47 +3,54 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module map_fp2_to_g2.
-    Definition value_PRECOMPILE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.call_closure (|
-                  Ty.path "alloy_primitives::bits::address::Address",
-                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS" |)
-                  ]
-                |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (|
-                    "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2",
-                    [],
-                    []
-                  |))
-              ]
-          |))).
+    Definition value_PRECOMPILE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+                [
+                  M.read (|
+                    get_constant (|
+                      "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS",
+                      Ty.path "u64"
+                    |)
+                  |)
+                ]
+              |);
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (|
+                  "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2",
+                  [],
+                  []
+                |))
+            ]
+        |))).
     
-    Axiom Constant_value_PRECOMPILE :
-      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE") = value_PRECOMPILE.
-    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PRECOMPILE :
+      M.IsFunction.C "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE" value_PRECOMPILE.
+    Admitted.
+    Global Typeclasses Opaque value_PRECOMPILE.
     
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 19 |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 19 |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_BASE_GAS_FEE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 75000 |))).
+    Definition value_BASE_GAS_FEE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 75000 |))).
     
-    Axiom Constant_value_BASE_GAS_FEE :
-      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE") =
-        value_BASE_GAS_FEE.
-    Global Hint Rewrite Constant_value_BASE_GAS_FEE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BASE_GAS_FEE :
+      M.IsFunction.C "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE" value_BASE_GAS_FEE.
+    Admitted.
+    Global Typeclasses Opaque value_BASE_GAS_FEE.
     
     (*
     pub(super) fn map_fp2_to_g2(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -97,8 +104,10 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE",
+                                      Ty.path "u64"
+                                    |)
                                   |),
                                   M.read (| gas_limit |)
                                 |)
@@ -187,8 +196,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -256,13 +267,11 @@ Module bls12_381.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "MAP_FP2_TO_G2 input should be "
+                                                                            mk_str (|
+                                                                              "MAP_FP2_TO_G2 input should be "
                                                                             |);
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                " bytes, was "
+                                                                            mk_str (|
+                                                                              " bytes, was "
                                                                             |)
                                                                           ]
                                                                       |)
@@ -344,8 +353,10 @@ Module bls12_381.
                                                                               |);
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
-                                                                                M.get_constant
-                                                                                  "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
+                                                                                get_constant (|
+                                                                                  "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH",
+                                                                                  Ty.path "usize"
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                         |),
@@ -610,8 +621,10 @@ Module bls12_381.
                                               [
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_constant
-                                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                    get_constant (|
+                                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -861,13 +874,17 @@ Module bls12_381.
                                               [
                                                 ("start",
                                                   M.read (|
-                                                    M.get_constant
-                                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                    get_constant (|
+                                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |));
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_constant
-                                                      "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
+                                                    get_constant (|
+                                                      "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -1173,7 +1190,10 @@ Module bls12_381.
                         |),
                         [
                           M.read (|
-                            M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE"
+                            get_constant (|
+                              "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE",
+                              Ty.path "u64"
+                            |)
                           |);
                           M.read (| out |)
                         ]
@@ -1186,7 +1206,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_map_fp2_to_g2 :
-      M.IsFunction.Trait "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2" map_fp2_to_g2.
+      M.IsFunction.C "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2" map_fp2_to_g2.
     Admitted.
     Global Typeclasses Opaque map_fp2_to_g2.
   End map_fp2_to_g2.

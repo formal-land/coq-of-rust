@@ -111,10 +111,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point has coordinates: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "Point has coordinates: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -236,10 +236,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point has coordinates: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "Point has coordinates: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -397,10 +397,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point has coordinates: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "Point has coordinates: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -525,10 +525,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point now has coordinates: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "Point now has coordinates: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -632,6 +632,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_borrowing_aliasing::main" main.
+  M.IsFunction.C "scoping_rules_borrowing_aliasing::main" main.
 Admitted.
 Global Typeclasses Opaque main.

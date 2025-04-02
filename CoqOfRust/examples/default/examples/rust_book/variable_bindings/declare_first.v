@@ -61,12 +61,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "a binding: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "a binding: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -130,12 +126,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "another binding: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "another binding: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -181,6 +173,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "declare_first::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "declare_first::main" main.
 Admitted.
 Global Typeclasses Opaque main.

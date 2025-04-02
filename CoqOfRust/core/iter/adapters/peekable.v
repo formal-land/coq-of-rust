@@ -163,11 +163,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Peekable" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Peekable" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -181,7 +178,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "peeked" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "peeked" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -241,7 +238,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         (*
@@ -437,7 +434,7 @@ Module iter.
         
         Global Instance AssociatedFunction_peek :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+          M.IsAssociatedFunction.C (Self I) "peek" (peek I).
         Admitted.
         Global Typeclasses Opaque peek.
         
@@ -634,7 +631,7 @@ Module iter.
         
         Global Instance AssociatedFunction_peek_mut :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "peek_mut" (peek_mut I).
+          M.IsAssociatedFunction.C (Self I) "peek_mut" (peek_mut I).
         Admitted.
         Global Typeclasses Opaque peek_mut.
         
@@ -812,11 +809,7 @@ Module iter.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.peeked.is_none()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.peeked.is_none()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -843,7 +836,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_if :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "next_if" (next_if I).
+          M.IsAssociatedFunction.C (Self I) "next_if" (next_if I).
         Admitted.
         Global Typeclasses Opaque next_if.
         
@@ -969,7 +962,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_if_eq :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "next_if_eq" (next_if_eq I).
+          M.IsAssociatedFunction.C (Self I) "next_if_eq" (next_if_eq I).
         Admitted.
         Global Typeclasses Opaque next_if_eq.
       End Impl_core_iter_adapters_peekable_Peekable_I.

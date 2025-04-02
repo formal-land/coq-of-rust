@@ -58,7 +58,7 @@ Module algorithms.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: amount < 64" |) ]
+                                      [ mk_str (| "assertion failed: amount < 64" |) ]
                                     |)
                                   |)
                                 |)));
@@ -187,7 +187,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_shift_left_small :
-      M.IsFunction.Trait "ruint::algorithms::shift::shift_left_small" shift_left_small.
+      M.IsFunction.C "ruint::algorithms::shift::shift_left_small" shift_left_small.
     Admitted.
     Global Typeclasses Opaque shift_left_small.
     
@@ -247,7 +247,7 @@ Module algorithms.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: amount < 64" |) ]
+                                      [ mk_str (| "assertion failed: amount < 64" |) ]
                                     |)
                                   |)
                                 |)));
@@ -414,7 +414,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_shift_right_small :
-      M.IsFunction.Trait "ruint::algorithms::shift::shift_right_small" shift_right_small.
+      M.IsFunction.C "ruint::algorithms::shift::shift_right_small" shift_right_small.
     Admitted.
     Global Typeclasses Opaque shift_right_small.
   End shift.

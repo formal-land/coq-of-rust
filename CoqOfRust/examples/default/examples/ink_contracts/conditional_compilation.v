@@ -169,7 +169,7 @@ Module Impl_conditional_compilation_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -178,22 +178,51 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
   
   (*
       fn block_number(&self) -> BlockNumber {
           unimplemented!()
       }
   *)
-  Parameter block_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition block_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_block_number :
-    M.IsAssociatedFunction.Trait Self "block_number" block_number.
+    M.IsAssociatedFunction.C Self "block_number" block_number.
   Admitted.
+  Global Typeclasses Opaque block_number.
 End Impl_conditional_compilation_Env.
 
 (* StructRecord
@@ -212,11 +241,23 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -241,7 +282,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -277,7 +318,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -297,7 +338,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new_foo : M.IsAssociatedFunction.Trait Self "new_foo" new_foo.
+  Global Instance AssociatedFunction_new_foo : M.IsAssociatedFunction.C Self "new_foo" new_foo.
   Admitted.
   Global Typeclasses Opaque new_foo.
   
@@ -317,7 +358,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new_bar : M.IsAssociatedFunction.Trait Self "new_bar" new_bar.
+  Global Instance AssociatedFunction_new_bar : M.IsAssociatedFunction.C Self "new_bar" new_bar.
   Admitted.
   Global Typeclasses Opaque new_bar.
   
@@ -338,7 +379,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Global Instance AssociatedFunction_new_foo_bar :
-    M.IsAssociatedFunction.Trait Self "new_foo_bar" new_foo_bar.
+    M.IsAssociatedFunction.C Self "new_foo_bar" new_foo_bar.
   Admitted.
   Global Typeclasses Opaque new_foo_bar.
   
@@ -458,7 +499,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Global Instance AssociatedFunction_inherent_flip_foo :
-    M.IsAssociatedFunction.Trait Self "inherent_flip_foo" inherent_flip_foo.
+    M.IsAssociatedFunction.C Self "inherent_flip_foo" inherent_flip_foo.
   Admitted.
   Global Typeclasses Opaque inherent_flip_foo.
   
@@ -610,7 +651,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Global Instance AssociatedFunction_inherent_flip_bar :
-    M.IsAssociatedFunction.Trait Self "inherent_flip_bar" inherent_flip_bar.
+    M.IsAssociatedFunction.C Self "inherent_flip_bar" inherent_flip_bar.
   Admitted.
   Global Typeclasses Opaque inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation.

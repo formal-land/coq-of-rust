@@ -13,7 +13,7 @@ Definition some_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Global Instance Instance_IsFunction_some_fn :
-  M.IsFunction.Trait "diverging_functions_no_info_in_return_type::some_fn" some_fn.
+  M.IsFunction.C "diverging_functions_no_info_in_return_type::some_fn" some_fn.
 Admitted.
 Global Typeclasses Opaque some_fn.
 
@@ -58,12 +58,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.alloc (|
                             Value.Array
-                              [
-                                M.read (|
-                                  Value.String "This function returns and you can see this line.
-"
-                                |)
-                              ]
+                              [ mk_str (| "This function returns and you can see this line.
+" |) ]
                           |)
                         |)
                       |)
@@ -79,6 +75,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "diverging_functions_no_info_in_return_type::main" main.
+  M.IsFunction.C "diverging_functions_no_info_in_return_type::main" main.
 Admitted.
 Global Typeclasses Opaque main.

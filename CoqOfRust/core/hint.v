@@ -64,7 +64,7 @@ Module hint.
     end.
   
   Global Instance Instance_IsFunction_unreachable_unchecked :
-    M.IsFunction.Trait "core::hint::unreachable_unchecked" unreachable_unchecked.
+    M.IsFunction.C "core::hint::unreachable_unchecked" unreachable_unchecked.
   Admitted.
   Global Typeclasses Opaque unreachable_unchecked.
   
@@ -134,7 +134,7 @@ Module hint.
     end.
   
   Global Instance Instance_IsFunction_assert_unchecked :
-    M.IsFunction.Trait "core::hint::assert_unchecked" assert_unchecked.
+    M.IsFunction.C "core::hint::assert_unchecked" assert_unchecked.
   Admitted.
   Global Typeclasses Opaque assert_unchecked.
   
@@ -194,8 +194,7 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_spin_loop :
-    M.IsFunction.Trait "core::hint::spin_loop" spin_loop.
+  Global Instance Instance_IsFunction_spin_loop : M.IsFunction.C "core::hint::spin_loop" spin_loop.
   Admitted.
   Global Typeclasses Opaque spin_loop.
   
@@ -217,8 +216,7 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_black_box :
-    M.IsFunction.Trait "core::hint::black_box" black_box.
+  Global Instance Instance_IsFunction_black_box : M.IsFunction.C "core::hint::black_box" black_box.
   Admitted.
   Global Typeclasses Opaque black_box.
   
@@ -236,7 +234,7 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_must_use : M.IsFunction.Trait "core::hint::must_use" must_use.
+  Global Instance Instance_IsFunction_must_use : M.IsFunction.C "core::hint::must_use" must_use.
   Admitted.
   Global Typeclasses Opaque must_use.
 End hint.

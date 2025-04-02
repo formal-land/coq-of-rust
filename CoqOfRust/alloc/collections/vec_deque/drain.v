@@ -143,7 +143,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+          M.IsAssociatedFunction.C (Self T A) "new" (new T A).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -344,7 +344,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_slices :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T A) "as_slices" (as_slices T A).
+          M.IsAssociatedFunction.C (Self T A) "as_slices" (as_slices T A).
         Admitted.
         Global Typeclasses Opaque as_slices.
       End Impl_alloc_collections_vec_deque_drain_Drain_T_A.
@@ -457,9 +457,7 @@ Module collections.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "Drain" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "Drain" |) |)
                                                           |)
                                                         ]
                                                       |)

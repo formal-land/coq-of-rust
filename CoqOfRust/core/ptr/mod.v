@@ -25,7 +25,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_drop_in_place :
-    M.IsFunction.Trait "core::ptr::drop_in_place" drop_in_place.
+    M.IsFunction.C "core::ptr::drop_in_place" drop_in_place.
   Admitted.
   Global Typeclasses Opaque drop_in_place.
   
@@ -53,7 +53,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_null : M.IsFunction.Trait "core::ptr::null" null.
+  Global Instance Instance_IsFunction_null : M.IsFunction.C "core::ptr::null" null.
   Admitted.
   Global Typeclasses Opaque null.
   
@@ -81,7 +81,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_null_mut : M.IsFunction.Trait "core::ptr::null_mut" null_mut.
+  Global Instance Instance_IsFunction_null_mut : M.IsFunction.C "core::ptr::null_mut" null_mut.
   Admitted.
   Global Typeclasses Opaque null_mut.
   
@@ -113,7 +113,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_without_provenance :
-    M.IsFunction.Trait "core::ptr::without_provenance" without_provenance.
+    M.IsFunction.C "core::ptr::without_provenance" without_provenance.
   Admitted.
   Global Typeclasses Opaque without_provenance.
   
@@ -140,7 +140,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_dangling : M.IsFunction.Trait "core::ptr::dangling" dangling.
+  Global Instance Instance_IsFunction_dangling : M.IsFunction.C "core::ptr::dangling" dangling.
   Admitted.
   Global Typeclasses Opaque dangling.
   
@@ -172,7 +172,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_without_provenance_mut :
-    M.IsFunction.Trait "core::ptr::without_provenance_mut" without_provenance_mut.
+    M.IsFunction.C "core::ptr::without_provenance_mut" without_provenance_mut.
   Admitted.
   Global Typeclasses Opaque without_provenance_mut.
   
@@ -200,7 +200,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_dangling_mut :
-    M.IsFunction.Trait "core::ptr::dangling_mut" dangling_mut.
+    M.IsFunction.C "core::ptr::dangling_mut" dangling_mut.
   Admitted.
   Global Typeclasses Opaque dangling_mut.
   
@@ -219,7 +219,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_with_exposed_provenance :
-    M.IsFunction.Trait "core::ptr::with_exposed_provenance" with_exposed_provenance.
+    M.IsFunction.C "core::ptr::with_exposed_provenance" with_exposed_provenance.
   Admitted.
   Global Typeclasses Opaque with_exposed_provenance.
   
@@ -242,7 +242,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_with_exposed_provenance_mut :
-    M.IsFunction.Trait "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
+    M.IsFunction.C "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
   Admitted.
   Global Typeclasses Opaque with_exposed_provenance_mut.
   
@@ -260,7 +260,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_ref : M.IsFunction.Trait "core::ptr::from_ref" from_ref.
+  Global Instance Instance_IsFunction_from_ref : M.IsFunction.C "core::ptr::from_ref" from_ref.
   Admitted.
   Global Typeclasses Opaque from_ref.
   
@@ -278,7 +278,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_mut : M.IsFunction.Trait "core::ptr::from_mut" from_mut.
+  Global Instance Instance_IsFunction_from_mut : M.IsFunction.C "core::ptr::from_mut" from_mut.
   Admitted.
   Global Typeclasses Opaque from_mut.
   
@@ -306,7 +306,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_slice_from_raw_parts :
-    M.IsFunction.Trait "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
+    M.IsFunction.C "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
   Admitted.
   Global Typeclasses Opaque slice_from_raw_parts.
   
@@ -334,7 +334,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_slice_from_raw_parts_mut :
-    M.IsFunction.Trait "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
+    M.IsFunction.C "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
   Admitted.
   Global Typeclasses Opaque slice_from_raw_parts_mut.
   
@@ -435,7 +435,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_swap : M.IsFunction.Trait "core::ptr::swap" swap.
+  Global Instance Instance_IsFunction_swap : M.IsFunction.C "core::ptr::swap" swap.
   Admitted.
   Global Typeclasses Opaque swap.
   
@@ -904,7 +904,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_swap_nonoverlapping :
-    M.IsFunction.Trait "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
+    M.IsFunction.C "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
   Admitted.
   Global Typeclasses Opaque swap_nonoverlapping.
   
@@ -1141,7 +1141,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_swap_nonoverlapping_simple_untyped :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::ptr::swap_nonoverlapping_simple_untyped"
       swap_nonoverlapping_simple_untyped.
   Admitted.
@@ -1205,7 +1205,12 @@ Module ptr.
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
-                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                            M.read (|
+                              get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1230,7 +1235,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_replace : M.IsFunction.Trait "core::ptr::replace" replace.
+  Global Instance Instance_IsFunction_replace : M.IsFunction.C "core::ptr::replace" replace.
   Admitted.
   Global Typeclasses Opaque replace.
   
@@ -1315,7 +1320,12 @@ Module ptr.
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
-                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                            M.read (|
+                              get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1334,7 +1344,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_read : M.IsFunction.Trait "core::ptr::read" read.
+  Global Instance Instance_IsFunction_read : M.IsFunction.C "core::ptr::read" read.
   Admitted.
   Global Typeclasses Opaque read.
   
@@ -1416,7 +1426,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_read_unaligned :
-    M.IsFunction.Trait "core::ptr::read_unaligned" read_unaligned.
+    M.IsFunction.C "core::ptr::read_unaligned" read_unaligned.
   Admitted.
   Global Typeclasses Opaque read_unaligned.
   
@@ -1486,7 +1496,12 @@ Module ptr.
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
-                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                            M.read (|
+                              get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1505,7 +1520,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_write : M.IsFunction.Trait "core::ptr::write" write.
+  Global Instance Instance_IsFunction_write : M.IsFunction.C "core::ptr::write" write.
   Admitted.
   Global Typeclasses Opaque write.
   
@@ -1560,7 +1575,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_write_unaligned :
-    M.IsFunction.Trait "core::ptr::write_unaligned" write_unaligned.
+    M.IsFunction.C "core::ptr::write_unaligned" write_unaligned.
   Admitted.
   Global Typeclasses Opaque write_unaligned.
   
@@ -1622,7 +1637,12 @@ Module ptr.
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
-                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                            M.read (|
+                              get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1642,7 +1662,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_read_volatile :
-    M.IsFunction.Trait "core::ptr::read_volatile" read_volatile.
+    M.IsFunction.C "core::ptr::read_volatile" read_volatile.
   Admitted.
   Global Typeclasses Opaque read_volatile.
   
@@ -1705,7 +1725,12 @@ Module ptr.
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
-                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                            M.read (|
+                              get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1727,7 +1752,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_write_volatile :
-    M.IsFunction.Trait "core::ptr::write_volatile" write_volatile.
+    M.IsFunction.C "core::ptr::write_volatile" write_volatile.
   Admitted.
   Global Typeclasses Opaque write_volatile.
   
@@ -1985,7 +2010,13 @@ Module ptr.
                                               Value.Bool true
                                             |) in
                                           M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
-                                      fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (get_associated_constant (|
+                                            Ty.path "usize",
+                                            "MAX",
+                                            Ty.path "usize"
+                                          |)))
                                     ]
                                   |)
                                 |)
@@ -2110,7 +2141,13 @@ Module ptr.
                                               [ M.read (| byte_offset |); M.read (| stride |) ]
                                             |)
                                           |)));
-                                      fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (get_associated_constant (|
+                                            Ty.path "usize",
+                                            "MAX",
+                                            Ty.path "usize"
+                                          |)))
                                     ]
                                   |)
                                 |)
@@ -2303,14 +2340,14 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.get_constant "core::num::MAX"
+              get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_align_offset :
-    M.IsFunction.Trait "core::ptr::align_offset" align_offset.
+    M.IsFunction.C "core::ptr::align_offset" align_offset.
   Admitted.
   Global Typeclasses Opaque align_offset.
   
@@ -2379,13 +2416,22 @@ Module ptr.
                   (Ty.path "usize")
                   (M.read (|
                     M.SubPointer.get_array_field (|
-                      M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16",
+                      get_constant (|
+                        "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16",
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 8 ]
+                          [ Ty.path "u8" ]
+                      |),
                       BinOp.Wrap.shr (|
                         BinOp.bit_and
                           (M.read (| x |))
                           (BinOp.Wrap.sub (|
                             M.read (|
-                              M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
+                              get_constant (|
+                                "core::ptr::align_offset::mod_inv::INV_TABLE_MOD",
+                                Ty.path "usize"
+                              |)
                             |),
                             Value.Integer IntegerKind.Usize 1
                           |)),
@@ -2395,7 +2441,12 @@ Module ptr.
                   |))
               |) in
             let~ mod_gate : Ty.path "usize" :=
-              M.copy (| M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" |) in
+              M.copy (|
+                get_constant (|
+                  "core::ptr::align_offset::mod_inv::INV_TABLE_MOD",
+                  Ty.path "usize"
+                |)
+              |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
                 Ty.tuple [],
@@ -2504,39 +2555,39 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_mod_inv :
-      M.IsFunction.Trait "core::ptr::align_offset::mod_inv" mod_inv.
+      M.IsFunction.C "core::ptr::align_offset::mod_inv" mod_inv.
     Admitted.
     Global Typeclasses Opaque mod_inv.
     
     Module mod_inv.
-      Definition value_INV_TABLE_MOD_16 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.Array
-                [
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 11;
-                  Value.Integer IntegerKind.U8 13;
-                  Value.Integer IntegerKind.U8 7;
-                  Value.Integer IntegerKind.U8 9;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 5;
-                  Value.Integer IntegerKind.U8 15
-                ]
-            |))).
+      Definition value_INV_TABLE_MOD_16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.U8 1;
+                Value.Integer IntegerKind.U8 11;
+                Value.Integer IntegerKind.U8 13;
+                Value.Integer IntegerKind.U8 7;
+                Value.Integer IntegerKind.U8 9;
+                Value.Integer IntegerKind.U8 3;
+                Value.Integer IntegerKind.U8 5;
+                Value.Integer IntegerKind.U8 15
+              ]
+          |))).
       
-      Axiom Constant_value_INV_TABLE_MOD_16 :
-        (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16") =
-          value_INV_TABLE_MOD_16.
-      Global Hint Rewrite Constant_value_INV_TABLE_MOD_16 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_INV_TABLE_MOD_16 :
+        M.IsFunction.C "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" value_INV_TABLE_MOD_16.
+      Admitted.
+      Global Typeclasses Opaque value_INV_TABLE_MOD_16.
       
-      Definition value_INV_TABLE_MOD : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      Definition value_INV_TABLE_MOD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
-      Axiom Constant_value_INV_TABLE_MOD :
-        (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD") = value_INV_TABLE_MOD.
-      Global Hint Rewrite Constant_value_INV_TABLE_MOD : constant_rewrites.
+      Global Instance Instance_IsConstant_value_INV_TABLE_MOD :
+        M.IsFunction.C "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" value_INV_TABLE_MOD.
+      Admitted.
+      Global Typeclasses Opaque value_INV_TABLE_MOD.
     End mod_inv.
   End align_offset.
   
@@ -2555,7 +2606,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_eq : M.IsFunction.Trait "core::ptr::eq" eq.
+  Global Instance Instance_IsFunction_eq : M.IsFunction.C "core::ptr::eq" eq.
   Admitted.
   Global Typeclasses Opaque eq.
   
@@ -2577,7 +2628,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_addr_eq : M.IsFunction.Trait "core::ptr::addr_eq" addr_eq.
+  Global Instance Instance_IsFunction_addr_eq : M.IsFunction.C "core::ptr::addr_eq" addr_eq.
   Admitted.
   Global Typeclasses Opaque addr_eq.
   
@@ -2608,7 +2659,7 @@ Module ptr.
     end.
   
   Global Instance Instance_IsFunction_fn_addr_eq :
-    M.IsFunction.Trait "core::ptr::fn_addr_eq" fn_addr_eq.
+    M.IsFunction.C "core::ptr::fn_addr_eq" fn_addr_eq.
   Admitted.
   Global Typeclasses Opaque fn_addr_eq.
   
@@ -2649,7 +2700,7 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_hash : M.IsFunction.Trait "core::ptr::hash" hash.
+  Global Instance Instance_IsFunction_hash : M.IsFunction.C "core::ptr::hash" hash.
   Admitted.
   Global Typeclasses Opaque hash.
   

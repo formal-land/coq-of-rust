@@ -68,7 +68,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DivisionByZero" |) |)
+                            M.deref (| mk_str (| "DivisionByZero" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -82,7 +82,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonPositiveLogarithm" |) |)
+                            M.deref (| mk_str (| "NonPositiveLogarithm" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -96,7 +96,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NegativeSquareRoot" |) |)
+                            M.deref (| mk_str (| "NegativeSquareRoot" |) |)
                           |)
                         |)))
                   ]
@@ -179,7 +179,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_div :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::div" div.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::div" div.
   Admitted.
   Global Typeclasses Opaque div.
   
@@ -244,7 +244,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_sqrt :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::sqrt" sqrt.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::sqrt" sqrt.
   Admitted.
   Global Typeclasses Opaque sqrt.
   
@@ -309,7 +309,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_ln :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::ln" ln.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::ln" ln.
   Admitted.
   Global Typeclasses Opaque ln.
   
@@ -592,7 +592,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_op_ :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op_" op_.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::op_" op_.
   Admitted.
   Global Typeclasses Opaque op_.
   
@@ -663,7 +663,9 @@ Module checked.
                                             γ,
                                             "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
                                           |) in
-                                        Value.String "logarithm of non-positive number"));
+                                        M.alloc (|
+                                          mk_str (| "logarithm of non-positive number" |)
+                                        |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let _ :=
@@ -674,9 +676,7 @@ Module checked.
                                         M.alloc (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (| Value.String "division by zero" |)
-                                            |)
+                                            M.deref (| mk_str (| "division by zero" |) |)
                                           |)
                                         |)));
                                     fun γ =>
@@ -690,9 +690,7 @@ Module checked.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "square root of negative number"
-                                              |)
+                                              mk_str (| "square root of negative number" |)
                                             |)
                                           |)
                                         |)))
@@ -731,14 +729,8 @@ Module checked.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "" |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                                   |)
                                 |)
                               |);
@@ -783,7 +775,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_op :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op" op.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::op" op.
   Admitted.
   Global Typeclasses Opaque op.
 End checked.
@@ -812,6 +804,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "result_chaining_with_question_mark::main" main.
+  M.IsFunction.C "result_chaining_with_question_mark::main" main.
 Admitted.
 Global Typeclasses Opaque main.

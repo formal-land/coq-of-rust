@@ -142,7 +142,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -718,7 +718,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
     
@@ -992,7 +992,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_signature_pool :
-      M.IsAssociatedFunction.Trait Self "verify_signature_pool" verify_signature_pool.
+      M.IsAssociatedFunction.C Self "verify_signature_pool" verify_signature_pool.
     Admitted.
     Global Typeclasses Opaque verify_signature_pool.
     
@@ -1938,7 +1938,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_function_signatures :
-      M.IsAssociatedFunction.Trait Self "verify_function_signatures" verify_function_signatures.
+      M.IsAssociatedFunction.C Self "verify_function_signatures" verify_function_signatures.
     Admitted.
     Global Typeclasses Opaque verify_function_signatures.
     
@@ -3678,7 +3678,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_fields :
-      M.IsAssociatedFunction.Trait Self "verify_fields" verify_fields.
+      M.IsAssociatedFunction.C Self "verify_fields" verify_fields.
     Admitted.
     Global Typeclasses Opaque verify_fields.
     
@@ -4283,7 +4283,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_code_units :
-      M.IsAssociatedFunction.Trait Self "verify_code_units" verify_code_units.
+      M.IsAssociatedFunction.C Self "verify_code_units" verify_code_units.
     Admitted.
     Global Typeclasses Opaque verify_code_units.
     
@@ -6885,9 +6885,8 @@ Module signature.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "expected 1 type token for vector operations, got "
+                                                                                                                        mk_str (|
+                                                                                                                          "expected 1 type token for vector operations, got "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -7806,13 +7805,11 @@ Module signature.
                                                                                                     M.alloc (|
                                                                                                       Value.Array
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "at offset "
+                                                                                                          mk_str (|
+                                                                                                            "at offset "
                                                                                                           |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " "
+                                                                                                          mk_str (|
+                                                                                                            " "
                                                                                                           |)
                                                                                                         ]
                                                                                                     |)
@@ -7959,7 +7956,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_verify_code :
-      M.IsAssociatedFunction.Trait Self "verify_code" verify_code.
+      M.IsAssociatedFunction.C Self "verify_code" verify_code.
     Admitted.
     Global Typeclasses Opaque verify_code.
     
@@ -8771,9 +8768,8 @@ Module signature.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
-                                                          M.read (|
-                                                            Value.String
-                                                              "phantom type parameter cannot be used in non-phantom position"
+                                                          mk_str (|
+                                                            "phantom type parameter cannot be used in non-phantom position"
                                                           |)
                                                         |)
                                                       |)
@@ -8922,7 +8918,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_phantom_params :
-      M.IsAssociatedFunction.Trait Self "check_phantom_params" check_phantom_params.
+      M.IsAssociatedFunction.C Self "check_phantom_params" check_phantom_params.
     Admitted.
     Global Typeclasses Opaque check_phantom_params.
     
@@ -9432,7 +9428,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_signature :
-      M.IsAssociatedFunction.Trait Self "check_signature" check_signature.
+      M.IsAssociatedFunction.C Self "check_signature" check_signature.
     Admitted.
     Global Typeclasses Opaque check_signature.
     
@@ -9695,7 +9691,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_signature_tokens :
-      M.IsAssociatedFunction.Trait Self "check_signature_tokens" check_signature_tokens.
+      M.IsAssociatedFunction.C Self "check_signature_tokens" check_signature_tokens.
     Admitted.
     Global Typeclasses Opaque check_signature_tokens.
     
@@ -9924,9 +9920,7 @@ Module signature.
                                           [
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "reference not allowed" |)
-                                              |)
+                                              M.deref (| mk_str (| "reference not allowed" |) |)
                                             |)
                                           ]
                                         |)
@@ -10063,7 +10057,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_signature_token :
-      M.IsAssociatedFunction.Trait Self "check_signature_token" check_signature_token.
+      M.IsAssociatedFunction.C Self "check_signature_token" check_signature_token.
     Admitted.
     Global Typeclasses Opaque check_signature_token.
     
@@ -10714,7 +10708,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_instantiation :
-      M.IsAssociatedFunction.Trait Self "check_instantiation" check_instantiation.
+      M.IsAssociatedFunction.C Self "check_instantiation" check_instantiation.
     Admitted.
     Global Typeclasses Opaque check_instantiation.
     
@@ -10783,7 +10777,10 @@ Module signature.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "move_binary_format::file_format_common::VERSION_6"
+                                  get_constant (|
+                                    "move_binary_format::file_format_common::VERSION_6",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -11074,7 +11071,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_type_instantiation :
-      M.IsAssociatedFunction.Trait Self "check_type_instantiation" check_type_instantiation.
+      M.IsAssociatedFunction.C Self "check_type_instantiation" check_type_instantiation.
     Admitted.
     Global Typeclasses Opaque check_type_instantiation.
     
@@ -11428,7 +11425,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_type_instantiation_ :
-      M.IsAssociatedFunction.Trait Self "check_type_instantiation_" check_type_instantiation_.
+      M.IsAssociatedFunction.C Self "check_type_instantiation_" check_type_instantiation_.
     Admitted.
     Global Typeclasses Opaque check_type_instantiation_.
     
@@ -11594,12 +11591,9 @@ Module signature.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "expected "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " type argument(s), got "
+                                                                        mk_str (| "expected " |);
+                                                                        mk_str (|
+                                                                          " type argument(s), got "
                                                                         |)
                                                                       ]
                                                                   |)
@@ -12171,17 +12165,14 @@ Module signature.
                                                                                           M.alloc (|
                                                                                             Value.Array
                                                                                               [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "expected type with abilities "
+                                                                                                mk_str (|
+                                                                                                  "expected type with abilities "
                                                                                                 |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " got type actual "
+                                                                                                mk_str (|
+                                                                                                  " got type actual "
                                                                                                 |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " with incompatible abilities "
+                                                                                                mk_str (|
+                                                                                                  " with incompatible abilities "
                                                                                                 |)
                                                                                               ]
                                                                                           |)
@@ -12315,7 +12306,7 @@ Module signature.
       end.
     
     Global Instance AssociatedFunction_check_generic_instance :
-      M.IsAssociatedFunction.Trait Self "check_generic_instance" check_generic_instance.
+      M.IsAssociatedFunction.C Self "check_generic_instance" check_generic_instance.
     Admitted.
     Global Typeclasses Opaque check_generic_instance.
   End Impl_move_bytecode_verifier_signature_SignatureChecker.

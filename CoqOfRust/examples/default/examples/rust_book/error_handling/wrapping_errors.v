@@ -61,10 +61,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "EmptyVec" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyVec" |) |) |)
                       ]
                     |)
                   |)));
@@ -92,10 +89,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Parse" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parse" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -184,11 +178,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "please use a vector with at least one element"
-                                        |)
+                                      [ mk_str (| "please use a vector with at least one element" |)
                                       ]
                                   |)
                                 |)
@@ -233,9 +223,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "the provided string could not be parsed as int"
+                                        mk_str (|
+                                          "the provided string could not be parsed as int"
                                         |)
                                       ]
                                   |)
@@ -672,7 +661,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "wrapping_errors::double_first" double_first.
+  M.IsFunction.C "wrapping_errors::double_first" double_first.
 Admitted.
 Global Typeclasses Opaque double_first.
 
@@ -727,11 +716,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "The first doubled is " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "The first doubled is " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -798,12 +784,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Error: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Error: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -905,11 +887,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Value.Array
-                                                [
-                                                  M.read (| Value.String "  Caused by: " |);
-                                                  M.read (| Value.String "
-" |)
-                                                ]
+                                                [ mk_str (| "  Caused by: " |); mk_str (| "
+" |) ]
                                             |)
                                           |)
                                         |)
@@ -968,7 +947,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_print : M.IsFunction.Trait "wrapping_errors::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "wrapping_errors::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -1037,15 +1016,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "42" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "42" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -1126,15 +1099,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "tofu" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "tofu" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -1199,6 +1166,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "wrapping_errors::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "wrapping_errors::main" main.
 Admitted.
 Global Typeclasses Opaque main.

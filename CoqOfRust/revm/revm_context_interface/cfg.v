@@ -1785,10 +1785,7 @@ Module cfg.
                             "revm_context_interface::cfg::AnalysisKind::Raw"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Raw" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Raw" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1799,10 +1796,7 @@ Module cfg.
                             "revm_context_interface::cfg::AnalysisKind::Analyse"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Analyse" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Analyse" |) |) |)
                         |)))
                   ]
                 |)
@@ -2083,10 +2077,7 @@ Module cfg.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Create" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create" |) |) |)
                         ]
                       |)
                     |)));
@@ -2114,14 +2105,8 @@ Module cfg.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Create2" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "salt" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create2" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "salt" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)

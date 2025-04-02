@@ -121,11 +121,8 @@ Module interpreter_action.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CallOutcome" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallOutcome" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -139,10 +136,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "memory_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -341,7 +335,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -376,7 +370,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_instruction_result :
-        M.IsAssociatedFunction.Trait Self "instruction_result" instruction_result.
+        M.IsAssociatedFunction.C Self "instruction_result" instruction_result.
       Admitted.
       Global Typeclasses Opaque instruction_result.
       
@@ -404,7 +398,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_gas : M.IsAssociatedFunction.Trait Self "gas" gas.
+      Global Instance AssociatedFunction_gas : M.IsAssociatedFunction.C Self "gas" gas.
       Admitted.
       Global Typeclasses Opaque gas.
       
@@ -438,7 +432,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_output : M.IsAssociatedFunction.Trait Self "output" output.
+      Global Instance AssociatedFunction_output : M.IsAssociatedFunction.C Self "output" output.
       Admitted.
       Global Typeclasses Opaque output.
       
@@ -467,7 +461,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_memory_start :
-        M.IsAssociatedFunction.Trait Self "memory_start" memory_start.
+        M.IsAssociatedFunction.C Self "memory_start" memory_start.
       Admitted.
       Global Typeclasses Opaque memory_start.
       
@@ -507,7 +501,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_memory_length :
-        M.IsAssociatedFunction.Trait Self "memory_length" memory_length.
+        M.IsAssociatedFunction.C Self "memory_length" memory_length.
       Admitted.
       Global Typeclasses Opaque memory_length.
     End Impl_revm_interpreter_interpreter_action_call_outcome_CallOutcome.

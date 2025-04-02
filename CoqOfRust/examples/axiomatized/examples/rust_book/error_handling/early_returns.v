@@ -3,16 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "early_returns::multiply" multiply.
+Global Instance Instance_IsFunction_multiply : M.IsFunction.C "early_returns::multiply" multiply.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_print : M.IsFunction.Trait "early_returns::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "early_returns::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "early_returns::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "early_returns::main" main.
 Admitted.

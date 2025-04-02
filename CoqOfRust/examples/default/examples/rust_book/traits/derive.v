@@ -149,7 +149,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Inches" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Inches" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -224,7 +224,7 @@ Module Impl_derive_Inches.
     end.
   
   Global Instance AssociatedFunction_to_centimeters :
-    M.IsAssociatedFunction.Trait Self "to_centimeters" to_centimeters.
+    M.IsAssociatedFunction.C Self "to_centimeters" to_centimeters.
   Admitted.
   Global Typeclasses Opaque to_centimeters.
 End Impl_derive_Inches.
@@ -295,12 +295,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "One foot equals " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "One foot equals " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -386,14 +382,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    Value.String "smaller"));
+                    M.alloc (| mk_str (| "smaller" |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "bigger" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bigger" |) |) |)
                     |)))
               ]
             |)
@@ -421,11 +414,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "One foot is " |);
-                                  M.read (| Value.String " than one meter.
-" |)
-                                ]
+                                [ mk_str (| "One foot is " |); mk_str (| " than one meter.
+" |) ]
                             |)
                           |)
                         |)
@@ -469,6 +459,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "derive::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "derive::main" main.
 Admitted.
 Global Typeclasses Opaque main.

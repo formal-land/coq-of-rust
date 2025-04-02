@@ -14,14 +14,13 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
-          [ M.read (| Value.String "not yet implemented" |) ]
+          [ mk_str (| "not yet implemented" |) ]
         |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_gen_range :
-  M.IsFunction.Trait "guessing_game::gen_range" gen_range.
+Global Instance Instance_IsFunction_gen_range : M.IsFunction.C "guessing_game::gen_range" gen_range.
 Admitted.
 Global Typeclasses Opaque gen_range.
 
@@ -85,10 +84,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Guess the number!
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Guess the number!
+" |) ] |)
                           |)
                         |)
                       |)
@@ -131,8 +128,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "Please input your guess.
+                                  Value.Array [ mk_str (| "Please input your guess.
 " |) ]
                                 |)
                               |)
@@ -196,7 +192,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "Failed to read line" |) |)
+                      M.deref (| mk_str (| "Failed to read line" |) |)
                     |)
                   ]
                 |)
@@ -290,12 +286,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "You guessed: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
+                                  Value.Array [ mk_str (| "You guessed: " |); mk_str (| "
+" |) ]
                                 |)
                               |)
                             |)
@@ -373,10 +365,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "Too small!
-" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "Too small!
+" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -409,10 +399,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "Too big!
-" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "Too big!
+" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -449,11 +437,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "You win!
-" |) ]
-                                              |)
+                                              M.alloc (| Value.Array [ mk_str (| "You win!
+" |) ] |)
                                             |)
                                           |)
                                         |)
@@ -474,6 +459,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "guessing_game::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "guessing_game::main" main.
 Admitted.
 Global Typeclasses Opaque main.

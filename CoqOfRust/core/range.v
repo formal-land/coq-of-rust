@@ -501,7 +501,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                       |)
                                     |)
                                   |)
@@ -737,7 +737,7 @@ Module range.
     
     Global Instance AssociatedFunction_iter :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "iter" (iter Idx).
+      M.IsAssociatedFunction.C (Self Idx) "iter" (iter Idx).
     Admitted.
     Global Typeclasses Opaque iter.
     (*
@@ -777,7 +777,7 @@ Module range.
     
     Global Instance AssociatedFunction_contains :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
     Admitted.
     Global Typeclasses Opaque contains.
     
@@ -821,7 +821,7 @@ Module range.
     
     Global Instance AssociatedFunction_is_empty :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+      M.IsAssociatedFunction.C (Self Idx) "is_empty" (is_empty Idx).
     Admitted.
     Global Typeclasses Opaque is_empty.
   End Impl_core_range_Range_Idx.
@@ -1535,9 +1535,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "..=" |) ]
-                                        |)
+                                        M.alloc (| Value.Array [ mk_str (| "..=" |) ] |)
                                       |)
                                     |)
                                   |)
@@ -1768,7 +1766,7 @@ Module range.
     
     Global Instance AssociatedFunction_contains :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
     Admitted.
     Global Typeclasses Opaque contains.
     
@@ -1812,7 +1810,7 @@ Module range.
     
     Global Instance AssociatedFunction_is_empty :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+      M.IsAssociatedFunction.C (Self Idx) "is_empty" (is_empty Idx).
     Admitted.
     Global Typeclasses Opaque is_empty.
     (*
@@ -1858,7 +1856,7 @@ Module range.
     
     Global Instance AssociatedFunction_iter :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "iter" (iter Idx).
+      M.IsAssociatedFunction.C (Self Idx) "iter" (iter Idx).
     Admitted.
     Global Typeclasses Opaque iter.
   End Impl_core_range_RangeInclusive_Idx.
@@ -1905,7 +1903,7 @@ Module range.
       end.
     
     Global Instance AssociatedFunction_into_slice_range :
-      M.IsAssociatedFunction.Trait Self "into_slice_range" into_slice_range.
+      M.IsAssociatedFunction.C Self "into_slice_range" into_slice_range.
     Admitted.
     Global Typeclasses Opaque into_slice_range.
   End Impl_core_range_RangeInclusive_usize.
@@ -2187,9 +2185,8 @@ Module range.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "attempted to convert from an exhausted `legacy::RangeInclusive` (unspecified behavior)"
+                                              mk_str (|
+                                                "attempted to convert from an exhausted `legacy::RangeInclusive` (unspecified behavior)"
                                               |)
                                             ]
                                         |)
@@ -2636,7 +2633,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                       |)
                                     |)
                                   |)
@@ -2766,7 +2763,7 @@ Module range.
     
     Global Instance AssociatedFunction_iter :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "iter" (iter Idx).
+      M.IsAssociatedFunction.C (Self Idx) "iter" (iter Idx).
     Admitted.
     Global Typeclasses Opaque iter.
     (*
@@ -2806,7 +2803,7 @@ Module range.
     
     Global Instance AssociatedFunction_contains :
       forall (Idx : Ty.t),
-      M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      M.IsAssociatedFunction.C (Self Idx) "contains" (contains Idx).
     Admitted.
     Global Typeclasses Opaque contains.
   End Impl_core_range_RangeFrom_Idx.

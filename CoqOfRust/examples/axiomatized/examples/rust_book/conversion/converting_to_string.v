@@ -25,5 +25,5 @@ End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "converting_to_string::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "converting_to_string::main" main.
 Admitted.

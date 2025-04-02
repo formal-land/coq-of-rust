@@ -717,7 +717,7 @@ Module instantiation_loops.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -822,7 +822,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -1430,10 +1430,7 @@ Module instantiation_loops.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String ", " |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
                           ]
                         |)
                       |) in
@@ -1682,10 +1679,7 @@ Module instantiation_loops.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String ", " |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
                           ]
                         |)
                       |) in
@@ -1726,11 +1720,9 @@ Module instantiation_loops.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String "edges with constructors: ["
-                                                      |);
-                                                      M.read (| Value.String "], nodes: [" |);
-                                                      M.read (| Value.String "]" |)
+                                                      mk_str (| "edges with constructors: [" |);
+                                                      mk_str (| "], nodes: [" |);
+                                                      mk_str (| "]" |)
                                                     ]
                                                 |)
                                               |)
@@ -1838,7 +1830,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
     
@@ -2025,7 +2017,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_get_or_add_node :
-      M.IsAssociatedFunction.Trait Self "get_or_add_node" get_or_add_node.
+      M.IsAssociatedFunction.C Self "get_or_add_node" get_or_add_node.
     Admitted.
     Global Typeclasses Opaque get_or_add_node.
     
@@ -2106,7 +2098,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_extract_type_parameters :
-      M.IsAssociatedFunction.Trait Self "extract_type_parameters" extract_type_parameters.
+      M.IsAssociatedFunction.C Self "extract_type_parameters" extract_type_parameters.
     Admitted.
     Global Typeclasses Opaque extract_type_parameters.
     
@@ -2198,8 +2190,7 @@ Module instantiation_loops.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_add_edge :
-      M.IsAssociatedFunction.Trait Self "add_edge" add_edge.
+    Global Instance AssociatedFunction_add_edge : M.IsAssociatedFunction.C Self "add_edge" add_edge.
     Admitted.
     Global Typeclasses Opaque add_edge.
     
@@ -2732,7 +2723,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_build_graph_call :
-      M.IsAssociatedFunction.Trait Self "build_graph_call" build_graph_call.
+      M.IsAssociatedFunction.C Self "build_graph_call" build_graph_call.
     Admitted.
     Global Typeclasses Opaque build_graph_call.
     
@@ -3094,7 +3085,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_build_graph_function_def :
-      M.IsAssociatedFunction.Trait Self "build_graph_function_def" build_graph_function_def.
+      M.IsAssociatedFunction.C Self "build_graph_function_def" build_graph_function_def.
     Admitted.
     Global Typeclasses Opaque build_graph_function_def.
     
@@ -3582,7 +3573,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_build_graph :
-      M.IsAssociatedFunction.Trait Self "build_graph" build_graph.
+      M.IsAssociatedFunction.C Self "build_graph" build_graph.
     Admitted.
     Global Typeclasses Opaque build_graph.
     
@@ -5504,7 +5495,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_find_non_trivial_components :
-      M.IsAssociatedFunction.Trait Self "find_non_trivial_components" find_non_trivial_components.
+      M.IsAssociatedFunction.C Self "find_non_trivial_components" find_non_trivial_components.
     Admitted.
     Global Typeclasses Opaque find_non_trivial_components.
     
@@ -5635,11 +5626,7 @@ Module instantiation_loops.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "f" |);
-                                                    M.read (| Value.String "#" |)
-                                                  ]
+                                                Value.Array [ mk_str (| "f" |); mk_str (| "#" |) ]
                                               |)
                                             |)
                                           |)
@@ -5724,7 +5711,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_format_node :
-      M.IsAssociatedFunction.Trait Self "format_node" format_node.
+      M.IsAssociatedFunction.C Self "format_node" format_node.
     Admitted.
     Global Typeclasses Opaque format_node.
     
@@ -5974,9 +5961,9 @@ Module instantiation_loops.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (| Value.String "" |);
-                                                            M.read (| Value.String " --" |);
-                                                            M.read (| Value.String "--> " |)
+                                                            mk_str (| "" |);
+                                                            mk_str (| " --" |);
+                                                            mk_str (| "--> " |)
                                                           ]
                                                       |)
                                                     |)
@@ -6121,9 +6108,7 @@ Module instantiation_loops.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "" |);
-                                                            M.read (| Value.String " ----> " |)
+                                                          [ mk_str (| "" |); mk_str (| " ----> " |)
                                                           ]
                                                       |)
                                                     |)
@@ -6201,7 +6186,7 @@ Module instantiation_loops.
       end.
     
     Global Instance AssociatedFunction_format_edge :
-      M.IsAssociatedFunction.Trait Self "format_edge" format_edge.
+      M.IsAssociatedFunction.C Self "format_edge" format_edge.
     Admitted.
     Global Typeclasses Opaque format_edge.
   End Impl_move_bytecode_verifier_instantiation_loops_InstantiationLoopChecker.

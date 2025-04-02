@@ -21,7 +21,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_repeat_with :
-        M.IsFunction.Trait "core::iter::sources::repeat_with::repeat_with" repeat_with.
+        M.IsFunction.C "core::iter::sources::repeat_with::repeat_with" repeat_with.
       Admitted.
       Global Typeclasses Opaque repeat_with.
       
@@ -136,10 +136,7 @@ Module iter.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RepeatWith" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RepeatWith" |) |) |)
                         ]
                       |)
                     |)
@@ -225,7 +222,9 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.Tuple
                 [
-                  M.read (| M.get_constant "core::num::MAX" |);
+                  M.read (|
+                    get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                  |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"

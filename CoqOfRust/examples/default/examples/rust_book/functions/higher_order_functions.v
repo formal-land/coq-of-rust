@@ -18,8 +18,7 @@ Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_is_odd :
-  M.IsFunction.Trait "higher_order_functions::is_odd" is_odd.
+Global Instance Instance_IsFunction_is_odd : M.IsFunction.C "higher_order_functions::is_odd" is_odd.
 Admitted.
 Global Typeclasses Opaque is_odd.
 
@@ -84,9 +83,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "Find the sum of all the squared odd numbers under 1000
+                                  mk_str (|
+                                    "Find the sum of all the squared odd numbers under 1000
 "
                                   |)
                                 ]
@@ -271,12 +269,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "imperative style: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "imperative style: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -570,12 +564,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "functional style: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "functional style: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -624,6 +614,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "higher_order_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "higher_order_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

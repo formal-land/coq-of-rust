@@ -86,7 +86,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "PeekMut" |) |)
+                                  M.deref (| mk_str (| "PeekMut" |) |)
                                 |)
                               ]
                             |)
@@ -371,11 +371,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: !self.heap.is_empty()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: !self.heap.is_empty()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -559,11 +555,7 @@ Module collections.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: !self.heap.is_empty()"
-                                              |)
+                                            [ mk_str (| "assertion failed: !self.heap.is_empty()" |)
                                             ]
                                           |)
                                         |)
@@ -933,7 +925,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop" (pop T A).
+        M.IsAssociatedFunction.C (Self T A) "pop" (pop T A).
       Admitted.
       Global Typeclasses Opaque pop.
     End Impl_alloc_collections_binary_heap_PeekMut_T_A.
@@ -1311,7 +1303,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1351,7 +1343,7 @@ Module collections.
       
       Global Instance AssociatedFunction_with_capacity :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "with_capacity" (with_capacity T).
+        M.IsAssociatedFunction.C (Self T) "with_capacity" (with_capacity T).
       Admitted.
       Global Typeclasses Opaque with_capacity.
     End Impl_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
@@ -1391,7 +1383,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new_in :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+        M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
       Admitted.
       Global Typeclasses Opaque new_in.
       
@@ -1432,7 +1424,7 @@ Module collections.
       
       Global Instance AssociatedFunction_with_capacity_in :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "with_capacity_in" (with_capacity_in T A).
+        M.IsAssociatedFunction.C (Self T A) "with_capacity_in" (with_capacity_in T A).
       Admitted.
       Global Typeclasses Opaque with_capacity_in.
       
@@ -1503,7 +1495,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek_mut" (peek_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "peek_mut" (peek_mut T A).
       Admitted.
       Global Typeclasses Opaque peek_mut.
       
@@ -1701,7 +1693,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop" (pop T A).
+        M.IsAssociatedFunction.C (Self T A) "pop" (pop T A).
       Admitted.
       Global Typeclasses Opaque pop.
       
@@ -1782,7 +1774,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push" (push T A).
+        M.IsAssociatedFunction.C (Self T A) "push" (push T A).
       Admitted.
       Global Typeclasses Opaque push.
       
@@ -1960,7 +1952,7 @@ Module collections.
       
       Global Instance AssociatedFunction_into_sorted_vec :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "into_sorted_vec" (into_sorted_vec T A).
+        M.IsAssociatedFunction.C (Self T A) "into_sorted_vec" (into_sorted_vec T A).
       Admitted.
       Global Typeclasses Opaque into_sorted_vec.
       
@@ -2229,7 +2221,7 @@ Module collections.
       
       Global Instance AssociatedFunction_sift_up :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "sift_up" (sift_up T A).
+        M.IsAssociatedFunction.C (Self T A) "sift_up" (sift_up T A).
       Admitted.
       Global Typeclasses Opaque sift_up.
       
@@ -2720,7 +2712,7 @@ Module collections.
       
       Global Instance AssociatedFunction_sift_down_range :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "sift_down_range" (sift_down_range T A).
+        M.IsAssociatedFunction.C (Self T A) "sift_down_range" (sift_down_range T A).
       Admitted.
       Global Typeclasses Opaque sift_down_range.
       
@@ -2777,7 +2769,7 @@ Module collections.
       
       Global Instance AssociatedFunction_sift_down :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "sift_down" (sift_down T A).
+        M.IsAssociatedFunction.C (Self T A) "sift_down" (sift_down T A).
       Admitted.
       Global Typeclasses Opaque sift_down.
       
@@ -3163,7 +3155,7 @@ Module collections.
       
       Global Instance AssociatedFunction_sift_down_to_bottom :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "sift_down_to_bottom" (sift_down_to_bottom T A).
+        M.IsAssociatedFunction.C (Self T A) "sift_down_to_bottom" (sift_down_to_bottom T A).
       Admitted.
       Global Typeclasses Opaque sift_down_to_bottom.
       
@@ -3593,7 +3585,7 @@ Module collections.
       
       Global Instance AssociatedFunction_rebuild_tail :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "rebuild_tail" (rebuild_tail T A).
+        M.IsAssociatedFunction.C (Self T A) "rebuild_tail" (rebuild_tail T A).
       Admitted.
       Global Typeclasses Opaque rebuild_tail.
       
@@ -3705,7 +3697,7 @@ Module collections.
       
       Global Instance AssociatedFunction_rebuild :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "rebuild" (rebuild T A).
+        M.IsAssociatedFunction.C (Self T A) "rebuild" (rebuild T A).
       Admitted.
       Global Typeclasses Opaque rebuild.
       
@@ -3881,7 +3873,7 @@ Module collections.
       
       Global Instance AssociatedFunction_append :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "append" (append T A).
+        M.IsAssociatedFunction.C (Self T A) "append" (append T A).
       Admitted.
       Global Typeclasses Opaque append.
       
@@ -3909,7 +3901,7 @@ Module collections.
       
       Global Instance AssociatedFunction_drain_sorted :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "drain_sorted" (drain_sorted T A).
+        M.IsAssociatedFunction.C (Self T A) "drain_sorted" (drain_sorted T A).
       Admitted.
       Global Typeclasses Opaque drain_sorted.
       
@@ -4111,7 +4103,7 @@ Module collections.
       
       Global Instance AssociatedFunction_retain :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "retain" (retain T A).
+        M.IsAssociatedFunction.C (Self T A) "retain" (retain T A).
       Admitted.
       Global Typeclasses Opaque retain.
       (*
@@ -4173,7 +4165,7 @@ Module collections.
       
       Global Instance AssociatedFunction_iter :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "iter" (iter T A).
+        M.IsAssociatedFunction.C (Self T A) "iter" (iter T A).
       Admitted.
       Global Typeclasses Opaque iter.
       
@@ -4201,7 +4193,7 @@ Module collections.
       
       Global Instance AssociatedFunction_into_iter_sorted :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "into_iter_sorted" (into_iter_sorted T A).
+        M.IsAssociatedFunction.C (Self T A) "into_iter_sorted" (into_iter_sorted T A).
       Admitted.
       Global Typeclasses Opaque into_iter_sorted.
       
@@ -4260,7 +4252,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek" (peek T A).
+        M.IsAssociatedFunction.C (Self T A) "peek" (peek T A).
       Admitted.
       Global Typeclasses Opaque peek.
       
@@ -4299,7 +4291,7 @@ Module collections.
       
       Global Instance AssociatedFunction_capacity :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "capacity" (capacity T A).
+        M.IsAssociatedFunction.C (Self T A) "capacity" (capacity T A).
       Admitted.
       Global Typeclasses Opaque capacity.
       
@@ -4351,7 +4343,7 @@ Module collections.
       
       Global Instance AssociatedFunction_reserve_exact :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "reserve_exact" (reserve_exact T A).
+        M.IsAssociatedFunction.C (Self T A) "reserve_exact" (reserve_exact T A).
       Admitted.
       Global Typeclasses Opaque reserve_exact.
       
@@ -4398,7 +4390,7 @@ Module collections.
       
       Global Instance AssociatedFunction_reserve :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "reserve" (reserve T A).
+        M.IsAssociatedFunction.C (Self T A) "reserve" (reserve T A).
       Admitted.
       Global Typeclasses Opaque reserve.
       
@@ -4447,7 +4439,7 @@ Module collections.
       
       Global Instance AssociatedFunction_try_reserve_exact :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "try_reserve_exact" (try_reserve_exact T A).
+        M.IsAssociatedFunction.C (Self T A) "try_reserve_exact" (try_reserve_exact T A).
       Admitted.
       Global Typeclasses Opaque try_reserve_exact.
       
@@ -4496,7 +4488,7 @@ Module collections.
       
       Global Instance AssociatedFunction_try_reserve :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "try_reserve" (try_reserve T A).
+        M.IsAssociatedFunction.C (Self T A) "try_reserve" (try_reserve T A).
       Admitted.
       Global Typeclasses Opaque try_reserve.
       
@@ -4546,7 +4538,7 @@ Module collections.
       
       Global Instance AssociatedFunction_shrink_to_fit :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "shrink_to_fit" (shrink_to_fit T A).
+        M.IsAssociatedFunction.C (Self T A) "shrink_to_fit" (shrink_to_fit T A).
       Admitted.
       Global Typeclasses Opaque shrink_to_fit.
       
@@ -4587,7 +4579,7 @@ Module collections.
       
       Global Instance AssociatedFunction_shrink_to :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "shrink_to" (shrink_to T A).
+        M.IsAssociatedFunction.C (Self T A) "shrink_to" (shrink_to T A).
       Admitted.
       Global Typeclasses Opaque shrink_to.
       
@@ -4631,7 +4623,7 @@ Module collections.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_slice" (as_slice T A).
+        M.IsAssociatedFunction.C (Self T A) "as_slice" (as_slice T A).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -4664,7 +4656,7 @@ Module collections.
       
       Global Instance AssociatedFunction_into_vec :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "into_vec" (into_vec T A).
+        M.IsAssociatedFunction.C (Self T A) "into_vec" (into_vec T A).
       Admitted.
       Global Typeclasses Opaque into_vec.
       
@@ -4708,7 +4700,7 @@ Module collections.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
       
@@ -4747,7 +4739,7 @@ Module collections.
       
       Global Instance AssociatedFunction_len :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "len" (len T A).
+        M.IsAssociatedFunction.C (Self T A) "len" (len T A).
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -4780,7 +4772,7 @@ Module collections.
       
       Global Instance AssociatedFunction_is_empty :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "is_empty" (is_empty T A).
+        M.IsAssociatedFunction.C (Self T A) "is_empty" (is_empty T A).
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -4825,7 +4817,7 @@ Module collections.
       
       Global Instance AssociatedFunction_drain :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "drain" (drain T A).
+        M.IsAssociatedFunction.C (Self T A) "drain" (drain T A).
       Admitted.
       Global Typeclasses Opaque drain.
       
@@ -4861,7 +4853,7 @@ Module collections.
       
       Global Instance AssociatedFunction_clear :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "clear" (clear T A).
+        M.IsAssociatedFunction.C (Self T A) "clear" (clear T A).
       Admitted.
       Global Typeclasses Opaque clear.
     End Impl_alloc_collections_binary_heap_BinaryHeap_T_A.
@@ -4951,11 +4943,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: pos < data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: pos < data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5018,7 +5006,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -5045,7 +5033,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pos :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "pos" (pos T).
+        M.IsAssociatedFunction.C (Self T) "pos" (pos T).
       Admitted.
       Global Typeclasses Opaque pos.
       
@@ -5097,7 +5085,7 @@ Module collections.
       
       Global Instance AssociatedFunction_element :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "element" (element T).
+        M.IsAssociatedFunction.C (Self T) "element" (element T).
       Admitted.
       Global Typeclasses Opaque element.
       
@@ -5159,11 +5147,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index != self.pos"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index != self.pos" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5233,11 +5217,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index < self.data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index < self.data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5285,7 +5265,7 @@ Module collections.
       
       Global Instance AssociatedFunction_get :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+        M.IsAssociatedFunction.C (Self T) "get" (get T).
       Admitted.
       Global Typeclasses Opaque get.
       
@@ -5353,11 +5333,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index != self.pos"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index != self.pos" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5427,11 +5403,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index < self.data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index < self.data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5537,7 +5509,7 @@ Module collections.
       
       Global Instance AssociatedFunction_move_to :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "move_to" (move_to T).
+        M.IsAssociatedFunction.C (Self T) "move_to" (move_to T).
       Admitted.
       Global Typeclasses Opaque move_to.
     End Impl_alloc_collections_binary_heap_Hole_T.
@@ -5765,10 +5737,7 @@ Module collections.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Iter" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |)
                               ]
                             |)
                           |)
@@ -6230,7 +6199,7 @@ Module collections.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_collections_binary_heap_IntoIter_T_A.
@@ -6290,7 +6259,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                  M.deref (| mk_str (| "IntoIter" |) |)
                                 |)
                               ]
                             |)
@@ -6674,50 +6643,58 @@ Module collections.
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_EXPAND_BY (I A : Ty.t) : Value.t :=
+      Definition value_EXPAND_BY
+          (I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I A in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.Usize 1 ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                "new",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.Usize 1 ]
+            |)
+          |))).
       
       (*     const MERGE_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_MERGE_BY (I A : Ty.t) : Value.t :=
+      Definition value_MERGE_BY
+          (I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I A in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ Value.Integer IntegerKind.Usize 1 ]
-              |)
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                "new",
+                [],
+                []
+              |),
+              [ Value.Integer IntegerKind.Usize 1 ]
+            |)
+          |))).
       
       Axiom Implements :
         forall (I A : Ty.t),
@@ -6728,8 +6705,8 @@ Module collections.
           (Self I A)
           (* Instance *)
           [
-            ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I A));
-            ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I A))
+            ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I A));
+            ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I A))
           ].
     End Impl_core_iter_traits_marker_InPlaceIterable_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_I_A.
     
@@ -6885,11 +6862,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "IntoIterSorted" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIterSorted" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6967,7 +6941,7 @@ Module collections.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_collections_binary_heap_IntoIterSorted_T_A.
@@ -7148,8 +7122,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Drain" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Drain" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7227,7 +7201,7 @@ Module collections.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_collections_binary_heap_Drain_T_A.
@@ -7482,11 +7456,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "DrainSorted" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DrainSorted" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7568,7 +7539,7 @@ Module collections.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_collections_binary_heap_DrainSorted_T_A.

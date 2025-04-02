@@ -5,38 +5,38 @@ Module my_mod.
   Parameter private_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_private_function :
-    M.IsFunction.Trait "visibility::my_mod::private_function" private_function.
+    M.IsFunction.C "visibility::my_mod::private_function" private_function.
   Admitted.
   
   Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "visibility::my_mod::function" function.
+    M.IsFunction.C "visibility::my_mod::function" function.
   Admitted.
   
   Parameter indirect_access : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_indirect_access :
-    M.IsFunction.Trait "visibility::my_mod::indirect_access" indirect_access.
+    M.IsFunction.C "visibility::my_mod::indirect_access" indirect_access.
   Admitted.
   
   Module nested.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "visibility::my_mod::nested::function" function.
+      M.IsFunction.C "visibility::my_mod::nested::function" function.
     Admitted.
     
     Parameter private_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_private_function :
-      M.IsFunction.Trait "visibility::my_mod::nested::private_function" private_function.
+      M.IsFunction.C "visibility::my_mod::nested::private_function" private_function.
     Admitted.
     
     Parameter public_function_in_my_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_public_function_in_my_mod :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_my_mod"
         public_function_in_my_mod.
     Admitted.
@@ -44,7 +44,7 @@ Module my_mod.
     Parameter public_function_in_nested : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_public_function_in_nested :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_nested"
         public_function_in_nested.
     Admitted.
@@ -52,7 +52,7 @@ Module my_mod.
     Parameter public_function_in_super_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_public_function_in_super_mod :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_super_mod"
         public_function_in_super_mod.
     Admitted.
@@ -61,7 +61,7 @@ Module my_mod.
   Parameter call_public_function_in_my_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_call_public_function_in_my_mod :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "visibility::my_mod::call_public_function_in_my_mod"
       call_public_function_in_my_mod.
   Admitted.
@@ -69,32 +69,30 @@ Module my_mod.
   Parameter public_function_in_crate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_public_function_in_crate :
-    M.IsFunction.Trait "visibility::my_mod::public_function_in_crate" public_function_in_crate.
+    M.IsFunction.C "visibility::my_mod::public_function_in_crate" public_function_in_crate.
   Admitted.
   
   Module private_nested.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "visibility::my_mod::private_nested::function" function.
+      M.IsFunction.C "visibility::my_mod::private_nested::function" function.
     Admitted.
     
     Parameter restricted_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_restricted_function :
-      M.IsFunction.Trait
-        "visibility::my_mod::private_nested::restricted_function"
-        restricted_function.
+      M.IsFunction.C "visibility::my_mod::private_nested::restricted_function" restricted_function.
     Admitted.
   End private_nested.
 End my_mod.
 
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_function : M.IsFunction.Trait "visibility::function" function.
+Global Instance Instance_IsFunction_function : M.IsFunction.C "visibility::function" function.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "visibility::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "visibility::main" main.
 Admitted.

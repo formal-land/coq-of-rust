@@ -68,23 +68,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "42" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "tofu" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "999" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "42" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tofu" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "999" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -524,14 +512,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Numbers: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Numbers: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -595,14 +577,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Errors: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Errors: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -654,6 +630,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "iterating_over_results_collect_via_map_err_and_filter_map::main" main.
+  M.IsFunction.C "iterating_over_results_collect_via_map_err_and_filter_map::main" main.
 Admitted.
 Global Typeclasses Opaque main.

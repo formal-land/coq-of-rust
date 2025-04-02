@@ -42,7 +42,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.path "str" ]
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "." |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "." |) |) |) ]
             |)
           |) in
         let~ _display : Ty.path "std::path::Display" :=
@@ -92,7 +92,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |);
-                                M.read (| Value.String "a" |)
+                                mk_str (| "a" |)
                               ]
                             |)
                           |)
@@ -101,7 +101,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |)
                 |);
-                M.read (| Value.String "b" |)
+                mk_str (| "b" |)
               ]
             |)
           |) in
@@ -115,7 +115,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [ M.borrow (| Pointer.Kind.MutRef, new_path |); M.read (| Value.String "c" |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, new_path |); mk_str (| "c" |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -128,10 +128,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [
-                M.borrow (| Pointer.Kind.MutRef, new_path |);
-                M.read (| Value.String "myfile.tar.gz" |)
-              ]
+              [ M.borrow (| Pointer.Kind.MutRef, new_path |); mk_str (| "myfile.tar.gz" |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -144,10 +141,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [
-                M.borrow (| Pointer.Kind.MutRef, new_path |);
-                M.read (| Value.String "package.tgz" |)
-              ]
+              [ M.borrow (| Pointer.Kind.MutRef, new_path |); mk_str (| "package.tgz" |) ]
             |)
           |) in
         M.match_operator (|
@@ -194,7 +188,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "new path is not a valid UTF-8 sequence" |) ]
+                      [ mk_str (| "new path is not a valid UTF-8 sequence" |) ]
                     |)
                   |)
                 |)));
@@ -225,12 +219,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "new path is " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "new path is " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -275,6 +265,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "path::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "path::main" main.
 Admitted.
 Global Typeclasses Opaque main.

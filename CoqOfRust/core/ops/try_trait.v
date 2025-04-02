@@ -39,7 +39,7 @@ Module ops.
       end.
     
     Global Instance Instance_IsFunction_from_yeet :
-      M.IsFunction.Trait "core::ops::try_trait::from_yeet" from_yeet.
+      M.IsFunction.C "core::ops::try_trait::from_yeet" from_yeet.
     Admitted.
     Global Typeclasses Opaque from_yeet.
     
@@ -127,7 +127,7 @@ Module ops.
       
       Global Instance AssociatedFunction_wrap_mut_1 :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrap_mut_1" (wrap_mut_1 T).
+        M.IsAssociatedFunction.C (Self T) "wrap_mut_1" (wrap_mut_1 T).
       Admitted.
       Global Typeclasses Opaque wrap_mut_1.
       
@@ -205,7 +205,7 @@ Module ops.
       
       Global Instance AssociatedFunction_wrap_mut_2 :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "wrap_mut_2" (wrap_mut_2 T).
+        M.IsAssociatedFunction.C (Self T) "wrap_mut_2" (wrap_mut_2 T).
       Admitted.
       Global Typeclasses Opaque wrap_mut_2.
     End Impl_core_ops_try_trait_NeverShortCircuit_T.
@@ -381,7 +381,7 @@ Module ops.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Yeet" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Yeet" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

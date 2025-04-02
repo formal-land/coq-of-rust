@@ -43,7 +43,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_do_panic :
-      M.IsFunction.Trait "core::num::from_str_radix_panic::do_panic" do_panic.
+      M.IsFunction.C "core::num::from_str_radix_panic::do_panic" do_panic.
     Admitted.
     Global Typeclasses Opaque do_panic.
   End from_str_radix_panic.
@@ -70,7 +70,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::UnwindContinue::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -96,7 +96,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::UnwindUnreachable::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -122,7 +122,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::UnwindTerminate::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -148,7 +148,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::UnwindCleanup::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -174,9 +174,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
-          "core::intrinsics::mir::ReturnTo::panic_cold_explicit"
-          panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::ReturnTo::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End ReturnTo.
@@ -200,7 +198,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Return::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Return::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Return.
@@ -224,7 +222,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Goto::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Goto::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Goto.
@@ -248,7 +246,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::Unreachable::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -274,7 +272,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Drop::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Drop::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Drop.
@@ -298,7 +296,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Call::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Call::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Call.
@@ -322,9 +320,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
-          "core::intrinsics::mir::TailCall::panic_cold_explicit"
-          panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::TailCall::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End TailCall.
@@ -348,7 +344,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::UnwindResume::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -374,7 +370,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::StorageLive::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -400,7 +396,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::StorageDead::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -426,7 +422,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Assume::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Assume::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Assume.
@@ -450,7 +446,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Deinit::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Deinit::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Deinit.
@@ -474,9 +470,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
-          "core::intrinsics::mir::Checked::panic_cold_explicit"
-          panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Checked::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Checked.
@@ -500,7 +494,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Len::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Len::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Len.
@@ -524,7 +518,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::PtrMetadata::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -550,7 +544,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::CopyForDeref::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -576,7 +570,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Retag::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Retag::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Retag.
@@ -600,7 +594,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Move::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Move::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Move.
@@ -624,7 +618,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Static::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Static::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Static.
@@ -648,9 +642,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
-          "core::intrinsics::mir::StaticMut::panic_cold_explicit"
-          panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::StaticMut::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End StaticMut.
@@ -674,7 +666,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::Discriminant::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -700,7 +692,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::SetDiscriminant::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -726,7 +718,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Offset::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Offset::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Offset.
@@ -750,7 +742,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait "core::intrinsics::mir::Field::panic_cold_explicit" panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Field::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Field.
@@ -774,9 +766,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
-          "core::intrinsics::mir::Variant::panic_cold_explicit"
-          panic_cold_explicit.
+        M.IsFunction.C "core::intrinsics::mir::Variant::panic_cold_explicit" panic_cold_explicit.
       Admitted.
       Global Typeclasses Opaque panic_cold_explicit.
     End Variant.
@@ -800,7 +790,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::CastTransmute::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -826,7 +816,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::CastPtrToPtr::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -852,7 +842,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::__internal_make_place::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -878,7 +868,7 @@ Module intrinsics.
         end.
       
       Global Instance Instance_IsFunction_panic_cold_explicit :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::intrinsics::mir::__debuginfo::panic_cold_explicit"
           panic_cold_explicit.
       Admitted.
@@ -940,7 +930,7 @@ Module char.
         end.
       
       Global Instance Instance_IsFunction_do_panic :
-        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::do_panic" do_panic.
+        M.IsFunction.C "core::char::methods::encode_utf8_raw::do_panic" do_panic.
       Admitted.
       Global Typeclasses Opaque do_panic.
     End encode_utf8_raw.
@@ -996,7 +986,7 @@ Module char.
         end.
       
       Global Instance Instance_IsFunction_do_panic :
-        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::do_panic" do_panic.
+        M.IsFunction.C "core::char::methods::encode_utf16_raw::do_panic" do_panic.
       Admitted.
       Global Typeclasses Opaque do_panic.
     End encode_utf16_raw.
@@ -1031,7 +1021,7 @@ Module panic.
     end.
   
   Global Instance Instance_IsFunction_abort_unwind :
-    M.IsFunction.Trait "core::panic::abort_unwind" abort_unwind.
+    M.IsFunction.C "core::panic::abort_unwind" abort_unwind.
   Admitted.
   Global Typeclasses Opaque abort_unwind.
   
@@ -1102,7 +1092,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_do_panic :
-        M.IsFunction.Trait "core::slice::index::slice_start_index_len_fail::do_panic" do_panic.
+        M.IsFunction.C "core::slice::index::slice_start_index_len_fail::do_panic" do_panic.
       Admitted.
       Global Typeclasses Opaque do_panic.
     End slice_start_index_len_fail.
@@ -1157,7 +1147,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_do_panic :
-        M.IsFunction.Trait "core::slice::index::slice_end_index_len_fail::do_panic" do_panic.
+        M.IsFunction.C "core::slice::index::slice_end_index_len_fail::do_panic" do_panic.
       Admitted.
       Global Typeclasses Opaque do_panic.
     End slice_end_index_len_fail.
@@ -1212,7 +1202,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_do_panic :
-        M.IsFunction.Trait "core::slice::index::slice_index_order_fail::do_panic" do_panic.
+        M.IsFunction.C "core::slice::index::slice_index_order_fail::do_panic" do_panic.
       Admitted.
       Global Typeclasses Opaque do_panic.
     End slice_index_order_fail.

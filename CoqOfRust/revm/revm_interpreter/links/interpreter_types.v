@@ -1,8 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require core.links.array.
-Require core.ops.links.deref.
-Require core.ops.links.range.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
+Require Import core.links.array.
+Require Import core.ops.links.deref.
+Require Import core.ops.links.range.
 Require Import core.links.option.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm.revm_interpreter.links.gas.
@@ -10,7 +13,6 @@ Require Import revm.revm_interpreter.links.instruction_result.
 Require Import revm.revm_interpreter.links.interpreter_action.
 Require Import revm.revm_interpreter.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
-Require Import revm.links.dependencies.
 
 Import alloy_primitives.bits.links.address.
 Import alloy_primitives.links.bytes_.
@@ -48,39 +50,39 @@ Module StackTrait.
 
   Definition Run_push (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "push" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self) (value : U256.t),
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (value : aliases.U256.t),
       Run.Trait method [] [] [ φ self; φ value ] bool
     ).
 
   Definition Run_push_b256 (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "push_b256" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self) (value : B256.t),
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (value : aliases.B256.t),
       Run.Trait method [] [] [ φ self; φ value ] bool
     ).
 
   Definition Run_popn (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "popn" (fun method =>
       forall (N : Usize.t) (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [ φ N ] [] [ φ self ] (option (array.t U256.t N))
+      Run.Trait method [ φ N ] [] [ φ self ] (option (array.t aliases.U256.t N))
     ).
 
   Definition Run_popn_top (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "popn_top" (fun method =>
       forall (POPN : Usize.t) (self : Ref.t Pointer.Kind.MutRef Self),
       Run.Trait method [ φ POPN ] [] [ φ self ]
-        (option (array.t U256.t POPN * Ref.t Pointer.Kind.MutRef U256.t))
+        (option (array.t aliases.U256.t POPN * Ref.t Pointer.Kind.MutRef aliases.U256.t))
     ).
 
   Definition Run_top (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "top" (fun method =>
       forall (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [] [ Φ U256.t ] [ φ self ] (option (Ref.t Pointer.Kind.MutRef U256.t))
+      Run.Trait method [] [ Φ aliases.U256.t ] [ φ self ] (option (Ref.t Pointer.Kind.MutRef aliases.U256.t))
     ).
 
   Definition Run_pop (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "pop" (fun method =>
       forall (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [] [ Φ U256.t ] [ φ self ] (option U256.t)
+      Run.Trait method [] [ Φ aliases.U256.t ] [ φ self ] (option aliases.U256.t)
     ).
 
   Definition Run_pop_address (Self : Set) `{Link Self} : Set :=
@@ -111,6 +113,7 @@ Module StackTrait.
     top : Run_top Self;
     pop : Run_pop Self;
     pop_address : Run_pop_address Self;
+    exchange : Run_exchange Self;
     dup : Run_dup Self;
   }. 
 End StackTrait.
@@ -492,7 +495,7 @@ Module InputsTrait.
   Definition Run_call_value (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "call_value" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-      Run.Trait method [] [] [ φ self ] U256.t
+      Run.Trait method [] [] [ φ self ] aliases.U256.t
     ).
 
   Class Run (Self : Set) `{Link Self} : Set := {

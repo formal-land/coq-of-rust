@@ -87,8 +87,8 @@ Module panic.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Location" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "file" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Location" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "file" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -102,7 +102,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "line" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "line" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -116,7 +116,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "col" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "col" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -799,7 +799,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+      Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
       Admitted.
       Global Typeclasses Opaque caller.
       
@@ -828,7 +828,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_file : M.IsAssociatedFunction.Trait Self "file" file.
+      Global Instance AssociatedFunction_file : M.IsAssociatedFunction.C Self "file" file.
       Admitted.
       Global Typeclasses Opaque file.
       
@@ -852,7 +852,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_line : M.IsAssociatedFunction.Trait Self "line" line.
+      Global Instance AssociatedFunction_line : M.IsAssociatedFunction.C Self "line" line.
       Admitted.
       Global Typeclasses Opaque line.
       
@@ -876,7 +876,7 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_column : M.IsAssociatedFunction.Trait Self "column" column.
+      Global Instance AssociatedFunction_column : M.IsAssociatedFunction.C Self "column" column.
       Admitted.
       Global Typeclasses Opaque column.
       (*
@@ -902,7 +902,7 @@ Module panic.
         end.
       
       Global Instance AssociatedFunction_internal_constructor :
-        M.IsAssociatedFunction.Trait Self "internal_constructor" internal_constructor.
+        M.IsAssociatedFunction.C Self "internal_constructor" internal_constructor.
       Admitted.
       Global Typeclasses Opaque internal_constructor.
     End Impl_core_panic_location_Location.
@@ -945,12 +945,7 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String ":" |);
-                                M.read (| Value.String ":" |)
-                              ]
+                            Value.Array [ mk_str (| "" |); mk_str (| ":" |); mk_str (| ":" |) ]
                           |)
                         |)
                       |)

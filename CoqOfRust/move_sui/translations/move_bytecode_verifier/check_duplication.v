@@ -119,7 +119,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -1895,7 +1895,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
     
@@ -1987,7 +1987,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_identifiers :
-      M.IsAssociatedFunction.Trait Self "check_identifiers" check_identifiers.
+      M.IsAssociatedFunction.C Self "check_identifiers" check_identifiers.
     Admitted.
     Global Typeclasses Opaque check_identifiers.
     
@@ -2085,7 +2085,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_address_identifiers :
-      M.IsAssociatedFunction.Trait Self "check_address_identifiers" check_address_identifiers.
+      M.IsAssociatedFunction.C Self "check_address_identifiers" check_address_identifiers.
     Admitted.
     Global Typeclasses Opaque check_address_identifiers.
     
@@ -2177,7 +2177,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_constants :
-      M.IsAssociatedFunction.Trait Self "check_constants" check_constants.
+      M.IsAssociatedFunction.C Self "check_constants" check_constants.
     Admitted.
     Global Typeclasses Opaque check_constants.
     
@@ -2269,7 +2269,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_signatures :
-      M.IsAssociatedFunction.Trait Self "check_signatures" check_signatures.
+      M.IsAssociatedFunction.C Self "check_signatures" check_signatures.
     Admitted.
     Global Typeclasses Opaque check_signatures.
     
@@ -2361,7 +2361,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_module_handles :
-      M.IsAssociatedFunction.Trait Self "check_module_handles" check_module_handles.
+      M.IsAssociatedFunction.C Self "check_module_handles" check_module_handles.
     Admitted.
     Global Typeclasses Opaque check_module_handles.
     
@@ -2605,7 +2605,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_struct_handles :
-      M.IsAssociatedFunction.Trait Self "check_struct_handles" check_struct_handles.
+      M.IsAssociatedFunction.C Self "check_struct_handles" check_struct_handles.
     Admitted.
     Global Typeclasses Opaque check_struct_handles.
     
@@ -2705,10 +2705,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_function_instantiations :
-      M.IsAssociatedFunction.Trait
-        Self
-        "check_function_instantiations"
-        check_function_instantiations.
+      M.IsAssociatedFunction.C Self "check_function_instantiations" check_function_instantiations.
     Admitted.
     Global Typeclasses Opaque check_function_instantiations.
     
@@ -2952,7 +2949,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_function_handles :
-      M.IsAssociatedFunction.Trait Self "check_function_handles" check_function_handles.
+      M.IsAssociatedFunction.C Self "check_function_handles" check_function_handles.
     Admitted.
     Global Typeclasses Opaque check_function_handles.
     
@@ -3076,7 +3073,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_field_handles :
-      M.IsAssociatedFunction.Trait Self "check_field_handles" check_field_handles.
+      M.IsAssociatedFunction.C Self "check_field_handles" check_field_handles.
     Admitted.
     Global Typeclasses Opaque check_field_handles.
     
@@ -3206,7 +3203,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_struct_instantiations :
-      M.IsAssociatedFunction.Trait Self "check_struct_instantiations" check_struct_instantiations.
+      M.IsAssociatedFunction.C Self "check_struct_instantiations" check_struct_instantiations.
     Admitted.
     Global Typeclasses Opaque check_struct_instantiations.
     
@@ -3349,7 +3346,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_field_instantiations :
-      M.IsAssociatedFunction.Trait Self "check_field_instantiations" check_field_instantiations.
+      M.IsAssociatedFunction.C Self "check_field_instantiations" check_field_instantiations.
     Admitted.
     Global Typeclasses Opaque check_field_instantiations.
     
@@ -5105,7 +5102,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_struct_definitions :
-      M.IsAssociatedFunction.Trait Self "check_struct_definitions" check_struct_definitions.
+      M.IsAssociatedFunction.C Self "check_struct_definitions" check_struct_definitions.
     Admitted.
     Global Typeclasses Opaque check_struct_definitions.
     
@@ -6619,7 +6616,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_check_function_defintions :
-      M.IsAssociatedFunction.Trait Self "check_function_defintions" check_function_defintions.
+      M.IsAssociatedFunction.C Self "check_function_defintions" check_function_defintions.
     Admitted.
     Global Typeclasses Opaque check_function_defintions.
     
@@ -6935,7 +6932,7 @@ Module check_duplication.
       end.
     
     Global Instance AssociatedFunction_first_duplicate_element :
-      M.IsAssociatedFunction.Trait Self "first_duplicate_element" first_duplicate_element.
+      M.IsAssociatedFunction.C Self "first_duplicate_element" first_duplicate_element.
     Admitted.
     Global Typeclasses Opaque first_duplicate_element.
   End Impl_move_bytecode_verifier_check_duplication_DuplicationChecker.

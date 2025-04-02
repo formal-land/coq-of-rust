@@ -115,11 +115,8 @@ Module ops.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "IndexRange" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "start" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IndexRange" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "start" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -133,7 +130,7 @@ Module ops.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -333,7 +330,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+        M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -353,8 +350,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_zero_to :
-        M.IsAssociatedFunction.Trait Self "zero_to" zero_to.
+      Global Instance AssociatedFunction_zero_to : M.IsAssociatedFunction.C Self "zero_to" zero_to.
       Admitted.
       Global Typeclasses Opaque zero_to.
       
@@ -378,7 +374,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_start : M.IsAssociatedFunction.Trait Self "start" start.
+      Global Instance AssociatedFunction_start : M.IsAssociatedFunction.C Self "start" start.
       Admitted.
       Global Typeclasses Opaque start.
       
@@ -402,7 +398,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_end_ : M.IsAssociatedFunction.Trait Self "end_" end_.
+      Global Instance AssociatedFunction_end_ : M.IsAssociatedFunction.C Self "end" end_.
       Admitted.
       Global Typeclasses Opaque end_.
       
@@ -441,7 +437,7 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -510,11 +506,7 @@ Module ops.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.start < self.end"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
                                       |)
                                     |)
                                   |)));
@@ -554,7 +546,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_next_unchecked :
-        M.IsAssociatedFunction.Trait Self "next_unchecked" next_unchecked.
+        M.IsAssociatedFunction.C Self "next_unchecked" next_unchecked.
       Admitted.
       Global Typeclasses Opaque next_unchecked.
       
@@ -623,11 +615,7 @@ Module ops.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.start < self.end"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
                                       |)
                                     |)
                                   |)));
@@ -672,7 +660,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_next_back_unchecked :
-        M.IsAssociatedFunction.Trait Self "next_back_unchecked" next_back_unchecked.
+        M.IsAssociatedFunction.C Self "next_back_unchecked" next_back_unchecked.
       Admitted.
       Global Typeclasses Opaque next_back_unchecked.
       
@@ -794,7 +782,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_take_prefix :
-        M.IsAssociatedFunction.Trait Self "take_prefix" take_prefix.
+        M.IsAssociatedFunction.C Self "take_prefix" take_prefix.
       Admitted.
       Global Typeclasses Opaque take_prefix.
       
@@ -916,7 +904,7 @@ Module ops.
         end.
       
       Global Instance AssociatedFunction_take_suffix :
-        M.IsAssociatedFunction.Trait Self "take_suffix" take_suffix.
+        M.IsAssociatedFunction.C Self "take_suffix" take_suffix.
       Admitted.
       Global Typeclasses Opaque take_suffix.
     End Impl_core_ops_index_range_IndexRange.

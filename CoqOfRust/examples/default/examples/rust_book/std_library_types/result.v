@@ -63,7 +63,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DivisionByZero" |) |)
+                            M.deref (| mk_str (| "DivisionByZero" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -77,7 +77,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonPositiveLogarithm" |) |)
+                            M.deref (| mk_str (| "NonPositiveLogarithm" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -91,7 +91,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NegativeSquareRoot" |) |)
+                            M.deref (| mk_str (| "NegativeSquareRoot" |) |)
                           |)
                         |)))
                   ]
@@ -171,7 +171,7 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_div : M.IsFunction.Trait "result::checked::div" div.
+  Global Instance Instance_IsFunction_div : M.IsFunction.C "result::checked::div" div.
   Admitted.
   Global Typeclasses Opaque div.
   
@@ -230,7 +230,7 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_sqrt : M.IsFunction.Trait "result::checked::sqrt" sqrt.
+  Global Instance Instance_IsFunction_sqrt : M.IsFunction.C "result::checked::sqrt" sqrt.
   Admitted.
   Global Typeclasses Opaque sqrt.
   
@@ -289,7 +289,7 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_ln : M.IsFunction.Trait "result::checked::ln" ln.
+  Global Instance Instance_IsFunction_ln : M.IsFunction.C "result::checked::ln" ln.
   Admitted.
   Global Typeclasses Opaque ln.
 End checked.
@@ -355,7 +355,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                 |)
                               |)
                             |);
@@ -443,7 +443,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                         |)
                                       |)
                                     |);
@@ -537,9 +537,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                 |)
                                               |)
                                             |);
@@ -599,7 +597,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_op : M.IsFunction.Trait "result::op" op.
+Global Instance Instance_IsFunction_op : M.IsFunction.C "result::op" op.
 Admitted.
 Global Typeclasses Opaque op.
 
@@ -635,11 +633,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -696,6 +691,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "result::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "result::main" main.
 Admitted.
 Global Typeclasses Opaque main.

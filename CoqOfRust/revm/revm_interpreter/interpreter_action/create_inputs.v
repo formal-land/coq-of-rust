@@ -218,11 +218,8 @@ Module interpreter_action.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CreateInputs" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "caller" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CreateInputs" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "caller" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -236,7 +233,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "scheme" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "scheme" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -250,7 +247,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -264,10 +261,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "init_code" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "init_code" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -281,10 +275,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "gas_limit" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_limit" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -893,7 +884,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_created_address :
-        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+        M.IsAssociatedFunction.C Self "created_address" created_address.
       Admitted.
       Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_create_inputs_CreateInputs.

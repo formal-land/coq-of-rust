@@ -212,10 +212,7 @@ Module eip7702.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Signed" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signed" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -247,10 +244,7 @@ Module eip7702.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Recovered" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Recovered" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -745,7 +739,7 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -789,7 +783,7 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+      Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.C Self "empty" empty.
       Admitted.
       Global Typeclasses Opaque empty.
       
@@ -820,7 +814,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -1233,7 +1227,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_recovered_iter :
-        M.IsAssociatedFunction.Trait Self "recovered_iter" recovered_iter.
+        M.IsAssociatedFunction.C Self "recovered_iter" recovered_iter.
       Admitted.
       Global Typeclasses Opaque recovered_iter.
       
@@ -1450,7 +1444,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_into_recovered :
-        M.IsAssociatedFunction.Trait Self "into_recovered" into_recovered.
+        M.IsAssociatedFunction.C Self "into_recovered" into_recovered.
       Admitted.
       Global Typeclasses Opaque into_recovered.
     End Impl_revm_specification_eip7702_authorization_list_AuthorizationList.
@@ -1526,7 +1520,7 @@ Module eip7702.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InvalidChainId" |) |)
+                              M.deref (| mk_str (| "InvalidChainId" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1540,7 +1534,7 @@ Module eip7702.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InvalidYParity" |) |)
+                              M.deref (| mk_str (| "InvalidYParity" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1554,7 +1548,7 @@ Module eip7702.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Eip2InvalidSValue" |) |)
+                              M.deref (| mk_str (| "Eip2InvalidSValue" |) |)
                             |)
                           |)))
                     ]
@@ -1838,7 +1832,9 @@ Module eip7702.
                               γ,
                               "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidChainId"
                             |) in
-                          Value.String "Invalid chain_id, Expect chain's ID or zero"));
+                          M.alloc (|
+                            mk_str (| "Invalid chain_id, Expect chain's ID or zero" |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1850,9 +1846,7 @@ Module eip7702.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Invalid y_parity, Expect 0 or 1." |)
-                              |)
+                              M.deref (| mk_str (| "Invalid y_parity, Expect 0 or 1." |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1866,7 +1860,7 @@ Module eip7702.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid signature s-value." |) |)
+                              M.deref (| mk_str (| "Invalid signature s-value." |) |)
                             |)
                           |)))
                     ]

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter combine_vecs_explicit_return_type : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_combine_vecs_explicit_return_type :
-  M.IsFunction.Trait
+  M.IsFunction.C
     "impl_trait_as_return_type::combine_vecs_explicit_return_type"
     combine_vecs_explicit_return_type.
 Admitted.
@@ -12,11 +12,10 @@ Admitted.
 Parameter combine_vecs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_combine_vecs :
-  M.IsFunction.Trait "impl_trait_as_return_type::combine_vecs" combine_vecs.
+  M.IsFunction.C "impl_trait_as_return_type::combine_vecs" combine_vecs.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "impl_trait_as_return_type::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "impl_trait_as_return_type::main" main.
 Admitted.

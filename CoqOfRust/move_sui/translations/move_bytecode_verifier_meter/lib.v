@@ -100,10 +100,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                           "move_bytecode_verifier_meter::Scope::Transaction"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Transaction" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -111,10 +108,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Package" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Package" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Package" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -122,10 +116,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Module" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Module" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Module" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -136,10 +127,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                           "move_bytecode_verifier_meter::Scope::Function"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Function" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Function" |) |) |)
                       |)))
                 ]
               |)

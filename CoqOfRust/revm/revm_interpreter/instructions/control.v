@@ -166,7 +166,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -287,7 +290,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_rjump :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::rjump" rjump.
+      M.IsFunction.C "revm_interpreter::instructions::control::rjump" rjump.
     Admitted.
     Global Typeclasses Opaque rjump.
     
@@ -459,8 +462,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::CONDITION_JUMP_GAS"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::CONDITION_JUMP_GAS",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -688,7 +693,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_rjumpi :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::rjumpi" rjumpi.
+      M.IsFunction.C "revm_interpreter::instructions::control::rjumpi" rjumpi.
     Admitted.
     Global Typeclasses Opaque rjumpi.
     
@@ -863,8 +868,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::CONDITION_JUMP_GAS"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::CONDITION_JUMP_GAS",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1092,7 +1099,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -1100,7 +1111,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "isize",
+                                    "MAX",
+                                    Ty.path "isize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -1256,7 +1273,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_rjumpv :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::rjumpv" rjumpv.
+      M.IsFunction.C "revm_interpreter::instructions::control::rjumpv" rjumpv.
     Admitted.
     Global Typeclasses Opaque rjumpv.
     
@@ -1335,7 +1352,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::MID"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::MID",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1471,7 +1491,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_jump :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::jump" jump.
+      M.IsFunction.C "revm_interpreter::instructions::control::jump" jump.
     Admitted.
     Global Typeclasses Opaque jump.
     
@@ -1553,7 +1573,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::HIGH"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::HIGH",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1727,7 +1750,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_jumpi :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpi" jumpi.
+      M.IsFunction.C "revm_interpreter::instructions::control::jumpi" jumpi.
     Admitted.
     Global Typeclasses Opaque jumpi.
     
@@ -1809,7 +1832,13 @@ Module instructions.
                                                     |),
                                                     M.cast
                                                       (Ty.path "u64")
-                                                      (M.read (| M.get_constant "core::num::MAX" |))
+                                                      (M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.path "usize",
+                                                          "MAX",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |))
                                                   |))
                                                   (BinOp.ne (|
                                                     M.read (|
@@ -2024,7 +2053,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_jump_inner :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::jump_inner" jump_inner.
+      M.IsFunction.C "revm_interpreter::instructions::control::jump_inner" jump_inner.
     Admitted.
     Global Typeclasses Opaque jump_inner.
     
@@ -2101,7 +2130,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::JUMPDEST"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::JUMPDEST",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2159,7 +2191,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_jumpdest_or_nop :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
+      M.IsFunction.C "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
     Admitted.
     Global Typeclasses Opaque jumpdest_or_nop.
     
@@ -2355,7 +2387,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::LOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::LOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2759,9 +2794,7 @@ Module instructions.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (| Value.String "Invalid code section index" |)
-                                  |)
+                                  M.deref (| mk_str (| "Invalid code section index" |) |)
                                 |)
                               ]
                             |)
@@ -2806,7 +2839,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_callf :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::callf" callf.
+      M.IsFunction.C "revm_interpreter::instructions::control::callf" callf.
     Admitted.
     Global Typeclasses Opaque callf.
     
@@ -2975,7 +3008,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::RETF_GAS"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::RETF_GAS",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3107,7 +3143,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_retf :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::retf" retf.
+      M.IsFunction.C "revm_interpreter::instructions::control::retf" retf.
     Admitted.
     Global Typeclasses Opaque retf.
     
@@ -3293,7 +3329,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::LOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::LOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3440,7 +3479,7 @@ Module instructions.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                          M.deref (| mk_str (| "Invalid code section index" |) |)
                         |)
                       ]
                     |)
@@ -3625,7 +3664,7 @@ Module instructions.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                          M.deref (| mk_str (| "Invalid code section index" |) |)
                         |)
                       ]
                     |)
@@ -3668,7 +3707,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_jumpf :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpf" jumpf.
+      M.IsFunction.C "revm_interpreter::instructions::control::jumpf" jumpf.
     Admitted.
     Global Typeclasses Opaque jumpf.
     
@@ -3747,7 +3786,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3943,7 +3985,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_pc :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::pc" pc.
+      M.IsFunction.C "revm_interpreter::instructions::control::pc" pc.
     Admitted.
     Global Typeclasses Opaque pc.
     
@@ -4103,7 +4145,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -4294,8 +4340,11 @@ Module instructions.
                                                                       M.cast
                                                                         (Ty.path "u64")
                                                                         (M.read (|
-                                                                          M.get_constant
-                                                                            "core::num::MAX"
+                                                                          get_associated_constant (|
+                                                                            Ty.path "usize",
+                                                                            "MAX",
+                                                                            Ty.path "usize"
+                                                                          |)
                                                                         |))
                                                                     |))
                                                                     (BinOp.ne (|
@@ -4789,7 +4838,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_return_inner :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::return_inner" return_inner.
+      M.IsFunction.C "revm_interpreter::instructions::control::return_inner" return_inner.
     Admitted.
     Global Typeclasses Opaque return_inner.
     
@@ -4831,7 +4880,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_ret :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::ret" ret.
+      M.IsFunction.C "revm_interpreter::instructions::control::ret" ret.
     Admitted.
     Global Typeclasses Opaque ret.
     
@@ -4976,7 +5025,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_revert :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::revert" revert.
+      M.IsFunction.C "revm_interpreter::instructions::control::revert" revert.
     Admitted.
     Global Typeclasses Opaque revert.
     
@@ -5036,7 +5085,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_stop :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::stop" stop.
+      M.IsFunction.C "revm_interpreter::instructions::control::stop" stop.
     Admitted.
     Global Typeclasses Opaque stop.
     
@@ -5096,7 +5145,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_invalid :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::invalid" invalid.
+      M.IsFunction.C "revm_interpreter::instructions::control::invalid" invalid.
     Admitted.
     Global Typeclasses Opaque invalid.
     
@@ -5156,7 +5205,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_unknown :
-      M.IsFunction.Trait "revm_interpreter::instructions::control::unknown" unknown.
+      M.IsFunction.C "revm_interpreter::instructions::control::unknown" unknown.
     Admitted.
     Global Typeclasses Opaque unknown.
   End control.

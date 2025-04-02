@@ -122,24 +122,32 @@ Module gas.
                                     (BinOp.Wrap.add (|
                                       BinOp.Wrap.sub (|
                                         M.read (|
-                                          M.get_constant
-                                            "revm_interpreter::gas::constants::SSTORE_RESET"
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::SSTORE_RESET",
+                                            Ty.path "u64"
+                                          |)
                                         |),
                                         M.read (|
-                                          M.get_constant
-                                            "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::COLD_SLOAD_COST",
+                                            Ty.path "u64"
+                                          |)
                                         |)
                                       |),
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |))
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.get_constant
-                                  "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"))
+                                (get_constant (|
+                                  "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS",
+                                  Ty.path "i64"
+                                |)))
                           ]
                         |)
                       |) in
@@ -434,17 +442,23 @@ Module gas.
                                                             [
                                                               BinOp.Wrap.sub (|
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "revm_interpreter::gas::constants::SSTORE_RESET"
+                                                                  get_constant (|
+                                                                    "revm_interpreter::gas::constants::SSTORE_RESET",
+                                                                    Ty.path "u64"
+                                                                  |)
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                                                                  get_constant (|
+                                                                    "revm_interpreter::gas::constants::COLD_SLOAD_COST",
+                                                                    Ty.path "u64"
+                                                                  |)
                                                                 |)
                                                               |);
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
+                                                                get_constant (|
+                                                                  "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST",
+                                                                  Ty.path "u64"
+                                                                |)
                                                               |)
                                                             ]
                                                         |)));
@@ -454,8 +468,10 @@ Module gas.
                                                           Value.Tuple
                                                             [
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "revm_interpreter::gas::constants::SSTORE_RESET"
+                                                                get_constant (|
+                                                                  "revm_interpreter::gas::constants::SSTORE_RESET",
+                                                                  Ty.path "u64"
+                                                                |)
                                                               |);
                                                               M.call_closure (|
                                                                 Ty.path "u64",
@@ -526,8 +542,10 @@ Module gas.
                                                                         (Ty.path "i64")
                                                                         (BinOp.Wrap.sub (|
                                                                           M.read (|
-                                                                            M.get_constant
-                                                                              "revm_interpreter::gas::constants::SSTORE_SET"
+                                                                            get_constant (|
+                                                                              "revm_interpreter::gas::constants::SSTORE_SET",
+                                                                              Ty.path "u64"
+                                                                            |)
                                                                           |),
                                                                           M.read (| gas_sload |)
                                                                         |))
@@ -617,8 +635,10 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant
-                              "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"));
+                            get_constant (|
+                              "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS",
+                              Ty.path "i64"
+                            |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 0 |)))
                       ]
                     |)))
@@ -629,7 +649,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_sstore_refund :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::sstore_refund" sstore_refund.
+      M.IsFunction.C "revm_interpreter::gas::calc::sstore_refund" sstore_refund.
     Admitted.
     Global Typeclasses Opaque sstore_refund.
     
@@ -649,7 +669,9 @@ Module gas.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
-                  M.read (| M.get_constant "revm_interpreter::gas::constants::CREATE" |);
+                  M.read (|
+                    get_constant (| "revm_interpreter::gas::constants::CREATE", Ty.path "u64" |)
+                  |);
                   M.read (|
                     M.match_operator (|
                       Some (Ty.path "u64"),
@@ -660,7 +682,10 @@ Module gas.
                           [
                             M.read (| len |);
                             M.read (|
-                              M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD"
+                              get_constant (|
+                                "revm_interpreter::gas::constants::KECCAK256WORD",
+                                Ty.path "u64"
+                              |)
                             |)
                           ]
                         |)
@@ -696,7 +721,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_create2_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::create2_cost" create2_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::create2_cost" create2_cost.
     Admitted.
     Global Typeclasses Opaque create2_cost.
     
@@ -938,7 +963,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_log2floor :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::log2floor" log2floor.
+      M.IsFunction.C "revm_interpreter::gas::calc::log2floor" log2floor.
     Admitted.
     Global Typeclasses Opaque log2floor.
     
@@ -1000,7 +1025,14 @@ Module gas.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
-                            [ M.read (| M.get_constant "revm_interpreter::gas::constants::EXP" |) ]
+                            [
+                              M.read (|
+                                get_constant (|
+                                  "revm_interpreter::gas::constants::EXP",
+                                  Ty.path "u64"
+                                |)
+                              |)
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1180,7 +1212,10 @@ Module gas.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_constant "revm_interpreter::gas::constants::EXP"
+                                              get_constant (|
+                                                "revm_interpreter::gas::constants::EXP",
+                                                Ty.path "u64"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -1481,7 +1516,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_exp_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::exp_cost" exp_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::exp_cost" exp_cost.
     Admitted.
     Global Typeclasses Opaque exp_cost.
     
@@ -1499,7 +1534,9 @@ Module gas.
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
             M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
             [
-              M.read (| M.get_constant "revm_interpreter::gas::constants::VERYLOW" |);
+              M.read (|
+                get_constant (| "revm_interpreter::gas::constants::VERYLOW", Ty.path "u64" |)
+              |);
               M.read (| len |)
             ]
           |)))
@@ -1507,7 +1544,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_copy_cost_verylow :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::copy_cost_verylow" copy_cost_verylow.
+      M.IsFunction.C "revm_interpreter::gas::calc::copy_cost_verylow" copy_cost_verylow.
     Admitted.
     Global Typeclasses Opaque copy_cost_verylow.
     
@@ -1627,7 +1664,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_extcodecopy_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::extcodecopy_cost" extcodecopy_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::extcodecopy_cost" extcodecopy_cost.
     Admitted.
     Global Typeclasses Opaque extcodecopy_cost.
     
@@ -1658,7 +1695,12 @@ Module gas.
                           M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
-                            M.read (| M.get_constant "revm_interpreter::gas::constants::COPY" |)
+                            M.read (|
+                              get_constant (|
+                                "revm_interpreter::gas::constants::COPY",
+                                Ty.path "u64"
+                              |)
+                            |)
                           ]
                         |)
                       |),
@@ -1693,7 +1735,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_copy_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::copy_cost" copy_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::copy_cost" copy_cost.
     Admitted.
     Global Typeclasses Opaque copy_cost.
     
@@ -1722,7 +1764,12 @@ Module gas.
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [
-                            M.read (| M.get_constant "revm_interpreter::gas::constants::LOG" |);
+                            M.read (|
+                              get_constant (|
+                                "revm_interpreter::gas::constants::LOG",
+                                Ty.path "u64"
+                              |)
+                            |);
                             M.read (|
                               M.match_operator (|
                                 Some (Ty.path "u64"),
@@ -1737,7 +1784,10 @@ Module gas.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::LOGDATA"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::LOGDATA",
+                                          Ty.path "u64"
+                                        |)
                                       |);
                                       M.read (| len |)
                                     ]
@@ -1798,7 +1848,9 @@ Module gas.
                     |)
                   |);
                   BinOp.Wrap.mul (|
-                    M.read (| M.get_constant "revm_interpreter::gas::constants::LOGTOPIC" |),
+                    M.read (|
+                      get_constant (| "revm_interpreter::gas::constants::LOGTOPIC", Ty.path "u64" |)
+                    |),
                     M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 ]
@@ -1808,7 +1860,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_log_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::log_cost" log_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::log_cost" log_cost.
     Admitted.
     Global Typeclasses Opaque log_cost.
     
@@ -1828,7 +1880,9 @@ Module gas.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
-                  M.read (| M.get_constant "revm_interpreter::gas::constants::KECCAK256" |);
+                  M.read (|
+                    get_constant (| "revm_interpreter::gas::constants::KECCAK256", Ty.path "u64" |)
+                  |);
                   M.read (|
                     M.match_operator (|
                       Some (Ty.path "u64"),
@@ -1839,7 +1893,10 @@ Module gas.
                           [
                             M.read (| len |);
                             M.read (|
-                              M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD"
+                              get_constant (|
+                                "revm_interpreter::gas::constants::KECCAK256WORD",
+                                Ty.path "u64"
+                              |)
                             |)
                           ]
                         |)
@@ -1875,7 +1932,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_keccak256_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::keccak256_cost" keccak256_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::keccak256_cost" keccak256_cost.
     Admitted.
     Global Typeclasses Opaque keccak256_cost.
     
@@ -1912,7 +1969,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_cost_per_word :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::cost_per_word" cost_per_word.
+      M.IsFunction.C "revm_interpreter::gas::calc::cost_per_word" cost_per_word.
     Admitted.
     Global Typeclasses Opaque cost_per_word.
     
@@ -1939,7 +1996,10 @@ Module gas.
                   [
                     M.read (| len |);
                     M.read (|
-                      M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST"
+                      get_constant (|
+                        "revm_interpreter::gas::constants::INITCODE_WORD_COST",
+                        Ty.path "u64"
+                      |)
                     |)
                   ]
                 |)
@@ -1962,7 +2022,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_initcode_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::initcode_cost" initcode_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::initcode_cost" initcode_cost.
     Admitted.
     Global Typeclasses Opaque initcode_cost.
     
@@ -2025,11 +2085,16 @@ Module gas.
                             (let γ := M.use is_cold in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST"));
+                            get_constant (|
+                              "revm_interpreter::gas::constants::COLD_SLOAD_COST",
+                              Ty.path "u64"
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.get_constant
-                              "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"))
+                            (get_constant (|
+                              "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST",
+                              Ty.path "u64"
+                            |)))
                       ]
                     |)));
                 fun γ =>
@@ -2061,7 +2126,10 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS"));
+                            get_constant (|
+                              "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS",
+                              Ty.path "u64"
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -2108,7 +2176,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_sload_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::sload_cost" sload_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::sload_cost" sload_cost.
     Admitted.
     Global Typeclasses Opaque sload_cost.
     
@@ -2197,8 +2265,10 @@ Module gas.
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::COLD_SLOAD_COST",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2273,7 +2343,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_sstore_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::sstore_cost" sstore_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::sstore_cost" sstore_cost.
     Admitted.
     Global Typeclasses Opaque sstore_cost.
     
@@ -2319,7 +2389,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"));
+                    M.alloc (| SLOAD_GAS |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2367,7 +2437,10 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant "revm_interpreter::gas::constants::SSTORE_SET"));
+                            get_constant (|
+                              "revm_interpreter::gas::constants::SSTORE_SET",
+                              Ty.path "u64"
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -2400,12 +2473,8 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SSTORE_RESET_GAS"));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.get_constant
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"))
+                                    M.alloc (| SSTORE_RESET_GAS |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| SLOAD_GAS |)))
                               ]
                             |)))
                       ]
@@ -2417,7 +2486,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_istanbul_sstore_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::istanbul_sstore_cost" istanbul_sstore_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::istanbul_sstore_cost" istanbul_sstore_cost.
     Admitted.
     Global Typeclasses Opaque istanbul_sstore_cost.
     
@@ -2473,9 +2542,16 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "revm_interpreter::gas::constants::SSTORE_SET"));
+                    get_constant (|
+                      "revm_interpreter::gas::constants::SSTORE_SET",
+                      Ty.path "u64"
+                    |)));
                 fun γ =>
-                  ltac:(M.monadic (M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET"))
+                  ltac:(M.monadic
+                    (get_constant (|
+                      "revm_interpreter::gas::constants::SSTORE_RESET",
+                      Ty.path "u64"
+                    |)))
               ]
             |)
           |)))
@@ -2483,7 +2559,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_frontier_sstore_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::frontier_sstore_cost" frontier_sstore_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::frontier_sstore_cost" frontier_sstore_cost.
     Admitted.
     Global Typeclasses Opaque frontier_sstore_cost.
     
@@ -2725,8 +2801,10 @@ Module gas.
                           BinOp.Wrap.add (|
                             M.read (| β |),
                             M.read (|
-                              M.get_constant
-                                "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
+                              get_constant (|
+                                "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST",
+                                Ty.path "u64"
+                              |)
                             |)
                           |)
                         |)
@@ -2740,7 +2818,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_selfdestruct_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::selfdestruct_cost" selfdestruct_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::selfdestruct_cost" selfdestruct_cost.
     Admitted.
     Global Typeclasses Opaque selfdestruct_cost.
     
@@ -2890,7 +2968,10 @@ Module gas.
                             BinOp.Wrap.add (|
                               M.read (| β |),
                               M.read (|
-                                M.get_constant "revm_interpreter::gas::constants::CALLVALUE"
+                                get_constant (|
+                                  "revm_interpreter::gas::constants::CALLVALUE",
+                                  Ty.path "u64"
+                                |)
                               |)
                             |)
                           |)
@@ -2964,8 +3045,10 @@ Module gas.
                                             BinOp.Wrap.add (|
                                               M.read (| β |),
                                               M.read (|
-                                                M.get_constant
-                                                  "revm_interpreter::gas::constants::NEWACCOUNT"
+                                                get_constant (|
+                                                  "revm_interpreter::gas::constants::NEWACCOUNT",
+                                                  Ty.path "u64"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -2984,8 +3067,10 @@ Module gas.
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::NEWACCOUNT"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::NEWACCOUNT",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -3002,7 +3087,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_call_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::call_cost" call_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::call_cost" call_cost.
     Admitted.
     Global Typeclasses Opaque call_cost.
     
@@ -3029,10 +3114,16 @@ Module gas.
                   ltac:(M.monadic
                     (let γ := M.use is_cold in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"));
+                    get_constant (|
+                      "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST",
+                      Ty.path "u64"
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"))
+                    (get_constant (|
+                      "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST",
+                      Ty.path "u64"
+                    |)))
               ]
             |)
           |)))
@@ -3040,7 +3131,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_warm_cold_cost :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::warm_cold_cost" warm_cold_cost.
+      M.IsFunction.C "revm_interpreter::gas::calc::warm_cold_cost" warm_cold_cost.
     Admitted.
     Global Typeclasses Opaque warm_cold_cost.
     
@@ -3132,7 +3223,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_warm_cold_cost_with_delegation :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_interpreter::gas::calc::warm_cold_cost_with_delegation"
         warm_cold_cost_with_delegation.
     Admitted.
@@ -3163,7 +3254,9 @@ Module gas.
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
-                      M.read (| M.get_constant "revm_interpreter::gas::constants::MEMORY" |);
+                      M.read (|
+                        get_constant (| "revm_interpreter::gas::constants::MEMORY", Ty.path "u64" |)
+                      |);
                       M.read (| num_words |)
                     ]
                   |);
@@ -3183,7 +3276,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_memory_gas :
-      M.IsFunction.Trait "revm_interpreter::gas::calc::memory_gas" memory_gas.
+      M.IsFunction.C "revm_interpreter::gas::calc::memory_gas" memory_gas.
     Admitted.
     Global Typeclasses Opaque memory_gas.
     
@@ -3404,7 +3497,10 @@ Module gas.
                     BinOp.Wrap.mul (|
                       M.read (| zero_data_len |),
                       M.read (|
-                        M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA"
+                        get_constant (|
+                          "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA",
+                          Ty.path "u64"
+                        |)
                       |)
                     |)
                   |)
@@ -3514,8 +3610,10 @@ Module gas.
                                       BinOp.Wrap.mul (|
                                         M.cast (Ty.path "u64") (M.read (| account_num |)),
                                         M.read (|
-                                          M.get_constant
-                                            "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS",
+                                            Ty.path "u64"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -3531,8 +3629,10 @@ Module gas.
                                       BinOp.Wrap.mul (|
                                         M.cast (Ty.path "u64") (M.read (| storage_num |)),
                                         M.read (|
-                                          M.get_constant
-                                            "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY",
+                                            Ty.path "u64"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -3710,8 +3810,10 @@ Module gas.
                               BinOp.Wrap.mul (|
                                 M.read (| authorization_list_num |),
                                 M.read (|
-                                  M.get_constant
-                                    "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST"
+                                  get_constant (|
+                                    "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST",
+                                    Ty.path "u64"
+                                  |)
                                 |)
                               |)
                             |)
@@ -3727,9 +3829,7 @@ Module gas.
       end.
     
     Global Instance Instance_IsFunction_validate_initial_tx_gas :
-      M.IsFunction.Trait
-        "revm_interpreter::gas::calc::validate_initial_tx_gas"
-        validate_initial_tx_gas.
+      M.IsFunction.C "revm_interpreter::gas::calc::validate_initial_tx_gas" validate_initial_tx_gas.
     Admitted.
     Global Typeclasses Opaque validate_initial_tx_gas.
   End calc.

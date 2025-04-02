@@ -41,7 +41,7 @@ Module utils.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_rem_up : M.IsFunction.Trait "ruint::utils::rem_up" rem_up.
+  Global Instance Instance_IsFunction_rem_up : M.IsFunction.C "ruint::utils::rem_up" rem_up.
   Admitted.
   Global Typeclasses Opaque rem_up.
   
@@ -157,8 +157,7 @@ Module utils.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_last_idx :
-    M.IsFunction.Trait "ruint::utils::last_idx" last_idx.
+  Global Instance Instance_IsFunction_last_idx : M.IsFunction.C "ruint::utils::last_idx" last_idx.
   Admitted.
   Global Typeclasses Opaque last_idx.
   
@@ -215,7 +214,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_trim_end_slice :
-    M.IsFunction.Trait "ruint::utils::trim_end_slice" trim_end_slice.
+    M.IsFunction.C "ruint::utils::trim_end_slice" trim_end_slice.
   Admitted.
   Global Typeclasses Opaque trim_end_slice.
   
@@ -280,7 +279,7 @@ Module utils.
     end.
   
   Global Instance Instance_IsFunction_trim_end_vec :
-    M.IsFunction.Trait "ruint::utils::trim_end_vec" trim_end_vec.
+    M.IsFunction.C "ruint::utils::trim_end_vec" trim_end_vec.
   Admitted.
   Global Typeclasses Opaque trim_end_vec.
 End utils.

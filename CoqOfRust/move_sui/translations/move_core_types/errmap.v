@@ -37,11 +37,8 @@ Module errmap.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ErrorDescription" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code_name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ErrorDescription" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code_name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -55,10 +52,7 @@ Module errmap.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "code_description" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code_description" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -222,7 +216,7 @@ Module errmap.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ErrorDescription" |);
+                              mk_str (| "ErrorDescription" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -298,7 +292,7 @@ Module errmap.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "code_name" |);
+                            mk_str (| "code_name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -379,7 +373,7 @@ Module errmap.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "code_description" |);
+                            mk_str (| "code_description" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -491,8 +485,21 @@ Module errmap.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ErrorDescription" |);
-                M.read (| M.get_constant "move_core_types::errmap::_'1::deserialize::FIELDS" |);
+                mk_str (| "ErrorDescription" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::errmap::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::errmap::_'1::deserialize::__Visitor"
                   [
@@ -561,7 +568,7 @@ Module errmap.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ErrorMapping" |);
+                              mk_str (| "ErrorMapping" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -646,7 +653,7 @@ Module errmap.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "error_categories" |);
+                            mk_str (| "error_categories" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -743,7 +750,7 @@ Module errmap.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "module_error_maps" |);
+                            mk_str (| "module_error_maps" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -855,8 +862,21 @@ Module errmap.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ErrorMapping" |);
-                M.read (| M.get_constant "move_core_types::errmap::_'3::deserialize::FIELDS" |);
+                mk_str (| "ErrorMapping" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::errmap::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::errmap::_'3::deserialize::__Visitor"
                   [
@@ -937,14 +957,8 @@ Module errmap.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ErrorMapping" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "error_categories" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ErrorMapping" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error_categories" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -958,10 +972,7 @@ Module errmap.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "module_error_maps" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module_error_maps" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1338,13 +1349,11 @@ Module errmap.
                                                                         M.alloc (|
                                                                           Value.Array
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Entry for category "
+                                                                              mk_str (|
+                                                                                "Entry for category "
                                                                               |);
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  " already taken by: "
+                                                                              mk_str (|
+                                                                                " already taken by: "
                                                                               |)
                                                                             ]
                                                                         |)
@@ -1570,7 +1579,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_add_error_category :
-      M.IsAssociatedFunction.Trait Self "add_error_category" add_error_category.
+      M.IsAssociatedFunction.C Self "add_error_category" add_error_category.
     Admitted.
     Global Typeclasses Opaque add_error_category.
     
@@ -1808,17 +1817,14 @@ Module errmap.
                                                                         M.alloc (|
                                                                           Value.Array
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Duplicate entry for abort code "
+                                                                              mk_str (|
+                                                                                "Duplicate entry for abort code "
                                                                               |);
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  " found in "
+                                                                              mk_str (|
+                                                                                " found in "
                                                                               |);
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  ", previous entry: "
+                                                                              mk_str (|
+                                                                                ", previous entry: "
                                                                               |)
                                                                             ]
                                                                         |)
@@ -2099,7 +2105,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_add_module_error :
-      M.IsAssociatedFunction.Trait Self "add_module_error" add_module_error.
+      M.IsAssociatedFunction.C Self "add_module_error" add_module_error.
     Admitted.
     Global Typeclasses Opaque add_module_error.
     
@@ -2274,7 +2280,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_from_file :
-      M.IsAssociatedFunction.Trait Self "from_file" from_file.
+      M.IsAssociatedFunction.C Self "from_file" from_file.
     Admitted.
     Global Typeclasses Opaque from_file.
     
@@ -2434,8 +2440,7 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to_file :
-      M.IsAssociatedFunction.Trait Self "to_file" to_file.
+    Global Instance AssociatedFunction_to_file : M.IsAssociatedFunction.C Self "to_file" to_file.
     Admitted.
     Global Typeclasses Opaque to_file.
     
@@ -2660,7 +2665,7 @@ Module errmap.
       end.
     
     Global Instance AssociatedFunction_get_explanation :
-      M.IsAssociatedFunction.Trait Self "get_explanation" get_explanation.
+      M.IsAssociatedFunction.C Self "get_explanation" get_explanation.
     Admitted.
     Global Typeclasses Opaque get_explanation.
   End Impl_move_core_types_errmap_ErrorMapping.

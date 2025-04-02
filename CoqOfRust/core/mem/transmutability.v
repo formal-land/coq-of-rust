@@ -288,11 +288,8 @@ Module mem.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Assume" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "alignment" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Assume" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alignment" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -306,10 +303,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "lifetimes" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "lifetimes" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -323,7 +317,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "safety" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "safety" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -337,7 +331,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "validity" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "validity" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -402,86 +396,105 @@ Module mem.
               Self { alignment: false, lifetimes: false, safety: false, validity: false };
       *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_NOTHING : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructRecord
-                "core::mem::transmutability::Assume"
-                [
-                  ("alignment", Value.Bool false);
-                  ("lifetimes", Value.Bool false);
-                  ("safety", Value.Bool false);
-                  ("validity", Value.Bool false)
-                ]
-            |))).
+      Definition value_NOTHING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructRecord
+              "core::mem::transmutability::Assume"
+              [
+                ("alignment", Value.Bool false);
+                ("lifetimes", Value.Bool false);
+                ("safety", Value.Bool false);
+                ("validity", Value.Bool false)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_NOTHING :
-        M.IsAssociatedConstant.Trait Self "value_NOTHING" value_NOTHING.
+        M.IsAssociatedFunction.C Self "NOTHING" value_NOTHING.
       Admitted.
       Global Typeclasses Opaque value_NOTHING.
       
       (*     pub const ALIGNMENT: Self = Self { alignment: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_ALIGNMENT : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
-                [ ("alignment", Value.Bool true) ]
-            |))).
+      Definition value_ALIGNMENT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.struct_record_update
+              (M.read (|
+                get_associated_constant (|
+                  Ty.path "core::mem::transmutability::Assume",
+                  "NOTHING",
+                  Ty.path "core::mem::transmutability::Assume"
+                |)
+              |))
+              [ ("alignment", Value.Bool true) ]
+          |))).
       
       Global Instance AssociatedConstant_value_ALIGNMENT :
-        M.IsAssociatedConstant.Trait Self "value_ALIGNMENT" value_ALIGNMENT.
+        M.IsAssociatedFunction.C Self "ALIGNMENT" value_ALIGNMENT.
       Admitted.
       Global Typeclasses Opaque value_ALIGNMENT.
       
       (*     pub const LIFETIMES: Self = Self { lifetimes: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_LIFETIMES : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
-                [ ("lifetimes", Value.Bool true) ]
-            |))).
+      Definition value_LIFETIMES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.struct_record_update
+              (M.read (|
+                get_associated_constant (|
+                  Ty.path "core::mem::transmutability::Assume",
+                  "NOTHING",
+                  Ty.path "core::mem::transmutability::Assume"
+                |)
+              |))
+              [ ("lifetimes", Value.Bool true) ]
+          |))).
       
       Global Instance AssociatedConstant_value_LIFETIMES :
-        M.IsAssociatedConstant.Trait Self "value_LIFETIMES" value_LIFETIMES.
+        M.IsAssociatedFunction.C Self "LIFETIMES" value_LIFETIMES.
       Admitted.
       Global Typeclasses Opaque value_LIFETIMES.
       
       (*     pub const SAFETY: Self = Self { safety: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_SAFETY : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
-                [ ("safety", Value.Bool true) ]
-            |))).
+      Definition value_SAFETY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.struct_record_update
+              (M.read (|
+                get_associated_constant (|
+                  Ty.path "core::mem::transmutability::Assume",
+                  "NOTHING",
+                  Ty.path "core::mem::transmutability::Assume"
+                |)
+              |))
+              [ ("safety", Value.Bool true) ]
+          |))).
       
       Global Instance AssociatedConstant_value_SAFETY :
-        M.IsAssociatedConstant.Trait Self "value_SAFETY" value_SAFETY.
+        M.IsAssociatedFunction.C Self "SAFETY" value_SAFETY.
       Admitted.
       Global Typeclasses Opaque value_SAFETY.
       
       (*     pub const VALIDITY: Self = Self { validity: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_VALIDITY : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
-                [ ("validity", Value.Bool true) ]
-            |))).
+      Definition value_VALIDITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.struct_record_update
+              (M.read (|
+                get_associated_constant (|
+                  Ty.path "core::mem::transmutability::Assume",
+                  "NOTHING",
+                  Ty.path "core::mem::transmutability::Assume"
+                |)
+              |))
+              [ ("validity", Value.Bool true) ]
+          |))).
       
       Global Instance AssociatedConstant_value_VALIDITY :
-        M.IsAssociatedConstant.Trait Self "value_VALIDITY" value_VALIDITY.
+        M.IsAssociatedFunction.C Self "VALIDITY" value_VALIDITY.
       Admitted.
       Global Typeclasses Opaque value_VALIDITY.
       
@@ -580,7 +593,7 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_and : M.IsAssociatedFunction.Trait Self "and" and.
+      Global Instance AssociatedFunction_and : M.IsAssociatedFunction.C Self "and" and.
       Admitted.
       Global Typeclasses Opaque and.
       
@@ -687,8 +700,7 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_but_not :
-        M.IsAssociatedFunction.Trait Self "but_not" but_not.
+      Global Instance AssociatedFunction_but_not : M.IsAssociatedFunction.C Self "but_not" but_not.
       Admitted.
       Global Typeclasses Opaque but_not.
     End Impl_core_mem_transmutability_Assume.

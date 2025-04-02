@@ -68,11 +68,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ResultAndState" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ResultAndState" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -86,7 +83,7 @@ Module result.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "state" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -816,34 +813,19 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Success" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "reason" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Success" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "gas_used" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "gas_refunded" |) |)
+                            M.deref (| mk_str (| "gas_refunded" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "logs" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "logs" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "output" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_4 |) |)
@@ -882,19 +864,10 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Revert" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "gas_used" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "output" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -933,19 +906,10 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Halt" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "reason" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Halt" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "gas_used" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -1895,7 +1859,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_success" (is_success HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_success.
     
@@ -1989,10 +1953,7 @@ Module result.
     
     Global Instance AssociatedFunction_created_address :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self HaltReasonT)
-        "created_address"
-        (created_address HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "created_address" (created_address HaltReasonT).
     Admitted.
     Global Typeclasses Opaque created_address.
     
@@ -2035,7 +1996,7 @@ Module result.
     
     Global Instance AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_halt.
     
@@ -2128,7 +2089,7 @@ Module result.
     
     Global Instance AssociatedFunction_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "output" (output HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "output" (output HaltReasonT).
     Admitted.
     Global Typeclasses Opaque output.
     
@@ -2208,7 +2169,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_output" (into_output HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "into_output" (into_output HaltReasonT).
     Admitted.
     Global Typeclasses Opaque into_output.
     
@@ -2322,7 +2283,7 @@ Module result.
     
     Global Instance AssociatedFunction_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "logs" (logs HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "logs" (logs HaltReasonT).
     Admitted.
     Global Typeclasses Opaque logs.
     
@@ -2410,7 +2371,7 @@ Module result.
     
     Global Instance AssociatedFunction_into_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
     Admitted.
     Global Typeclasses Opaque into_logs.
     
@@ -2490,7 +2451,7 @@ Module result.
     
     Global Instance AssociatedFunction_gas_used :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
     Admitted.
     Global Typeclasses Opaque gas_used.
   End Impl_revm_context_interface_result_ExecutionResult_HaltReasonT.
@@ -2570,10 +2531,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Call" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2612,10 +2570,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Create" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -3224,7 +3179,7 @@ Module result.
       end.
     
     Global Instance AssociatedFunction_into_data :
-      M.IsAssociatedFunction.Trait Self "into_data" into_data.
+      M.IsAssociatedFunction.C Self "into_data" into_data.
     Admitted.
     Global Typeclasses Opaque into_data.
     
@@ -3289,7 +3244,7 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
     Admitted.
     Global Typeclasses Opaque data.
     
@@ -3371,8 +3326,7 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
   End Impl_revm_context_interface_result_Output.
@@ -3472,10 +3426,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Transaction" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3507,10 +3458,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Header" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Header" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3542,10 +3490,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Database" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Database" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3577,10 +3522,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Custom" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3612,10 +3554,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Precompile" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -4449,7 +4388,7 @@ Module result.
     
     Global Instance AssociatedFunction_map_db_err :
       forall (DBError TransactionValidationErrorT : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self DBError TransactionValidationErrorT)
         "map_db_err"
         (map_db_err DBError TransactionValidationErrorT).
@@ -4669,9 +4608,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "transaction validation error: " |)
-                                        ]
+                                      Value.Array [ mk_str (| "transaction validation error: " |) ]
                                     |)
                                   |)
                                 |)
@@ -4754,8 +4691,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "header validation error: " |) ]
+                                      Value.Array [ mk_str (| "header validation error: " |) ]
                                     |)
                                   |)
                                 |)
@@ -4840,9 +4776,7 @@ Module result.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "database error: " |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "database error: " |) ] |)
                                   |)
                                 |)
                               |);
@@ -5304,7 +5238,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PriorityFeeGreaterThanMaxFee" |) |)
+                            M.deref (| mk_str (| "PriorityFeeGreaterThanMaxFee" |) |)
                           |)
                         ]
                       |)
@@ -5333,7 +5267,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GasPriceLessThanBasefee" |) |)
+                            M.deref (| mk_str (| "GasPriceLessThanBasefee" |) |)
                           |)
                         ]
                       |)
@@ -5362,7 +5296,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallerGasLimitMoreThanBlock" |) |)
+                            M.deref (| mk_str (| "CallerGasLimitMoreThanBlock" |) |)
                           |)
                         ]
                       |)
@@ -5391,7 +5325,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallGasCostMoreThanGasLimit" |) |)
+                            M.deref (| mk_str (| "CallGasCostMoreThanGasLimit" |) |)
                           |)
                         ]
                       |)
@@ -5420,7 +5354,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RejectCallerWithCode" |) |)
+                            M.deref (| mk_str (| "RejectCallerWithCode" |) |)
                           |)
                         ]
                       |)
@@ -5458,17 +5392,11 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LackOfFundForMaxFee" |) |)
+                            M.deref (| mk_str (| "LackOfFundForMaxFee" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "fee" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fee" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "balance" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "balance" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -5500,7 +5428,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OverflowPaymentInTransaction" |) |)
+                            M.deref (| mk_str (| "OverflowPaymentInTransaction" |) |)
                           |)
                         ]
                       |)
@@ -5529,7 +5457,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonceOverflowInTransaction" |) |)
+                            M.deref (| mk_str (| "NonceOverflowInTransaction" |) |)
                           |)
                         ]
                       |)
@@ -5567,17 +5495,11 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonceTooHigh" |) |)
+                            M.deref (| mk_str (| "NonceTooHigh" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "tx" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "state" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -5616,19 +5538,10 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonceTooLow" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "tx" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonceTooLow" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "state" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -5660,7 +5573,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)
+                            M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
                           |)
                         ]
                       |)
@@ -5689,7 +5602,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidChainId" |) |)
+                            M.deref (| mk_str (| "InvalidChainId" |) |)
                           |)
                         ]
                       |)
@@ -5718,7 +5631,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AccessListNotSupported" |) |)
+                            M.deref (| mk_str (| "AccessListNotSupported" |) |)
                           |)
                         ]
                       |)
@@ -5747,7 +5660,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MaxFeePerBlobGasNotSupported" |) |)
+                            M.deref (| mk_str (| "MaxFeePerBlobGasNotSupported" |) |)
                           |)
                         ]
                       |)
@@ -5776,9 +5689,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BlobVersionedHashesNotSupported" |)
-                            |)
+                            M.deref (| mk_str (| "BlobVersionedHashesNotSupported" |) |)
                           |)
                         ]
                       |)
@@ -5807,7 +5718,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobGasPriceGreaterThanMax" |) |)
+                            M.deref (| mk_str (| "BlobGasPriceGreaterThanMax" |) |)
                           |)
                         ]
                       |)
@@ -5834,10 +5745,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EmptyBlobs" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyBlobs" |) |) |)
                         ]
                       |)
                     |)));
@@ -5865,7 +5773,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobCreateTransaction" |) |)
+                            M.deref (| mk_str (| "BlobCreateTransaction" |) |)
                           |)
                         ]
                       |)
@@ -5903,17 +5811,11 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooManyBlobs" |) |)
+                            M.deref (| mk_str (| "TooManyBlobs" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "max" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "have" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "have" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
@@ -5945,7 +5847,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobVersionNotSupported" |) |)
+                            M.deref (| mk_str (| "BlobVersionNotSupported" |) |)
                           |)
                         ]
                       |)
@@ -5974,7 +5876,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofCrateShouldHaveToAddress" |) |)
+                            M.deref (| mk_str (| "EofCrateShouldHaveToAddress" |) |)
                           |)
                         ]
                       |)
@@ -6003,7 +5905,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AuthorizationListNotSupported" |) |)
+                            M.deref (| mk_str (| "AuthorizationListNotSupported" |) |)
                           |)
                         ]
                       |)
@@ -6032,7 +5934,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AuthorizationListInvalidFields" |) |)
+                            M.deref (| mk_str (| "AuthorizationListInvalidFields" |) |)
                           |)
                         ]
                       |)
@@ -6061,7 +5963,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EmptyAuthorizationList" |) |)
+                            M.deref (| mk_str (| "EmptyAuthorizationList" |) |)
                           |)
                         ]
                       |)
@@ -6092,7 +5994,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidAuthorizationList" |) |)
+                            M.deref (| mk_str (| "InvalidAuthorizationList" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -6125,7 +6027,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Eip2930NotSupported" |) |)
+                            M.deref (| mk_str (| "Eip2930NotSupported" |) |)
                           |)
                         ]
                       |)
@@ -6154,7 +6056,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Eip1559NotSupported" |) |)
+                            M.deref (| mk_str (| "Eip1559NotSupported" |) |)
                           |)
                         ]
                       |)
@@ -6183,7 +6085,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Eip4844NotSupported" |) |)
+                            M.deref (| mk_str (| "Eip4844NotSupported" |) |)
                           |)
                         ]
                       |)
@@ -6212,7 +6114,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Eip7702NotSupported" |) |)
+                            M.deref (| mk_str (| "Eip7702NotSupported" |) |)
                           |)
                         ]
                       |)
@@ -7926,11 +7828,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "priority fee is greater than max fee"
-                                          |)
-                                        ]
+                                        [ mk_str (| "priority fee is greater than max fee" |) ]
                                     |)
                                   |)
                                 |)
@@ -7977,9 +7875,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "gas price is less than basefee" |)
-                                        ]
+                                      Value.Array [ mk_str (| "gas price is less than basefee" |) ]
                                     |)
                                   |)
                                 |)
@@ -8028,9 +7924,8 @@ Module result.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "caller gas limit exceeds the block gas limit"
+                                          mk_str (|
+                                            "caller gas limit exceeds the block gas limit"
                                           |)
                                         ]
                                     |)
@@ -8080,11 +7975,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "call gas cost exceeds the gas limit"
-                                          |)
-                                        ]
+                                        [ mk_str (| "call gas cost exceeds the gas limit" |) ]
                                     |)
                                   |)
                                 |)
@@ -8133,9 +8024,8 @@ Module result.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "reject transactions from senders with deployed code"
+                                          mk_str (|
+                                            "reject transactions from senders with deployed code"
                                           |)
                                         ]
                                     |)
@@ -8196,9 +8086,9 @@ Module result.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "lack of funds (" |);
-                                          M.read (| Value.String ") for max fee (" |);
-                                          M.read (| Value.String ")" |)
+                                          mk_str (| "lack of funds (" |);
+                                          mk_str (| ") for max fee (" |);
+                                          mk_str (| ")" |)
                                         ]
                                     |)
                                   |)
@@ -8329,12 +8219,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "overflow payment in transaction"
-                                          |)
-                                        ]
+                                      Value.Array [ mk_str (| "overflow payment in transaction" |) ]
                                     |)
                                   |)
                                 |)
@@ -8381,9 +8266,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "nonce overflow in transaction" |)
-                                        ]
+                                      Value.Array [ mk_str (| "nonce overflow in transaction" |) ]
                                     |)
                                   |)
                                 |)
@@ -8441,9 +8324,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "nonce " |);
-                                          M.read (| Value.String " too high, expected " |)
+                                        [ mk_str (| "nonce " |); mk_str (| " too high, expected " |)
                                         ]
                                     |)
                                   |)
@@ -8545,9 +8426,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "nonce " |);
-                                          M.read (| Value.String " too low, expected " |)
+                                        [ mk_str (| "nonce " |); mk_str (| " too low, expected " |)
                                         ]
                                     |)
                                   |)
@@ -8638,8 +8517,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "create initcode size limit" |) ]
+                                      Value.Array [ mk_str (| "create initcode size limit" |) ]
                                     |)
                                   |)
                                 |)
@@ -8685,9 +8563,7 @@ Module result.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "invalid chain ID" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "invalid chain ID" |) ] |)
                                   |)
                                 |)
                               |)
@@ -8733,8 +8609,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "access list not supported" |) ]
+                                      Value.Array [ mk_str (| "access list not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -8782,11 +8657,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "max fee per blob gas not supported"
-                                          |)
-                                        ]
+                                        [ mk_str (| "max fee per blob gas not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -8834,11 +8705,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "blob versioned hashes not supported"
-                                          |)
-                                        ]
+                                        [ mk_str (| "blob versioned hashes not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -8887,9 +8754,8 @@ Module result.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "blob gas price is greater than max fee per blob gas"
+                                          mk_str (|
+                                            "blob gas price is greater than max fee per blob gas"
                                           |)
                                         ]
                                     |)
@@ -8937,9 +8803,7 @@ Module result.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "empty blobs" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "empty blobs" |) ] |)
                                   |)
                                 |)
                               |)
@@ -8985,8 +8849,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "blob create transaction" |) ]
+                                      Value.Array [ mk_str (| "blob create transaction" |) ]
                                     |)
                                   |)
                                 |)
@@ -9045,8 +8908,8 @@ Module result.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "too many blobs, have " |);
-                                          M.read (| Value.String ", max " |)
+                                          mk_str (| "too many blobs, have " |);
+                                          mk_str (| ", max " |)
                                         ]
                                     |)
                                   |)
@@ -9137,8 +9000,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "blob version not supported" |) ]
+                                      Value.Array [ mk_str (| "blob version not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9186,11 +9048,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "EOF crate should have `to` address"
-                                          |)
-                                        ]
+                                        [ mk_str (| "EOF crate should have `to` address" |) ]
                                     |)
                                   |)
                                 |)
@@ -9238,11 +9096,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "authorization list not supported"
-                                          |)
-                                        ]
+                                        [ mk_str (| "authorization list not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9290,11 +9144,7 @@ Module result.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "authorization list tx has invalid fields"
-                                          |)
-                                        ]
+                                        [ mk_str (| "authorization list tx has invalid fields" |) ]
                                     |)
                                   |)
                                 |)
@@ -9341,8 +9191,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "empty authorization list" |) ]
+                                      Value.Array [ mk_str (| "empty authorization list" |) ]
                                     |)
                                   |)
                                 |)
@@ -9389,8 +9238,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Eip2930 is not supported" |) ]
+                                      Value.Array [ mk_str (| "Eip2930 is not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9437,8 +9285,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Eip1559 is not supported" |) ]
+                                      Value.Array [ mk_str (| "Eip1559 is not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9485,8 +9332,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Eip4844 is not supported" |) ]
+                                      Value.Array [ mk_str (| "Eip4844 is not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9533,8 +9379,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Eip7702 is not supported" |) ]
+                                      Value.Array [ mk_str (| "Eip7702 is not supported" |) ]
                                     |)
                                   |)
                                 |)
@@ -9649,7 +9494,7 @@ Module result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PrevrandaoNotSet" |) |)
+                            M.deref (| mk_str (| "PrevrandaoNotSet" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -9663,7 +9508,7 @@ Module result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ExcessBlobGasNotSet" |) |)
+                            M.deref (| mk_str (| "ExcessBlobGasNotSet" |) |)
                           |)
                         |)))
                   ]
@@ -9937,8 +9782,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "`prevrandao` not set" |) ]
+                                      Value.Array [ mk_str (| "`prevrandao` not set" |) ]
                                     |)
                                   |)
                                 |)
@@ -9985,8 +9829,7 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "`excess_blob_gas` not set" |) ]
+                                      Value.Array [ mk_str (| "`excess_blob_gas` not set" |) ]
                                     |)
                                   |)
                                 |)
@@ -10079,10 +9922,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::Stop"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Stop" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -10093,10 +9933,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::Return"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Return" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -10107,10 +9944,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::SelfDestruct"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SelfDestruct" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -10123,7 +9957,7 @@ Module result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofReturnContract" |) |)
+                            M.deref (| mk_str (| "EofReturnContract" |) |)
                           |)
                         |)))
                   ]
@@ -10515,10 +10349,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfGas" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -10550,7 +10381,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OpcodeNotFound" |) |)
+                            M.deref (| mk_str (| "OpcodeNotFound" |) |)
                           |)
                         ]
                       |)
@@ -10579,7 +10410,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidFEOpcode" |) |)
+                            M.deref (| mk_str (| "InvalidFEOpcode" |) |)
                           |)
                         ]
                       |)
@@ -10606,10 +10437,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidJump" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidJump" |) |) |)
                         ]
                       |)
                     |)));
@@ -10635,10 +10463,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NotActivated" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotActivated" |) |) |)
                         ]
                       |)
                     |)));
@@ -10666,7 +10491,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StackUnderflow" |) |)
+                            M.deref (| mk_str (| "StackUnderflow" |) |)
                           |)
                         ]
                       |)
@@ -10695,7 +10520,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StackOverflow" |) |)
+                            M.deref (| mk_str (| "StackOverflow" |) |)
                           |)
                         ]
                       |)
@@ -10722,10 +10547,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfOffset" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfOffset" |) |) |)
                         ]
                       |)
                     |)));
@@ -10753,7 +10575,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateCollision" |) |)
+                            M.deref (| mk_str (| "CreateCollision" |) |)
                           |)
                         ]
                       |)
@@ -10782,7 +10604,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PrecompileError" |) |)
+                            M.deref (| mk_str (| "PrecompileError" |) |)
                           |)
                         ]
                       |)
@@ -10811,7 +10633,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonceOverflow" |) |)
+                            M.deref (| mk_str (| "NonceOverflow" |) |)
                           |)
                         ]
                       |)
@@ -10840,7 +10662,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateContractSizeLimit" |) |)
+                            M.deref (| mk_str (| "CreateContractSizeLimit" |) |)
                           |)
                         ]
                       |)
@@ -10869,7 +10691,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateContractStartingWithEF" |) |)
+                            M.deref (| mk_str (| "CreateContractStartingWithEF" |) |)
                           |)
                         ]
                       |)
@@ -10898,7 +10720,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)
+                            M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
                           |)
                         ]
                       |)
@@ -10927,7 +10749,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OverflowPayment" |) |)
+                            M.deref (| mk_str (| "OverflowPayment" |) |)
                           |)
                         ]
                       |)
@@ -10956,7 +10778,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StateChangeDuringStaticCall" |) |)
+                            M.deref (| mk_str (| "StateChangeDuringStaticCall" |) |)
                           |)
                         ]
                       |)
@@ -10985,7 +10807,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallNotAllowedInsideStatic" |) |)
+                            M.deref (| mk_str (| "CallNotAllowedInsideStatic" |) |)
                           |)
                         ]
                       |)
@@ -11012,10 +10834,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfFunds" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
                         ]
                       |)
                     |)));
@@ -11041,10 +10860,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallTooDeep" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallTooDeep" |) |) |)
                         ]
                       |)
                     |)));
@@ -11072,7 +10888,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofAuxDataOverflow" |) |)
+                            M.deref (| mk_str (| "EofAuxDataOverflow" |) |)
                           |)
                         ]
                       |)
@@ -11101,7 +10917,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofAuxDataTooSmall" |) |)
+                            M.deref (| mk_str (| "EofAuxDataTooSmall" |) |)
                           |)
                         ]
                       |)
@@ -11130,7 +10946,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SubRoutineStackOverflow" |) |)
+                            M.deref (| mk_str (| "SubRoutineStackOverflow" |) |)
                           |)
                         ]
                       |)
@@ -11159,7 +10975,7 @@ Module result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEXTCALLTarget" |) |)
+                            M.deref (| mk_str (| "InvalidEXTCALLTarget" |) |)
                           |)
                         ]
                       |)
@@ -11546,10 +11362,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Basic"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Basic" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Basic" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -11560,10 +11373,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::MemoryLimit"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MemoryLimit" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryLimit" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -11574,10 +11384,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Memory"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Memory" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Memory" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -11588,10 +11395,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Precompile"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Precompile" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -11604,7 +11408,7 @@ Module result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidOperand" |) |)
+                            M.deref (| mk_str (| "InvalidOperand" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -11618,7 +11422,7 @@ Module result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ReentrancySentry" |) |)
+                            M.deref (| mk_str (| "ReentrancySentry" |) |)
                           |)
                         |)))
                   ]

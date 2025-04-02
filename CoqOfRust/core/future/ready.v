@@ -35,7 +35,7 @@ Module future.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ready" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ready" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -212,7 +212,7 @@ Module future.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "`Ready` polled after completion" |) |)
+                      M.deref (| mk_str (| "`Ready` polled after completion" |) |)
                     |)
                   ]
                 |)
@@ -259,9 +259,7 @@ Module future.
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
-                  |)
+                  M.deref (| mk_str (| "Called `into_inner()` on `Ready` after completion" |) |)
                 |)
               ]
             |)))
@@ -270,7 +268,7 @@ Module future.
       
       Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+        M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
       Admitted.
       Global Typeclasses Opaque into_inner.
     End Impl_core_future_ready_Ready_T.
@@ -291,8 +289,7 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_ready :
-      M.IsFunction.Trait "core::future::ready::ready" ready.
+    Global Instance Instance_IsFunction_ready : M.IsFunction.C "core::future::ready::ready" ready.
     Admitted.
     Global Typeclasses Opaque ready.
   End ready.

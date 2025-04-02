@@ -42,7 +42,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |)
+                      M.alloc (| Value.Array [ mk_str (| "Circle of radius " |) ] |)
                     |)
                   |)
                 |);
@@ -137,6 +137,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "converting_to_string::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "converting_to_string::main" main.
 Admitted.
 Global Typeclasses Opaque main.

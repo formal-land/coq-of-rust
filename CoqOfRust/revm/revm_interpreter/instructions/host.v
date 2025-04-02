@@ -496,7 +496,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_balance :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::balance" balance.
+      M.IsFunction.C "revm_interpreter::instructions::host::balance" balance.
     Admitted.
     Global Typeclasses Opaque balance.
     
@@ -680,7 +680,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::LOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::LOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -907,7 +910,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_selfbalance :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::selfbalance" selfbalance.
+      M.IsFunction.C "revm_interpreter::instructions::host::selfbalance" selfbalance.
     Admitted.
     Global Typeclasses Opaque selfbalance.
     
@@ -1679,7 +1682,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcodesize :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodesize" extcodesize.
+      M.IsFunction.C "revm_interpreter::instructions::host::extcodesize" extcodesize.
     Admitted.
     Global Typeclasses Opaque extcodesize.
     
@@ -2535,7 +2538,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcodehash :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodehash" extcodehash.
+      M.IsFunction.C "revm_interpreter::instructions::host::extcodehash" extcodehash.
     Admitted.
     Global Typeclasses Opaque extcodehash.
     
@@ -2767,8 +2770,11 @@ Module instructions.
                                                                     M.cast
                                                                       (Ty.path "u64")
                                                                       (M.read (|
-                                                                        M.get_constant
-                                                                          "core::num::MAX"
+                                                                        get_associated_constant (|
+                                                                          Ty.path "usize",
+                                                                          "MAX",
+                                                                          Ty.path "usize"
+                                                                        |)
                                                                       |))
                                                                   |))
                                                                   (BinOp.ne (|
@@ -3223,8 +3229,11 @@ Module instructions.
                                                                             M.cast
                                                                               (Ty.path "u64")
                                                                               (M.read (|
-                                                                                M.get_constant
-                                                                                  "core::num::MAX"
+                                                                                get_associated_constant (|
+                                                                                  Ty.path "usize",
+                                                                                  "MAX",
+                                                                                  Ty.path "usize"
+                                                                                |)
                                                                               |))
                                                                           |))
                                                                           (BinOp.ne (|
@@ -3508,8 +3517,11 @@ Module instructions.
                                                                           |)));
                                                                       fun γ =>
                                                                         ltac:(M.monadic
-                                                                          (M.get_constant
-                                                                            "core::num::MAX"))
+                                                                          (get_associated_constant (|
+                                                                            Ty.path "u64",
+                                                                            "MAX",
+                                                                            Ty.path "u64"
+                                                                          |)))
                                                                     ]
                                                                   |)))
                                                             ]
@@ -3517,7 +3529,13 @@ Module instructions.
                                                         |)
                                                       ]
                                                     |);
-                                                    M.read (| M.get_constant "core::num::MAX" |)
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.path "usize",
+                                                        "MAX",
+                                                        Ty.path "usize"
+                                                      |)
+                                                    |)
                                                   ]
                                                 |);
                                                 M.call_closure (|
@@ -3843,7 +3861,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcodecopy :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodecopy" extcodecopy.
+      M.IsFunction.C "revm_interpreter::instructions::host::extcodecopy" extcodecopy.
     Admitted.
     Global Typeclasses Opaque extcodecopy.
     
@@ -3930,7 +3948,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BLOCKHASH"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BLOCKHASH",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4142,7 +4163,13 @@ Module instructions.
                                               M.deref (| M.read (| x |) |),
                                               Value.Integer IntegerKind.Usize 0
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (get_associated_constant (|
+                                              Ty.path "u64",
+                                              "MAX",
+                                              Ty.path "u64"
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -4233,7 +4260,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_blockhash :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::blockhash" blockhash.
+      M.IsFunction.C "revm_interpreter::instructions::host::blockhash" blockhash.
     Admitted.
     Global Typeclasses Opaque blockhash.
     
@@ -4593,7 +4620,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_sload :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::sload" sload.
+      M.IsFunction.C "revm_interpreter::instructions::host::sload" sload.
     Admitted.
     Global Typeclasses Opaque sload.
     
@@ -4964,8 +4991,10 @@ Module instructions.
                                                         ]
                                                       |),
                                                       M.read (|
-                                                        M.get_constant
-                                                          "revm_interpreter::gas::constants::CALL_STIPEND"
+                                                        get_constant (|
+                                                          "revm_interpreter::gas::constants::CALL_STIPEND",
+                                                          Ty.path "u64"
+                                                        |)
                                                       |)
                                                     |)))
                                                 |)
@@ -5298,7 +5327,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_sstore :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::sstore" sstore.
+      M.IsFunction.C "revm_interpreter::instructions::host::sstore" sstore.
     Admitted.
     Global Typeclasses Opaque sstore.
     
@@ -5563,8 +5592,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -5731,7 +5762,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_tstore :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::tstore" tstore.
+      M.IsFunction.C "revm_interpreter::instructions::host::tstore" tstore.
     Admitted.
     Global Typeclasses Opaque tstore.
     
@@ -5912,8 +5943,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -6105,7 +6138,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_tload :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::tload" tload.
+      M.IsFunction.C "revm_interpreter::instructions::host::tload" tload.
     Admitted.
     Global Typeclasses Opaque tload.
     
@@ -6357,7 +6390,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -6462,13 +6499,7 @@ Module instructions.
                                   [],
                                   []
                                 |),
-                                [
-                                  M.cast
-                                    (Ty.path "u8")
-                                    (M.read (|
-                                      M.get_constant "revm_interpreter::instructions::host::log::N"
-                                    |));
-                                  M.cast (Ty.path "u64") (M.read (| len |))
+                                [ M.cast (Ty.path "u8") N; M.cast (Ty.path "u64") (M.read (| len |))
                                 ]
                               |)
                             |),
@@ -6734,8 +6765,11 @@ Module instructions.
                                                                         M.cast
                                                                           (Ty.path "u64")
                                                                           (M.read (|
-                                                                            M.get_constant
-                                                                              "core::num::MAX"
+                                                                            get_associated_constant (|
+                                                                              Ty.path "usize",
+                                                                              "MAX",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |))
                                                                       |))
                                                                       (BinOp.ne (|
@@ -7187,10 +7221,7 @@ Module instructions.
                                               |)
                                             ]
                                           |),
-                                          M.read (|
-                                            M.get_constant
-                                              "revm_interpreter::instructions::host::log::N"
-                                          |)
+                                          N
                                         |)
                                       |)) in
                                   let _ :=
@@ -7598,9 +7629,7 @@ Module instructions.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
-                                                  M.read (|
-                                                    Value.String "LogData should have <=4 topics"
-                                                  |)
+                                                  mk_str (| "LogData should have <=4 topics" |)
                                                 |)
                                               |)
                                             ]
@@ -7640,7 +7669,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_log :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::log" log.
+      M.IsFunction.C "revm_interpreter::instructions::host::log" log.
     Admitted.
     Global Typeclasses Opaque log.
     
@@ -8059,8 +8088,10 @@ Module instructions.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_interpreter::gas::constants::SELFDESTRUCT"
+                                                  get_constant (|
+                                                    "revm_interpreter::gas::constants::SELFDESTRUCT",
+                                                    Ty.path "i64"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8263,7 +8294,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_selfdestruct :
-      M.IsFunction.Trait "revm_interpreter::instructions::host::selfdestruct" selfdestruct.
+      M.IsFunction.C "revm_interpreter::instructions::host::selfdestruct" selfdestruct.
     Admitted.
     Global Typeclasses Opaque selfdestruct.
   End host.

@@ -29,8 +29,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Borrowed" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Borrowed" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -146,11 +146,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "b is " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "b is " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -194,6 +191,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_traits::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_traits::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -86,7 +86,7 @@ Module cell.
       
       Global Instance AssociatedFunction_new :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "new" (new T F).
+        M.IsAssociatedFunction.C (Self T F) "new" (new T F).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -181,7 +181,7 @@ Module cell.
       
       Global Instance AssociatedFunction_into_inner :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "into_inner" (into_inner T F).
+        M.IsAssociatedFunction.C (Self T F) "into_inner" (into_inner T F).
       Admitted.
       Global Typeclasses Opaque into_inner.
       
@@ -309,7 +309,7 @@ Module cell.
       
       Global Instance AssociatedFunction_force :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "force" (force T F).
+        M.IsAssociatedFunction.C (Self T F) "force" (force T F).
       Admitted.
       Global Typeclasses Opaque force.
       
@@ -494,7 +494,7 @@ Module cell.
       
       Global Instance AssociatedFunction_force_mut :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "force_mut" (force_mut T F).
+        M.IsAssociatedFunction.C (Self T F) "force_mut" (force_mut T F).
       Admitted.
       Global Typeclasses Opaque force_mut.
       
@@ -733,7 +733,7 @@ Module cell.
       
       Global Instance AssociatedFunction_really_init :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "really_init" (really_init T F).
+        M.IsAssociatedFunction.C (Self T F) "really_init" (really_init T F).
       Admitted.
       Global Typeclasses Opaque really_init.
       (*
@@ -818,7 +818,7 @@ Module cell.
       
       Global Instance AssociatedFunction_get_mut :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "get_mut" (get_mut T F).
+        M.IsAssociatedFunction.C (Self T F) "get_mut" (get_mut T F).
       Admitted.
       Global Typeclasses Opaque get_mut.
       
@@ -913,7 +913,7 @@ Module cell.
       
       Global Instance AssociatedFunction_get :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F) "get" (get T F).
+        M.IsAssociatedFunction.C (Self T F) "get" (get T F).
       Admitted.
       Global Typeclasses Opaque get.
     End Impl_core_cell_lazy_LazyCell_T_F.
@@ -1042,10 +1042,7 @@ Module cell.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "LazyCell" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LazyCell" |) |) |)
                     ]
                   |)
                 |) in
@@ -1136,8 +1133,7 @@ Module cell.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String "<uninit>" |) ]
+                                                      Value.Array [ mk_str (| "<uninit>" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -1213,11 +1209,7 @@ Module cell.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "LazyCell instance has previously been poisoned"
-                              |)
-                            ]
+                            [ mk_str (| "LazyCell instance has previously been poisoned" |) ]
                         |)
                       |)
                     |)
@@ -1230,7 +1222,7 @@ Module cell.
       end.
     
     Global Instance Instance_IsFunction_panic_poisoned :
-      M.IsFunction.Trait "core::cell::lazy::panic_poisoned" panic_poisoned.
+      M.IsFunction.C "core::cell::lazy::panic_poisoned" panic_poisoned.
     Admitted.
     Global Typeclasses Opaque panic_poisoned.
   End lazy.

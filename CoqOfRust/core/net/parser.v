@@ -11,8 +11,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u8" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -296,7 +296,7 @@ Module net.
           Self
           (* Instance *)
           [
-            ("value_ZERO", InstanceField.Constant value_ZERO);
+            ("value_ZERO", InstanceField.Method value_ZERO);
             ("checked_mul", InstanceField.Method checked_mul);
             ("checked_add", InstanceField.Method checked_add)
           ].
@@ -307,8 +307,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u16" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -594,7 +594,7 @@ Module net.
           Self
           (* Instance *)
           [
-            ("value_ZERO", InstanceField.Constant value_ZERO);
+            ("value_ZERO", InstanceField.Method value_ZERO);
             ("checked_mul", InstanceField.Method checked_mul);
             ("checked_add", InstanceField.Method checked_add)
           ].
@@ -605,8 +605,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u32" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -890,7 +890,7 @@ Module net.
           Self
           (* Instance *)
           [
-            ("value_ZERO", InstanceField.Constant value_ZERO);
+            ("value_ZERO", InstanceField.Method value_ZERO);
             ("checked_mul", InstanceField.Method checked_mul);
             ("checked_add", InstanceField.Method checked_add)
           ].
@@ -925,7 +925,7 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1025,7 +1025,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_atomically :
-        M.IsAssociatedFunction.Trait Self "read_atomically" read_atomically.
+        M.IsAssociatedFunction.C Self "read_atomically" read_atomically.
       Admitted.
       Global Typeclasses Opaque read_atomically.
       
@@ -1137,7 +1137,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_with :
-        M.IsAssociatedFunction.Trait Self "parse_with" parse_with.
+        M.IsAssociatedFunction.C Self "parse_with" parse_with.
       Admitted.
       Global Typeclasses Opaque parse_with.
       
@@ -1234,7 +1234,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_peek_char :
-        M.IsAssociatedFunction.Trait Self "peek_char" peek_char.
+        M.IsAssociatedFunction.C Self "peek_char" peek_char.
       Admitted.
       Global Typeclasses Opaque peek_char.
       
@@ -1394,7 +1394,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_char :
-        M.IsAssociatedFunction.Trait Self "read_char" read_char.
+        M.IsAssociatedFunction.C Self "read_char" read_char.
       Admitted.
       Global Typeclasses Opaque read_char.
       
@@ -1565,7 +1565,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_given_char :
-        M.IsAssociatedFunction.Trait Self "read_given_char" read_given_char.
+        M.IsAssociatedFunction.C Self "read_given_char" read_given_char.
       Admitted.
       Global Typeclasses Opaque read_given_char.
       
@@ -1810,7 +1810,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_separator :
-        M.IsAssociatedFunction.Trait Self "read_separator" read_separator.
+        M.IsAssociatedFunction.C Self "read_separator" read_separator.
       Admitted.
       Global Typeclasses Opaque read_separator.
       
@@ -2042,9 +2042,8 @@ Module net.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "assertion failed: max_digits < 10"
+                                                                            mk_str (|
+                                                                              "assertion failed: max_digits < 10"
                                                                             |)
                                                                           ]
                                                                         |)
@@ -2491,8 +2490,10 @@ Module net.
                                               ltac:(M.monadic
                                                 (let~ result : T :=
                                                   M.copy (|
-                                                    M.get_constant
-                                                      "core::net::parser::ReadNumberHelper::ZERO"
+                                                    get_constant (|
+                                                      "core::net::parser::ReadNumberHelper::ZERO",
+                                                      T
+                                                    |)
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.loop (|
@@ -3157,7 +3158,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_number :
-        M.IsAssociatedFunction.Trait Self "read_number" read_number.
+        M.IsAssociatedFunction.C Self "read_number" read_number.
       Admitted.
       Global Typeclasses Opaque read_number.
       
@@ -3711,7 +3712,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_ipv4_addr :
-        M.IsAssociatedFunction.Trait Self "read_ipv4_addr" read_ipv4_addr.
+        M.IsAssociatedFunction.C Self "read_ipv4_addr" read_ipv4_addr.
       Admitted.
       Global Typeclasses Opaque read_ipv4_addr.
       
@@ -4472,7 +4473,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_ipv6_addr :
-        M.IsAssociatedFunction.Trait Self "read_ipv6_addr" read_ipv6_addr.
+        M.IsAssociatedFunction.C Self "read_ipv6_addr" read_ipv6_addr.
       Admitted.
       Global Typeclasses Opaque read_ipv6_addr.
       
@@ -4610,7 +4611,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_ip_addr :
-        M.IsAssociatedFunction.Trait Self "read_ip_addr" read_ip_addr.
+        M.IsAssociatedFunction.C Self "read_ip_addr" read_ip_addr.
       Admitted.
       Global Typeclasses Opaque read_ip_addr.
       
@@ -4809,7 +4810,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_port :
-        M.IsAssociatedFunction.Trait Self "read_port" read_port.
+        M.IsAssociatedFunction.C Self "read_port" read_port.
       Admitted.
       Global Typeclasses Opaque read_port.
       
@@ -5008,7 +5009,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_scope_id :
-        M.IsAssociatedFunction.Trait Self "read_scope_id" read_scope_id.
+        M.IsAssociatedFunction.C Self "read_scope_id" read_scope_id.
       Admitted.
       Global Typeclasses Opaque read_scope_id.
       
@@ -5333,7 +5334,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_socket_addr_v4 :
-        M.IsAssociatedFunction.Trait Self "read_socket_addr_v4" read_socket_addr_v4.
+        M.IsAssociatedFunction.C Self "read_socket_addr_v4" read_socket_addr_v4.
       Admitted.
       Global Typeclasses Opaque read_socket_addr_v4.
       
@@ -5925,7 +5926,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_socket_addr_v6 :
-        M.IsAssociatedFunction.Trait Self "read_socket_addr_v6" read_socket_addr_v6.
+        M.IsAssociatedFunction.C Self "read_socket_addr_v6" read_socket_addr_v6.
       Admitted.
       Global Typeclasses Opaque read_socket_addr_v6.
       
@@ -6069,7 +6070,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_read_socket_addr :
-        M.IsAssociatedFunction.Trait Self "read_socket_addr" read_socket_addr.
+        M.IsAssociatedFunction.C Self "read_socket_addr" read_socket_addr.
       Admitted.
       Global Typeclasses Opaque read_socket_addr.
     End Impl_core_net_parser_Parser.
@@ -6182,7 +6183,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_IpAddr.
@@ -6409,7 +6410,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_Ipv4Addr.
@@ -6580,7 +6581,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_Ipv6Addr.
@@ -6751,7 +6752,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddrV4.
@@ -6922,7 +6923,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddrV6.
@@ -7093,7 +7094,7 @@ Module net.
         end.
       
       Global Instance AssociatedFunction_parse_ascii :
-        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+        M.IsAssociatedFunction.C Self "parse_ascii" parse_ascii.
       Admitted.
       Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddr.
@@ -7226,30 +7227,21 @@ Module net.
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ip" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ip" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ipv4" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv4" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ipv6" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv6" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7257,10 +7249,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Socket" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Socket" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7268,10 +7257,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SocketV4" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV4" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7279,10 +7265,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SocketV6" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV6" |) |) |)
                           |)))
                     ]
                   |)
@@ -7479,10 +7462,7 @@ Module net.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "AddrParseError" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AddrParseError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7753,7 +7733,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IP address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IP address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7762,7 +7742,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IPv4 address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IPv4 address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7771,7 +7751,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IPv6 address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IPv6 address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7780,7 +7760,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid socket address syntax" |) |)
+                          M.deref (| mk_str (| "invalid socket address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7790,9 +7770,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "invalid IPv4 socket address syntax" |)
-                          |)
+                          M.deref (| mk_str (| "invalid IPv4 socket address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7802,9 +7780,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "invalid IPv6 socket address syntax" |)
-                          |)
+                          M.deref (| mk_str (| "invalid IPv6 socket address syntax" |) |)
                         |)
                       |)))
                 ]

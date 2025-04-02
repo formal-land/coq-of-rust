@@ -4,23 +4,21 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter increase : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_increase :
-  M.IsFunction.Trait "program_arguments_parsing::increase" increase.
+  M.IsFunction.C "program_arguments_parsing::increase" increase.
 Admitted.
 
 Parameter decrease : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_decrease :
-  M.IsFunction.Trait "program_arguments_parsing::decrease" decrease.
+  M.IsFunction.C "program_arguments_parsing::decrease" decrease.
 Admitted.
 
 Parameter help : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_help :
-  M.IsFunction.Trait "program_arguments_parsing::help" help.
+Global Instance Instance_IsFunction_help : M.IsFunction.C "program_arguments_parsing::help" help.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "program_arguments_parsing::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "program_arguments_parsing::main" main.
 Admitted.

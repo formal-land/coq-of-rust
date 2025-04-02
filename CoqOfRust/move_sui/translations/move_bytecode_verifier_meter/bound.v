@@ -416,25 +416,20 @@ Module bound.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "program too complex (in `"
+                                                                                  mk_str (|
+                                                                                    "program too complex (in `"
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "` with `"
+                                                                                  mk_str (|
+                                                                                    "` with `"
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " current + "
+                                                                                  mk_str (|
+                                                                                    " current + "
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " new > "
+                                                                                  mk_str (|
+                                                                                    " new > "
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " max`)"
+                                                                                  mk_str (|
+                                                                                    " max`)"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -610,7 +605,7 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+    Global Instance AssociatedFunction_add : M.IsAssociatedFunction.C Self "add" add.
     Admitted.
     Global Typeclasses Opaque add.
   End Impl_move_bytecode_verifier_meter_bound_Bounds.
@@ -663,12 +658,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -696,12 +686,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -729,12 +714,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -750,7 +730,7 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -880,11 +860,7 @@ Module bound.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "transaction scope unsupported."
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "transaction scope unsupported." |) ]
                                               |)
                                             |)
                                           |)
@@ -906,7 +882,7 @@ Module bound.
       end.
     
     Global Instance AssociatedFunction_get_bounds_mut :
-      M.IsAssociatedFunction.Trait Self "get_bounds_mut" get_bounds_mut.
+      M.IsAssociatedFunction.C Self "get_bounds_mut" get_bounds_mut.
     Admitted.
     Global Typeclasses Opaque get_bounds_mut.
     
@@ -1033,11 +1009,7 @@ Module bound.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String "transaction scope unsupported."
-                                                |)
-                                              ]
+                                              [ mk_str (| "transaction scope unsupported." |) ]
                                           |)
                                         |)
                                       |)
@@ -1057,7 +1029,7 @@ Module bound.
       end.
     
     Global Instance AssociatedFunction_get_bounds :
-      M.IsAssociatedFunction.Trait Self "get_bounds" get_bounds.
+      M.IsAssociatedFunction.C Self "get_bounds" get_bounds.
     Admitted.
     Global Typeclasses Opaque get_bounds.
     
@@ -1100,7 +1072,7 @@ Module bound.
       end.
     
     Global Instance AssociatedFunction_get_usage :
-      M.IsAssociatedFunction.Trait Self "get_usage" get_usage.
+      M.IsAssociatedFunction.C Self "get_usage" get_usage.
     Admitted.
     Global Typeclasses Opaque get_usage.
     
@@ -1143,7 +1115,7 @@ Module bound.
       end.
     
     Global Instance AssociatedFunction_get_limit :
-      M.IsAssociatedFunction.Trait Self "get_limit" get_limit.
+      M.IsAssociatedFunction.C Self "get_limit" get_limit.
     Admitted.
     Global Typeclasses Opaque get_limit.
   End Impl_move_bytecode_verifier_meter_bound_BoundMeter.

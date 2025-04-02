@@ -101,7 +101,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -210,7 +210,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_try_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+        M.IsAssociatedFunction.C (Self T) "try_new" (try_new T).
       Admitted.
       Global Typeclasses Opaque try_new.
       (*
@@ -282,7 +282,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_meta :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "meta" (meta T).
+        M.IsAssociatedFunction.C (Self T) "meta" (meta T).
       Admitted.
       Global Typeclasses Opaque meta.
       
@@ -346,7 +346,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_data :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "data" (data T).
+        M.IsAssociatedFunction.C (Self T) "data" (data T).
       Admitted.
       Global Typeclasses Opaque data.
       
@@ -402,7 +402,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_with_header :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "with_header" (with_header T).
+        M.IsAssociatedFunction.C (Self T) "with_header" (with_header T).
       Admitted.
       Global Typeclasses Opaque with_header.
     End Impl_alloc_boxed_thin_ThinBox_T.
@@ -551,7 +551,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_new_unsize :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction.Trait (Self Dyn) "new_unsize" (new_unsize Dyn).
+        M.IsAssociatedFunction.C (Self Dyn) "new_unsize" (new_unsize Dyn).
       Admitted.
       Global Typeclasses Opaque new_unsize.
     End Impl_alloc_boxed_thin_ThinBox_Dyn.
@@ -1024,7 +1024,7 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1088,7 +1088,7 @@ Module boxed.
         end.
       
       Global Instance AssociatedFunction_new_unsize_zst :
-        M.IsAssociatedFunction.Trait Self "new_unsize_zst" new_unsize_zst.
+        M.IsAssociatedFunction.C Self "new_unsize_zst" new_unsize_zst.
       Admitted.
       Global Typeclasses Opaque new_unsize_zst.
       
@@ -1182,8 +1182,7 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_try_new :
-        M.IsAssociatedFunction.Trait Self "try_new" try_new.
+      Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
       Admitted.
       Global Typeclasses Opaque try_new.
     End Impl_alloc_boxed_thin_WithOpaqueHeader.
@@ -1357,14 +1356,18 @@ Module boxed.
                                                                   |),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
-                                                                      M.get_constant
-                                                                        "core::mem::SizedTypeProperties::IS_ZST"
+                                                                      get_constant (|
+                                                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                                                        Ty.path "bool"
+                                                                      |)
                                                                     |)))
                                                                 |),
                                                                 ltac:(M.monadic
                                                                   (M.read (|
-                                                                    M.get_constant
-                                                                      "core::mem::SizedTypeProperties::IS_ZST"
+                                                                    get_constant (|
+                                                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                                                      Ty.path "bool"
+                                                                    |)
                                                                   |)))
                                                               |)
                                                             |)
@@ -1384,9 +1387,8 @@ Module boxed.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
+                                                              mk_str (|
+                                                                "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
                                                               |)
                                                             ]
                                                           |)
@@ -1569,7 +1571,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_new :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "new" (new H).
+        M.IsAssociatedFunction.C (Self H) "new" (new H).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1787,9 +1789,8 @@ Module boxed.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0"
+                                                                  mk_str (|
+                                                                    "assertion failed: value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0"
                                                                   |)
                                                                 ]
                                                               |)
@@ -1986,7 +1987,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_try_new :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "try_new" (try_new H).
+        M.IsAssociatedFunction.C (Self H) "try_new" (try_new H).
       Admitted.
       Global Typeclasses Opaque try_new.
       
@@ -2081,11 +2082,7 @@ Module boxed.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: mem::size_of::<T>() == 0"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: mem::size_of::<T>() == 0" |) ]
                             |)
                           |)
                         |)));
@@ -2093,7 +2090,12 @@ Module boxed.
                   ]
                 |) in
               let~ alloc : Ty.apply (Ty.path "&") [] [ H ] :=
-                M.copy (| M.get_constant "alloc::boxed::thin::new_unsize_zst_discriminant" |) in
+                M.copy (|
+                  get_constant (|
+                    "alloc::boxed::thin::new_unsize_zst_discriminant",
+                    Ty.apply (Ty.path "&") [] [ H ]
+                  |)
+                |) in
               let~ value_ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -2183,11 +2185,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: value_ptr.is_aligned()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: value_ptr.is_aligned()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2258,7 +2256,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_new_unsize_zst :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "new_unsize_zst" (new_unsize_zst H).
+        M.IsAssociatedFunction.C (Self H) "new_unsize_zst" (new_unsize_zst H).
       Admitted.
       Global Typeclasses Opaque new_unsize_zst.
       
@@ -2353,7 +2351,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_drop :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "drop" (drop H).
+        M.IsAssociatedFunction.C (Self H) "drop" (drop H).
       Admitted.
       Global Typeclasses Opaque drop.
       
@@ -2465,11 +2463,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: hp.is_aligned()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: hp.is_aligned()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2487,7 +2481,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_header :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "header" (header H).
+        M.IsAssociatedFunction.C (Self H) "header" (header H).
       Admitted.
       Global Typeclasses Opaque header.
       
@@ -2525,7 +2519,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_value :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "value" (value H).
+        M.IsAssociatedFunction.C (Self H) "value" (value H).
       Admitted.
       Global Typeclasses Opaque value.
       
@@ -2549,7 +2543,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_header_size :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "header_size" (header_size H).
+        M.IsAssociatedFunction.C (Self H) "header_size" (header_size H).
       Admitted.
       Global Typeclasses Opaque header_size.
       
@@ -2607,7 +2601,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_alloc_layout :
         forall (H : Ty.t),
-        M.IsAssociatedFunction.Trait (Self H) "alloc_layout" (alloc_layout H).
+        M.IsAssociatedFunction.C (Self H) "alloc_layout" (alloc_layout H).
       Admitted.
       Global Typeclasses Opaque alloc_layout.
     End Impl_alloc_boxed_thin_WithHeader_H.

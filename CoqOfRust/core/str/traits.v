@@ -329,9 +329,7 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempted to index str up to maximum usize" |)
-                            ]
+                          Value.Array [ mk_str (| "attempted to index str up to maximum usize" |) ]
                         |)
                       |)
                     |)
@@ -344,7 +342,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_str_index_overflow_fail :
-      M.IsFunction.Trait "core::str::traits::str_index_overflow_fail" str_index_overflow_fail.
+      M.IsFunction.C "core::str::traits::str_index_overflow_fail" str_index_overflow_fail.
     Admitted.
     Global Typeclasses Opaque str_index_overflow_fail.
     
@@ -4824,7 +4822,13 @@ Module str.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4913,7 +4917,13 @@ Module str.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5082,7 +5092,13 @@ Module str.
                                     |)
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -5188,7 +5204,13 @@ Module str.
                                         |)
                                       |)
                                     |),
-                                    M.read (| M.get_constant "core::num::MAX" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -5308,7 +5330,13 @@ Module str.
                                   "end"
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5387,7 +5415,13 @@ Module str.
                                   "end"
                                 |)
                               |),
-                              M.read (| M.get_constant "core::num::MAX" |)
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5546,7 +5580,13 @@ Module str.
                                     "end"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -5639,7 +5679,13 @@ Module str.
                                         "end"
                                       |)
                                     |),
-                                    M.read (| M.get_constant "core::num::MAX" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -6102,14 +6148,14 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.String "true" |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "true" |) |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Bool true ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.String "false" |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "false" |) |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Bool false ]
                       |)));

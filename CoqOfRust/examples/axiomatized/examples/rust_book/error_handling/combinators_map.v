@@ -110,30 +110,30 @@ End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_peel : M.IsFunction.Trait "combinators_map::peel" peel.
+Global Instance Instance_IsFunction_peel : M.IsFunction.C "combinators_map::peel" peel.
 Admitted.
 
 Parameter chop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_chop : M.IsFunction.Trait "combinators_map::chop" chop.
+Global Instance Instance_IsFunction_chop : M.IsFunction.C "combinators_map::chop" chop.
 Admitted.
 
 Parameter cook : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_cook : M.IsFunction.Trait "combinators_map::cook" cook.
+Global Instance Instance_IsFunction_cook : M.IsFunction.C "combinators_map::cook" cook.
 Admitted.
 
 Parameter process : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_process : M.IsFunction.Trait "combinators_map::process" process.
+Global Instance Instance_IsFunction_process : M.IsFunction.C "combinators_map::process" process.
 Admitted.
 
 Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_map::eat" eat.
+Global Instance Instance_IsFunction_eat : M.IsFunction.C "combinators_map::eat" eat.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_map::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_map::main" main.
 Admitted.

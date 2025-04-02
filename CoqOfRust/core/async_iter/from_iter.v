@@ -84,8 +84,8 @@ Module async_iter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FromIter" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromIter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -170,7 +170,7 @@ Module async_iter.
       end.
     
     Global Instance Instance_IsFunction_from_iter :
-      M.IsFunction.Trait "core::async_iter::from_iter::from_iter" from_iter.
+      M.IsFunction.C "core::async_iter::from_iter::from_iter" from_iter.
     Admitted.
     Global Typeclasses Opaque from_iter.
     

@@ -168,7 +168,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_wrap : M.IsAssociatedFunction.Trait Self "wrap" wrap.
+      Global Instance AssociatedFunction_wrap : M.IsAssociatedFunction.C Self "wrap" wrap.
       Admitted.
       Global Typeclasses Opaque wrap.
     End Impl_core_fmt_builders_PadAdapter.
@@ -399,9 +399,7 @@ Module fmt.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
-                                                                        M.read (|
-                                                                          Value.String "    "
-                                                                        |)
+                                                                        mk_str (| "    " |)
                                                                       |)
                                                                     |)
                                                                   ]
@@ -768,7 +766,7 @@ Module fmt.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "    " |) |)
+                                            M.deref (| mk_str (| "    " |) |)
                                           |)
                                         ]
                                       |)
@@ -975,7 +973,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_debug_struct_new :
-      M.IsFunction.Trait "core::fmt::builders::debug_struct_new" debug_struct_new.
+      M.IsFunction.C "core::fmt::builders::debug_struct_new" debug_struct_new.
     Admitted.
     Global Typeclasses Opaque debug_struct_new.
     
@@ -1086,7 +1084,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_field : M.IsAssociatedFunction.Trait Self "field" field.
+      Global Instance AssociatedFunction_field : M.IsAssociatedFunction.C Self "field" field.
       Admitted.
       Global Typeclasses Opaque field.
       
@@ -1327,9 +1325,8 @@ Module fmt.
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
                                                                                   M.deref (|
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        " {
+                                                                                    mk_str (|
+                                                                                      " {
 "
                                                                                     |)
                                                                                   |)
@@ -1706,9 +1703,7 @@ Module fmt.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String ": "
-                                                                          |)
+                                                                          mk_str (| ": " |)
                                                                         |)
                                                                       |)
                                                                     ]
@@ -1967,10 +1962,8 @@ Module fmt.
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| Value.String ",
-" |)
-                                                                |)
+                                                                M.deref (| mk_str (| ",
+" |) |)
                                                               |)
                                                             ]
                                                           |)
@@ -2007,16 +2000,16 @@ Module fmt.
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
-                                                                    Value.String ", "));
+                                                                    M.alloc (|
+                                                                      mk_str (| ", " |)
+                                                                    |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String " { "
-                                                                          |)
+                                                                          mk_str (| " { " |)
                                                                         |)
                                                                       |)
                                                                     |)))
@@ -2396,9 +2389,7 @@ Module fmt.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String ": "
-                                                                          |)
+                                                                          mk_str (| ": " |)
                                                                         |)
                                                                       |)
                                                                     ]
@@ -2559,7 +2550,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_field_with :
-        M.IsAssociatedFunction.Trait Self "field_with" field_with.
+        M.IsAssociatedFunction.C Self "field_with" field_with.
       Admitted.
       Global Typeclasses Opaque field_with.
       
@@ -2851,10 +2842,8 @@ Module fmt.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String "..
-"
-                                                                              |)
+                                                                              mk_str (| "..
+" |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -2970,9 +2959,7 @@ Module fmt.
                                                                   |);
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| Value.String "}" |)
-                                                                    |)
+                                                                    M.deref (| mk_str (| "}" |) |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -3012,9 +2999,7 @@ Module fmt.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String ", .. }"
-                                                                      |)
+                                                                      mk_str (| ", .. }" |)
                                                                     |)
                                                                   |)
                                                                 ]
@@ -3052,9 +3037,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String " { .. }" |)
-                                                            |)
+                                                            M.deref (| mk_str (| " { .. }" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -3080,7 +3063,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction.Trait Self "finish_non_exhaustive" finish_non_exhaustive.
+        M.IsAssociatedFunction.C Self "finish_non_exhaustive" finish_non_exhaustive.
       Admitted.
       Global Typeclasses Opaque finish_non_exhaustive.
       
@@ -3245,11 +3228,7 @@ Module fmt.
                                                                     |);
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (|
-                                                                          Value.String "}"
-                                                                        |)
-                                                                      |)
+                                                                      M.deref (| mk_str (| "}" |) |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -3289,9 +3268,7 @@ Module fmt.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
-                                                                        M.read (|
-                                                                          Value.String " }"
-                                                                        |)
+                                                                        mk_str (| " }" |)
                                                                       |)
                                                                     |)
                                                                   ]
@@ -3321,7 +3298,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
       Admitted.
       Global Typeclasses Opaque finish.
       
@@ -3357,7 +3334,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_is_pretty :
-        M.IsAssociatedFunction.Trait Self "is_pretty" is_pretty.
+        M.IsAssociatedFunction.C Self "is_pretty" is_pretty.
       Admitted.
       Global Typeclasses Opaque is_pretty.
     End Impl_core_fmt_builders_DebugStruct.
@@ -3439,7 +3416,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_debug_tuple_new :
-      M.IsFunction.Trait "core::fmt::builders::debug_tuple_new" debug_tuple_new.
+      M.IsFunction.C "core::fmt::builders::debug_tuple_new" debug_tuple_new.
     Admitted.
     Global Typeclasses Opaque debug_tuple_new.
     
@@ -3548,7 +3525,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_field : M.IsAssociatedFunction.Trait Self "field" field.
+      Global Instance AssociatedFunction_field : M.IsAssociatedFunction.C Self "field" field.
       Admitted.
       Global Typeclasses Opaque field.
       
@@ -3787,9 +3764,8 @@ Module fmt.
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
                                                                                   M.deref (|
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "(
+                                                                                    mk_str (|
+                                                                                      "(
 "
                                                                                     |)
                                                                                   |)
@@ -4143,10 +4119,8 @@ Module fmt.
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| Value.String ",
-" |)
-                                                                |)
+                                                                M.deref (| mk_str (| ",
+" |) |)
                                                               |)
                                                             ]
                                                           |)
@@ -4192,16 +4166,16 @@ Module fmt.
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
-                                                                    Value.String "("));
+                                                                    M.alloc (|
+                                                                      mk_str (| "(" |)
+                                                                    |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String ", "
-                                                                          |)
+                                                                          mk_str (| ", " |)
                                                                         |)
                                                                       |)
                                                                     |)))
@@ -4442,7 +4416,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_field_with :
-        M.IsAssociatedFunction.Trait Self "field_with" field_with.
+        M.IsAssociatedFunction.C Self "field_with" field_with.
       Admitted.
       Global Typeclasses Opaque field_with.
       
@@ -4741,10 +4715,8 @@ Module fmt.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String "..
-"
-                                                                              |)
+                                                                              mk_str (| "..
+" |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -4860,9 +4832,7 @@ Module fmt.
                                                                   |);
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| Value.String ")" |)
-                                                                    |)
+                                                                    M.deref (| mk_str (| ")" |) |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -4902,9 +4872,7 @@ Module fmt.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String ", ..)"
-                                                                      |)
+                                                                      mk_str (| ", ..)" |)
                                                                     |)
                                                                   |)
                                                                 ]
@@ -4942,9 +4910,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "(..)" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "(..)" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -4970,7 +4936,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction.Trait Self "finish_non_exhaustive" finish_non_exhaustive.
+        M.IsAssociatedFunction.C Self "finish_non_exhaustive" finish_non_exhaustive.
       Admitted.
       Global Typeclasses Opaque finish_non_exhaustive.
       
@@ -5217,9 +5183,7 @@ Module fmt.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
-                                                                                  M.read (|
-                                                                                    Value.String ","
-                                                                                  |)
+                                                                                  mk_str (| "," |)
                                                                                 |)
                                                                               |)
                                                                             ]
@@ -5340,9 +5304,7 @@ Module fmt.
                                                             |);
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.read (| Value.String ")" |)
-                                                              |)
+                                                              M.deref (| mk_str (| ")" |) |)
                                                             |)
                                                           ]
                                                         |)
@@ -5369,7 +5331,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
       Admitted.
       Global Typeclasses Opaque finish.
       
@@ -5405,7 +5367,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_is_pretty :
-        M.IsAssociatedFunction.Trait Self "is_pretty" is_pretty.
+        M.IsAssociatedFunction.C Self "is_pretty" is_pretty.
       Admitted.
       Global Typeclasses Opaque is_pretty.
     End Impl_core_fmt_builders_DebugTuple.
@@ -5659,10 +5621,8 @@ Module fmt.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
-                                                                                M.read (|
-                                                                                  Value.String "
-"
-                                                                                |)
+                                                                                mk_str (| "
+" |)
                                                                               |)
                                                                             |)
                                                                           ]
@@ -6003,10 +5963,8 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String ",
-" |)
-                                                            |)
+                                                            M.deref (| mk_str (| ",
+" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -6107,9 +6065,7 @@ Module fmt.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String ", "
-                                                                              |)
+                                                                              mk_str (| ", " |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -6272,7 +6228,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_entry_with :
-        M.IsAssociatedFunction.Trait Self "entry_with" entry_with.
+        M.IsAssociatedFunction.C Self "entry_with" entry_with.
       Admitted.
       Global Typeclasses Opaque entry_with.
       
@@ -6308,7 +6264,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_is_pretty :
-        M.IsAssociatedFunction.Trait Self "is_pretty" is_pretty.
+        M.IsAssociatedFunction.C Self "is_pretty" is_pretty.
       Admitted.
       Global Typeclasses Opaque is_pretty.
     End Impl_core_fmt_builders_DebugInner.
@@ -6352,7 +6308,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "{" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "{" |) |) |)
                   ]
                 |)
               |) in
@@ -6375,7 +6331,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_debug_set_new :
-      M.IsFunction.Trait "core::fmt::builders::debug_set_new" debug_set_new.
+      M.IsFunction.C "core::fmt::builders::debug_set_new" debug_set_new.
     Admitted.
     Global Typeclasses Opaque debug_set_new.
     
@@ -6494,7 +6450,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.Trait Self "entry" entry.
+      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.C Self "entry" entry.
       Admitted.
       Global Typeclasses Opaque entry.
       
@@ -6548,7 +6504,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_entry_with :
-        M.IsAssociatedFunction.Trait Self "entry_with" entry_with.
+        M.IsAssociatedFunction.C Self "entry_with" entry_with.
       Admitted.
       Global Typeclasses Opaque entry_with.
       
@@ -6698,8 +6654,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entries :
-        M.IsAssociatedFunction.Trait Self "entries" entries.
+      Global Instance AssociatedFunction_entries : M.IsAssociatedFunction.C Self "entries" entries.
       Admitted.
       Global Typeclasses Opaque entries.
       
@@ -7011,10 +6966,8 @@ Module fmt.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String "..
-"
-                                                                              |)
+                                                                              mk_str (| "..
+" |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -7134,9 +7087,7 @@ Module fmt.
                                                                   |);
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| Value.String "}" |)
-                                                                    |)
+                                                                    M.deref (| mk_str (| "}" |) |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -7180,9 +7131,7 @@ Module fmt.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String ", ..}"
-                                                                      |)
+                                                                      mk_str (| ", ..}" |)
                                                                     |)
                                                                   |)
                                                                 ]
@@ -7224,9 +7173,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "..}" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "..}" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -7256,7 +7203,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction.Trait Self "finish_non_exhaustive" finish_non_exhaustive.
+        M.IsAssociatedFunction.C Self "finish_non_exhaustive" finish_non_exhaustive.
       Admitted.
       Global Typeclasses Opaque finish_non_exhaustive.
       
@@ -7366,7 +7313,7 @@ Module fmt.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "}" |) |)
+                                                M.deref (| mk_str (| "}" |) |)
                                               |)
                                             ]
                                           |)))
@@ -7391,7 +7338,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
       Admitted.
       Global Typeclasses Opaque finish.
     End Impl_core_fmt_builders_DebugSet.
@@ -7435,7 +7382,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "[" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "[" |) |) |)
                   ]
                 |)
               |) in
@@ -7458,7 +7405,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_debug_list_new :
-      M.IsFunction.Trait "core::fmt::builders::debug_list_new" debug_list_new.
+      M.IsFunction.C "core::fmt::builders::debug_list_new" debug_list_new.
     Admitted.
     Global Typeclasses Opaque debug_list_new.
     
@@ -7577,7 +7524,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.Trait Self "entry" entry.
+      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.C Self "entry" entry.
       Admitted.
       Global Typeclasses Opaque entry.
       
@@ -7631,7 +7578,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_entry_with :
-        M.IsAssociatedFunction.Trait Self "entry_with" entry_with.
+        M.IsAssociatedFunction.C Self "entry_with" entry_with.
       Admitted.
       Global Typeclasses Opaque entry_with.
       
@@ -7781,8 +7728,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entries :
-        M.IsAssociatedFunction.Trait Self "entries" entries.
+      Global Instance AssociatedFunction_entries : M.IsAssociatedFunction.C Self "entries" entries.
       Admitted.
       Global Typeclasses Opaque entries.
       
@@ -8069,12 +8015,8 @@ Module fmt.
                                                                   |);
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        Value.String "..
-"
-                                                                      |)
-                                                                    |)
+                                                                    M.deref (| mk_str (| "..
+" |) |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -8183,9 +8125,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "]" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "]" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -8224,9 +8164,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String ", ..]" |)
-                                                            |)
+                                                            M.deref (| mk_str (| ", ..]" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -8266,7 +8204,7 @@ Module fmt.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| Value.String "..]" |) |)
+                                                    M.deref (| mk_str (| "..]" |) |)
                                                   |)
                                                 ]
                                               |)
@@ -8284,7 +8222,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction.Trait Self "finish_non_exhaustive" finish_non_exhaustive.
+        M.IsAssociatedFunction.C Self "finish_non_exhaustive" finish_non_exhaustive.
       Admitted.
       Global Typeclasses Opaque finish_non_exhaustive.
       
@@ -8394,7 +8332,7 @@ Module fmt.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "]" |) |)
+                                                M.deref (| mk_str (| "]" |) |)
                                               |)
                                             ]
                                           |)))
@@ -8419,7 +8357,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
       Admitted.
       Global Typeclasses Opaque finish.
     End Impl_core_fmt_builders_DebugList.
@@ -8474,7 +8412,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "{" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "{" |) |) |)
                   ]
                 |)
               |) in
@@ -8507,7 +8445,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_debug_map_new :
-      M.IsFunction.Trait "core::fmt::builders::debug_map_new" debug_map_new.
+      M.IsFunction.C "core::fmt::builders::debug_map_new" debug_map_new.
     Admitted.
     Global Typeclasses Opaque debug_map_new.
     
@@ -8572,7 +8510,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.Trait Self "entry" entry.
+      Global Instance AssociatedFunction_entry : M.IsAssociatedFunction.C Self "entry" entry.
       Admitted.
       Global Typeclasses Opaque entry.
       
@@ -8678,7 +8616,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_key : M.IsAssociatedFunction.Trait Self "key" key.
+      Global Instance AssociatedFunction_key : M.IsAssociatedFunction.C Self "key" key.
       Admitted.
       Global Typeclasses Opaque key.
       
@@ -8846,9 +8784,8 @@ Module fmt.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "attempted to begin a new map entry without completing the previous one"
+                                                                                  mk_str (|
+                                                                                    "attempted to begin a new map entry without completing the previous one"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -9004,9 +8941,8 @@ Module fmt.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "
+                                                                                      mk_str (|
+                                                                                        "
 "
                                                                                       |)
                                                                                     |)
@@ -9415,9 +9351,7 @@ Module fmt.
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
-                                                                            M.read (|
-                                                                              Value.String ": "
-                                                                            |)
+                                                                            mk_str (| ": " |)
                                                                           |)
                                                                         |)
                                                                       ]
@@ -9600,9 +9534,8 @@ Module fmt.
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
                                                                                   M.deref (|
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ", "
+                                                                                    mk_str (|
+                                                                                      ", "
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -9934,9 +9867,7 @@ Module fmt.
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
-                                                                            M.read (|
-                                                                              Value.String ": "
-                                                                            |)
+                                                                            mk_str (| ": " |)
                                                                           |)
                                                                         |)
                                                                       ]
@@ -10055,7 +9986,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_key_with :
-        M.IsAssociatedFunction.Trait Self "key_with" key_with.
+        M.IsAssociatedFunction.C Self "key_with" key_with.
       Admitted.
       Global Typeclasses Opaque key_with.
       
@@ -10161,7 +10092,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_value : M.IsAssociatedFunction.Trait Self "value" value.
+      Global Instance AssociatedFunction_value : M.IsAssociatedFunction.C Self "value" value.
       Admitted.
       Global Typeclasses Opaque value.
       
@@ -10316,9 +10247,8 @@ Module fmt.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "attempted to format a map value before its key"
+                                                                                  mk_str (|
+                                                                                    "attempted to format a map value before its key"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -10660,10 +10590,8 @@ Module fmt.
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
-                                                                            M.read (|
-                                                                              Value.String ",
-"
-                                                                            |)
+                                                                            mk_str (| ",
+" |)
                                                                           |)
                                                                         |)
                                                                       ]
@@ -10964,7 +10892,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_value_with :
-        M.IsAssociatedFunction.Trait Self "value_with" value_with.
+        M.IsAssociatedFunction.C Self "value_with" value_with.
       Admitted.
       Global Typeclasses Opaque value_with.
       
@@ -11129,8 +11057,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_entries :
-        M.IsAssociatedFunction.Trait Self "entries" entries.
+      Global Instance AssociatedFunction_entries : M.IsAssociatedFunction.C Self "entries" entries.
       Admitted.
       Global Typeclasses Opaque entries.
       
@@ -11277,9 +11204,8 @@ Module fmt.
                                                                         M.alloc (|
                                                                           Value.Array
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "attempted to finish a map with a partial entry"
+                                                                              mk_str (|
+                                                                                "attempted to finish a map with a partial entry"
                                                                               |)
                                                                             ]
                                                                         |)
@@ -11501,10 +11427,8 @@ Module fmt.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String "..
-"
-                                                                              |)
+                                                                              mk_str (| "..
+" |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -11620,9 +11544,7 @@ Module fmt.
                                                                   |);
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| Value.String "}" |)
-                                                                    |)
+                                                                    M.deref (| mk_str (| "}" |) |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -11662,9 +11584,7 @@ Module fmt.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String ", ..}"
-                                                                      |)
+                                                                      mk_str (| ", ..}" |)
                                                                     |)
                                                                   |)
                                                                 ]
@@ -11702,9 +11622,7 @@ Module fmt.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "..}" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "..}" |) |)
                                                           |)
                                                         ]
                                                       |)
@@ -11730,7 +11648,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction.Trait Self "finish_non_exhaustive" finish_non_exhaustive.
+        M.IsAssociatedFunction.C Self "finish_non_exhaustive" finish_non_exhaustive.
       Admitted.
       Global Typeclasses Opaque finish_non_exhaustive.
       
@@ -11865,9 +11783,8 @@ Module fmt.
                                                                         M.alloc (|
                                                                           Value.Array
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "attempted to finish a map with a partial entry"
+                                                                              mk_str (|
+                                                                                "attempted to finish a map with a partial entry"
                                                                               |)
                                                                             ]
                                                                         |)
@@ -11911,7 +11828,7 @@ Module fmt.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| Value.String "}" |) |)
+                                                    M.deref (| mk_str (| "}" |) |)
                                                   |)
                                                 ]
                                               |)
@@ -11934,7 +11851,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+      Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.C Self "finish" finish.
       Admitted.
       Global Typeclasses Opaque finish.
       
@@ -11970,7 +11887,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_is_pretty :
-        M.IsAssociatedFunction.Trait Self "is_pretty" is_pretty.
+        M.IsAssociatedFunction.C Self "is_pretty" is_pretty.
       Admitted.
       Global Typeclasses Opaque is_pretty.
     End Impl_core_fmt_builders_DebugMap.
@@ -11990,7 +11907,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_from_fn :
-      M.IsFunction.Trait "core::fmt::builders::from_fn" from_fn.
+      M.IsFunction.C "core::fmt::builders::from_fn" from_fn.
     Admitted.
     Global Typeclasses Opaque from_fn.
     

@@ -34,7 +34,7 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Global Instance Instance_IsFunction_call_me :
-  M.IsFunction.Trait "functions_closures_input_functions::call_me" call_me.
+  M.IsFunction.C "functions_closures_input_functions::call_me" call_me.
 Admitted.
 Global Typeclasses Opaque call_me.
 
@@ -69,10 +69,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "I'm a function!
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "I'm a function!
+" |) ] |)
                           |)
                         |)
                       |)
@@ -88,7 +86,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_function :
-  M.IsFunction.Trait "functions_closures_input_functions::function" function.
+  M.IsFunction.C "functions_closures_input_functions::function" function.
 Admitted.
 Global Typeclasses Opaque function.
 
@@ -142,10 +140,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.Array
-                                                      [ M.read (| Value.String "I'm a closure!
-" |)
-                                                      ]
+                                                    Value.Array [ mk_str (| "I'm a closure!
+" |) ]
                                                   |)
                                                 |)
                                               |)
@@ -192,6 +188,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_input_functions::main" main.
+  M.IsFunction.C "functions_closures_input_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

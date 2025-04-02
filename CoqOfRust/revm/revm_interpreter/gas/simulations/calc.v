@@ -1,6 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import revm.links.dependencies.
-Require Import revm.simulations.dependencies.
 Require Import revm_interpreter.gas.simulations.constants.
 
 (*

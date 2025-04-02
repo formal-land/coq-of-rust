@@ -39,7 +39,7 @@ Module future.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ResumeTy" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ResumeTy" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -204,7 +204,7 @@ Module future.
     end.
   
   Global Instance Instance_IsFunction_get_context :
-    M.IsFunction.Trait "core::future::get_context" get_context.
+    M.IsFunction.C "core::future::get_context" get_context.
   Admitted.
   Global Typeclasses Opaque get_context.
 End future.

@@ -843,7 +843,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_quicksort :
-          M.IsFunction.Trait "core::slice::sort::stable::quicksort::quicksort" quicksort.
+          M.IsFunction.C "core::slice::sort::stable::quicksort::quicksort" quicksort.
         Admitted.
         Global Typeclasses Opaque quicksort.
         
@@ -1111,8 +1111,10 @@ Module slice.
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.get_constant
-                                      "core::slice::sort::stable::quicksort::stable_partition_discriminant") in
+                                    (get_constant (|
+                                      "core::slice::sort::stable::quicksort::stable_partition_discriminant",
+                                      Ty.path "bool"
+                                    |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
@@ -1142,8 +1144,10 @@ Module slice.
                                             M.read (| loop_end_pos |);
                                             BinOp.Wrap.sub (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN"
+                                                get_constant (|
+                                                  "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN",
+                                                  Ty.path "usize"
+                                                |)
                                               |),
                                               Value.Integer IntegerKind.Usize 1
                                             |)
@@ -1905,20 +1909,20 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_stable_partition :
-          M.IsFunction.Trait
-            "core::slice::sort::stable::quicksort::stable_partition"
-            stable_partition.
+          M.IsFunction.C "core::slice::sort::stable::quicksort::stable_partition" stable_partition.
         Admitted.
         Global Typeclasses Opaque stable_partition.
         
         Module stable_partition.
-          Definition value_UNROLL_LEN : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+          Definition value_UNROLL_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
           
-          Axiom Constant_value_UNROLL_LEN :
-            (M.get_constant "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN") =
+          Global Instance Instance_IsConstant_value_UNROLL_LEN :
+            M.IsFunction.C
+              "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN"
               value_UNROLL_LEN.
-          Global Hint Rewrite Constant_value_UNROLL_LEN : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_UNROLL_LEN.
         End stable_partition.
         
         (* StructRecord
@@ -1976,7 +1980,7 @@ Module slice.
           
           Global Instance AssociatedFunction_new :
             forall (T : Ty.t),
-            M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+            M.IsAssociatedFunction.C (Self T) "new" (new T).
           Admitted.
           Global Typeclasses Opaque new.
           
@@ -2165,7 +2169,7 @@ Module slice.
           
           Global Instance AssociatedFunction_partition_one :
             forall (T : Ty.t),
-            M.IsAssociatedFunction.Trait (Self T) "partition_one" (partition_one T).
+            M.IsAssociatedFunction.C (Self T) "partition_one" (partition_one T).
           Admitted.
           Global Typeclasses Opaque partition_one.
         End Impl_core_slice_sort_stable_quicksort_PartitionState_T.
@@ -2268,7 +2272,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_has_direct_interior_mutability :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::slice::sort::stable::quicksort::has_direct_interior_mutability"
             has_direct_interior_mutability.
         Admitted.

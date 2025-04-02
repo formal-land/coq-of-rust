@@ -124,7 +124,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "AllocError" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AllocError" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -173,10 +173,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "memory allocation failed" |) |)
-              |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory allocation failed" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -498,9 +495,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -836,9 +832,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -1170,9 +1165,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)

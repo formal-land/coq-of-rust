@@ -3,1111 +3,1182 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bn128.
   Module add.
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "alloy_primitives::bits::address::Address",
-              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-              [ Value.Integer IntegerKind.U64 6 ]
-            |)
-          |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bits::address::Address",
+            M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+            [ Value.Integer IntegerKind.U64 6 ]
+          |)
+        |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bn128::add::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bn128::add::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_ISTANBUL_ADD_GAS_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
+    Definition value_ISTANBUL_ADD_GAS_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
     
-    Axiom Constant_value_ISTANBUL_ADD_GAS_COST :
-      (M.get_constant "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST") =
+    Global Instance Instance_IsConstant_value_ISTANBUL_ADD_GAS_COST :
+      M.IsFunction.C
+        "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
         value_ISTANBUL_ADD_GAS_COST.
-    Global Hint Rewrite Constant_value_ISTANBUL_ADD_GAS_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL_ADD_GAS_COST.
     
-    Definition value_ISTANBUL : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::add::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_ISTANBUL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::add::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_add",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_add",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_ISTANBUL :
-      (M.get_constant "revm_precompile::bn128::add::ISTANBUL") = value_ISTANBUL.
-    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ISTANBUL :
+      M.IsFunction.C "revm_precompile::bn128::add::ISTANBUL" value_ISTANBUL.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL.
     
-    Definition value_BYZANTIUM_ADD_GAS_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
+    Definition value_BYZANTIUM_ADD_GAS_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
     
-    Axiom Constant_value_BYZANTIUM_ADD_GAS_COST :
-      (M.get_constant "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST") =
+    Global Instance Instance_IsConstant_value_BYZANTIUM_ADD_GAS_COST :
+      M.IsFunction.C
+        "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
         value_BYZANTIUM_ADD_GAS_COST.
-    Global Hint Rewrite Constant_value_BYZANTIUM_ADD_GAS_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM_ADD_GAS_COST.
     
-    Definition value_BYZANTIUM : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::add::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::add::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_add",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_add",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_BYZANTIUM :
-      (M.get_constant "revm_precompile::bn128::add::BYZANTIUM") = value_BYZANTIUM.
-    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BYZANTIUM :
+      M.IsFunction.C "revm_precompile::bn128::add::BYZANTIUM" value_BYZANTIUM.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM.
   End add.
   
   Module mul.
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "alloy_primitives::bits::address::Address",
-              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-              [ Value.Integer IntegerKind.U64 7 ]
-            |)
-          |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bits::address::Address",
+            M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+            [ Value.Integer IntegerKind.U64 7 ]
+          |)
+        |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bn128::mul::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bn128::mul::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_ISTANBUL_MUL_GAS_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
+    Definition value_ISTANBUL_MUL_GAS_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
     
-    Axiom Constant_value_ISTANBUL_MUL_GAS_COST :
-      (M.get_constant "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST") =
+    Global Instance Instance_IsConstant_value_ISTANBUL_MUL_GAS_COST :
+      M.IsFunction.C
+        "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
         value_ISTANBUL_MUL_GAS_COST.
-    Global Hint Rewrite Constant_value_ISTANBUL_MUL_GAS_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL_MUL_GAS_COST.
     
-    Definition value_ISTANBUL : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::mul::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_ISTANBUL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::mul::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_mul",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_mul",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_ISTANBUL :
-      (M.get_constant "revm_precompile::bn128::mul::ISTANBUL") = value_ISTANBUL.
-    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ISTANBUL :
+      M.IsFunction.C "revm_precompile::bn128::mul::ISTANBUL" value_ISTANBUL.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL.
     
-    Definition value_BYZANTIUM_MUL_GAS_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
+    Definition value_BYZANTIUM_MUL_GAS_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
     
-    Axiom Constant_value_BYZANTIUM_MUL_GAS_COST :
-      (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST") =
+    Global Instance Instance_IsConstant_value_BYZANTIUM_MUL_GAS_COST :
+      M.IsFunction.C
+        "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
         value_BYZANTIUM_MUL_GAS_COST.
-    Global Hint Rewrite Constant_value_BYZANTIUM_MUL_GAS_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM_MUL_GAS_COST.
     
-    Definition value_BYZANTIUM : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::mul::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::mul::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_mul",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_mul",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_BYZANTIUM :
-      (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM") = value_BYZANTIUM.
-    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BYZANTIUM :
+      M.IsFunction.C "revm_precompile::bn128::mul::BYZANTIUM" value_BYZANTIUM.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM.
   End mul.
   
   Module pair_.
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "alloy_primitives::bits::address::Address",
-              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-              [ Value.Integer IntegerKind.U64 8 ]
-            |)
-          |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bits::address::Address",
+            M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+            [ Value.Integer IntegerKind.U64 8 ]
+          |)
+        |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bn128::pair::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bn128::pair::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_ISTANBUL_PAIR_PER_POINT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
+    Definition value_ISTANBUL_PAIR_PER_POINT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
     
-    Axiom Constant_value_ISTANBUL_PAIR_PER_POINT :
-      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT") =
+    Global Instance Instance_IsConstant_value_ISTANBUL_PAIR_PER_POINT :
+      M.IsFunction.C
+        "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
         value_ISTANBUL_PAIR_PER_POINT.
-    Global Hint Rewrite Constant_value_ISTANBUL_PAIR_PER_POINT : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL_PAIR_PER_POINT.
     
-    Definition value_ISTANBUL_PAIR_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+    Definition value_ISTANBUL_PAIR_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
     
-    Axiom Constant_value_ISTANBUL_PAIR_BASE :
-      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE") =
-        value_ISTANBUL_PAIR_BASE.
-    Global Hint Rewrite Constant_value_ISTANBUL_PAIR_BASE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ISTANBUL_PAIR_BASE :
+      M.IsFunction.C "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE" value_ISTANBUL_PAIR_BASE.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL_PAIR_BASE.
     
-    Definition value_ISTANBUL : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::pair::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_ISTANBUL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::pair::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_pair",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_pair",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_ISTANBUL :
-      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL") = value_ISTANBUL.
-    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ISTANBUL :
+      M.IsFunction.C "revm_precompile::bn128::pair::ISTANBUL" value_ISTANBUL.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL.
     
-    Definition value_BYZANTIUM_PAIR_PER_POINT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
+    Definition value_BYZANTIUM_PAIR_PER_POINT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
     
-    Axiom Constant_value_BYZANTIUM_PAIR_PER_POINT :
-      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT") =
+    Global Instance Instance_IsConstant_value_BYZANTIUM_PAIR_PER_POINT :
+      M.IsFunction.C
+        "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
         value_BYZANTIUM_PAIR_PER_POINT.
-    Global Hint Rewrite Constant_value_BYZANTIUM_PAIR_PER_POINT : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM_PAIR_PER_POINT.
     
-    Definition value_BYZANTIUM_PAIR_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
+    Definition value_BYZANTIUM_PAIR_BASE
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
     
-    Axiom Constant_value_BYZANTIUM_PAIR_BASE :
-      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE") =
-        value_BYZANTIUM_PAIR_BASE.
-    Global Hint Rewrite Constant_value_BYZANTIUM_PAIR_BASE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BYZANTIUM_PAIR_BASE :
+      M.IsFunction.C "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE" value_BYZANTIUM_PAIR_BASE.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM_PAIR_BASE.
     
-    Definition value_BYZANTIUM : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.read (| M.get_constant "revm_precompile::bn128::pair::ADDRESS" |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "u64"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
+    Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.read (|
+                get_constant (|
+                  "revm_precompile::bn128::pair::ADDRESS",
+                  Ty.path "alloy_primitives::bits::address::Address"
+                |)
+              |);
+              (* ClosureFnPointer(Safe) *)
+              M.pointer_coercion
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0; α1 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
                                     [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let input := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                Ty.path "u64"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "u64"
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let input := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              Ty.path
-                                                "revm_precompile::interface::PrecompileOutput";
-                                              Ty.path "revm_precompile::interface::PrecompileErrors"
-                                            ])),
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let gas_limit := M.copy (| γ |) in
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::result::Result")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileOutput";
-                                                  Ty.path
-                                                    "revm_precompile::interface::PrecompileErrors"
-                                                ],
-                                              M.get_function (|
-                                                "revm_precompile::bn128::run_pair",
-                                                [],
-                                                []
-                                              |),
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                              Ty.path "u64"
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ])),
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let gas_limit := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                            M.get_function (|
+                                              "revm_precompile::bn128::run_pair",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| input |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "bytes::bytes::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "bytes::bytes::Bytes" ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| input |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
-                                                |);
-                                                M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
-              ]
-          |))).
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE",
+                                                  Ty.path "u64"
+                                                |)
+                                              |);
+                                              M.read (| gas_limit |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)))
+            ]
+        |))).
     
-    Axiom Constant_value_BYZANTIUM :
-      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM") = value_BYZANTIUM.
-    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BYZANTIUM :
+      M.IsFunction.C "revm_precompile::bn128::pair::BYZANTIUM" value_BYZANTIUM.
+    Admitted.
+    Global Typeclasses Opaque value_BYZANTIUM.
   End pair_.
   
-  Definition value_ADD_INPUT_LEN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.add (|
-            Value.Integer IntegerKind.Usize 64,
-            Value.Integer IntegerKind.Usize 64
-          |)
-        |))).
+  Definition value_ADD_INPUT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 64 |)
+      |))).
   
-  Axiom Constant_value_ADD_INPUT_LEN :
-    (M.get_constant "revm_precompile::bn128::ADD_INPUT_LEN") = value_ADD_INPUT_LEN.
-  Global Hint Rewrite Constant_value_ADD_INPUT_LEN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_ADD_INPUT_LEN :
+    M.IsFunction.C "revm_precompile::bn128::ADD_INPUT_LEN" value_ADD_INPUT_LEN.
+  Admitted.
+  Global Typeclasses Opaque value_ADD_INPUT_LEN.
   
-  Definition value_MUL_INPUT_LEN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.add (|
-            Value.Integer IntegerKind.Usize 64,
-            Value.Integer IntegerKind.Usize 32
-          |)
-        |))).
+  Definition value_MUL_INPUT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 32 |)
+      |))).
   
-  Axiom Constant_value_MUL_INPUT_LEN :
-    (M.get_constant "revm_precompile::bn128::MUL_INPUT_LEN") = value_MUL_INPUT_LEN.
-  Global Hint Rewrite Constant_value_MUL_INPUT_LEN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MUL_INPUT_LEN :
+    M.IsFunction.C "revm_precompile::bn128::MUL_INPUT_LEN" value_MUL_INPUT_LEN.
+  Admitted.
+  Global Typeclasses Opaque value_MUL_INPUT_LEN.
   
-  Definition value_PAIR_ELEMENT_LEN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.add (|
-            Value.Integer IntegerKind.Usize 64,
-            Value.Integer IntegerKind.Usize 128
-          |)
-        |))).
+  Definition value_PAIR_ELEMENT_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.add (| Value.Integer IntegerKind.Usize 64, Value.Integer IntegerKind.Usize 128 |)
+      |))).
   
-  Axiom Constant_value_PAIR_ELEMENT_LEN :
-    (M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN") = value_PAIR_ELEMENT_LEN.
-  Global Hint Rewrite Constant_value_PAIR_ELEMENT_LEN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_PAIR_ELEMENT_LEN :
+    M.IsFunction.C "revm_precompile::bn128::PAIR_ELEMENT_LEN" value_PAIR_ELEMENT_LEN.
+  Admitted.
+  Global Typeclasses Opaque value_PAIR_ELEMENT_LEN.
   
   (*
   pub fn read_fq(input: &[u8]) -> Result<Fq, PrecompileError> {
@@ -1208,7 +1279,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_read_fq :
-    M.IsFunction.Trait "revm_precompile::bn128::read_fq" read_fq.
+    M.IsFunction.C "revm_precompile::bn128::read_fq" read_fq.
   Admitted.
   Global Typeclasses Opaque read_fq.
   
@@ -1558,7 +1629,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_read_point :
-    M.IsFunction.Trait "revm_precompile::bn128::read_point" read_point.
+    M.IsFunction.C "revm_precompile::bn128::read_point" read_point.
   Admitted.
   Global Typeclasses Opaque read_point.
   
@@ -1786,7 +1857,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_new_g1_point :
-    M.IsFunction.Trait "revm_precompile::bn128::new_g1_point" new_g1_point.
+    M.IsFunction.C "revm_precompile::bn128::new_g1_point" new_g1_point.
   Admitted.
   Global Typeclasses Opaque new_g1_point.
   
@@ -2532,7 +2603,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_run_add :
-    M.IsFunction.Trait "revm_precompile::bn128::run_add" run_add.
+    M.IsFunction.C "revm_precompile::bn128::run_add" run_add.
   Admitted.
   Global Typeclasses Opaque run_add.
   
@@ -3200,7 +3271,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_run_mul :
-    M.IsFunction.Trait "revm_precompile::bn128::run_mul" run_mul.
+    M.IsFunction.C "revm_precompile::bn128::run_mul" run_mul.
   Admitted.
   Global Typeclasses Opaque run_mul.
   
@@ -3297,7 +3368,12 @@ Module bn128.
                             |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |),
-                          M.read (| M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
+                          M.read (|
+                            get_constant (|
+                              "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                              Ty.path "usize"
+                            |)
+                          |)
                         |)),
                       M.read (| pair_per_point_cost |)
                     |),
@@ -3378,7 +3454,10 @@ Module bn128.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                    get_constant (|
+                                      "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |),
                                 Value.Integer IntegerKind.Usize 0
@@ -3469,7 +3548,10 @@ Module bn128.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                  get_constant (|
+                                    "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |) in
@@ -3688,8 +3770,11 @@ Module bn128.
                                                                                                           |),
                                                                                                           BinOp.Wrap.div (|
                                                                                                             M.read (|
-                                                                                                              M.get_constant
-                                                                                                                "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                                                                                              get_constant (|
+                                                                                                                "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                                                                                                Ty.path
+                                                                                                                  "usize"
+                                                                                                              |)
                                                                                                             |),
                                                                                                             Value.Integer
                                                                                                               IntegerKind.Usize
@@ -3718,9 +3803,8 @@ Module bn128.
                                                                                                         []
                                                                                                       |),
                                                                                                       [
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            "assertion failed: n < PAIR_ELEMENT_LEN / 32"
+                                                                                                        mk_str (|
+                                                                                                          "assertion failed: n < PAIR_ELEMENT_LEN / 32"
                                                                                                         |)
                                                                                                       ]
                                                                                                     |)
@@ -3755,8 +3839,11 @@ Module bn128.
                                                                                       idx
                                                                                     |),
                                                                                     M.read (|
-                                                                                      M.get_constant
-                                                                                        "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                                                                      get_constant (|
+                                                                                        "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |),
                                                                                   BinOp.Wrap.mul (|
@@ -5557,7 +5644,7 @@ Module bn128.
     end.
   
   Global Instance Instance_IsFunction_run_pair :
-    M.IsFunction.Trait "revm_precompile::bn128::run_pair" run_pair.
+    M.IsFunction.C "revm_precompile::bn128::run_pair" run_pair.
   Admitted.
   Global Typeclasses Opaque run_pair.
 End bn128.

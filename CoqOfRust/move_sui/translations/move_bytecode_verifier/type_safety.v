@@ -17,12 +17,13 @@ Module type_safety.
         ];
     } *)
   
-  Definition value_TYPE_NODE_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+  Definition value_TYPE_NODE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
   
-  Axiom Constant_value_TYPE_NODE_COST :
-    (M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST") = value_TYPE_NODE_COST.
-  Global Hint Rewrite Constant_value_TYPE_NODE_COST : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TYPE_NODE_COST :
+    M.IsFunction.C "move_bytecode_verifier::type_safety::TYPE_NODE_COST" value_TYPE_NODE_COST.
+  Admitted.
+  Global Typeclasses Opaque value_TYPE_NODE_COST.
   
   Module Impl_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::type_safety::Locals".
@@ -62,7 +63,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -230,8 +231,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_local_at :
-      M.IsAssociatedFunction.Trait Self "local_at" local_at.
+    Global Instance AssociatedFunction_local_at : M.IsAssociatedFunction.C Self "local_at" local_at.
     Admitted.
     Global Typeclasses Opaque local_at.
   End Impl_move_bytecode_verifier_type_safety_Locals.
@@ -373,7 +373,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -419,8 +419,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_local_at :
-      M.IsAssociatedFunction.Trait Self "local_at" local_at.
+    Global Instance AssociatedFunction_local_at : M.IsAssociatedFunction.C Self "local_at" local_at.
     Admitted.
     Global Typeclasses Opaque local_at.
     
@@ -506,7 +505,7 @@ Module type_safety.
       end.
     
     Global Instance AssociatedFunction_abilities :
-      M.IsAssociatedFunction.Trait Self "abilities" abilities.
+      M.IsAssociatedFunction.C Self "abilities" abilities.
     Admitted.
     Global Typeclasses Opaque abilities.
     
@@ -595,7 +594,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.C Self "error" error.
     Admitted.
     Global Typeclasses Opaque error.
     
@@ -845,9 +844,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:95 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:95 "
                                                                 |)
                                                               ]
                                                           |)
@@ -988,9 +986,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -1059,7 +1055,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.C Self "push" push.
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -1312,9 +1308,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:106 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:106 "
                                                                 |)
                                                               ]
                                                           |)
@@ -1455,9 +1450,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -1526,7 +1519,7 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.Trait Self "push_n" push_n.
+    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.C Self "push_n" push_n.
     Admitted.
     Global Typeclasses Opaque push_n.
     
@@ -1568,7 +1561,7 @@ Module type_safety.
       end.
     
     Global Instance AssociatedFunction_charge_ty :
-      M.IsAssociatedFunction.Trait Self "charge_ty" charge_ty.
+      M.IsAssociatedFunction.C Self "charge_ty" charge_ty.
     Admitted.
     Global Typeclasses Opaque charge_ty.
     
@@ -1611,7 +1604,12 @@ Module type_safety.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
-              M.read (| M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST" |);
+              M.read (|
+                get_constant (|
+                  "move_bytecode_verifier::type_safety::TYPE_NODE_COST",
+                  Ty.path "u128"
+                |)
+              |);
               BinOp.Wrap.mul (|
                 M.call_closure (|
                   Ty.path "usize",
@@ -1646,7 +1644,7 @@ Module type_safety.
       end.
     
     Global Instance AssociatedFunction_charge_ty_ :
-      M.IsAssociatedFunction.Trait Self "charge_ty_" charge_ty_.
+      M.IsAssociatedFunction.C Self "charge_ty_" charge_ty_.
     Admitted.
     Global Typeclasses Opaque charge_ty_.
     
@@ -1918,7 +1916,7 @@ Module type_safety.
       end.
     
     Global Instance AssociatedFunction_charge_tys :
-      M.IsAssociatedFunction.Trait Self "charge_tys" charge_tys.
+      M.IsAssociatedFunction.C Self "charge_tys" charge_tys.
     Admitted.
     Global Typeclasses Opaque charge_tys.
   End Impl_move_bytecode_verifier_type_safety_TypeSafetyChecker.
@@ -2533,7 +2531,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_verify :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::verify" verify.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::verify" verify.
   Admitted.
   Global Typeclasses Opaque verify.
   
@@ -2712,9 +2710,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:170 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:170 "
                                                                 |)
                                                               ]
                                                           |)
@@ -2855,9 +2852,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -3514,7 +3509,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_borrow_field :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_field" borrow_field.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::borrow_field" borrow_field.
   Admitted.
   Global Typeclasses Opaque borrow_field.
   
@@ -3849,7 +3844,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_borrow_loc :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_loc" borrow_loc.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::borrow_loc" borrow_loc.
   Admitted.
   Global Typeclasses Opaque borrow_loc.
   
@@ -4010,9 +4005,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:243 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:243 "
                                                                 |)
                                                               ]
                                                           |)
@@ -4153,9 +4147,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -4764,7 +4756,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_borrow_global :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_global" borrow_global.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::borrow_global" borrow_global.
   Admitted.
   Global Typeclasses Opaque borrow_global.
   
@@ -5171,9 +5163,8 @@ Module type_safety.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:275 "
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:275 "
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -5336,11 +5327,7 @@ Module type_safety.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -5911,7 +5898,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_call :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::call" call.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::call" call.
   Admitted.
   Global Typeclasses Opaque call.
   
@@ -6270,7 +6257,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_type_fields_signature :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::type_safety::type_fields_signature"
       type_fields_signature.
   Admitted.
@@ -6785,9 +6772,8 @@ Module type_safety.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:320 "
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:320 "
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -6950,11 +6936,7 @@ Module type_safety.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -7237,7 +7219,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_pack :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::pack" pack.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::pack" pack.
   Admitted.
   Global Typeclasses Opaque pack.
   
@@ -7409,9 +7391,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:341 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:341 "
                                                                 |)
                                                               ]
                                                           |)
@@ -7552,9 +7533,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -8054,7 +8033,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_unpack :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::unpack" unpack.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::unpack" unpack.
   Admitted.
   Global Typeclasses Opaque unpack.
   
@@ -8431,9 +8410,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:368 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:368 "
                                                                 |)
                                                               ]
                                                           |)
@@ -8574,9 +8552,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -8834,7 +8810,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_exists_ :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::exists" exists_.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::exists" exists_.
   Admitted.
   Global Typeclasses Opaque exists_.
   
@@ -9226,9 +9202,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:394 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:394 "
                                                                 |)
                                                               ]
                                                           |)
@@ -9369,9 +9344,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -9627,7 +9600,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_move_from :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::move_from" move_from.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::move_from" move_from.
   Admitted.
   Global Typeclasses Opaque move_from.
   
@@ -10022,9 +9995,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:415 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:415 "
                                                                 |)
                                                               ]
                                                           |)
@@ -10165,9 +10137,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -10343,9 +10313,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:416 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:416 "
                                                                 |)
                                                               ]
                                                           |)
@@ -10486,9 +10455,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -10716,7 +10683,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_move_to :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::move_to" move_to.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::move_to" move_to.
   Admitted.
   Global Typeclasses Opaque move_to.
   
@@ -10876,9 +10843,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:436 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:436 "
                                                                 |)
                                                               ]
                                                           |)
@@ -11019,9 +10985,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -11196,9 +11160,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:437 "
+                                                                mk_str (|
+                                                                  "crates/move-bytecode-verifier/src/type_safety.rs:437 "
                                                                 |)
                                                               ]
                                                           |)
@@ -11339,9 +11302,7 @@ Module type_safety.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -11767,7 +11728,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_borrow_vector_element :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::type_safety::borrow_vector_element"
       borrow_vector_element.
   Admitted.
@@ -12403,9 +12364,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:467 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:467 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -12556,8 +12516,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -13041,9 +13000,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:477 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:477 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -13203,11 +13161,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -13482,9 +13436,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:484 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:484 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -13635,8 +13588,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -13938,9 +13890,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:491 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:491 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -14091,8 +14042,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -14636,9 +14586,8 @@ Module type_safety.
                                                                                             M.alloc (|
                                                                                               Value.Array
                                                                                                 [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:500 "
+                                                                                                  mk_str (|
+                                                                                                    "crates/move-bytecode-verifier/src/type_safety.rs:500 "
                                                                                                   |)
                                                                                                 ]
                                                                                             |)
@@ -14804,9 +14753,8 @@ Module type_safety.
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
+                                                                                            mk_str (|
+                                                                                              ""
                                                                                             |)
                                                                                           ]
                                                                                       |)
@@ -15134,9 +15082,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:510 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:510 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -15287,8 +15234,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -20875,9 +20821,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:658 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:658 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -21028,8 +20973,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -21669,9 +21613,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:673 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:673 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -21822,8 +21765,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -22008,9 +21950,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:674 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:674 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -22161,8 +22102,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -22690,9 +22630,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:693 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:693 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -22843,8 +22782,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -23233,9 +23171,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:700 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:700 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -23386,8 +23323,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -23776,9 +23712,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:707 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:707 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -23929,8 +23864,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -24408,9 +24342,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:722 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:722 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -24570,11 +24503,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -24772,9 +24701,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:723 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:723 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -24934,11 +24862,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -25389,9 +25313,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:732 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:732 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -25551,11 +25474,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -25753,9 +25672,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:733 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:733 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -25915,11 +25833,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -26377,9 +26291,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:742 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:742 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -26539,11 +26452,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -26741,9 +26650,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:743 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:743 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -26903,11 +26811,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -27348,9 +27252,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:752 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:752 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -27501,8 +27404,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -27939,9 +27841,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:761 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:761 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -28101,11 +28002,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -28303,9 +28200,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:762 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:762 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -28465,11 +28361,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -29092,9 +28984,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:771 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:771 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -29254,11 +29145,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -29456,9 +29343,8 @@ Module type_safety.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/type_safety.rs:772 "
+                                                                                    mk_str (|
+                                                                                      "crates/move-bytecode-verifier/src/type_safety.rs:772 "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -29618,11 +29504,7 @@ Module type_safety.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ""
-                                                                              |)
-                                                                            ]
+                                                                            [ mk_str (| "" |) ]
                                                                         |)
                                                                       |)
                                                                     |)
@@ -33642,9 +33524,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:857 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:857 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -33795,8 +33676,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -34736,9 +34616,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:877 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:877 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -34889,8 +34768,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -35075,9 +34953,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:878 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:878 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -35228,8 +35105,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -35694,9 +35570,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:890 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:890 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -35847,8 +35722,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -36365,9 +36239,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:901 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:901 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -36518,8 +36391,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -37063,9 +36935,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:910 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:910 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -37216,8 +37087,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -37402,9 +37272,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:911 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:911 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -37555,8 +37424,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -37741,9 +37609,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:912 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:912 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -37894,8 +37761,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -38379,9 +38245,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:923 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:923 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -38532,8 +38397,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -38922,9 +38786,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:930 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:930 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -39075,8 +38938,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -39465,9 +39327,8 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "crates/move-bytecode-verifier/src/type_safety.rs:937 "
+                                                                          mk_str (|
+                                                                            "crates/move-bytecode-verifier/src/type_safety.rs:937 "
                                                                           |)
                                                                         ]
                                                                     |)
@@ -39618,8 +39479,7 @@ Module type_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
+                                                                Value.Array [ mk_str (| "" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -39892,7 +39752,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_verify_instr :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::verify_instr" verify_instr.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::verify_instr" verify_instr.
   Admitted.
   Global Typeclasses Opaque verify_instr.
   
@@ -40034,7 +39894,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_materialize_type :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::materialize_type" materialize_type.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::materialize_type" materialize_type.
   Admitted.
   Global Typeclasses Opaque materialize_type.
   
@@ -40847,9 +40707,8 @@ Module type_safety.
                                                   []
                                                 |),
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "assertion failed: (*idx as usize) < subst.len()"
+                                                  mk_str (|
+                                                    "assertion failed: (*idx as usize) < subst.len()"
                                                   |)
                                                 ]
                                               |)
@@ -40925,7 +40784,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_instantiate :
-    M.IsFunction.Trait "move_bytecode_verifier::type_safety::instantiate" instantiate.
+    M.IsFunction.C "move_bytecode_verifier::type_safety::instantiate" instantiate.
   Admitted.
   Global Typeclasses Opaque instantiate.
   
@@ -41072,7 +40931,7 @@ Module type_safety.
     end.
   
   Global Instance Instance_IsFunction_get_vector_element_type :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::type_safety::get_vector_element_type"
       get_vector_element_type.
   Admitted.

@@ -2,47 +2,47 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module hash.
-  Definition value_SHA256 : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 2 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [], [] |))
-            ]
-        |))).
+  Definition value_SHA256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 2 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_SHA256 : (M.get_constant "revm_precompile::hash::SHA256") = value_SHA256.
-  Global Hint Rewrite Constant_value_SHA256 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_SHA256 :
+    M.IsFunction.C "revm_precompile::hash::SHA256" value_SHA256.
+  Admitted.
+  Global Typeclasses Opaque value_SHA256.
   
-  Definition value_RIPEMD160 : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 3 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::hash::ripemd160_run", [], [] |))
-            ]
-        |))).
+  Definition value_RIPEMD160 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 3 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion (M.get_function (| "revm_precompile::hash::ripemd160_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_RIPEMD160 :
-    (M.get_constant "revm_precompile::hash::RIPEMD160") = value_RIPEMD160.
-  Global Hint Rewrite Constant_value_RIPEMD160 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_RIPEMD160 :
+    M.IsFunction.C "revm_precompile::hash::RIPEMD160" value_RIPEMD160.
+  Admitted.
+  Global Typeclasses Opaque value_RIPEMD160.
   
   (*
   pub fn sha256_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -410,7 +410,7 @@ Module hash.
     end.
   
   Global Instance Instance_IsFunction_sha256_run :
-    M.IsFunction.Trait "revm_precompile::hash::sha256_run" sha256_run.
+    M.IsFunction.C "revm_precompile::hash::sha256_run" sha256_run.
   Admitted.
   Global Typeclasses Opaque sha256_run.
   
@@ -788,7 +788,7 @@ Module hash.
     end.
   
   Global Instance Instance_IsFunction_ripemd160_run :
-    M.IsFunction.Trait "revm_precompile::hash::ripemd160_run" ripemd160_run.
+    M.IsFunction.C "revm_precompile::hash::ripemd160_run" ripemd160_run.
   Admitted.
   Global Typeclasses Opaque ripemd160_run.
 End hash.

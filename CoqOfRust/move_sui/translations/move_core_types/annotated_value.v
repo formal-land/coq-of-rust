@@ -2,27 +2,29 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module annotated_value.
-  Definition value_MOVE_STRUCT_NAME : Value.t :=
-    M.run_constant ltac:(M.monadic (Value.String "struct")).
+  Definition value_MOVE_STRUCT_NAME (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "struct" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_NAME :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_NAME : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_NAME :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_NAME" value_MOVE_STRUCT_NAME.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_NAME.
   
-  Definition value_MOVE_STRUCT_TYPE : Value.t :=
-    M.run_constant ltac:(M.monadic (Value.String "type")).
+  Definition value_MOVE_STRUCT_TYPE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "type" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_TYPE :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_TYPE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_TYPE :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_TYPE" value_MOVE_STRUCT_TYPE.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_TYPE.
   
-  Definition value_MOVE_STRUCT_FIELDS : Value.t :=
-    M.run_constant ltac:(M.monadic (Value.String "fields")).
+  Definition value_MOVE_STRUCT_FIELDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "fields" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_FIELDS :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_FIELDS") =
-      value_MOVE_STRUCT_FIELDS.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_FIELDS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_FIELDS :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_FIELDS" value_MOVE_STRUCT_FIELDS.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_FIELDS.
   
   (* StructRecord
     {
@@ -70,8 +72,8 @@ Module annotated_value.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "MoveStruct" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MoveStruct" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -85,7 +87,7 @@ Module annotated_value.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "fields" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fields" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -510,10 +512,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -545,10 +544,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -580,10 +576,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -615,10 +608,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bool" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bool" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -650,10 +640,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Address" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Address" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -685,10 +672,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Vector" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -720,10 +704,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Struct" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -755,10 +736,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Signer" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signer" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -790,10 +768,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -825,10 +800,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -860,10 +832,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1952,11 +1921,8 @@ Module annotated_value.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "MoveFieldLayout" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MoveFieldLayout" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1970,7 +1936,7 @@ Module annotated_value.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "layout" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "layout" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2134,7 +2100,7 @@ Module annotated_value.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "MoveFieldLayout" |);
+                              mk_str (| "MoveFieldLayout" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -2210,7 +2176,7 @@ Module annotated_value.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2291,7 +2257,7 @@ Module annotated_value.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "layout" |);
+                            mk_str (| "layout" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2403,9 +2369,20 @@ Module annotated_value.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "MoveFieldLayout" |);
+                mk_str (| "MoveFieldLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'1::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'1::deserialize::__Visitor"
@@ -2475,7 +2452,7 @@ Module annotated_value.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "MoveStructLayout" |);
+                              mk_str (| "MoveStructLayout" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -2551,7 +2528,7 @@ Module annotated_value.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "type_" |);
+                            mk_str (| "type_" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2640,7 +2617,7 @@ Module annotated_value.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "fields" |);
+                            mk_str (| "fields" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2752,9 +2729,20 @@ Module annotated_value.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "MoveStructLayout" |);
+                mk_str (| "MoveStructLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'3::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'3::deserialize::__Visitor"
@@ -2824,9 +2812,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 0;
-                            M.read (| Value.String "bool" |)
+                            mk_str (| "bool" |)
                           ]
                         |)
                       |)));
@@ -2857,9 +2845,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 1;
-                            M.read (| Value.String "u8" |)
+                            mk_str (| "u8" |)
                           ]
                         |)
                       |)));
@@ -2890,9 +2878,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 2;
-                            M.read (| Value.String "u64" |)
+                            mk_str (| "u64" |)
                           ]
                         |)
                       |)));
@@ -2923,9 +2911,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 3;
-                            M.read (| Value.String "u128" |)
+                            mk_str (| "u128" |)
                           ]
                         |)
                       |)));
@@ -2956,9 +2944,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 4;
-                            M.read (| Value.String "address" |)
+                            mk_str (| "address" |)
                           ]
                         |)
                       |)));
@@ -2999,9 +2987,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 5;
-                            M.read (| Value.String "vector" |);
+                            mk_str (| "vector" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -3035,9 +3023,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 6;
-                            M.read (| Value.String "struct" |);
+                            mk_str (| "struct" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -3069,9 +3057,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 7;
-                            M.read (| Value.String "signer" |)
+                            mk_str (| "signer" |)
                           ]
                         |)
                       |)));
@@ -3102,9 +3090,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 8;
-                            M.read (| Value.String "u16" |)
+                            mk_str (| "u16" |)
                           ]
                         |)
                       |)));
@@ -3135,9 +3123,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 9;
-                            M.read (| Value.String "u32" |)
+                            mk_str (| "u32" |)
                           ]
                         |)
                       |)));
@@ -3168,9 +3156,9 @@ Module annotated_value.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "MoveTypeLayout" |);
+                            mk_str (| "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 10;
-                            M.read (| Value.String "u256" |)
+                            mk_str (| "u256" |)
                           ]
                         |)
                       |)))
@@ -3216,9 +3204,20 @@ Module annotated_value.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "MoveTypeLayout" |);
+                mk_str (| "MoveTypeLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'5::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'5::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'5::deserialize::__Visitor"
@@ -3262,7 +3261,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_core_types_annotated_value_MoveFieldLayout.
@@ -3309,11 +3308,8 @@ Module annotated_value.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "MoveStructLayout" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MoveStructLayout" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3327,7 +3323,7 @@ Module annotated_value.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "fields" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fields" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3584,10 +3580,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bool" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bool" |) |) |)
                         ]
                       |)
                     |)));
@@ -3613,10 +3606,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |)
                         ]
                       |)
                     |)));
@@ -3642,10 +3632,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |)
                         ]
                       |)
                     |)));
@@ -3671,10 +3658,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |)
                         ]
                       |)
                     |)));
@@ -3700,10 +3684,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Address" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Address" |) |) |)
                         ]
                       |)
                     |)));
@@ -3731,10 +3712,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Vector" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3766,10 +3744,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Struct" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3799,10 +3774,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Signer" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signer" |) |) |)
                         ]
                       |)
                     |)));
@@ -3828,10 +3800,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |)
                         ]
                       |)
                     |)));
@@ -3857,10 +3826,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |)
                         ]
                       |)
                     |)));
@@ -3886,10 +3852,7 @@ Module annotated_value.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |)
                         ]
                       |)
                     |)))
@@ -4259,7 +4222,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -4560,7 +4523,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+      M.IsAssociatedFunction.C Self "visit_deserialize" visit_deserialize.
     Admitted.
     Global Typeclasses Opaque visit_deserialize.
     
@@ -4624,7 +4587,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_serialize :
-      M.IsAssociatedFunction.Trait Self "simple_serialize" simple_serialize.
+      M.IsAssociatedFunction.C Self "simple_serialize" simple_serialize.
     Admitted.
     Global Typeclasses Opaque simple_serialize.
     
@@ -4942,7 +4905,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_undecorate :
-      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+      M.IsAssociatedFunction.C Self "undecorate" undecorate.
     Admitted.
     Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveValue.
@@ -5171,9 +5134,7 @@ Module annotated_value.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.read (| Value.String "serialization should succeed" |)
-                                        |)
+                                        M.deref (| mk_str (| "serialization should succeed" |) |)
                                       |)
                                     ]
                                   |)))
@@ -5189,7 +5150,7 @@ Module annotated_value.
     end.
   
   Global Instance Instance_IsFunction_serialize_values :
-    M.IsFunction.Trait "move_core_types::annotated_value::serialize_values" serialize_values.
+    M.IsFunction.C "move_core_types::annotated_value::serialize_values" serialize_values.
   Admitted.
   Global Typeclasses Opaque serialize_values.
   
@@ -5213,7 +5174,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5361,7 +5322,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -5662,7 +5623,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+      M.IsAssociatedFunction.C Self "visit_deserialize" visit_deserialize.
     Admitted.
     Global Typeclasses Opaque visit_deserialize.
     
@@ -5873,7 +5834,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
     
@@ -6029,7 +5990,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_undecorate :
-      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+      M.IsAssociatedFunction.C Self "undecorate" undecorate.
     Admitted.
     Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveStruct.
@@ -6054,7 +6015,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -6217,7 +6178,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
   End Impl_move_core_types_annotated_value_MoveStructLayout.
@@ -7265,7 +7226,7 @@ Module annotated_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Vector" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7651,7 +7612,7 @@ Module annotated_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Struct" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10483,8 +10444,10 @@ Module annotated_value.
                               [
                                 M.read (| serializer |);
                                 M.read (|
-                                  M.get_constant
-                                    "move_core_types::annotated_value::MOVE_STRUCT_NAME"
+                                  get_constant (|
+                                    "move_core_types::annotated_value::MOVE_STRUCT_NAME",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                  |)
                                 |);
                                 Value.Integer IntegerKind.Usize 2
                               ]
@@ -10640,7 +10603,10 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE"
+                                get_constant (|
+                                  "move_core_types::annotated_value::MOVE_STRUCT_TYPE",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -10826,8 +10792,10 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant
-                                  "move_core_types::annotated_value::MOVE_STRUCT_FIELDS"
+                                get_constant (|
+                                  "move_core_types::annotated_value::MOVE_STRUCT_FIELDS",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -11105,7 +11073,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "bool" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11150,7 +11118,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u8" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11195,7 +11163,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u16" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11240,7 +11208,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u32" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11285,7 +11253,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u64" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11330,7 +11298,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u128" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11375,7 +11343,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u256" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11420,9 +11388,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "address" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "address" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11467,7 +11433,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "signer" |) ] |)
                                   |)
                                 |)
                               |)
@@ -11529,11 +11495,7 @@ Module annotated_value.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "vector<" |);
-                                          M.read (| Value.String ">" |)
-                                        ]
+                                      Value.Array [ mk_str (| "vector<" |); mk_str (| ">" |) ]
                                     |)
                                   |)
                                 |)
@@ -11667,11 +11629,7 @@ Module annotated_value.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "vector<" |);
-                                          M.read (| Value.String ">" |)
-                                        ]
+                                      Value.Array [ mk_str (| "vector<" |); mk_str (| ">" |) ]
                                     |)
                                   |)
                                 |)
@@ -11775,7 +11733,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -11901,7 +11859,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -12043,7 +12001,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -12162,7 +12120,7 @@ Module annotated_value.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -12303,9 +12261,7 @@ Module annotated_value.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "struct " |) ]
-                                        |)
+                                        M.alloc (| Value.Array [ mk_str (| "struct " |) ] |)
                                       |)
                                     |)
                                   |)
@@ -12432,11 +12388,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String " " |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| " " |) ]
                                         |)
                                       |)
                                     |)
@@ -13195,11 +13147,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u8" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u8" |) ]
                                         |)
                                       |)
                                     |)
@@ -13279,11 +13227,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u16" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u16" |) ]
                                         |)
                                       |)
                                     |)
@@ -13363,11 +13307,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u32" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u32" |) ]
                                         |)
                                       |)
                                     |)
@@ -13447,11 +13387,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u64" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u64" |) ]
                                         |)
                                       |)
                                     |)
@@ -13531,11 +13467,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u128" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u128" |) ]
                                         |)
                                       |)
                                     |)
@@ -13615,11 +13547,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "u256" |)
-                                            ]
+                                          Value.Array [ mk_str (| "" |); mk_str (| "u256" |) ]
                                         |)
                                       |)
                                     |)
@@ -13701,9 +13629,7 @@ Module annotated_value.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "false" |) ]
-                                        |)
+                                        M.alloc (| Value.Array [ mk_str (| "false" |) ] |)
                                       |)
                                     |)
                                   |)
@@ -13751,9 +13677,7 @@ Module annotated_value.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "true" |) ]
-                                        |)
+                                        M.alloc (| Value.Array [ mk_str (| "true" |) ] |)
                                       |)
                                     |)
                                   |)
@@ -13803,7 +13727,7 @@ Module annotated_value.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                       |)
                                     |)
                                   |);
@@ -13904,11 +13828,7 @@ Module annotated_value.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "signer(" |);
-                                              M.read (| Value.String ")" |)
-                                            ]
+                                          Value.Array [ mk_str (| "signer(" |); mk_str (| ")" |) ]
                                         |)
                                       |)
                                     |)
@@ -14039,9 +13959,7 @@ Module annotated_value.
                                             M.deref (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "vector" |) ]
-                                                |)
+                                                M.alloc (| Value.Array [ mk_str (| "vector" |) ] |)
                                               |)
                                             |)
                                           |)
@@ -14535,7 +14453,7 @@ Module annotated_value.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String " " |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| " " |) ] |)
                                       |)
                                     |)
                                   |)

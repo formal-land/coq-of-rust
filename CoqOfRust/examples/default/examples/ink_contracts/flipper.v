@@ -26,7 +26,7 @@ Module Impl_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -62,7 +62,7 @@ Module Impl_flipper_Flipper.
     end.
   
   Global Instance AssociatedFunction_new_default :
-    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+    M.IsAssociatedFunction.C Self "new_default" new_default.
   Admitted.
   Global Typeclasses Opaque new_default.
   
@@ -101,7 +101,7 @@ Module Impl_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.C Self "flip" flip.
   Admitted.
   Global Typeclasses Opaque flip.
   
@@ -125,7 +125,7 @@ Module Impl_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_flipper_Flipper.

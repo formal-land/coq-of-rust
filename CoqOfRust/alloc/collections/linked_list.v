@@ -199,7 +199,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "Iter" |) |)
+                                          M.deref (| mk_str (| "Iter" |) |)
                                         |)
                                       ]
                                     |)
@@ -507,7 +507,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "IterMut" |) |)
+                                          M.deref (| mk_str (| "IterMut" |) |)
                                         |)
                                       ]
                                     |)
@@ -784,7 +784,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                  M.deref (| mk_str (| "IntoIter" |) |)
                                 |)
                               ]
                             |)
@@ -849,7 +849,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -881,7 +881,7 @@ Module collections.
       
       Global Instance AssociatedFunction_into_element :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_element" (into_element T).
+        M.IsAssociatedFunction.C (Self T) "into_element" (into_element T).
       Admitted.
       Global Typeclasses Opaque into_element.
     End Impl_alloc_collections_linked_list_Node_T.
@@ -1101,7 +1101,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_front_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_front_node" (push_front_node T A).
+        M.IsAssociatedFunction.C (Self T A) "push_front_node" (push_front_node T A).
       Admitted.
       Global Typeclasses Opaque push_front_node.
       
@@ -1434,7 +1434,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_front_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_front_node" (pop_front_node T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_front_node" (pop_front_node T A).
       Admitted.
       Global Typeclasses Opaque pop_front_node.
       
@@ -1649,7 +1649,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_back_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_back_node" (push_back_node T A).
+        M.IsAssociatedFunction.C (Self T A) "push_back_node" (push_back_node T A).
       Admitted.
       Global Typeclasses Opaque push_back_node.
       
@@ -1982,7 +1982,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_back_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_back_node" (pop_back_node T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_back_node" (pop_back_node T A).
       Admitted.
       Global Typeclasses Opaque pop_back_node.
       
@@ -2231,7 +2231,7 @@ Module collections.
       
       Global Instance AssociatedFunction_unlink_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "unlink_node" (unlink_node T A).
+        M.IsAssociatedFunction.C (Self T A) "unlink_node" (unlink_node T A).
       Admitted.
       Global Typeclasses Opaque unlink_node.
       
@@ -2520,7 +2520,7 @@ Module collections.
       
       Global Instance AssociatedFunction_splice_nodes :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "splice_nodes" (splice_nodes T A).
+        M.IsAssociatedFunction.C (Self T A) "splice_nodes" (splice_nodes T A).
       Admitted.
       Global Typeclasses Opaque splice_nodes.
       
@@ -2751,7 +2751,7 @@ Module collections.
       
       Global Instance AssociatedFunction_detach_all_nodes :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "detach_all_nodes" (detach_all_nodes T A).
+        M.IsAssociatedFunction.C (Self T A) "detach_all_nodes" (detach_all_nodes T A).
       Admitted.
       Global Typeclasses Opaque detach_all_nodes.
       
@@ -3133,7 +3133,7 @@ Module collections.
       
       Global Instance AssociatedFunction_split_off_before_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "split_off_before_node" (split_off_before_node T A).
+        M.IsAssociatedFunction.C (Self T A) "split_off_before_node" (split_off_before_node T A).
       Admitted.
       Global Typeclasses Opaque split_off_before_node.
       
@@ -3517,7 +3517,7 @@ Module collections.
       
       Global Instance AssociatedFunction_split_off_after_node :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "split_off_after_node" (split_off_after_node T A).
+        M.IsAssociatedFunction.C (Self T A) "split_off_after_node" (split_off_after_node T A).
       Admitted.
       Global Typeclasses Opaque split_off_after_node.
       (*
@@ -3545,7 +3545,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new_in :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+        M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
       Admitted.
       Global Typeclasses Opaque new_in.
       
@@ -3594,7 +3594,7 @@ Module collections.
       
       Global Instance AssociatedFunction_iter :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "iter" (iter T A).
+        M.IsAssociatedFunction.C (Self T A) "iter" (iter T A).
       Admitted.
       Global Typeclasses Opaque iter.
       
@@ -3643,7 +3643,7 @@ Module collections.
       
       Global Instance AssociatedFunction_iter_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "iter_mut" (iter_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "iter_mut" (iter_mut T A).
       Admitted.
       Global Typeclasses Opaque iter_mut.
       
@@ -3682,7 +3682,7 @@ Module collections.
       
       Global Instance AssociatedFunction_cursor_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "cursor_front" (cursor_front T A).
+        M.IsAssociatedFunction.C (Self T A) "cursor_front" (cursor_front T A).
       Admitted.
       Global Typeclasses Opaque cursor_front.
       
@@ -3721,7 +3721,7 @@ Module collections.
       
       Global Instance AssociatedFunction_cursor_front_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "cursor_front_mut" (cursor_front_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "cursor_front_mut" (cursor_front_mut T A).
       Admitted.
       Global Typeclasses Opaque cursor_front_mut.
       
@@ -3786,7 +3786,7 @@ Module collections.
       
       Global Instance AssociatedFunction_cursor_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "cursor_back" (cursor_back T A).
+        M.IsAssociatedFunction.C (Self T A) "cursor_back" (cursor_back T A).
       Admitted.
       Global Typeclasses Opaque cursor_back.
       
@@ -3851,7 +3851,7 @@ Module collections.
       
       Global Instance AssociatedFunction_cursor_back_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "cursor_back_mut" (cursor_back_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "cursor_back_mut" (cursor_back_mut T A).
       Admitted.
       Global Typeclasses Opaque cursor_back_mut.
       
@@ -3898,7 +3898,7 @@ Module collections.
       
       Global Instance AssociatedFunction_is_empty :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "is_empty" (is_empty T A).
+        M.IsAssociatedFunction.C (Self T A) "is_empty" (is_empty T A).
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -3925,7 +3925,7 @@ Module collections.
       
       Global Instance AssociatedFunction_len :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "len" (len T A).
+        M.IsAssociatedFunction.C (Self T A) "len" (len T A).
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -4100,7 +4100,7 @@ Module collections.
       
       Global Instance AssociatedFunction_clear :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "clear" (clear T A).
+        M.IsAssociatedFunction.C (Self T A) "clear" (clear T A).
       Admitted.
       Global Typeclasses Opaque clear.
       
@@ -4192,7 +4192,7 @@ Module collections.
       
       Global Instance AssociatedFunction_contains :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "contains" (contains T A).
+        M.IsAssociatedFunction.C (Self T A) "contains" (contains T A).
       Admitted.
       Global Typeclasses Opaque contains.
       
@@ -4377,7 +4377,7 @@ Module collections.
       
       Global Instance AssociatedFunction_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "front" (front T A).
+        M.IsAssociatedFunction.C (Self T A) "front" (front T A).
       Admitted.
       Global Typeclasses Opaque front.
       
@@ -4562,7 +4562,7 @@ Module collections.
       
       Global Instance AssociatedFunction_front_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "front_mut" (front_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "front_mut" (front_mut T A).
       Admitted.
       Global Typeclasses Opaque front_mut.
       
@@ -4747,7 +4747,7 @@ Module collections.
       
       Global Instance AssociatedFunction_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "back" (back T A).
+        M.IsAssociatedFunction.C (Self T A) "back" (back T A).
       Admitted.
       Global Typeclasses Opaque back.
       
@@ -4932,7 +4932,7 @@ Module collections.
       
       Global Instance AssociatedFunction_back_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "back_mut" (back_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "back_mut" (back_mut T A).
       Admitted.
       Global Typeclasses Opaque back_mut.
       
@@ -5084,7 +5084,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_front" (push_front T A).
+        M.IsAssociatedFunction.C (Self T A) "push_front" (push_front T A).
       Admitted.
       Global Typeclasses Opaque push_front.
       
@@ -5166,7 +5166,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_front" (pop_front T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_front" (pop_front T A).
       Admitted.
       Global Typeclasses Opaque pop_front.
       
@@ -5313,7 +5313,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_back" (push_back T A).
+        M.IsAssociatedFunction.C (Self T A) "push_back" (push_back T A).
       Admitted.
       Global Typeclasses Opaque push_back.
       
@@ -5395,7 +5395,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_back" (pop_back T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_back" (pop_back T A).
       Admitted.
       Global Typeclasses Opaque pop_back.
       
@@ -5497,9 +5497,8 @@ Module collections.
                                               M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "Cannot split off at a nonexistent index"
+                                                    mk_str (|
+                                                      "Cannot split off at a nonexistent index"
                                                     |)
                                                   ]
                                               |)
@@ -6102,7 +6101,7 @@ Module collections.
       
       Global Instance AssociatedFunction_split_off :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "split_off" (split_off T A).
+        M.IsAssociatedFunction.C (Self T A) "split_off" (split_off T A).
       Admitted.
       Global Typeclasses Opaque split_off.
       
@@ -6187,9 +6186,8 @@ Module collections.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "Cannot remove at an index outside of the list bounds"
+                                                mk_str (|
+                                                  "Cannot remove at an index outside of the list bounds"
                                                 |)
                                               ]
                                           |)
@@ -6552,7 +6550,7 @@ Module collections.
       
       Global Instance AssociatedFunction_remove :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "remove" (remove T A).
+        M.IsAssociatedFunction.C (Self T A) "remove" (remove T A).
       Admitted.
       Global Typeclasses Opaque remove.
       
@@ -6640,7 +6638,7 @@ Module collections.
       
       Global Instance AssociatedFunction_retain :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "retain" (retain T A).
+        M.IsAssociatedFunction.C (Self T A) "retain" (retain T A).
       Admitted.
       Global Typeclasses Opaque retain.
       
@@ -6830,7 +6828,7 @@ Module collections.
       
       Global Instance AssociatedFunction_retain_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "retain_mut" (retain_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "retain_mut" (retain_mut T A).
       Admitted.
       Global Typeclasses Opaque retain_mut.
       
@@ -6901,7 +6899,7 @@ Module collections.
       
       Global Instance AssociatedFunction_extract_if :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "extract_if" (extract_if T A).
+        M.IsAssociatedFunction.C (Self T A) "extract_if" (extract_if T A).
       Admitted.
       Global Typeclasses Opaque extract_if.
     End Impl_alloc_collections_linked_list_LinkedList_T_A.
@@ -6983,7 +6981,7 @@ Module collections.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -7305,7 +7303,7 @@ Module collections.
       
       Global Instance AssociatedFunction_append :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "append" (append T).
+        M.IsAssociatedFunction.C (Self T) "append" (append T).
       Admitted.
       Global Typeclasses Opaque append.
     End Impl_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
@@ -8990,7 +8988,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "Cursor" |) |)
+                                          M.deref (| mk_str (| "Cursor" |) |)
                                         |)
                                       ]
                                     |)
@@ -9155,7 +9153,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "CursorMut" |) |)
+                                          M.deref (| mk_str (| "CursorMut" |) |)
                                         |)
                                       ]
                                     |)
@@ -9380,7 +9378,7 @@ Module collections.
       
       Global Instance AssociatedFunction_index :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "index" (index T A).
+        M.IsAssociatedFunction.C (Self T A) "index" (index T A).
       Admitted.
       Global Typeclasses Opaque index.
       
@@ -9563,7 +9561,7 @@ Module collections.
       
       Global Instance AssociatedFunction_move_next :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "move_next" (move_next T A).
+        M.IsAssociatedFunction.C (Self T A) "move_next" (move_next T A).
       Admitted.
       Global Typeclasses Opaque move_next.
       
@@ -9864,7 +9862,7 @@ Module collections.
       
       Global Instance AssociatedFunction_move_prev :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "move_prev" (move_prev T A).
+        M.IsAssociatedFunction.C (Self T A) "move_prev" (move_prev T A).
       Admitted.
       Global Typeclasses Opaque move_prev.
       
@@ -9991,7 +9989,7 @@ Module collections.
       
       Global Instance AssociatedFunction_current :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "current" (current T A).
+        M.IsAssociatedFunction.C (Self T A) "current" (current T A).
       Admitted.
       Global Typeclasses Opaque current.
       
@@ -10217,7 +10215,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek_next :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek_next" (peek_next T A).
+        M.IsAssociatedFunction.C (Self T A) "peek_next" (peek_next T A).
       Admitted.
       Global Typeclasses Opaque peek_next.
       
@@ -10443,7 +10441,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek_prev :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek_prev" (peek_prev T A).
+        M.IsAssociatedFunction.C (Self T A) "peek_prev" (peek_prev T A).
       Admitted.
       Global Typeclasses Opaque peek_prev.
       
@@ -10486,7 +10484,7 @@ Module collections.
       
       Global Instance AssociatedFunction_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "front" (front T A).
+        M.IsAssociatedFunction.C (Self T A) "front" (front T A).
       Admitted.
       Global Typeclasses Opaque front.
       
@@ -10529,7 +10527,7 @@ Module collections.
       
       Global Instance AssociatedFunction_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "back" (back T A).
+        M.IsAssociatedFunction.C (Self T A) "back" (back T A).
       Admitted.
       Global Typeclasses Opaque back.
       
@@ -10556,7 +10554,7 @@ Module collections.
       
       Global Instance AssociatedFunction_as_list :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_list" (as_list T A).
+        M.IsAssociatedFunction.C (Self T A) "as_list" (as_list T A).
       Admitted.
       Global Typeclasses Opaque as_list.
     End Impl_alloc_collections_linked_list_Cursor_T_A.
@@ -10720,7 +10718,7 @@ Module collections.
       
       Global Instance AssociatedFunction_index :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "index" (index T A).
+        M.IsAssociatedFunction.C (Self T A) "index" (index T A).
       Admitted.
       Global Typeclasses Opaque index.
       
@@ -10903,7 +10901,7 @@ Module collections.
       
       Global Instance AssociatedFunction_move_next :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "move_next" (move_next T A).
+        M.IsAssociatedFunction.C (Self T A) "move_next" (move_next T A).
       Admitted.
       Global Typeclasses Opaque move_next.
       
@@ -11204,7 +11202,7 @@ Module collections.
       
       Global Instance AssociatedFunction_move_prev :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "move_prev" (move_prev T A).
+        M.IsAssociatedFunction.C (Self T A) "move_prev" (move_prev T A).
       Admitted.
       Global Typeclasses Opaque move_prev.
       
@@ -11331,7 +11329,7 @@ Module collections.
       
       Global Instance AssociatedFunction_current :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "current" (current T A).
+        M.IsAssociatedFunction.C (Self T A) "current" (current T A).
       Admitted.
       Global Typeclasses Opaque current.
       
@@ -11560,7 +11558,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek_next :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek_next" (peek_next T A).
+        M.IsAssociatedFunction.C (Self T A) "peek_next" (peek_next T A).
       Admitted.
       Global Typeclasses Opaque peek_next.
       
@@ -11789,7 +11787,7 @@ Module collections.
       
       Global Instance AssociatedFunction_peek_prev :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "peek_prev" (peek_prev T A).
+        M.IsAssociatedFunction.C (Self T A) "peek_prev" (peek_prev T A).
       Admitted.
       Global Typeclasses Opaque peek_prev.
       
@@ -11842,7 +11840,7 @@ Module collections.
       
       Global Instance AssociatedFunction_as_cursor :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_cursor" (as_cursor T A).
+        M.IsAssociatedFunction.C (Self T A) "as_cursor" (as_cursor T A).
       Admitted.
       Global Typeclasses Opaque as_cursor.
       
@@ -11874,7 +11872,7 @@ Module collections.
       
       Global Instance AssociatedFunction_as_list :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_list" (as_list T A).
+        M.IsAssociatedFunction.C (Self T A) "as_list" (as_list T A).
       Admitted.
       Global Typeclasses Opaque as_list.
       (*
@@ -12231,7 +12229,7 @@ Module collections.
       
       Global Instance AssociatedFunction_insert_after :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "insert_after" (insert_after T A).
+        M.IsAssociatedFunction.C (Self T A) "insert_after" (insert_after T A).
       Admitted.
       Global Typeclasses Opaque insert_after.
       
@@ -12528,7 +12526,7 @@ Module collections.
       
       Global Instance AssociatedFunction_insert_before :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "insert_before" (insert_before T A).
+        M.IsAssociatedFunction.C (Self T A) "insert_before" (insert_before T A).
       Admitted.
       Global Typeclasses Opaque insert_before.
       
@@ -12837,7 +12835,7 @@ Module collections.
       
       Global Instance AssociatedFunction_remove_current :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "remove_current" (remove_current T A).
+        M.IsAssociatedFunction.C (Self T A) "remove_current" (remove_current T A).
       Admitted.
       Global Typeclasses Opaque remove_current.
       
@@ -13218,10 +13216,7 @@ Module collections.
       
       Global Instance AssociatedFunction_remove_current_as_list :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait
-          (Self T A)
-          "remove_current_as_list"
-          (remove_current_as_list T A).
+        M.IsAssociatedFunction.C (Self T A) "remove_current_as_list" (remove_current_as_list T A).
       Admitted.
       Global Typeclasses Opaque remove_current_as_list.
       
@@ -13397,7 +13392,7 @@ Module collections.
       
       Global Instance AssociatedFunction_split_after :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "split_after" (split_after T A).
+        M.IsAssociatedFunction.C (Self T A) "split_after" (split_after T A).
       Admitted.
       Global Typeclasses Opaque split_after.
       
@@ -13481,7 +13476,7 @@ Module collections.
       
       Global Instance AssociatedFunction_split_before :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "split_before" (split_before T A).
+        M.IsAssociatedFunction.C (Self T A) "split_before" (split_before T A).
       Admitted.
       Global Typeclasses Opaque split_before.
       
@@ -13554,7 +13549,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_front" (push_front T A).
+        M.IsAssociatedFunction.C (Self T A) "push_front" (push_front T A).
       Admitted.
       Global Typeclasses Opaque push_front.
       
@@ -13680,7 +13675,7 @@ Module collections.
       
       Global Instance AssociatedFunction_push_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "push_back" (push_back T A).
+        M.IsAssociatedFunction.C (Self T A) "push_back" (push_back T A).
       Admitted.
       Global Typeclasses Opaque push_back.
       
@@ -13915,7 +13910,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_front" (pop_front T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_front" (pop_front T A).
       Admitted.
       Global Typeclasses Opaque pop_front.
       
@@ -14199,7 +14194,7 @@ Module collections.
       
       Global Instance AssociatedFunction_pop_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "pop_back" (pop_back T A).
+        M.IsAssociatedFunction.C (Self T A) "pop_back" (pop_back T A).
       Admitted.
       Global Typeclasses Opaque pop_back.
       
@@ -14242,7 +14237,7 @@ Module collections.
       
       Global Instance AssociatedFunction_front :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "front" (front T A).
+        M.IsAssociatedFunction.C (Self T A) "front" (front T A).
       Admitted.
       Global Typeclasses Opaque front.
       
@@ -14285,7 +14280,7 @@ Module collections.
       
       Global Instance AssociatedFunction_front_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "front_mut" (front_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "front_mut" (front_mut T A).
       Admitted.
       Global Typeclasses Opaque front_mut.
       
@@ -14328,7 +14323,7 @@ Module collections.
       
       Global Instance AssociatedFunction_back :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "back" (back T A).
+        M.IsAssociatedFunction.C (Self T A) "back" (back T A).
       Admitted.
       Global Typeclasses Opaque back.
       
@@ -14371,7 +14366,7 @@ Module collections.
       
       Global Instance AssociatedFunction_back_mut :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "back_mut" (back_mut T A).
+        M.IsAssociatedFunction.C (Self T A) "back_mut" (back_mut T A).
       Admitted.
       Global Typeclasses Opaque back_mut.
     End Impl_alloc_collections_linked_list_CursorMut_T_A.
@@ -14729,7 +14724,7 @@ Module collections.
       
       Global Instance AssociatedFunction_splice_after :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "splice_after" (splice_after T).
+        M.IsAssociatedFunction.C (Self T) "splice_after" (splice_after T).
       Admitted.
       Global Typeclasses Opaque splice_after.
       
@@ -15013,7 +15008,7 @@ Module collections.
       
       Global Instance AssociatedFunction_splice_before :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "splice_before" (splice_before T).
+        M.IsAssociatedFunction.C (Self T) "splice_before" (splice_before T).
       Admitted.
       Global Typeclasses Opaque splice_before.
     End Impl_alloc_collections_linked_list_CursorMut_T_alloc_alloc_Global.
@@ -15525,7 +15520,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "ExtractIf" |) |)
+                                  M.deref (| mk_str (| "ExtractIf" |) |)
                                 |)
                               ]
                             |)
@@ -17724,7 +17719,7 @@ Module collections.
       end.
     
     Global Instance Instance_IsFunction_assert_covariance :
-      M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance" assert_covariance.
+      M.IsFunction.C "alloc::collections::linked_list::assert_covariance" assert_covariance.
     Admitted.
     Global Typeclasses Opaque assert_covariance.
     
@@ -17744,7 +17739,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_a :
-        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::a" a.
+        M.IsFunction.C "alloc::collections::linked_list::assert_covariance::a" a.
       Admitted.
       Global Typeclasses Opaque a.
       
@@ -17763,7 +17758,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_b :
-        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::b" b.
+        M.IsFunction.C "alloc::collections::linked_list::assert_covariance::b" b.
       Admitted.
       Global Typeclasses Opaque b.
       
@@ -17782,7 +17777,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_c :
-        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::c" c.
+        M.IsFunction.C "alloc::collections::linked_list::assert_covariance::c" c.
       Admitted.
       Global Typeclasses Opaque c.
     End assert_covariance.

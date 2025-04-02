@@ -5,536 +5,550 @@ Module num.
   Module flt2dec.
     Module strategy.
       Module grisu.
-        Definition value_ALPHA : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-60) |))).
+        Definition value_ALPHA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-60) |))).
         
-        Axiom Constant_value_ALPHA :
-          (M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA") = value_ALPHA.
-        Global Hint Rewrite Constant_value_ALPHA : constant_rewrites.
+        Global Instance Instance_IsConstant_value_ALPHA :
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::ALPHA" value_ALPHA.
+        Admitted.
+        Global Typeclasses Opaque value_ALPHA.
         
-        Definition value_GAMMA : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-32) |))).
+        Definition value_GAMMA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-32) |))).
         
-        Axiom Constant_value_GAMMA :
-          (M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA") = value_GAMMA.
-        Global Hint Rewrite Constant_value_GAMMA : constant_rewrites.
+        Global Instance Instance_IsConstant_value_GAMMA :
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::GAMMA" value_GAMMA.
+        Admitted.
+        Global Typeclasses Opaque value_GAMMA.
         
-        Definition value_CACHED_POW10 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16580792590934885855;
-                          Value.Integer IntegerKind.I16 (-1087);
-                          Value.Integer IntegerKind.I16 (-308)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12353653155963782858;
-                          Value.Integer IntegerKind.I16 (-1060);
-                          Value.Integer IntegerKind.I16 (-300)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 18408377700990114895;
-                          Value.Integer IntegerKind.I16 (-1034);
-                          Value.Integer IntegerKind.I16 (-292)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13715310171984221708;
-                          Value.Integer IntegerKind.I16 (-1007);
-                          Value.Integer IntegerKind.I16 (-284)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10218702384817765436;
-                          Value.Integer IntegerKind.I16 (-980);
-                          Value.Integer IntegerKind.I16 (-276)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15227053142812498563;
-                          Value.Integer IntegerKind.I16 (-954);
-                          Value.Integer IntegerKind.I16 (-268)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11345038669416679861;
-                          Value.Integer IntegerKind.I16 (-927);
-                          Value.Integer IntegerKind.I16 (-260)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16905424996341287883;
-                          Value.Integer IntegerKind.I16 (-901);
-                          Value.Integer IntegerKind.I16 (-252)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12595523146049147757;
-                          Value.Integer IntegerKind.I16 (-874);
-                          Value.Integer IntegerKind.I16 (-244)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9384396036005875287;
-                          Value.Integer IntegerKind.I16 (-847);
-                          Value.Integer IntegerKind.I16 (-236)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13983839803942852151;
-                          Value.Integer IntegerKind.I16 (-821);
-                          Value.Integer IntegerKind.I16 (-228)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10418772551374772303;
-                          Value.Integer IntegerKind.I16 (-794);
-                          Value.Integer IntegerKind.I16 (-220)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15525180923007089351;
-                          Value.Integer IntegerKind.I16 (-768);
-                          Value.Integer IntegerKind.I16 (-212)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11567161174868858868;
-                          Value.Integer IntegerKind.I16 (-741);
-                          Value.Integer IntegerKind.I16 (-204)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17236413322193710309;
-                          Value.Integer IntegerKind.I16 (-715);
-                          Value.Integer IntegerKind.I16 (-196)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12842128665889583758;
-                          Value.Integer IntegerKind.I16 (-688);
-                          Value.Integer IntegerKind.I16 (-188)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9568131466127621947;
-                          Value.Integer IntegerKind.I16 (-661);
-                          Value.Integer IntegerKind.I16 (-180)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14257626930069360058;
-                          Value.Integer IntegerKind.I16 (-635);
-                          Value.Integer IntegerKind.I16 (-172)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10622759856335341974;
-                          Value.Integer IntegerKind.I16 (-608);
-                          Value.Integer IntegerKind.I16 (-164)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15829145694278690180;
-                          Value.Integer IntegerKind.I16 (-582);
-                          Value.Integer IntegerKind.I16 (-156)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11793632577567316726;
-                          Value.Integer IntegerKind.I16 (-555);
-                          Value.Integer IntegerKind.I16 (-148)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17573882009934360870;
-                          Value.Integer IntegerKind.I16 (-529);
-                          Value.Integer IntegerKind.I16 (-140)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13093562431584567480;
-                          Value.Integer IntegerKind.I16 (-502);
-                          Value.Integer IntegerKind.I16 (-132)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9755464219737475723;
-                          Value.Integer IntegerKind.I16 (-475);
-                          Value.Integer IntegerKind.I16 (-124)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14536774485912137811;
-                          Value.Integer IntegerKind.I16 (-449);
-                          Value.Integer IntegerKind.I16 (-116)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10830740992659433045;
-                          Value.Integer IntegerKind.I16 (-422);
-                          Value.Integer IntegerKind.I16 (-108)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16139061738043178685;
-                          Value.Integer IntegerKind.I16 (-396);
-                          Value.Integer IntegerKind.I16 (-100)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12024538023802026127;
-                          Value.Integer IntegerKind.I16 (-369);
-                          Value.Integer IntegerKind.I16 (-92)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17917957937422433684;
-                          Value.Integer IntegerKind.I16 (-343);
-                          Value.Integer IntegerKind.I16 (-84)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13349918974505688015;
-                          Value.Integer IntegerKind.I16 (-316);
-                          Value.Integer IntegerKind.I16 (-76)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9946464728195732843;
-                          Value.Integer IntegerKind.I16 (-289);
-                          Value.Integer IntegerKind.I16 (-68)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14821387422376473014;
-                          Value.Integer IntegerKind.I16 (-263);
-                          Value.Integer IntegerKind.I16 (-60)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11042794154864902060;
-                          Value.Integer IntegerKind.I16 (-236);
-                          Value.Integer IntegerKind.I16 (-52)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16455045573212060422;
-                          Value.Integer IntegerKind.I16 (-210);
-                          Value.Integer IntegerKind.I16 (-44)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12259964326927110867;
-                          Value.Integer IntegerKind.I16 (-183);
-                          Value.Integer IntegerKind.I16 (-36)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 18268770466636286478;
-                          Value.Integer IntegerKind.I16 (-157);
-                          Value.Integer IntegerKind.I16 (-28)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13611294676837538539;
-                          Value.Integer IntegerKind.I16 (-130);
-                          Value.Integer IntegerKind.I16 (-20)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10141204801825835212;
-                          Value.Integer IntegerKind.I16 (-103);
-                          Value.Integer IntegerKind.I16 (-12)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15111572745182864684;
-                          Value.Integer IntegerKind.I16 (-77);
-                          Value.Integer IntegerKind.I16 (-4)
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11258999068426240000;
-                          Value.Integer IntegerKind.I16 (-50);
-                          Value.Integer IntegerKind.I16 4
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16777216000000000000;
-                          Value.Integer IntegerKind.I16 (-24);
-                          Value.Integer IntegerKind.I16 12
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12500000000000000000;
-                          Value.Integer IntegerKind.I16 3;
-                          Value.Integer IntegerKind.I16 20
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9313225746154785156;
-                          Value.Integer IntegerKind.I16 30;
-                          Value.Integer IntegerKind.I16 28
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13877787807814456755;
-                          Value.Integer IntegerKind.I16 56;
-                          Value.Integer IntegerKind.I16 36
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10339757656912845936;
-                          Value.Integer IntegerKind.I16 83;
-                          Value.Integer IntegerKind.I16 44
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15407439555097886824;
-                          Value.Integer IntegerKind.I16 109;
-                          Value.Integer IntegerKind.I16 52
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11479437019748901445;
-                          Value.Integer IntegerKind.I16 136;
-                          Value.Integer IntegerKind.I16 60
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17105694144590052135;
-                          Value.Integer IntegerKind.I16 162;
-                          Value.Integer IntegerKind.I16 68
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12744735289059618216;
-                          Value.Integer IntegerKind.I16 189;
-                          Value.Integer IntegerKind.I16 76
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9495567745759798747;
-                          Value.Integer IntegerKind.I16 216;
-                          Value.Integer IntegerKind.I16 84
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14149498560666738074;
-                          Value.Integer IntegerKind.I16 242;
-                          Value.Integer IntegerKind.I16 92
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10542197943230523224;
-                          Value.Integer IntegerKind.I16 269;
-                          Value.Integer IntegerKind.I16 100
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15709099088952724970;
-                          Value.Integer IntegerKind.I16 295;
-                          Value.Integer IntegerKind.I16 108
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11704190886730495818;
-                          Value.Integer IntegerKind.I16 322;
-                          Value.Integer IntegerKind.I16 116
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17440603504673385349;
-                          Value.Integer IntegerKind.I16 348;
-                          Value.Integer IntegerKind.I16 124
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12994262207056124023;
-                          Value.Integer IntegerKind.I16 375;
-                          Value.Integer IntegerKind.I16 132
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9681479787123295682;
-                          Value.Integer IntegerKind.I16 402;
-                          Value.Integer IntegerKind.I16 140
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14426529090290212157;
-                          Value.Integer IntegerKind.I16 428;
-                          Value.Integer IntegerKind.I16 148
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10748601772107342003;
-                          Value.Integer IntegerKind.I16 455;
-                          Value.Integer IntegerKind.I16 156
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16016664761464807395;
-                          Value.Integer IntegerKind.I16 481;
-                          Value.Integer IntegerKind.I16 164
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11933345169920330789;
-                          Value.Integer IntegerKind.I16 508;
-                          Value.Integer IntegerKind.I16 172
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 17782069995880619868;
-                          Value.Integer IntegerKind.I16 534;
-                          Value.Integer IntegerKind.I16 180
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13248674568444952270;
-                          Value.Integer IntegerKind.I16 561;
-                          Value.Integer IntegerKind.I16 188
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9871031767461413346;
-                          Value.Integer IntegerKind.I16 588;
-                          Value.Integer IntegerKind.I16 196
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14708983551653345445;
-                          Value.Integer IntegerKind.I16 614;
-                          Value.Integer IntegerKind.I16 204
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10959046745042015199;
-                          Value.Integer IntegerKind.I16 641;
-                          Value.Integer IntegerKind.I16 212
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16330252207878254650;
-                          Value.Integer IntegerKind.I16 667;
-                          Value.Integer IntegerKind.I16 220
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12166986024289022870;
-                          Value.Integer IntegerKind.I16 694;
-                          Value.Integer IntegerKind.I16 228
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 18130221999122236476;
-                          Value.Integer IntegerKind.I16 720;
-                          Value.Integer IntegerKind.I16 236
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13508068024458167312;
-                          Value.Integer IntegerKind.I16 747;
-                          Value.Integer IntegerKind.I16 244
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10064294952495520794;
-                          Value.Integer IntegerKind.I16 774;
-                          Value.Integer IntegerKind.I16 252
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 14996968138956309548;
-                          Value.Integer IntegerKind.I16 800;
-                          Value.Integer IntegerKind.I16 260
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11173611982879273257;
-                          Value.Integer IntegerKind.I16 827;
-                          Value.Integer IntegerKind.I16 268
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16649979327439178909;
-                          Value.Integer IntegerKind.I16 853;
-                          Value.Integer IntegerKind.I16 276
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 12405201291620119593;
-                          Value.Integer IntegerKind.I16 880;
-                          Value.Integer IntegerKind.I16 284
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 9242595204427927429;
-                          Value.Integer IntegerKind.I16 907;
-                          Value.Integer IntegerKind.I16 292
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 13772540099066387757;
-                          Value.Integer IntegerKind.I16 933;
-                          Value.Integer IntegerKind.I16 300
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 10261342003245940623;
-                          Value.Integer IntegerKind.I16 960;
-                          Value.Integer IntegerKind.I16 308
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 15290591125556738113;
-                          Value.Integer IntegerKind.I16 986;
-                          Value.Integer IntegerKind.I16 316
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 11392378155556871081;
-                          Value.Integer IntegerKind.I16 1013;
-                          Value.Integer IntegerKind.I16 324
-                        ];
-                      Value.Tuple
-                        [
-                          Value.Integer IntegerKind.U64 16975966327722178521;
-                          Value.Integer IntegerKind.I16 1039;
-                          Value.Integer IntegerKind.I16 332
-                        ]
-                    ]
-                |)
-              |))).
+        Definition value_CACHED_POW10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16580792590934885855;
+                        Value.Integer IntegerKind.I16 (-1087);
+                        Value.Integer IntegerKind.I16 (-308)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12353653155963782858;
+                        Value.Integer IntegerKind.I16 (-1060);
+                        Value.Integer IntegerKind.I16 (-300)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18408377700990114895;
+                        Value.Integer IntegerKind.I16 (-1034);
+                        Value.Integer IntegerKind.I16 (-292)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13715310171984221708;
+                        Value.Integer IntegerKind.I16 (-1007);
+                        Value.Integer IntegerKind.I16 (-284)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10218702384817765436;
+                        Value.Integer IntegerKind.I16 (-980);
+                        Value.Integer IntegerKind.I16 (-276)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15227053142812498563;
+                        Value.Integer IntegerKind.I16 (-954);
+                        Value.Integer IntegerKind.I16 (-268)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11345038669416679861;
+                        Value.Integer IntegerKind.I16 (-927);
+                        Value.Integer IntegerKind.I16 (-260)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16905424996341287883;
+                        Value.Integer IntegerKind.I16 (-901);
+                        Value.Integer IntegerKind.I16 (-252)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12595523146049147757;
+                        Value.Integer IntegerKind.I16 (-874);
+                        Value.Integer IntegerKind.I16 (-244)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9384396036005875287;
+                        Value.Integer IntegerKind.I16 (-847);
+                        Value.Integer IntegerKind.I16 (-236)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13983839803942852151;
+                        Value.Integer IntegerKind.I16 (-821);
+                        Value.Integer IntegerKind.I16 (-228)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10418772551374772303;
+                        Value.Integer IntegerKind.I16 (-794);
+                        Value.Integer IntegerKind.I16 (-220)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15525180923007089351;
+                        Value.Integer IntegerKind.I16 (-768);
+                        Value.Integer IntegerKind.I16 (-212)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11567161174868858868;
+                        Value.Integer IntegerKind.I16 (-741);
+                        Value.Integer IntegerKind.I16 (-204)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17236413322193710309;
+                        Value.Integer IntegerKind.I16 (-715);
+                        Value.Integer IntegerKind.I16 (-196)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12842128665889583758;
+                        Value.Integer IntegerKind.I16 (-688);
+                        Value.Integer IntegerKind.I16 (-188)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9568131466127621947;
+                        Value.Integer IntegerKind.I16 (-661);
+                        Value.Integer IntegerKind.I16 (-180)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14257626930069360058;
+                        Value.Integer IntegerKind.I16 (-635);
+                        Value.Integer IntegerKind.I16 (-172)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10622759856335341974;
+                        Value.Integer IntegerKind.I16 (-608);
+                        Value.Integer IntegerKind.I16 (-164)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15829145694278690180;
+                        Value.Integer IntegerKind.I16 (-582);
+                        Value.Integer IntegerKind.I16 (-156)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11793632577567316726;
+                        Value.Integer IntegerKind.I16 (-555);
+                        Value.Integer IntegerKind.I16 (-148)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17573882009934360870;
+                        Value.Integer IntegerKind.I16 (-529);
+                        Value.Integer IntegerKind.I16 (-140)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13093562431584567480;
+                        Value.Integer IntegerKind.I16 (-502);
+                        Value.Integer IntegerKind.I16 (-132)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9755464219737475723;
+                        Value.Integer IntegerKind.I16 (-475);
+                        Value.Integer IntegerKind.I16 (-124)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14536774485912137811;
+                        Value.Integer IntegerKind.I16 (-449);
+                        Value.Integer IntegerKind.I16 (-116)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10830740992659433045;
+                        Value.Integer IntegerKind.I16 (-422);
+                        Value.Integer IntegerKind.I16 (-108)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16139061738043178685;
+                        Value.Integer IntegerKind.I16 (-396);
+                        Value.Integer IntegerKind.I16 (-100)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12024538023802026127;
+                        Value.Integer IntegerKind.I16 (-369);
+                        Value.Integer IntegerKind.I16 (-92)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17917957937422433684;
+                        Value.Integer IntegerKind.I16 (-343);
+                        Value.Integer IntegerKind.I16 (-84)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13349918974505688015;
+                        Value.Integer IntegerKind.I16 (-316);
+                        Value.Integer IntegerKind.I16 (-76)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9946464728195732843;
+                        Value.Integer IntegerKind.I16 (-289);
+                        Value.Integer IntegerKind.I16 (-68)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14821387422376473014;
+                        Value.Integer IntegerKind.I16 (-263);
+                        Value.Integer IntegerKind.I16 (-60)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11042794154864902060;
+                        Value.Integer IntegerKind.I16 (-236);
+                        Value.Integer IntegerKind.I16 (-52)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16455045573212060422;
+                        Value.Integer IntegerKind.I16 (-210);
+                        Value.Integer IntegerKind.I16 (-44)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12259964326927110867;
+                        Value.Integer IntegerKind.I16 (-183);
+                        Value.Integer IntegerKind.I16 (-36)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18268770466636286478;
+                        Value.Integer IntegerKind.I16 (-157);
+                        Value.Integer IntegerKind.I16 (-28)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13611294676837538539;
+                        Value.Integer IntegerKind.I16 (-130);
+                        Value.Integer IntegerKind.I16 (-20)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10141204801825835212;
+                        Value.Integer IntegerKind.I16 (-103);
+                        Value.Integer IntegerKind.I16 (-12)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15111572745182864684;
+                        Value.Integer IntegerKind.I16 (-77);
+                        Value.Integer IntegerKind.I16 (-4)
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11258999068426240000;
+                        Value.Integer IntegerKind.I16 (-50);
+                        Value.Integer IntegerKind.I16 4
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16777216000000000000;
+                        Value.Integer IntegerKind.I16 (-24);
+                        Value.Integer IntegerKind.I16 12
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12500000000000000000;
+                        Value.Integer IntegerKind.I16 3;
+                        Value.Integer IntegerKind.I16 20
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9313225746154785156;
+                        Value.Integer IntegerKind.I16 30;
+                        Value.Integer IntegerKind.I16 28
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13877787807814456755;
+                        Value.Integer IntegerKind.I16 56;
+                        Value.Integer IntegerKind.I16 36
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10339757656912845936;
+                        Value.Integer IntegerKind.I16 83;
+                        Value.Integer IntegerKind.I16 44
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15407439555097886824;
+                        Value.Integer IntegerKind.I16 109;
+                        Value.Integer IntegerKind.I16 52
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11479437019748901445;
+                        Value.Integer IntegerKind.I16 136;
+                        Value.Integer IntegerKind.I16 60
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17105694144590052135;
+                        Value.Integer IntegerKind.I16 162;
+                        Value.Integer IntegerKind.I16 68
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12744735289059618216;
+                        Value.Integer IntegerKind.I16 189;
+                        Value.Integer IntegerKind.I16 76
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9495567745759798747;
+                        Value.Integer IntegerKind.I16 216;
+                        Value.Integer IntegerKind.I16 84
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14149498560666738074;
+                        Value.Integer IntegerKind.I16 242;
+                        Value.Integer IntegerKind.I16 92
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10542197943230523224;
+                        Value.Integer IntegerKind.I16 269;
+                        Value.Integer IntegerKind.I16 100
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15709099088952724970;
+                        Value.Integer IntegerKind.I16 295;
+                        Value.Integer IntegerKind.I16 108
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11704190886730495818;
+                        Value.Integer IntegerKind.I16 322;
+                        Value.Integer IntegerKind.I16 116
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17440603504673385349;
+                        Value.Integer IntegerKind.I16 348;
+                        Value.Integer IntegerKind.I16 124
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12994262207056124023;
+                        Value.Integer IntegerKind.I16 375;
+                        Value.Integer IntegerKind.I16 132
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9681479787123295682;
+                        Value.Integer IntegerKind.I16 402;
+                        Value.Integer IntegerKind.I16 140
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14426529090290212157;
+                        Value.Integer IntegerKind.I16 428;
+                        Value.Integer IntegerKind.I16 148
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10748601772107342003;
+                        Value.Integer IntegerKind.I16 455;
+                        Value.Integer IntegerKind.I16 156
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16016664761464807395;
+                        Value.Integer IntegerKind.I16 481;
+                        Value.Integer IntegerKind.I16 164
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11933345169920330789;
+                        Value.Integer IntegerKind.I16 508;
+                        Value.Integer IntegerKind.I16 172
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17782069995880619868;
+                        Value.Integer IntegerKind.I16 534;
+                        Value.Integer IntegerKind.I16 180
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13248674568444952270;
+                        Value.Integer IntegerKind.I16 561;
+                        Value.Integer IntegerKind.I16 188
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9871031767461413346;
+                        Value.Integer IntegerKind.I16 588;
+                        Value.Integer IntegerKind.I16 196
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14708983551653345445;
+                        Value.Integer IntegerKind.I16 614;
+                        Value.Integer IntegerKind.I16 204
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10959046745042015199;
+                        Value.Integer IntegerKind.I16 641;
+                        Value.Integer IntegerKind.I16 212
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16330252207878254650;
+                        Value.Integer IntegerKind.I16 667;
+                        Value.Integer IntegerKind.I16 220
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12166986024289022870;
+                        Value.Integer IntegerKind.I16 694;
+                        Value.Integer IntegerKind.I16 228
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18130221999122236476;
+                        Value.Integer IntegerKind.I16 720;
+                        Value.Integer IntegerKind.I16 236
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13508068024458167312;
+                        Value.Integer IntegerKind.I16 747;
+                        Value.Integer IntegerKind.I16 244
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10064294952495520794;
+                        Value.Integer IntegerKind.I16 774;
+                        Value.Integer IntegerKind.I16 252
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14996968138956309548;
+                        Value.Integer IntegerKind.I16 800;
+                        Value.Integer IntegerKind.I16 260
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11173611982879273257;
+                        Value.Integer IntegerKind.I16 827;
+                        Value.Integer IntegerKind.I16 268
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16649979327439178909;
+                        Value.Integer IntegerKind.I16 853;
+                        Value.Integer IntegerKind.I16 276
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12405201291620119593;
+                        Value.Integer IntegerKind.I16 880;
+                        Value.Integer IntegerKind.I16 284
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9242595204427927429;
+                        Value.Integer IntegerKind.I16 907;
+                        Value.Integer IntegerKind.I16 292
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13772540099066387757;
+                        Value.Integer IntegerKind.I16 933;
+                        Value.Integer IntegerKind.I16 300
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10261342003245940623;
+                        Value.Integer IntegerKind.I16 960;
+                        Value.Integer IntegerKind.I16 308
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15290591125556738113;
+                        Value.Integer IntegerKind.I16 986;
+                        Value.Integer IntegerKind.I16 316
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11392378155556871081;
+                        Value.Integer IntegerKind.I16 1013;
+                        Value.Integer IntegerKind.I16 324
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16975966327722178521;
+                        Value.Integer IntegerKind.I16 1039;
+                        Value.Integer IntegerKind.I16 332
+                      ]
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_CACHED_POW10 :
-          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10") = value_CACHED_POW10.
-        Global Hint Rewrite Constant_value_CACHED_POW10 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_CACHED_POW10 :
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::CACHED_POW10" value_CACHED_POW10.
+        Admitted.
+        Global Typeclasses Opaque value_CACHED_POW10.
         
-        Definition value_CACHED_POW10_FIRST_E : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-1087) |))).
+        Definition value_CACHED_POW10_FIRST_E
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-1087) |))).
         
-        Axiom Constant_value_CACHED_POW10_FIRST_E :
-          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E") =
+        Global Instance Instance_IsConstant_value_CACHED_POW10_FIRST_E :
+          M.IsFunction.C
+            "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
             value_CACHED_POW10_FIRST_E.
-        Global Hint Rewrite Constant_value_CACHED_POW10_FIRST_E : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_CACHED_POW10_FIRST_E.
         
-        Definition value_CACHED_POW10_LAST_E : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 1039 |))).
+        Definition value_CACHED_POW10_LAST_E
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 1039 |))).
         
-        Axiom Constant_value_CACHED_POW10_LAST_E :
-          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E") =
+        Global Instance Instance_IsConstant_value_CACHED_POW10_LAST_E :
+          M.IsFunction.C
+            "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E"
             value_CACHED_POW10_LAST_E.
-        Global Hint Rewrite Constant_value_CACHED_POW10_LAST_E : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_CACHED_POW10_LAST_E.
         
         (*
         pub fn cached_power(alpha: i16, gamma: i16) -> (i16, Fp) {
@@ -559,7 +573,10 @@ Module num.
                     M.cast
                       (Ty.path "i32")
                       (M.read (|
-                        M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
+                        get_constant (|
+                          "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E",
+                          Ty.path "i16"
+                        |)
                       |))
                   |) in
                 let~ range : Ty.path "i32" :=
@@ -583,7 +600,19 @@ Module num.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.read (|
-                                  M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10"
+                                  get_constant (|
+                                    "core::num::flt2dec::strategy::grisu::CACHED_POW10",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 81 ]
+                                          [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ]
+                                          ]
+                                      ]
+                                  |)
                                 |)
                               |)
                             |)
@@ -598,10 +627,16 @@ Module num.
                       (Ty.path "i32")
                       (BinOp.Wrap.sub (|
                         M.read (|
-                          M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E"
+                          get_constant (|
+                            "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E",
+                            Ty.path "i16"
+                          |)
                         |),
                         M.read (|
-                          M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
+                          get_constant (|
+                            "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E",
+                            Ty.path "i16"
+                          |)
                         |)
                       |))
                   |) in
@@ -623,7 +658,18 @@ Module num.
                   M.SubPointer.get_array_field (|
                     M.deref (|
                       M.read (|
-                        M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10"
+                        get_constant (|
+                          "core::num::flt2dec::strategy::grisu::CACHED_POW10",
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 81 ]
+                                [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ]
+                            ]
+                        |)
                       |)
                     |),
                     M.cast (Ty.path "usize") (M.read (| idx |))
@@ -689,9 +735,8 @@ Module num.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "assertion failed: alpha <= e && e <= gamma"
+                                                    mk_str (|
+                                                      "assertion failed: alpha <= e && e <= gamma"
                                                     |)
                                                   ]
                                                 |)
@@ -720,7 +765,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_cached_power :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
         Admitted.
         Global Typeclasses Opaque cached_power.
         
@@ -802,7 +847,7 @@ Module num.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: x > 0" |) ]
+                                          [ mk_str (| "assertion failed: x > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -825,8 +870,10 @@ Module num.
                               BinOp.lt (|
                                 M.read (| x |),
                                 M.read (|
-                                  M.get_constant
-                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
+                                  get_constant (|
+                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -844,8 +891,10 @@ Module num.
                                       BinOp.lt (|
                                         M.read (| x |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
+                                          get_constant (|
+                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2",
+                                            Ty.path "u32"
+                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -866,8 +915,10 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -890,8 +941,10 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 1;
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -911,8 +964,10 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -926,8 +981,10 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 2;
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             ]
                                         |)));
@@ -938,8 +995,10 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 3;
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -961,8 +1020,10 @@ Module num.
                                       BinOp.lt (|
                                         M.read (| x |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
+                                          get_constant (|
+                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6",
+                                            Ty.path "u32"
+                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -983,8 +1044,10 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -998,8 +1061,10 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 4;
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             ]
                                         |)));
@@ -1010,8 +1075,10 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 5;
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -1031,8 +1098,10 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -1053,8 +1122,10 @@ Module num.
                                                       BinOp.lt (|
                                                         M.read (| x |),
                                                         M.read (|
-                                                          M.get_constant
-                                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
+                                                          get_constant (|
+                                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7",
+                                                            Ty.path "u32"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)) in
@@ -1068,8 +1139,10 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 6;
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
+                                                        get_constant (|
+                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     ]
                                                 |)));
@@ -1080,8 +1153,10 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 7;
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
+                                                        get_constant (|
+                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     ]
                                                 |)))
@@ -1101,8 +1176,10 @@ Module num.
                                                       BinOp.lt (|
                                                         M.read (| x |),
                                                         M.read (|
-                                                          M.get_constant
-                                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
+                                                          get_constant (|
+                                                            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9",
+                                                            Ty.path "u32"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)) in
@@ -1116,8 +1193,10 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 8;
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
+                                                        get_constant (|
+                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     ]
                                                 |)));
@@ -1128,8 +1207,10 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 9;
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
+                                                        get_constant (|
+                                                          "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     ]
                                                 |)))
@@ -1146,85 +1227,102 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_max_pow10_no_more_than :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than"
             max_pow10_no_more_than.
         Admitted.
         Global Typeclasses Opaque max_pow10_no_more_than.
         
         Module max_pow10_no_more_than.
-          Definition value_X9 : Value.t :=
-            M.run_constant
-              ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+          Definition value_X9 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
           
-          Axiom Constant_value_X9 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9") =
+          Global Instance Instance_IsConstant_value_X9 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
               value_X9.
-          Global Hint Rewrite Constant_value_X9 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X9.
           
-          Definition value_X8 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000000 |))).
+          Definition value_X8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000000 |))).
           
-          Axiom Constant_value_X8 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8") =
+          Global Instance Instance_IsConstant_value_X8 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
               value_X8.
-          Global Hint Rewrite Constant_value_X8 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X8.
           
-          Definition value_X7 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000000 |))).
+          Definition value_X7 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000000 |))).
           
-          Axiom Constant_value_X7 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7") =
+          Global Instance Instance_IsConstant_value_X7 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
               value_X7.
-          Global Hint Rewrite Constant_value_X7 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X7.
           
-          Definition value_X6 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+          Definition value_X6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
           
-          Axiom Constant_value_X6 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6") =
+          Global Instance Instance_IsConstant_value_X6 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
               value_X6.
-          Global Hint Rewrite Constant_value_X6 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X6.
           
-          Definition value_X5 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000 |))).
+          Definition value_X5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000 |))).
           
-          Axiom Constant_value_X5 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5") =
+          Global Instance Instance_IsConstant_value_X5 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
               value_X5.
-          Global Hint Rewrite Constant_value_X5 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X5.
           
-          Definition value_X4 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000 |))).
+          Definition value_X4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000 |))).
           
-          Axiom Constant_value_X4 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4") =
+          Global Instance Instance_IsConstant_value_X4 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
               value_X4.
-          Global Hint Rewrite Constant_value_X4 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X4.
           
-          Definition value_X3 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+          Definition value_X3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
           
-          Axiom Constant_value_X3 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3") =
+          Global Instance Instance_IsConstant_value_X3 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
               value_X3.
-          Global Hint Rewrite Constant_value_X3 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X3.
           
-          Definition value_X2 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100 |))).
+          Definition value_X2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100 |))).
           
-          Axiom Constant_value_X2 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2") =
+          Global Instance Instance_IsConstant_value_X2 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
               value_X2.
-          Global Hint Rewrite Constant_value_X2 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X2.
           
-          Definition value_X1 : Value.t :=
-            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+          Definition value_X1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
           
-          Axiom Constant_value_X1 :
-            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1") =
+          Global Instance Instance_IsConstant_value_X1 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
               value_X1.
-          Global Hint Rewrite Constant_value_X1 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_X1.
         End max_pow10_no_more_than.
         
         (*
@@ -1557,7 +1655,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
+                                      [ mk_str (| "assertion failed: d.mant > 0" |) ]
                                     |)
                                   |)
                                 |)));
@@ -1597,7 +1695,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
+                                      [ mk_str (| "assertion failed: d.minus > 0" |) ]
                                     |)
                                   |)
                                 |)));
@@ -1637,7 +1735,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
+                                      [ mk_str (| "assertion failed: d.plus > 0" |) ]
                                     |)
                                   |)
                                 |)));
@@ -1715,9 +1813,8 @@ Module num.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: d.mant.checked_add(d.plus).is_some()"
+                                        mk_str (|
+                                          "assertion failed: d.mant.checked_add(d.plus).is_some()"
                                         |)
                                       ]
                                     |)
@@ -1797,9 +1894,8 @@ Module num.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: d.mant.checked_sub(d.minus).is_some()"
+                                        mk_str (|
+                                          "assertion failed: d.mant.checked_sub(d.minus).is_some()"
                                         |)
                                       ]
                                     |)
@@ -1844,7 +1940,10 @@ Module num.
                                             ]
                                           |),
                                           M.read (|
-                                            M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS"
+                                            get_constant (|
+                                              "core::num::flt2dec::MAX_SIG_DIGITS",
+                                              Ty.path "usize"
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -1859,11 +1958,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                                        |)
+                                      [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |)
                                       ]
                                     |)
                                   |)
@@ -1916,11 +2011,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: d.mant + d.plus < (1 << 61)"
-                                        |)
+                                      [ mk_str (| "assertion failed: d.mant + d.plus < (1 << 61)" |)
                                       ]
                                     |)
                                   |)
@@ -2091,7 +2182,10 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA"
+                                    get_constant (|
+                                      "core::num::flt2dec::strategy::grisu::ALPHA",
+                                      Ty.path "i16"
+                                    |)
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2106,7 +2200,10 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA"
+                                    get_constant (|
+                                      "core::num::flt2dec::strategy::grisu::GAMMA",
+                                      Ty.path "i16"
+                                    |)
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2641,9 +2738,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "assertion failed: q < 10"
+                                                                        mk_str (|
+                                                                          "assertion failed: q < 10"
                                                                         |)
                                                                       ]
                                                                     |)
@@ -3253,9 +3349,8 @@ Module num.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "assertion failed: q < 10"
+                                                                              mk_str (|
+                                                                                "assertion failed: q < 10"
                                                                               |)
                                                                             ]
                                                                           |)
@@ -3546,7 +3641,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_shortest_opt :
-          M.IsFunction.Trait
+          M.IsFunction.C
             "core::num::flt2dec::strategy::grisu::format_shortest_opt"
             format_shortest_opt.
         Admitted.
@@ -3701,11 +3796,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: !buf.is_empty()"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -3869,9 +3960,8 @@ Module num.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: *last > b'0'"
+                                                                mk_str (|
+                                                                  "assertion failed: *last > b'0'"
                                                                 |)
                                                               ]
                                                             |)
@@ -4055,7 +4145,7 @@ Module num.
             end.
           
           Global Instance Instance_IsFunction_round_and_weed :
-            M.IsFunction.Trait
+            M.IsFunction.C
               "core::num::flt2dec::strategy::grisu::format_shortest_opt::round_and_weed"
               round_and_weed.
           Admitted.
@@ -4185,7 +4275,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_shortest :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
         Admitted.
         Global Typeclasses Opaque format_shortest.
         
@@ -4523,7 +4613,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
+                                      [ mk_str (| "assertion failed: d.mant > 0" |) ]
                                     |)
                                   |)
                                 |)));
@@ -4566,11 +4656,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: d.mant < (1 << 61)"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: d.mant < (1 << 61)" |) ]
                                     |)
                                   |)
                                 |)));
@@ -4625,11 +4711,7 @@ Module num.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: !buf.is_empty()"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -4689,7 +4771,10 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA"
+                                    get_constant (|
+                                      "core::num::flt2dec::strategy::grisu::ALPHA",
+                                      Ty.path "i16"
+                                    |)
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -4704,7 +4789,10 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA"
+                                    get_constant (|
+                                      "core::num::flt2dec::strategy::grisu::GAMMA",
+                                      Ty.path "i16"
+                                    |)
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -4844,8 +4932,14 @@ Module num.
                                                         M.read (| vint |),
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.get_constant
+                                                            get_constant (|
                                                               "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9",
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 10
+                                                                ]
+                                                                [ Ty.path "u32" ]
+                                                            |),
                                                             BinOp.Wrap.sub (|
                                                               M.read (| requested_digits |),
                                                               Value.Integer IntegerKind.Usize 1
@@ -5133,9 +5227,8 @@ Module num.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: len > 0"
+                                                                  mk_str (|
+                                                                    "assertion failed: len > 0"
                                                                   |)
                                                                 ]
                                                               |)
@@ -5223,9 +5316,8 @@ Module num.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "assertion failed: q < 10"
+                                                                        mk_str (|
+                                                                          "assertion failed: q < 10"
                                                                         |)
                                                                       ]
                                                                     |)
@@ -5922,9 +6014,8 @@ Module num.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "assertion failed: q < 10"
+                                                                                mk_str (|
+                                                                                  "assertion failed: q < 10"
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -6105,37 +6196,39 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_exact_opt :
-          M.IsFunction.Trait
-            "core::num::flt2dec::strategy::grisu::format_exact_opt"
-            format_exact_opt.
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::format_exact_opt" format_exact_opt.
         Admitted.
         Global Typeclasses Opaque format_exact_opt.
         
         Module format_exact_opt.
-          Definition value_POW10_UP_TO_9 : Value.t :=
-            M.run_constant
-              ltac:(M.monadic
-                (M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 1;
-                      Value.Integer IntegerKind.U32 10;
-                      Value.Integer IntegerKind.U32 100;
-                      Value.Integer IntegerKind.U32 1000;
-                      Value.Integer IntegerKind.U32 10000;
-                      Value.Integer IntegerKind.U32 100000;
-                      Value.Integer IntegerKind.U32 1000000;
-                      Value.Integer IntegerKind.U32 10000000;
-                      Value.Integer IntegerKind.U32 100000000;
-                      Value.Integer IntegerKind.U32 1000000000
-                    ]
-                |))).
+          Definition value_POW10_UP_TO_9
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
+            ltac:(M.monadic
+              (M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 1;
+                    Value.Integer IntegerKind.U32 10;
+                    Value.Integer IntegerKind.U32 100;
+                    Value.Integer IntegerKind.U32 1000;
+                    Value.Integer IntegerKind.U32 10000;
+                    Value.Integer IntegerKind.U32 100000;
+                    Value.Integer IntegerKind.U32 1000000;
+                    Value.Integer IntegerKind.U32 10000000;
+                    Value.Integer IntegerKind.U32 100000000;
+                    Value.Integer IntegerKind.U32 1000000000
+                  ]
+              |))).
           
-          Axiom Constant_value_POW10_UP_TO_9 :
-            (M.get_constant
-                "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9") =
+          Global Instance Instance_IsConstant_value_POW10_UP_TO_9 :
+            M.IsFunction.C
+              "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9"
               value_POW10_UP_TO_9.
-          Global Hint Rewrite Constant_value_POW10_UP_TO_9 : constant_rewrites.
+          Admitted.
+          Global Typeclasses Opaque value_POW10_UP_TO_9.
           
           (*
               unsafe fn possibly_round(
@@ -6308,9 +6401,8 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "assertion failed: remainder < ten_kappa"
+                                                  mk_str (|
+                                                    "assertion failed: remainder < ten_kappa"
                                                   |)
                                                 ]
                                               |)
@@ -6927,7 +7019,7 @@ Module num.
             end.
           
           Global Instance Instance_IsFunction_possibly_round :
-            M.IsFunction.Trait
+            M.IsFunction.C
               "core::num::flt2dec::strategy::grisu::format_exact_opt::possibly_round"
               possibly_round.
           Admitted.
@@ -7061,7 +7153,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_exact :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
+          M.IsFunction.C "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
         Admitted.
         Global Typeclasses Opaque format_exact.
       End grisu.

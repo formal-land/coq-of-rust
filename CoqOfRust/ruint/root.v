@@ -125,11 +125,7 @@ Module root.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "degree must be greater than zero"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "degree must be greater than zero" |) ]
                                             |)
                                           |)
                                         |)
@@ -166,7 +162,14 @@ Module root.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, self |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -174,7 +177,17 @@ Module root.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -192,7 +205,13 @@ Module root.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.read (| degree |),
-                                  M.read (| M.get_constant "ruint::BITS'1" |)
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "BITS",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -335,7 +354,13 @@ Module root.
                               |),
                               [ M.read (| result |); M.read (| deg_m1 |) ]
                             |);
-                            M.read (| M.get_constant "ruint::ZERO" |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "ZERO",
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                              |)
+                            |);
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
@@ -566,7 +591,7 @@ Module root.
     
     Global Instance AssociatedFunction_root :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "root" (root BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "root" (root BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque root.
   End Impl_ruint_Uint_BITS_LIMBS.

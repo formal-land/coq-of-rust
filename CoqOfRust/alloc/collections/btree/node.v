@@ -4,80 +4,100 @@ Require Import CoqOfRust.CoqOfRust.
 Module collections.
   Module btree.
     Module node.
-      Definition value_B : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 6 |))).
+      Definition value_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 6 |))).
       
-      Axiom Constant_value_B : (M.get_constant "alloc::collections::btree::node::B") = value_B.
-      Global Hint Rewrite Constant_value_B : constant_rewrites.
+      Global Instance Instance_IsConstant_value_B :
+        M.IsFunction.C "alloc::collections::btree::node::B" value_B.
+      Admitted.
+      Global Typeclasses Opaque value_B.
       
-      Definition value_CAPACITY : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                BinOp.Wrap.mul (|
-                  Value.Integer IntegerKind.Usize 2,
-                  M.read (| M.get_constant "alloc::collections::btree::node::B" |)
-                |),
-                Value.Integer IntegerKind.Usize 1
-              |)
-            |))).
+      Definition value_CAPACITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.mul (|
+                Value.Integer IntegerKind.Usize 2,
+                M.read (|
+                  get_constant (| "alloc::collections::btree::node::B", Ty.path "usize" |)
+                |)
+              |),
+              Value.Integer IntegerKind.Usize 1
+            |)
+          |))).
       
-      Axiom Constant_value_CAPACITY :
-        (M.get_constant "alloc::collections::btree::node::CAPACITY") = value_CAPACITY.
-      Global Hint Rewrite Constant_value_CAPACITY : constant_rewrites.
+      Global Instance Instance_IsConstant_value_CAPACITY :
+        M.IsFunction.C "alloc::collections::btree::node::CAPACITY" value_CAPACITY.
+      Admitted.
+      Global Typeclasses Opaque value_CAPACITY.
       
-      Definition value_MIN_LEN_AFTER_SPLIT : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
-                Value.Integer IntegerKind.Usize 1
-              |)
-            |))).
+      Definition value_MIN_LEN_AFTER_SPLIT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              M.read (| get_constant (| "alloc::collections::btree::node::B", Ty.path "usize" |) |),
+              Value.Integer IntegerKind.Usize 1
+            |)
+          |))).
       
-      Axiom Constant_value_MIN_LEN_AFTER_SPLIT :
-        (M.get_constant "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT") =
+      Global Instance Instance_IsConstant_value_MIN_LEN_AFTER_SPLIT :
+        M.IsFunction.C
+          "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT"
           value_MIN_LEN_AFTER_SPLIT.
-      Global Hint Rewrite Constant_value_MIN_LEN_AFTER_SPLIT : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_MIN_LEN_AFTER_SPLIT.
       
-      Definition value_KV_IDX_CENTER : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
-                Value.Integer IntegerKind.Usize 1
-              |)
-            |))).
+      Definition value_KV_IDX_CENTER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              M.read (| get_constant (| "alloc::collections::btree::node::B", Ty.path "usize" |) |),
+              Value.Integer IntegerKind.Usize 1
+            |)
+          |))).
       
-      Axiom Constant_value_KV_IDX_CENTER :
-        (M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER") = value_KV_IDX_CENTER.
-      Global Hint Rewrite Constant_value_KV_IDX_CENTER : constant_rewrites.
+      Global Instance Instance_IsConstant_value_KV_IDX_CENTER :
+        M.IsFunction.C "alloc::collections::btree::node::KV_IDX_CENTER" value_KV_IDX_CENTER.
+      Admitted.
+      Global Typeclasses Opaque value_KV_IDX_CENTER.
       
-      Definition value_EDGE_IDX_LEFT_OF_CENTER : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
-                Value.Integer IntegerKind.Usize 1
-              |)
-            |))).
+      Definition value_EDGE_IDX_LEFT_OF_CENTER
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              M.read (| get_constant (| "alloc::collections::btree::node::B", Ty.path "usize" |) |),
+              Value.Integer IntegerKind.Usize 1
+            |)
+          |))).
       
-      Axiom Constant_value_EDGE_IDX_LEFT_OF_CENTER :
-        (M.get_constant "alloc::collections::btree::node::EDGE_IDX_LEFT_OF_CENTER") =
+      Global Instance Instance_IsConstant_value_EDGE_IDX_LEFT_OF_CENTER :
+        M.IsFunction.C
+          "alloc::collections::btree::node::EDGE_IDX_LEFT_OF_CENTER"
           value_EDGE_IDX_LEFT_OF_CENTER.
-      Global Hint Rewrite Constant_value_EDGE_IDX_LEFT_OF_CENTER : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_EDGE_IDX_LEFT_OF_CENTER.
       
-      Definition value_EDGE_IDX_RIGHT_OF_CENTER : Value.t :=
-        M.run_constant ltac:(M.monadic (M.get_constant "alloc::collections::btree::node::B")).
+      Definition value_EDGE_IDX_RIGHT_OF_CENTER
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (get_constant (| "alloc::collections::btree::node::B", Ty.path "usize" |))).
       
-      Axiom Constant_value_EDGE_IDX_RIGHT_OF_CENTER :
-        (M.get_constant "alloc::collections::btree::node::EDGE_IDX_RIGHT_OF_CENTER") =
+      Global Instance Instance_IsConstant_value_EDGE_IDX_RIGHT_OF_CENTER :
+        M.IsFunction.C
+          "alloc::collections::btree::node::EDGE_IDX_RIGHT_OF_CENTER"
           value_EDGE_IDX_RIGHT_OF_CENTER.
-      Global Hint Rewrite Constant_value_EDGE_IDX_RIGHT_OF_CENTER : constant_rewrites.
+      Admitted.
+      Global Typeclasses Opaque value_EDGE_IDX_RIGHT_OF_CENTER.
       
       (* StructRecord
         {
@@ -109,8 +129,7 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant
-                        "alloc::collections::btree::node::LeafNode::keys_discriminant")
+                      (mk_str (| "alloc_collections_btree_node_LeafNode_keys_discriminant" |))
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]);
               ("vals",
@@ -118,8 +137,7 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant
-                        "alloc::collections::btree::node::LeafNode::vals_discriminant")
+                      (mk_str (| "alloc_collections_btree_node_LeafNode_vals_discriminant" |))
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ])
             ];
@@ -218,7 +236,7 @@ Module collections.
         
         Global Instance AssociatedFunction_init :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "init" (init K V).
+          M.IsAssociatedFunction.C (Self K V) "init" (init K V).
         Admitted.
         Global Typeclasses Opaque init.
         
@@ -367,7 +385,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new" (new K V).
+          M.IsAssociatedFunction.C (Self K V) "new" (new K V).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_alloc_collections_btree_node_LeafNode_K_V.
@@ -385,8 +403,7 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant
-                        "alloc::collections::btree::node::InternalNode::edges_discriminant")
+                      (mk_str (| "alloc_collections_btree_node_InternalNode_edges_discriminant" |))
                   ]
                   [
                     Ty.apply
@@ -574,7 +591,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new" (new K V).
+          M.IsAssociatedFunction.C (Self K V) "new" (new K V).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_alloc_collections_btree_node_InternalNode_K_V.
@@ -853,7 +870,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new_leaf :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new_leaf" (new_leaf K V).
+          M.IsAssociatedFunction.C (Self K V) "new_leaf" (new_leaf K V).
         Admitted.
         Global Typeclasses Opaque new_leaf.
         
@@ -948,7 +965,7 @@ Module collections.
         
         Global Instance AssociatedFunction_from_new_leaf :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "from_new_leaf" (from_new_leaf K V).
+          M.IsAssociatedFunction.C (Self K V) "from_new_leaf" (from_new_leaf K V).
         Admitted.
         Global Typeclasses Opaque from_new_leaf.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_Leaf.
@@ -1138,7 +1155,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new_internal :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new_internal" (new_internal K V).
+          M.IsAssociatedFunction.C (Self K V) "new_internal" (new_internal K V).
         Admitted.
         Global Typeclasses Opaque new_internal.
         
@@ -1204,8 +1221,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: height > 0" |)
-                                          ]
+                                          [ mk_str (| "assertion failed: height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1394,7 +1410,7 @@ Module collections.
         
         Global Instance AssociatedFunction_from_new_internal :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "from_new_internal" (from_new_internal K V).
+          M.IsAssociatedFunction.C (Self K V) "from_new_internal" (from_new_internal K V).
         Admitted.
         Global Typeclasses Opaque from_new_internal.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_Internal.
@@ -1462,8 +1478,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: height > 0" |)
-                                          ]
+                                          [ mk_str (| "assertion failed: height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1520,7 +1535,7 @@ Module collections.
         
         Global Instance AssociatedFunction_from_internal :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "from_internal"
             (from_internal BorrowType K V).
@@ -1579,7 +1594,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_internal_ptr :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "as_internal_ptr"
             (as_internal_ptr BorrowType K V).
@@ -1627,10 +1642,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_type :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V)
-            "forget_type"
-            (forget_type BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "forget_type" (forget_type BorrowType K V).
         Admitted.
         Global Typeclasses Opaque forget_type.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal.
@@ -1728,7 +1740,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_internal_mut :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "as_internal_mut" (as_internal_mut K V).
+          M.IsAssociatedFunction.C (Self K V) "as_internal_mut" (as_internal_mut K V).
         Admitted.
         Global Typeclasses Opaque as_internal_mut.
         (*
@@ -1907,7 +1919,7 @@ Module collections.
         
         Global Instance AssociatedFunction_edge_area_mut :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "edge_area_mut" (edge_area_mut K V).
+          M.IsAssociatedFunction.C (Self K V) "edge_area_mut" (edge_area_mut K V).
         Admitted.
         Global Typeclasses Opaque edge_area_mut.
         (*
@@ -2071,9 +2083,8 @@ Module collections.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "assertion failed: i <= self.len()"
+                                                                    mk_str (|
+                                                                      "assertion failed: i <= self.len()"
                                                                     |)
                                                                   ]
                                                                 |)
@@ -2222,7 +2233,7 @@ Module collections.
         
         Global Instance AssociatedFunction_correct_childrens_parent_links :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "correct_childrens_parent_links"
             (correct_childrens_parent_links K V).
@@ -2319,7 +2330,7 @@ Module collections.
         
         Global Instance AssociatedFunction_correct_all_childrens_parent_links :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "correct_all_childrens_parent_links"
             (correct_all_childrens_parent_links K V).
@@ -2390,11 +2401,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: edge.height == self.height - 1"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: edge.height == self.height - 1" |) ]
                               |)
                             |)
                           |)));
@@ -2452,7 +2459,10 @@ Module collections.
                                   BinOp.lt (|
                                     M.read (| idx |),
                                     M.read (|
-                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                      get_constant (|
+                                        "alloc::collections::btree::node::CAPACITY",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -2464,7 +2474,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
+                                [ mk_str (| "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
                           |)));
@@ -2801,7 +2811,7 @@ Module collections.
         
         Global Instance AssociatedFunction_push :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "push" (push K V).
+          M.IsAssociatedFunction.C (Self K V) "push" (push K V).
         Admitted.
         Global Typeclasses Opaque push.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal.
@@ -2879,7 +2889,7 @@ Module collections.
         
         Global Instance AssociatedFunction_len :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V Type_) "len" (len BorrowType K V Type_).
+          M.IsAssociatedFunction.C (Self BorrowType K V Type_) "len" (len BorrowType K V Type_).
         Admitted.
         Global Typeclasses Opaque len.
         
@@ -2911,7 +2921,7 @@ Module collections.
         
         Global Instance AssociatedFunction_height :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "height"
             (height BorrowType K V Type_).
@@ -2960,7 +2970,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "reborrow"
             (reborrow BorrowType K V Type_).
@@ -3015,7 +3025,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_leaf_ptr :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "as_leaf_ptr"
             (as_leaf_ptr BorrowType K V Type_).
@@ -3055,7 +3065,10 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.get_constant "alloc::collections::btree::node::ascend_discriminant" in
+                  get_constant (|
+                    "alloc::collections::btree::node::ascend_discriminant",
+                    Ty.tuple []
+                  |) in
                 let~ leaf_ptr :
                     Ty.apply
                       (Ty.path "*const")
@@ -3452,7 +3465,7 @@ Module collections.
         
         Global Instance AssociatedFunction_ascend :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "ascend"
             (ascend BorrowType K V Type_).
@@ -3508,7 +3521,7 @@ Module collections.
         
         Global Instance AssociatedFunction_first_edge :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "first_edge"
             (first_edge BorrowType K V Type_).
@@ -3585,7 +3598,7 @@ Module collections.
         
         Global Instance AssociatedFunction_last_edge :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "last_edge"
             (last_edge BorrowType K V Type_).
@@ -3648,7 +3661,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: len > 0" |) ]
+                                [ mk_str (| "assertion failed: len > 0" |) ]
                               |)
                             |)
                           |)));
@@ -3691,7 +3704,7 @@ Module collections.
         
         Global Instance AssociatedFunction_first_kv :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "first_kv"
             (first_kv BorrowType K V Type_).
@@ -3754,7 +3767,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: len > 0" |) ]
+                                [ mk_str (| "assertion failed: len > 0" |) ]
                               |)
                             |)
                           |)));
@@ -3800,7 +3813,7 @@ Module collections.
         
         Global Instance AssociatedFunction_last_kv :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V Type_)
             "last_kv"
             (last_kv BorrowType K V Type_).
@@ -4077,7 +4090,7 @@ Module collections.
         
         Global Instance AssociatedFunction_eq :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V Type_) "eq" (eq BorrowType K V Type_).
+          M.IsAssociatedFunction.C (Self BorrowType K V Type_) "eq" (eq BorrowType K V Type_).
         Admitted.
         Global Typeclasses Opaque eq.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
@@ -4152,7 +4165,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_leaf :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "into_leaf" (into_leaf K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "into_leaf" (into_leaf K V Type_).
         Admitted.
         Global Typeclasses Opaque into_leaf.
         
@@ -4301,7 +4314,7 @@ Module collections.
         
         Global Instance AssociatedFunction_keys :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "keys" (keys K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "keys" (keys K V Type_).
         Admitted.
         Global Typeclasses Opaque keys.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_Type_.
@@ -4605,10 +4618,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocate_and_ascend :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V)
-            "deallocate_and_ascend"
-            (deallocate_and_ascend K V).
+          M.IsAssociatedFunction.C (Self K V) "deallocate_and_ascend" (deallocate_and_ascend K V).
         Admitted.
         Global Typeclasses Opaque deallocate_and_ascend.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -4662,7 +4672,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "reborrow_mut" (reborrow_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "reborrow_mut" (reborrow_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque reborrow_mut.
         
@@ -4743,7 +4753,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_leaf_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "as_leaf_mut" (as_leaf_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "as_leaf_mut" (as_leaf_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque as_leaf_mut.
         
@@ -4829,7 +4839,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_leaf_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "into_leaf_mut" (into_leaf_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "into_leaf_mut" (into_leaf_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque into_leaf_mut.
         
@@ -4875,7 +4885,7 @@ Module collections.
         
         Global Instance AssociatedFunction_dormant :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "dormant" (dormant K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "dormant" (dormant K V Type_).
         Admitted.
         Global Typeclasses Opaque dormant.
         (*
@@ -5017,7 +5027,7 @@ Module collections.
         
         Global Instance AssociatedFunction_key_area_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "key_area_mut" (key_area_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "key_area_mut" (key_area_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque key_area_mut.
         
@@ -5160,7 +5170,7 @@ Module collections.
         
         Global Instance AssociatedFunction_val_area_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "val_area_mut" (val_area_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "val_area_mut" (val_area_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque val_area_mut.
         (*
@@ -5230,7 +5240,7 @@ Module collections.
         
         Global Instance AssociatedFunction_len_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "len_mut" (len_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "len_mut" (len_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque len_mut.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_Type_.
@@ -5284,7 +5294,7 @@ Module collections.
         
         Global Instance AssociatedFunction_awaken :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "awaken" (awaken K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "awaken" (awaken K V Type_).
         Admitted.
         Global Typeclasses Opaque awaken.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_DormantMut_K_V_Type_.
@@ -5377,7 +5387,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_leaf_dying :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "as_leaf_dying" (as_leaf_dying K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "as_leaf_dying" (as_leaf_dying K V Type_).
         Admitted.
         Global Typeclasses Opaque as_leaf_dying.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_Type_.
@@ -5641,7 +5651,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_key_val_mut_at :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V Type_)
             "into_key_val_mut_at"
             (into_key_val_mut_at K V Type_).
@@ -5758,7 +5768,7 @@ Module collections.
         
         Global Instance AssociatedFunction_set_parent_link :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "set_parent_link" (set_parent_link K V).
+          M.IsAssociatedFunction.C (Self K V) "set_parent_link" (set_parent_link K V).
         Admitted.
         Global Typeclasses Opaque set_parent_link.
         (*
@@ -5822,11 +5832,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.height == 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.height == 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -5866,10 +5872,7 @@ Module collections.
         
         Global Instance AssociatedFunction_cast_to_leaf_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V)
-            "cast_to_leaf_unchecked"
-            (cast_to_leaf_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "cast_to_leaf_unchecked" (cast_to_leaf_unchecked K V).
         Admitted.
         Global Typeclasses Opaque cast_to_leaf_unchecked.
         
@@ -5934,11 +5937,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.height > 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -5978,7 +5977,7 @@ Module collections.
         
         Global Instance AssociatedFunction_cast_to_internal_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "cast_to_internal_unchecked"
             (cast_to_internal_unchecked K V).
@@ -6713,9 +6712,8 @@ Module collections.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: empty internal node"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code: empty internal node"
                                                                 |)
                                                               ]
                                                           |)
@@ -6777,7 +6775,7 @@ Module collections.
         
         Global Instance AssociatedFunction_choose_parent_kv :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "choose_parent_kv" (choose_parent_kv K V).
+          M.IsAssociatedFunction.C (Self K V) "choose_parent_kv" (choose_parent_kv K V).
         Admitted.
         Global Typeclasses Opaque choose_parent_kv.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -6899,7 +6897,7 @@ Module collections.
         
         Global Instance AssociatedFunction_clear_parent_link :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "clear_parent_link" (clear_parent_link K V).
+          M.IsAssociatedFunction.C (Self K V) "clear_parent_link" (clear_parent_link K V).
         Admitted.
         Global Typeclasses Opaque clear_parent_link.
         (*
@@ -6971,7 +6969,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new" (new K V).
+          M.IsAssociatedFunction.C (Self K V) "new" (new K V).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -7185,7 +7183,7 @@ Module collections.
         
         Global Instance AssociatedFunction_push_internal_level :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "push_internal_level" (push_internal_level K V).
+          M.IsAssociatedFunction.C (Self K V) "push_internal_level" (push_internal_level K V).
         Admitted.
         Global Typeclasses Opaque push_internal_level.
         
@@ -7252,7 +7250,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: self.height > 0" |) ]
+                                [ mk_str (| "assertion failed: self.height > 0" |) ]
                               |)
                             |)
                           |)));
@@ -7535,7 +7533,7 @@ Module collections.
         
         Global Instance AssociatedFunction_pop_internal_level :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "pop_internal_level" (pop_internal_level K V).
+          M.IsAssociatedFunction.C (Self K V) "pop_internal_level" (pop_internal_level K V).
         Admitted.
         Global Typeclasses Opaque pop_internal_level.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -7590,7 +7588,7 @@ Module collections.
         
         Global Instance AssociatedFunction_borrow_mut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "borrow_mut" (borrow_mut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "borrow_mut" (borrow_mut K V Type_).
         Admitted.
         Global Typeclasses Opaque borrow_mut.
         
@@ -7636,7 +7634,7 @@ Module collections.
         
         Global Instance AssociatedFunction_borrow_valmut :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "borrow_valmut" (borrow_valmut K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "borrow_valmut" (borrow_valmut K V Type_).
         Admitted.
         Global Typeclasses Opaque borrow_valmut.
         
@@ -7682,7 +7680,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_dying :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V Type_) "into_dying" (into_dying K V Type_).
+          M.IsAssociatedFunction.C (Self K V Type_) "into_dying" (into_dying K V Type_).
         Admitted.
         Global Typeclasses Opaque into_dying.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_Type_.
@@ -7784,7 +7782,10 @@ Module collections.
                                   BinOp.lt (|
                                     M.read (| idx |),
                                     M.read (|
-                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                      get_constant (|
+                                        "alloc::collections::btree::node::CAPACITY",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -7796,7 +7797,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
+                                [ mk_str (| "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
                           |)));
@@ -7976,7 +7977,7 @@ Module collections.
         
         Global Instance AssociatedFunction_push_with_handle :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "push_with_handle" (push_with_handle K V).
+          M.IsAssociatedFunction.C (Self K V) "push_with_handle" (push_with_handle K V).
         Admitted.
         Global Typeclasses Opaque push_with_handle.
         
@@ -8065,7 +8066,7 @@ Module collections.
         
         Global Instance AssociatedFunction_push :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "push" (push K V).
+          M.IsAssociatedFunction.C (Self K V) "push" (push K V).
         Admitted.
         Global Typeclasses Opaque push.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf.
@@ -8120,10 +8121,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_type :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V)
-            "forget_type"
-            (forget_type BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "forget_type" (forget_type BorrowType K V).
         Admitted.
         Global Typeclasses Opaque forget_type.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf.
@@ -8279,7 +8277,7 @@ Module collections.
         
         Global Instance AssociatedFunction_force :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "force" (force BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "force" (force BorrowType K V).
         Admitted.
         Global Typeclasses Opaque force.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -8378,7 +8376,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_node :
           forall (Node Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self Node Type_) "into_node" (into_node Node Type_).
+          M.IsAssociatedFunction.C (Self Node Type_) "into_node" (into_node Node Type_).
         Admitted.
         Global Typeclasses Opaque into_node.
         
@@ -8410,7 +8408,7 @@ Module collections.
         
         Global Instance AssociatedFunction_idx :
           forall (Node Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait (Self Node Type_) "idx" (idx Node Type_).
+          M.IsAssociatedFunction.C (Self Node Type_) "idx" (idx Node Type_).
         Admitted.
         Global Typeclasses Opaque idx.
       End Impl_alloc_collections_btree_node_Handle_Node_Type_.
@@ -8498,11 +8496,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: idx < node.len()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: idx < node.len()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -8528,7 +8522,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new_kv :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "new_kv"
             (new_kv BorrowType K V NodeType).
@@ -8599,7 +8593,7 @@ Module collections.
         
         Global Instance AssociatedFunction_left_edge :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "left_edge"
             (left_edge BorrowType K V NodeType).
@@ -8673,7 +8667,7 @@ Module collections.
         
         Global Instance AssociatedFunction_right_edge :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "right_edge"
             (right_edge BorrowType K V NodeType).
@@ -8887,7 +8881,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V NodeType HandleType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType HandleType)
             "reborrow"
             (reborrow BorrowType K V NodeType HandleType).
@@ -8972,7 +8966,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow_mut :
           forall (K V NodeType HandleType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V NodeType HandleType)
             "reborrow_mut"
             (reborrow_mut K V NodeType HandleType).
@@ -9045,7 +9039,7 @@ Module collections.
         
         Global Instance AssociatedFunction_dormant :
           forall (K V NodeType HandleType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V NodeType HandleType)
             "dormant"
             (dormant K V NodeType HandleType).
@@ -9130,7 +9124,7 @@ Module collections.
         
         Global Instance AssociatedFunction_awaken :
           forall (K V NodeType HandleType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V NodeType HandleType)
             "awaken"
             (awaken K V NodeType HandleType).
@@ -9221,11 +9215,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: idx <= node.len()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: idx <= node.len()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -9251,7 +9241,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new_edge :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "new_edge"
             (new_edge BorrowType K V NodeType).
@@ -9391,7 +9381,7 @@ Module collections.
         
         Global Instance AssociatedFunction_left_kv :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "left_kv"
             (left_kv BorrowType K V NodeType).
@@ -9549,7 +9539,7 @@ Module collections.
         
         Global Instance AssociatedFunction_right_kv :
           forall (BorrowType K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V NodeType)
             "right_kv"
             (right_kv BorrowType K V NodeType).
@@ -9623,8 +9613,10 @@ Module collections.
                                           BinOp.le (|
                                             M.read (| edge_idx |),
                                             M.read (|
-                                              M.get_constant
-                                                "alloc::collections::btree::node::CAPACITY"
+                                              get_constant (|
+                                                "alloc::collections::btree::node::CAPACITY",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -9639,11 +9631,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: edge_idx <= CAPACITY"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: edge_idx <= CAPACITY" |) ]
                                       |)
                                     |)
                                   |)));
@@ -9673,7 +9661,10 @@ Module collections.
                           [
                             BinOp.Wrap.sub (|
                               M.read (|
-                                M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
+                                get_constant (|
+                                  "alloc::collections::btree::node::KV_IDX_CENTER",
+                                  Ty.path "usize"
+                                |)
                               |),
                               Value.Integer IntegerKind.Usize 1
                             |);
@@ -9693,7 +9684,10 @@ Module collections.
                         Value.Tuple
                           [
                             M.read (|
-                              M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
+                              get_constant (|
+                                "alloc::collections::btree::node::KV_IDX_CENTER",
+                                Ty.path "usize"
+                              |)
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Left"
@@ -9711,7 +9705,10 @@ Module collections.
                         Value.Tuple
                           [
                             M.read (|
-                              M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
+                              get_constant (|
+                                "alloc::collections::btree::node::KV_IDX_CENTER",
+                                Ty.path "usize"
+                              |)
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
@@ -9725,7 +9722,10 @@ Module collections.
                           [
                             BinOp.Wrap.add (|
                               M.read (|
-                                M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
+                                get_constant (|
+                                  "alloc::collections::btree::node::KV_IDX_CENTER",
+                                  Ty.path "usize"
+                                |)
                               |),
                               Value.Integer IntegerKind.Usize 1
                             |);
@@ -9737,8 +9737,10 @@ Module collections.
                                   BinOp.Wrap.add (|
                                     BinOp.Wrap.add (|
                                       M.read (|
-                                        M.get_constant
-                                          "alloc::collections::btree::node::KV_IDX_CENTER"
+                                        get_constant (|
+                                          "alloc::collections::btree::node::KV_IDX_CENTER",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
                                     |),
@@ -9755,7 +9757,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_splitpoint :
-        M.IsFunction.Trait "alloc::collections::btree::node::splitpoint" splitpoint.
+        M.IsFunction.C "alloc::collections::btree::node::splitpoint" splitpoint.
       Admitted.
       Global Typeclasses Opaque splitpoint.
       
@@ -9862,8 +9864,10 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::btree::node::CAPACITY"
+                                                get_constant (|
+                                                  "alloc::collections::btree::node::CAPACITY",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -9879,9 +9883,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.node.len() < CAPACITY"
+                                            mk_str (|
+                                              "assertion failed: self.node.len() < CAPACITY"
                                             |)
                                           ]
                                         |)
@@ -10189,7 +10192,7 @@ Module collections.
         
         Global Instance AssociatedFunction_insert_fit :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "insert_fit" (insert_fit K V).
+          M.IsAssociatedFunction.C (Self K V) "insert_fit" (insert_fit K V).
         Admitted.
         Global Typeclasses Opaque insert_fit.
         (*
@@ -10300,7 +10303,10 @@ Module collections.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                  get_constant (|
+                                    "alloc::collections::btree::node::CAPACITY",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -10939,7 +10945,7 @@ Module collections.
         
         Global Instance AssociatedFunction_insert :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+          M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
         Admitted.
         Global Typeclasses Opaque insert.
         (*
@@ -11644,7 +11650,7 @@ Module collections.
         
         Global Instance AssociatedFunction_insert_recursing :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "insert_recursing" (insert_recursing K V).
+          M.IsAssociatedFunction.C (Self K V) "insert_recursing" (insert_recursing K V).
         Admitted.
         Global Typeclasses Opaque insert_recursing.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -11852,7 +11858,7 @@ Module collections.
         
         Global Instance AssociatedFunction_correct_parent_link :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "correct_parent_link" (correct_parent_link K V).
+          M.IsAssociatedFunction.C (Self K V) "correct_parent_link" (correct_parent_link K V).
         Admitted.
         Global Typeclasses Opaque correct_parent_link.
         (*
@@ -11939,8 +11945,10 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::btree::node::CAPACITY"
+                                                get_constant (|
+                                                  "alloc::collections::btree::node::CAPACITY",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -11956,9 +11964,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.node.len() < CAPACITY"
+                                            mk_str (|
+                                              "assertion failed: self.node.len() < CAPACITY"
                                             |)
                                           ]
                                         |)
@@ -12028,9 +12035,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: edge.height == self.node.height - 1"
+                                            mk_str (|
+                                              "assertion failed: edge.height == self.node.height - 1"
                                             |)
                                           ]
                                         |)
@@ -12464,7 +12470,7 @@ Module collections.
         
         Global Instance AssociatedFunction_insert_fit :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "insert_fit" (insert_fit K V).
+          M.IsAssociatedFunction.C (Self K V) "insert_fit" (insert_fit K V).
         Admitted.
         Global Typeclasses Opaque insert_fit.
         
@@ -12553,9 +12559,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: edge.height == self.node.height - 1"
+                                  mk_str (|
+                                    "assertion failed: edge.height == self.node.height - 1"
                                   |)
                                 ]
                               |)
@@ -12611,7 +12616,10 @@ Module collections.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                  get_constant (|
+                                    "alloc::collections::btree::node::CAPACITY",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -13097,7 +13105,7 @@ Module collections.
         
         Global Instance AssociatedFunction_insert :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+          M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
         Admitted.
         Global Typeclasses Opaque insert.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
@@ -13148,7 +13156,10 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.get_constant "alloc::collections::btree::node::descend_discriminant" in
+                  get_constant (|
+                    "alloc::collections::btree::node::descend_discriminant",
+                    Ty.tuple []
+                  |) in
                 let~ parent_ptr :
                     Ty.apply
                       (Ty.path "*mut")
@@ -13333,7 +13344,7 @@ Module collections.
         
         Global Instance AssociatedFunction_descend :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "descend" (descend BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "descend" (descend BorrowType K V).
         Admitted.
         Global Typeclasses Opaque descend.
         (*
@@ -13439,7 +13450,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_node_type :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
@@ -13553,9 +13564,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -13729,7 +13739,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_kv :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V NodeType) "into_kv" (into_kv K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "into_kv" (into_kv K V NodeType).
         Admitted.
         Global Typeclasses Opaque into_kv.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -13847,7 +13857,7 @@ Module collections.
         
         Global Instance AssociatedFunction_key_mut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V NodeType) "key_mut" (key_mut K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "key_mut" (key_mut K V NodeType).
         Admitted.
         Global Typeclasses Opaque key_mut.
         
@@ -13948,9 +13958,8 @@ Module collections.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: self.idx < self.node.len()"
+                                                mk_str (|
+                                                  "assertion failed: self.idx < self.node.len()"
                                                 |)
                                               ]
                                             |)
@@ -14090,10 +14099,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_val_mut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V NodeType)
-            "into_val_mut"
-            (into_val_mut K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "into_val_mut" (into_val_mut K V NodeType).
         Admitted.
         Global Typeclasses Opaque into_val_mut.
         
@@ -14190,9 +14196,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -14384,7 +14389,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_kv_mut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V NodeType) "into_kv_mut" (into_kv_mut K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "into_kv_mut" (into_kv_mut K V NodeType).
         Admitted.
         Global Typeclasses Opaque into_kv_mut.
         (*
@@ -14484,9 +14489,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -14661,7 +14665,7 @@ Module collections.
         
         Global Instance AssociatedFunction_kv_mut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V NodeType) "kv_mut" (kv_mut K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "kv_mut" (kv_mut K V NodeType).
         Admitted.
         Global Typeclasses Opaque kv_mut.
         
@@ -14756,7 +14760,7 @@ Module collections.
         
         Global Instance AssociatedFunction_replace_kv :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V NodeType) "replace_kv" (replace_kv K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "replace_kv" (replace_kv K V NodeType).
         Admitted.
         Global Typeclasses Opaque replace_kv.
         (*
@@ -14868,9 +14872,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -15404,7 +15407,7 @@ Module collections.
         
         Global Instance AssociatedFunction_split_leaf_data :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V NodeType)
             "split_leaf_data"
             (split_leaf_data K V NodeType).
@@ -15474,7 +15477,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_kv_valmut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V NodeType)
             "into_kv_valmut"
             (into_kv_valmut K V NodeType).
@@ -15591,9 +15594,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -15762,10 +15764,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_key_val :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V NodeType)
-            "into_key_val"
-            (into_key_val K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "into_key_val" (into_key_val K V NodeType).
         Admitted.
         Global Typeclasses Opaque into_key_val.
         
@@ -15877,9 +15876,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -16035,10 +16033,7 @@ Module collections.
         
         Global Instance AssociatedFunction_drop_key_val :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V NodeType)
-            "drop_key_val"
-            (drop_key_val K V NodeType).
+          M.IsAssociatedFunction.C (Self K V NodeType) "drop_key_val" (drop_key_val K V NodeType).
         Admitted.
         Global Typeclasses Opaque drop_key_val.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -16204,7 +16199,7 @@ Module collections.
         
         Global Instance AssociatedFunction_split :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "split" (split K V).
+          M.IsAssociatedFunction.C (Self K V) "split" (split K V).
         Admitted.
         Global Typeclasses Opaque split.
         
@@ -16512,7 +16507,7 @@ Module collections.
         
         Global Instance AssociatedFunction_remove :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+          M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
         Admitted.
         Global Typeclasses Opaque remove.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_KV.
@@ -16985,7 +16980,7 @@ Module collections.
         
         Global Instance AssociatedFunction_split :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "split" (split K V).
+          M.IsAssociatedFunction.C (Self K V) "split" (split K V).
         Admitted.
         Global Typeclasses Opaque split.
         (*
@@ -17292,10 +17287,7 @@ Module collections.
         
         Global Instance AssociatedFunction_consider_for_balancing :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V)
-            "consider_for_balancing"
-            (consider_for_balancing K V).
+          M.IsAssociatedFunction.C (Self K V) "consider_for_balancing" (consider_for_balancing K V).
         Admitted.
         Global Typeclasses Opaque consider_for_balancing.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
@@ -17400,7 +17392,7 @@ Module collections.
         
         Global Instance AssociatedFunction_left_child_len :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "left_child_len" (left_child_len K V).
+          M.IsAssociatedFunction.C (Self K V) "left_child_len" (left_child_len K V).
         Admitted.
         Global Typeclasses Opaque left_child_len.
         
@@ -17452,7 +17444,7 @@ Module collections.
         
         Global Instance AssociatedFunction_right_child_len :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "right_child_len" (right_child_len K V).
+          M.IsAssociatedFunction.C (Self K V) "right_child_len" (right_child_len K V).
         Admitted.
         Global Typeclasses Opaque right_child_len.
         
@@ -17484,7 +17476,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_left_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "into_left_child" (into_left_child K V).
+          M.IsAssociatedFunction.C (Self K V) "into_left_child" (into_left_child K V).
         Admitted.
         Global Typeclasses Opaque into_left_child.
         
@@ -17516,7 +17508,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_right_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "into_right_child" (into_right_child K V).
+          M.IsAssociatedFunction.C (Self K V) "into_right_child" (into_right_child K V).
         Admitted.
         Global Typeclasses Opaque into_right_child.
         
@@ -17596,14 +17588,16 @@ Module collections.
                     ]
                   |)
                 |),
-                M.read (| M.get_constant "alloc::collections::btree::node::CAPACITY" |)
+                M.read (|
+                  get_constant (| "alloc::collections::btree::node::CAPACITY", Ty.path "usize" |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Global Instance AssociatedFunction_can_merge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "can_merge" (can_merge K V).
+          M.IsAssociatedFunction.C (Self K V) "can_merge" (can_merge K V).
         Admitted.
         Global Typeclasses Opaque can_merge.
         (*
@@ -17838,8 +17832,10 @@ Module collections.
                                           BinOp.le (|
                                             M.read (| new_left_len |),
                                             M.read (|
-                                              M.get_constant
-                                                "alloc::collections::btree::node::CAPACITY"
+                                              get_constant (|
+                                                "alloc::collections::btree::node::CAPACITY",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -17854,11 +17850,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: new_left_len <= CAPACITY"
-                                          |)
+                                        [ mk_str (| "assertion failed: new_left_len <= CAPACITY" |)
                                         ]
                                       |)
                                     |)
@@ -19210,7 +19202,7 @@ Module collections.
         
         Global Instance AssociatedFunction_do_merge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "do_merge" (do_merge K V).
+          M.IsAssociatedFunction.C (Self K V) "do_merge" (do_merge K V).
         Admitted.
         Global Typeclasses Opaque do_merge.
         
@@ -19410,10 +19402,7 @@ Module collections.
         
         Global Instance AssociatedFunction_merge_tracking_parent :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V)
-            "merge_tracking_parent"
-            (merge_tracking_parent K V).
+          M.IsAssociatedFunction.C (Self K V) "merge_tracking_parent" (merge_tracking_parent K V).
         Admitted.
         Global Typeclasses Opaque merge_tracking_parent.
         
@@ -19614,7 +19603,7 @@ Module collections.
         
         Global Instance AssociatedFunction_merge_tracking_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "merge_tracking_child" (merge_tracking_child K V).
+          M.IsAssociatedFunction.C (Self K V) "merge_tracking_child" (merge_tracking_child K V).
         Admitted.
         Global Typeclasses Opaque merge_tracking_child.
         
@@ -19771,9 +19760,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: match track_edge_idx {
+                                  mk_str (|
+                                    "assertion failed: match track_edge_idx {
     LeftOrRight::Left(idx) => idx <= old_left_len,
     LeftOrRight::Right(idx) => idx <= right_len,
 }"
@@ -19901,7 +19889,7 @@ Module collections.
         
         Global Instance AssociatedFunction_merge_tracking_child_edge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "merge_tracking_child_edge"
             (merge_tracking_child_edge K V).
@@ -20005,7 +19993,7 @@ Module collections.
         
         Global Instance AssociatedFunction_steal_left :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "steal_left" (steal_left K V).
+          M.IsAssociatedFunction.C (Self K V) "steal_left" (steal_left K V).
         Admitted.
         Global Typeclasses Opaque steal_left.
         
@@ -20103,7 +20091,7 @@ Module collections.
         
         Global Instance AssociatedFunction_steal_right :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "steal_right" (steal_right K V).
+          M.IsAssociatedFunction.C (Self K V) "steal_right" (steal_right K V).
         Admitted.
         Global Typeclasses Opaque steal_right.
         
@@ -20207,7 +20195,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: count > 0" |) ]
+                                [ mk_str (| "assertion failed: count > 0" |) ]
                               |)
                             |)
                           |)));
@@ -20323,7 +20311,10 @@ Module collections.
                                       M.read (| count |)
                                     |),
                                     M.read (|
-                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                      get_constant (|
+                                        "alloc::collections::btree::node::CAPACITY",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -20335,11 +20326,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: old_right_len + count <= CAPACITY"
-                                  |)
+                                [ mk_str (| "assertion failed: old_right_len + count <= CAPACITY" |)
                                 ]
                               |)
                             |)
@@ -20368,11 +20355,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: old_left_len >= count"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: old_left_len >= count" |) ]
                               |)
                             |)
                           |)));
@@ -21710,8 +21693,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -21723,7 +21705,7 @@ Module collections.
         
         Global Instance AssociatedFunction_bulk_steal_left :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "bulk_steal_left" (bulk_steal_left K V).
+          M.IsAssociatedFunction.C (Self K V) "bulk_steal_left" (bulk_steal_left K V).
         Admitted.
         Global Typeclasses Opaque bulk_steal_left.
         
@@ -21828,7 +21810,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: count > 0" |) ]
+                                [ mk_str (| "assertion failed: count > 0" |) ]
                               |)
                             |)
                           |)));
@@ -21944,7 +21926,10 @@ Module collections.
                                       M.read (| count |)
                                     |),
                                     M.read (|
-                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
+                                      get_constant (|
+                                        "alloc::collections::btree::node::CAPACITY",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -21956,11 +21941,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: old_left_len + count <= CAPACITY"
-                                  |)
+                                [ mk_str (| "assertion failed: old_left_len + count <= CAPACITY" |)
                                 ]
                               |)
                             |)
@@ -21989,11 +21970,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: old_right_len >= count"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: old_right_len >= count" |) ]
                               |)
                             |)
                           |)));
@@ -23379,8 +23356,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -23392,7 +23368,7 @@ Module collections.
         
         Global Instance AssociatedFunction_bulk_steal_right :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "bulk_steal_right" (bulk_steal_right K V).
+          M.IsAssociatedFunction.C (Self K V) "bulk_steal_right" (bulk_steal_right K V).
         Admitted.
         Global Typeclasses Opaque bulk_steal_right.
       End Impl_alloc_collections_btree_node_BalancingContext_K_V.
@@ -23510,7 +23486,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_node_type :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
@@ -23631,7 +23607,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_node_type :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
@@ -23840,10 +23816,7 @@ Module collections.
         
         Global Instance AssociatedFunction_force :
           forall (BorrowType K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V Type_)
-            "force"
-            (force BorrowType K V Type_).
+          M.IsAssociatedFunction.C (Self BorrowType K V Type_) "force" (force BorrowType K V Type_).
         Admitted.
         Global Typeclasses Opaque force.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_Type_.
@@ -23954,7 +23927,7 @@ Module collections.
         
         Global Instance AssociatedFunction_cast_to_leaf_unchecked :
           forall (K V Type_ : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V Type_)
             "cast_to_leaf_unchecked"
             (cast_to_leaf_unchecked K V Type_).
@@ -24233,11 +24206,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: right_node.len() == 0"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: right_node.len() == 0" |) ]
                               |)
                             |)
                           |)));
@@ -24281,9 +24250,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: left_node.height == right_node.height"
+                                  mk_str (|
+                                    "assertion failed: left_node.height == right_node.height"
                                   |)
                                 ]
                               |)
@@ -24998,11 +24966,7 @@ Module collections.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "internal error: entered unreachable code"
-                                        |)
-                                      ]
+                                      [ mk_str (| "internal error: entered unreachable code" |) ]
                                     |)
                                   |)
                                 |)))
@@ -25017,7 +24981,7 @@ Module collections.
         
         Global Instance AssociatedFunction_move_suffix :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "move_suffix" (move_suffix K V).
+          M.IsAssociatedFunction.C (Self K V) "move_suffix" (move_suffix K V).
         Admitted.
         Global Typeclasses Opaque move_suffix.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_Edge.
@@ -25177,7 +25141,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_node_type :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "forget_node_type" (forget_node_type K V).
+          M.IsAssociatedFunction.C (Self K V) "forget_node_type" (forget_node_type K V).
         Admitted.
         Global Typeclasses Opaque forget_node_type.
       End Impl_alloc_collections_btree_node_SplitResult_K_V_alloc_collections_btree_node_marker_Leaf.
@@ -25292,7 +25256,7 @@ Module collections.
         
         Global Instance AssociatedFunction_forget_node_type :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "forget_node_type" (forget_node_type K V).
+          M.IsAssociatedFunction.C (Self K V) "forget_node_type" (forget_node_type K V).
         Admitted.
         Global Typeclasses Opaque forget_node_type.
       End Impl_alloc_collections_btree_node_SplitResult_K_V_alloc_collections_btree_node_marker_Internal.
@@ -25408,8 +25372,12 @@ Module collections.
           
           (*         const TRAVERSAL_PERMIT: bool = false; *)
           (* Ty.path "bool" *)
-          Definition value_TRAVERSAL_PERMIT : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+          Definition value_TRAVERSAL_PERMIT
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
+            ltac:(M.monadic (M.alloc (| Value.Bool false |))).
           
           Axiom Implements :
             M.IsTraitInstance
@@ -25418,7 +25386,7 @@ Module collections.
               (* Trait polymorphic types *) []
               Self
               (* Instance *)
-              [ ("value_TRAVERSAL_PERMIT", InstanceField.Constant value_TRAVERSAL_PERMIT) ].
+              [ ("value_TRAVERSAL_PERMIT", InstanceField.Method value_TRAVERSAL_PERMIT) ].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Owned.
         
         Module Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Dying.
@@ -25573,7 +25541,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: len > idx" |) ]
+                                        [ mk_str (| "assertion failed: len > idx" |) ]
                                       |)
                                     |)
                                   |)));
@@ -25753,7 +25721,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_slice_insert :
-        M.IsFunction.Trait "alloc::collections::btree::node::slice_insert" slice_insert.
+        M.IsFunction.C "alloc::collections::btree::node::slice_insert" slice_insert.
       Admitted.
       Global Typeclasses Opaque slice_insert.
       
@@ -25826,7 +25794,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: idx < len" |) ]
+                                        [ mk_str (| "assertion failed: idx < len" |) ]
                                       |)
                                     |)
                                   |)));
@@ -25958,7 +25926,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_slice_remove :
-        M.IsFunction.Trait "alloc::collections::btree::node::slice_remove" slice_remove.
+        M.IsFunction.C "alloc::collections::btree::node::slice_remove" slice_remove.
       Admitted.
       Global Typeclasses Opaque slice_remove.
       
@@ -26056,7 +26024,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_slice_shl :
-        M.IsFunction.Trait "alloc::collections::btree::node::slice_shl" slice_shl.
+        M.IsFunction.C "alloc::collections::btree::node::slice_shl" slice_shl.
       Admitted.
       Global Typeclasses Opaque slice_shl.
       
@@ -26151,7 +26119,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_slice_shr :
-        M.IsFunction.Trait "alloc::collections::btree::node::slice_shr" slice_shr.
+        M.IsFunction.C "alloc::collections::btree::node::slice_shr" slice_shr.
       Admitted.
       Global Typeclasses Opaque slice_shr.
       
@@ -26238,8 +26206,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: src.len() == dst.len()" |)
-                              ]
+                              [ mk_str (| "assertion failed: src.len() == dst.len()" |) ]
                             |)
                           |)
                         |)));
@@ -26310,7 +26277,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_move_to_slice :
-        M.IsFunction.Trait "alloc::collections::btree::node::move_to_slice" move_to_slice.
+        M.IsFunction.C "alloc::collections::btree::node::move_to_slice" move_to_slice.
       Admitted.
       Global Typeclasses Opaque move_to_slice.
     End node.

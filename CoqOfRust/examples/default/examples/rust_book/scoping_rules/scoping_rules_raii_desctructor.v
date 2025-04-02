@@ -44,10 +44,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "ToDrop is being dropped
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "ToDrop is being dropped
+" |) ] |)
                             |)
                           |)
                         |)
@@ -105,10 +103,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Made a ToDrop!
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Made a ToDrop!
+" |) ] |)
                           |)
                         |)
                       |)
@@ -124,6 +120,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_raii_desctructor::main" main.
+  M.IsFunction.C "scoping_rules_raii_desctructor::main" main.
 Admitted.
 Global Typeclasses Opaque main.

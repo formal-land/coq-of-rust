@@ -39,7 +39,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "division by zero" |) ]
+                      [ mk_str (| "division by zero" |) ]
                     |)
                   |)
                 |)));
@@ -52,7 +52,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_division : M.IsFunction.Trait "panic::division" division.
+Global Instance Instance_IsFunction_division : M.IsFunction.C "panic::division" division.
 Admitted.
 Global Typeclasses Opaque division.
 
@@ -127,8 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "This point won't be reached!
+                              Value.Array [ mk_str (| "This point won't be reached!
 " |) ]
                             |)
                           |)
@@ -145,6 +144,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "panic::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "panic::main" main.
 Admitted.
 Global Typeclasses Opaque main.

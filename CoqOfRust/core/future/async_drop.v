@@ -34,7 +34,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_async_drop :
-      M.IsFunction.Trait "core::future::async_drop::async_drop" async_drop.
+      M.IsFunction.C "core::future::async_drop::async_drop" async_drop.
     Admitted.
     Global Typeclasses Opaque async_drop.
     
@@ -98,7 +98,7 @@ Module future.
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "AsyncDropOwning" |) |)
+                          M.deref (| mk_str (| "AsyncDropOwning" |) |)
                         |)
                       ]
                     |)
@@ -385,9 +385,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_async_drop_in_place_raw :
-      M.IsFunction.Trait
-        "core::future::async_drop::async_drop_in_place_raw"
-        async_drop_in_place_raw.
+      M.IsFunction.C "core::future::async_drop::async_drop_in_place_raw" async_drop_in_place_raw.
     Admitted.
     Global Typeclasses Opaque async_drop_in_place_raw.
     
@@ -420,7 +418,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_async_drop_in_place :
-      M.IsFunction.Trait "core::future::async_drop::async_drop_in_place" async_drop_in_place.
+      M.IsFunction.C "core::future::async_drop::async_drop_in_place" async_drop_in_place.
     Admitted.
     Global Typeclasses Opaque async_drop_in_place.
     
@@ -483,7 +481,7 @@ Module future.
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "AsyncDropInPlace" |) |)
+                          M.deref (| mk_str (| "AsyncDropInPlace" |) |)
                         |)
                       ]
                     |)
@@ -916,7 +914,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_surface_async_drop_in_place :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::future::async_drop::surface_async_drop_in_place"
         surface_async_drop_in_place.
     Admitted.
@@ -997,7 +995,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_surface_drop_in_place :
-      M.IsFunction.Trait "core::future::async_drop::surface_drop_in_place" surface_drop_in_place.
+      M.IsFunction.C "core::future::async_drop::surface_drop_in_place" surface_drop_in_place.
     Admitted.
     Global Typeclasses Opaque surface_drop_in_place.
     
@@ -1025,8 +1023,7 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_fuse :
-      M.IsFunction.Trait "core::future::async_drop::fuse" fuse.
+    Global Instance Instance_IsFunction_fuse : M.IsFunction.C "core::future::async_drop::fuse" fuse.
     Admitted.
     Global Typeclasses Opaque fuse.
     
@@ -1628,7 +1625,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_slice :
-      M.IsFunction.Trait "core::future::async_drop::slice" slice.
+      M.IsFunction.C "core::future::async_drop::slice" slice.
     Admitted.
     Global Typeclasses Opaque slice.
     
@@ -2024,7 +2021,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_chain :
-      M.IsFunction.Trait "core::future::async_drop::chain" chain.
+      M.IsFunction.C "core::future::async_drop::chain" chain.
     Admitted.
     Global Typeclasses Opaque chain.
     
@@ -2255,7 +2252,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_defer :
-      M.IsFunction.Trait "core::future::async_drop::defer" defer.
+      M.IsFunction.C "core::future::async_drop::defer" defer.
     Admitted.
     Global Typeclasses Opaque defer.
     
@@ -2759,7 +2756,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_either :
-      M.IsFunction.Trait "core::future::async_drop::either" either.
+      M.IsFunction.C "core::future::async_drop::either" either.
     Admitted.
     Global Typeclasses Opaque either.
     
@@ -2825,7 +2822,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_deferred_drop_in_place :
-      M.IsFunction.Trait "core::future::async_drop::deferred_drop_in_place" deferred_drop_in_place.
+      M.IsFunction.C "core::future::async_drop::deferred_drop_in_place" deferred_drop_in_place.
     Admitted.
     Global Typeclasses Opaque deferred_drop_in_place.
     
@@ -2882,8 +2879,7 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_noop :
-      M.IsFunction.Trait "core::future::async_drop::noop" noop.
+    Global Instance Instance_IsFunction_noop : M.IsFunction.C "core::future::async_drop::noop" noop.
     Admitted.
     Global Typeclasses Opaque noop.
     

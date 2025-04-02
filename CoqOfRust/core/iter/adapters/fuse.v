@@ -93,8 +93,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Fuse" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fuse" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -151,7 +151,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -183,7 +183,7 @@ Module iter.
         
         Global Instance AssociatedFunction_into_inner :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "into_inner" (into_inner I).
+          M.IsAssociatedFunction.C (Self I) "into_inner" (into_inner I).
         Admitted.
         Global Typeclasses Opaque into_inner.
       End Impl_core_iter_adapters_fuse_Fuse_I.
@@ -1192,12 +1192,18 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = I::MAY_HAVE_SIDE_EFFECT; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant
-                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+              Ty.path "bool"
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1207,8 +1213,7 @@ Module iter.
             (* Trait polymorphic types *) []
             (Self I)
             (* Instance *)
-            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT I))
-            ].
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT I)) ].
       End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_fuse_Fuse_I.
       
       (* Trait *)
@@ -3997,7 +4002,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_and_then_or_clear :
-        M.IsFunction.Trait "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
+        M.IsFunction.C "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
       Admitted.
       Global Typeclasses Opaque and_then_or_clear.
     End fuse.

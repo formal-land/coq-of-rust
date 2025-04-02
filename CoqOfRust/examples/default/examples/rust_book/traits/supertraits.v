@@ -57,10 +57,10 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "My name is " |);
-                                    M.read (| Value.String " and I attend " |);
-                                    M.read (| Value.String ". My favorite language is " |);
-                                    M.read (| Value.String ". My Git username is " |)
+                                    mk_str (| "My name is " |);
+                                    mk_str (| " and I attend " |);
+                                    mk_str (| ". My favorite language is " |);
+                                    mk_str (| ". My Git username is " |)
                                   ]
                               |)
                             |)
@@ -256,7 +256,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
   end.
 
 Global Instance Instance_IsFunction_comp_sci_student_greeting :
-  M.IsFunction.Trait "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+  M.IsFunction.C "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
 Admitted.
 Global Typeclasses Opaque comp_sci_student_greeting.
 
@@ -267,6 +267,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "supertraits::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "supertraits::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -2,87 +2,102 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
-  Definition value_BLOCK_HASH_HISTORY : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 256 |))).
+  Definition value_BLOCK_HASH_HISTORY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 256 |))).
   
-  Axiom Constant_value_BLOCK_HASH_HISTORY :
-    (M.get_constant "revm_primitives::constants::BLOCK_HASH_HISTORY") = value_BLOCK_HASH_HISTORY.
-  Global Hint Rewrite Constant_value_BLOCK_HASH_HISTORY : constant_rewrites.
+  Global Instance Instance_IsConstant_value_BLOCK_HASH_HISTORY :
+    M.IsFunction.C "revm_primitives::constants::BLOCK_HASH_HISTORY" value_BLOCK_HASH_HISTORY.
+  Admitted.
+  Global Typeclasses Opaque value_BLOCK_HASH_HISTORY.
   
-  Definition value_BLOCKHASH_SERVE_WINDOW : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
+  Definition value_BLOCKHASH_SERVE_WINDOW
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
   
-  Axiom Constant_value_BLOCKHASH_SERVE_WINDOW :
-    (M.get_constant "revm_primitives::constants::BLOCKHASH_SERVE_WINDOW") =
+  Global Instance Instance_IsConstant_value_BLOCKHASH_SERVE_WINDOW :
+    M.IsFunction.C
+      "revm_primitives::constants::BLOCKHASH_SERVE_WINDOW"
       value_BLOCKHASH_SERVE_WINDOW.
-  Global Hint Rewrite Constant_value_BLOCKHASH_SERVE_WINDOW : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BLOCKHASH_SERVE_WINDOW.
   
-  Definition value_BLOCKHASH_STORAGE_ADDRESS : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_BLOCKHASH_STORAGE_ADDRESS
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.path "alloy_primitives::bits::address::Address",
+          M.get_associated_function (|
             Ty.path "alloy_primitives::bits::address::Address",
-            M.get_associated_function (|
-              Ty.path "alloy_primitives::bits::address::Address",
-              "new",
-              [],
-              []
-            |),
-            [
-              M.read (|
-                M.get_constant "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS::RES"
+            "new",
+            [],
+            []
+          |),
+          [
+            M.read (|
+              get_constant (|
+                "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS::RES",
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 20 ] [ Ty.path "u8" ]
               |)
-            ]
-          |)
-        |))).
+            |)
+          ]
+        |)
+      |))).
   
-  Axiom Constant_value_BLOCKHASH_STORAGE_ADDRESS :
-    (M.get_constant "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS") =
+  Global Instance Instance_IsConstant_value_BLOCKHASH_STORAGE_ADDRESS :
+    M.IsFunction.C
+      "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS"
       value_BLOCKHASH_STORAGE_ADDRESS.
-  Global Hint Rewrite Constant_value_BLOCKHASH_STORAGE_ADDRESS : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BLOCKHASH_STORAGE_ADDRESS.
   
-  Definition value_PRECOMPILE3 : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_PRECOMPILE3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.path "alloy_primitives::bits::address::Address",
+          M.get_associated_function (|
             Ty.path "alloy_primitives::bits::address::Address",
-            M.get_associated_function (|
-              Ty.path "alloy_primitives::bits::address::Address",
-              "new",
-              [],
-              []
-            |),
-            [
-              Value.Array
-                [
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 3
-                ]
-            ]
-          |)
-        |))).
+            "new",
+            [],
+            []
+          |),
+          [
+            Value.Array
+              [
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 0;
+                Value.Integer IntegerKind.U8 3
+              ]
+          ]
+        |)
+      |))).
   
-  Axiom Constant_value_PRECOMPILE3 :
-    (M.get_constant "revm_primitives::constants::PRECOMPILE3") = value_PRECOMPILE3.
-  Global Hint Rewrite Constant_value_PRECOMPILE3 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_PRECOMPILE3 :
+    M.IsFunction.C "revm_primitives::constants::PRECOMPILE3" value_PRECOMPILE3.
+  Admitted.
+  Global Typeclasses Opaque value_PRECOMPILE3.
 End constants.

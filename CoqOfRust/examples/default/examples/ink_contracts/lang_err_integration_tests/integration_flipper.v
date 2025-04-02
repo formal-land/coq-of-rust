@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FlipperError" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FlipperError" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -64,7 +64,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -100,7 +100,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Global Instance AssociatedFunction_new_default :
-    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+    M.IsAssociatedFunction.C Self "new_default" new_default.
   Admitted.
   Global Typeclasses Opaque new_default.
   
@@ -163,7 +163,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
   Admitted.
   Global Typeclasses Opaque try_new.
   
@@ -202,7 +202,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.C Self "flip" flip.
   Admitted.
   Global Typeclasses Opaque flip.
   
@@ -226,7 +226,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -260,8 +260,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_err_flip :
-    M.IsAssociatedFunction.Trait Self "err_flip" err_flip.
+  Global Instance AssociatedFunction_err_flip : M.IsAssociatedFunction.C Self "err_flip" err_flip.
   Admitted.
   Global Typeclasses Opaque err_flip.
 End Impl_integration_flipper_Flipper.

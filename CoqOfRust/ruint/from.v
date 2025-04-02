@@ -256,7 +256,7 @@ Module from.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ValueTooLarge" |) |)
+                            M.deref (| mk_str (| "ValueTooLarge" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
@@ -299,7 +299,7 @@ Module from.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ValueNegative" |) |)
+                            M.deref (| mk_str (| "ValueNegative" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
@@ -333,10 +333,7 @@ Module from.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NotANumber" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotANumber" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -954,8 +951,8 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "Value is too large for Uint<" |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| "Value is too large for Uint<" |);
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1042,11 +1039,10 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "Negative values cannot be represented as Uint<"
+                                          mk_str (|
+                                            "Negative values cannot be represented as Uint<"
                                           |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1127,11 +1123,10 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "'Not a number' (NaN) cannot be represented as Uint<"
+                                          mk_str (|
+                                            "'Not a number' (NaN) cannot be represented as Uint<"
                                           |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1375,10 +1370,7 @@ Module from.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Overflow" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
                           M.borrow (|
@@ -1786,8 +1778,8 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "Uint<" |);
-                                          M.read (| Value.String "> value is too large for " |)
+                                          mk_str (| "Uint<" |);
+                                          mk_str (| "> value is too large for " |)
                                         ]
                                     |)
                                   |)
@@ -1945,7 +1937,7 @@ Module from.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "NotInField" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotInField" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2054,9 +2046,8 @@ Module from.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String
-                                  "Number is equal or larger than the target field modulus."
+                              mk_str (|
+                                "Number is equal or larger than the target field modulus."
                               |)
                             |)
                           |)
@@ -2167,8 +2158,7 @@ Module from.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Uint conversion error: " |) ]
+                                        Value.Array [ mk_str (| "Uint conversion error: " |) ]
                                       |)
                                     |)
                                   |)
@@ -2225,7 +2215,7 @@ Module from.
     
     Global Instance AssociatedFunction_from :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from" (from BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from" (from BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from.
     
@@ -2292,7 +2282,11 @@ Module from.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let _ :=
                       M.is_struct_tuple (| γ0_0, "ruint::from::ToUintError::ValueTooLarge" |) in
-                    M.get_constant "ruint::MAX"));
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "MAX",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -2321,7 +2315,13 @@ Module from.
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                          | [] =>
+                            ltac:(M.monadic
+                              (get_associated_constant (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "ZERO",
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                              |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)))
@@ -2333,7 +2333,7 @@ Module from.
     
     Global Instance AssociatedFunction_saturating_from :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_from" (saturating_from BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_from" (saturating_from BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque saturating_from.
     
@@ -2471,7 +2471,11 @@ Module from.
                         "ruint::from::ToUintError::NotANumber",
                         0
                       |) in
-                    M.get_constant "ruint::ZERO"))
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)))
               ]
             |)
           |)))
@@ -2480,7 +2484,7 @@ Module from.
     
     Global Instance AssociatedFunction_wrapping_from :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_from" (wrapping_from BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_from" (wrapping_from BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_from.
     
@@ -2532,10 +2536,7 @@ Module from.
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "Uint conversion error" |) |)
-              |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Uint conversion error" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2543,7 +2544,7 @@ Module from.
     
     Global Instance AssociatedFunction_to :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to" (to BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to" (to BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to.
     
@@ -2649,7 +2650,7 @@ Module from.
     
     Global Instance AssociatedFunction_wrapping_to :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_to" (wrapping_to BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_to" (wrapping_to BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_to.
     
@@ -2755,7 +2756,7 @@ Module from.
     
     Global Instance AssociatedFunction_saturating_to :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_to" (saturating_to BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_to" (saturating_to BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque saturating_to.
     
@@ -2811,7 +2812,7 @@ Module from.
     
     Global Instance AssociatedFunction_from_uint :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_uint" (from_uint BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_uint" (from_uint BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_uint.
     
@@ -2870,10 +2871,7 @@ Module from.
     
     Global Instance AssociatedFunction_checked_from_uint :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
-        (Self BITS LIMBS)
-        "checked_from_uint"
-        (checked_from_uint BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_from_uint" (checked_from_uint BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_from_uint.
   End Impl_ruint_Uint_BITS_LIMBS.
@@ -3028,10 +3026,7 @@ Module from.
                                 [
                                   Value.StructTuple
                                     "ruint::from::ToUintError::ValueTooLarge"
-                                    [
-                                      M.read (| M.get_constant "ruint::from::BITS" |);
-                                      M.read (| n |)
-                                    ]
+                                    [ BITS; M.read (| n |) ]
                                 ]
                             |)));
                         fun γ =>
@@ -3207,9 +3202,21 @@ Module from.
                                   Value.StructTuple
                                     "ruint::from::FromUintError::Overflow"
                                     [
-                                      M.read (| M.get_constant "ruint::from::BITS_DST" |);
+                                      BITS_DST;
                                       M.read (| n |);
-                                      M.read (| M.get_constant "ruint::MAX" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ BITS_DST; LIMBS_DST ]
+                                            [],
+                                          "MAX",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ BITS_DST; LIMBS_DST ]
+                                            []
+                                        |)
+                                      |)
                                     ]
                                 ]
                             |)));
@@ -3293,10 +3300,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.read (| M.get_constant "ruint::from::LIMBS" |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
+                                BinOp.le (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3312,7 +3316,13 @@ Module from.
                                         (M.alloc (|
                                           BinOp.gt (|
                                             M.read (| value |),
-                                            M.read (| M.get_constant "ruint::MASK" |)
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "MASK",
+                                                Ty.path "u64"
+                                              |)
+                                            |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -3342,9 +3352,7 @@ Module from.
                                                       M.use
                                                         (M.alloc (|
                                                           BinOp.eq (|
-                                                            M.read (|
-                                                              M.get_constant "ruint::from::LIMBS"
-                                                            |),
+                                                            LIMBS,
                                                             Value.Integer IntegerKind.Usize 1
                                                           |)
                                                         |)) in
@@ -3363,7 +3371,14 @@ Module from.
                                                           BinOp.bit_and
                                                             (M.read (| value |))
                                                             (M.read (|
-                                                              M.get_constant "ruint::MASK"
+                                                              get_associated_constant (|
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  [],
+                                                                "MASK",
+                                                                Ty.path "u64"
+                                                              |)
                                                             |))
                                                         |)
                                                       |) in
@@ -3379,7 +3394,7 @@ Module from.
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueTooLarge"
                                                   [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
+                                                    BITS;
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
@@ -3414,10 +3429,7 @@ Module from.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.eq (|
-                                          M.read (| M.get_constant "ruint::from::LIMBS" |),
-                                          Value.Integer IntegerKind.Usize 0
-                                        |)
+                                        BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -3430,7 +3442,21 @@ Module from.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
-                                            [ M.read (| M.get_constant "ruint::ZERO" |) ]
+                                            [
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    [],
+                                                  "ZERO",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                |)
+                                              |)
+                                            ]
                                         |)
                                       |)
                                     |)
@@ -3544,7 +3570,13 @@ Module from.
                                   M.read (| value |),
                                   M.cast
                                     (Ty.path "u128")
-                                    (M.read (| M.get_constant "core::num::MAX" |))
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u64",
+                                        "MAX",
+                                        Ty.path "u64"
+                                      |)
+                                    |))
                                 |)
                               |)) in
                           let _ :=
@@ -3593,7 +3625,13 @@ Module from.
                             M.use
                               (M.alloc (|
                                 BinOp.lt (|
-                                  M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "LIMBS",
+                                      Ty.path "usize"
+                                    |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
                               |)) in
@@ -3722,12 +3760,7 @@ Module from.
                                                           [
                                                             Value.StructTuple
                                                               "ruint::from::ToUintError::ValueTooLarge"
-                                                              [
-                                                                M.read (|
-                                                                  M.get_constant "ruint::from::BITS"
-                                                                |);
-                                                                M.read (| n |)
-                                                              ]
+                                                              [ BITS; M.read (| n |) ]
                                                           ]))
                                                   ]
                                                 |)))
@@ -3781,7 +3814,13 @@ Module from.
                             (M.alloc (|
                               LogicalOp.and (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "LIMBS",
+                                      Ty.path "usize"
+                                    |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 2
                                 |),
                                 ltac:(M.monadic
@@ -3792,7 +3831,13 @@ Module from.
                                         Value.Integer IntegerKind.Usize 1
                                       |)
                                     |),
-                                    M.read (| M.get_constant "ruint::MASK" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "MASK",
+                                        Ty.path "u64"
+                                      |)
+                                    |)
                                   |)))
                               |)
                             |)) in
@@ -3809,7 +3854,13 @@ Module from.
                               β,
                               BinOp.Wrap.rem (|
                                 M.read (| β |),
-                                M.read (| M.get_constant "ruint::MASK" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "MASK",
+                                    Ty.path "u64"
+                                  |)
+                                |)
                               |)
                             |)
                           |) in
@@ -3820,7 +3871,7 @@ Module from.
                               Value.StructTuple
                                 "ruint::from::ToUintError::ValueTooLarge"
                                 [
-                                  M.read (| M.get_constant "ruint::from::BITS" |);
+                                  BITS;
                                   M.call_closure (|
                                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                     M.get_associated_function (|
@@ -4348,10 +4399,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -4363,11 +4411,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -4568,10 +4612,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -4583,11 +4624,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -4788,10 +4825,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -4803,11 +4837,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5008,10 +5038,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -5023,11 +5050,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5228,10 +5251,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -5243,11 +5263,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5448,10 +5464,7 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
-                                                  [
-                                                    M.read (| M.get_constant "ruint::from::BITS" |);
-                                                    M.read (| n |)
-                                                  ]
+                                                  [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
                                           end)
@@ -5463,11 +5476,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5639,7 +5648,7 @@ Module from.
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::NotANumber"
-                                        [ M.read (| M.get_constant "ruint::from::BITS" |) ]
+                                        [ BITS ]
                                     ]
                                 |)
                               |)
@@ -5775,7 +5784,18 @@ Module from.
                                                         end)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                                ltac:(M.monadic
+                                                  (get_associated_constant (|
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      [],
+                                                    "ZERO",
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  |)))
                                             ]
                                           |)
                                         |)
@@ -5788,10 +5808,7 @@ Module from.
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueNegative"
-                                        [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
-                                          M.read (| wrapped |)
-                                        ]
+                                        [ BITS; M.read (| wrapped |) ]
                                     ]
                                 |)
                               |)
@@ -5805,7 +5822,17 @@ Module from.
                     M.call_closure (|
                       Ty.path "f64",
                       M.get_associated_function (| Ty.path "f64", "exp2", [], [] |),
-                      [ M.cast (Ty.path "f64") (M.read (| M.get_constant "ruint::BITS'1" |)) ]
+                      [
+                        M.cast
+                          (Ty.path "f64")
+                          (M.read (|
+                            get_associated_constant (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "BITS",
+                              Ty.path "usize"
+                            |)
+                          |))
+                      ]
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -5910,7 +5937,13 @@ Module from.
                                                   | _ => M.impossible "wrong number of arguments"
                                                   end)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (get_associated_constant (|
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                              "ZERO",
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                            |)))
                                       ]
                                     |)
                                   |) in
@@ -5920,10 +5953,7 @@ Module from.
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueTooLarge"
-                                        [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
-                                          M.read (| wrapped |)
-                                        ]
+                                        [ BITS; M.read (| wrapped |) ]
                                     ]
                                 |)
                               |)
@@ -5952,7 +5982,15 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
-                                    [ M.read (| M.get_constant "ruint::ZERO" |) ]
+                                    [
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |)
+                                    ]
                                 |)
                               |)
                             |)
@@ -5990,7 +6028,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: value.is_normal()" |) ]
+                                [ mk_str (| "assertion failed: value.is_normal()" |) ]
                               |)
                             |)
                           |)));
@@ -6034,7 +6072,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: sign == 0" |) ]
+                                [ mk_str (| "assertion failed: sign == 0" |) ]
                               |)
                             |)
                           |)));
@@ -6071,11 +6109,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: biased_exponent >= 1023"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: biased_exponent >= 1023" |) ]
                               |)
                             |)
                           |)));
@@ -6114,7 +6148,13 @@ Module from.
                                 BinOp.gt (|
                                   M.cast (Ty.path "usize") (M.read (| exponent |)),
                                   BinOp.Wrap.add (|
-                                    M.read (| M.get_constant "ruint::BITS'1" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "BITS",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     Value.Integer IntegerKind.Usize 52
                                   |)
                                 |)
@@ -6131,8 +6171,14 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueTooLarge"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
-                                          M.read (| M.get_constant "ruint::ZERO" |)
+                                          BITS;
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                              "ZERO",
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -6419,10 +6465,7 @@ Module from.
                                             [
                                               Value.StructTuple
                                                 "ruint::from::ToUintError::ValueTooLarge"
-                                                [
-                                                  M.read (| M.get_constant "ruint::from::BITS" |);
-                                                  M.read (| n |)
-                                                ]
+                                                [ BITS; M.read (| n |) ]
                                             ]
                                         |)));
                                     fun γ =>
@@ -6625,10 +6668,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6685,7 +6725,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_associated_function (|
@@ -6866,10 +6906,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6913,7 +6950,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -6928,7 +6970,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "i8")
                                             (M.read (|
@@ -6941,7 +6983,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "i8",
+                                              "MAX",
+                                              Ty.path "i8"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -7104,10 +7152,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7151,7 +7196,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -7166,7 +7216,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "u8")
                                             (M.read (|
@@ -7179,7 +7229,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "u8",
+                                              "MAX",
+                                              Ty.path "u8"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -7343,10 +7399,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7390,7 +7443,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -7405,7 +7463,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "i16")
                                             (M.read (|
@@ -7418,7 +7476,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "i16",
+                                              "MAX",
+                                              Ty.path "i16"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -7582,10 +7646,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7629,7 +7690,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -7644,7 +7710,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "u16")
                                             (M.read (|
@@ -7657,7 +7723,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "u16",
+                                              "MAX",
+                                              Ty.path "u16"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -7821,10 +7893,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7868,7 +7937,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -7883,7 +7957,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "i32")
                                             (M.read (|
@@ -7896,7 +7970,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "i32",
+                                              "MAX",
+                                              Ty.path "i32"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -8060,10 +8140,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8107,7 +8184,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -8122,7 +8204,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "u32")
                                             (M.read (|
@@ -8135,7 +8217,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "u32",
+                                              "MAX",
+                                              Ty.path "u32"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -8299,10 +8387,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8346,7 +8431,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -8361,7 +8451,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "i64")
                                             (M.read (|
@@ -8374,7 +8464,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "i64",
+                                              "MAX",
+                                              Ty.path "i64"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -8538,10 +8634,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8585,7 +8678,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -8600,7 +8698,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.read (|
                                             M.use
                                               (M.SubPointer.get_array_field (|
@@ -8612,7 +8710,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |))
                                           |);
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "u64",
+                                              "MAX",
+                                              Ty.path "u64"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -8777,10 +8881,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8824,7 +8925,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -8839,7 +8945,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "isize")
                                             (M.read (|
@@ -8852,7 +8958,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "isize",
+                                              "MAX",
+                                              Ty.path "isize"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -9018,10 +9130,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9065,7 +9174,12 @@ Module from.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::from::try_from::CAPACITY" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::from::try_from::CAPACITY",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -9080,7 +9194,7 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.cast
                                             (Ty.path "usize")
                                             (M.read (|
@@ -9093,7 +9207,13 @@ Module from.
                                                 Value.Integer IntegerKind.Usize 0
                                               |)
                                             |));
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "usize",
+                                              "MAX",
+                                              Ty.path "usize"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -9258,10 +9378,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9304,10 +9421,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 64
-                                |)
+                                BinOp.le (| BITS, Value.Integer IntegerKind.Usize 64 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9390,9 +9504,15 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.read (| result |);
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "i128",
+                                              "MAX",
+                                              Ty.path "i128"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)
@@ -9529,10 +9649,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9575,10 +9692,7 @@ Module from.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.read (| M.get_constant "ruint::from::BITS" |),
-                                  Value.Integer IntegerKind.Usize 64
-                                |)
+                                BinOp.le (| BITS, Value.Integer IntegerKind.Usize 64 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9661,9 +9775,15 @@ Module from.
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
                                         [
-                                          M.read (| M.get_constant "ruint::from::BITS" |);
+                                          BITS;
                                           M.read (| result |);
-                                          M.read (| M.get_constant "core::num::MAX" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.path "u128",
+                                              "MAX",
+                                              Ty.path "u128"
+                                            |)
+                                          |)
                                         ]
                                     ]
                                 |)

@@ -44,7 +44,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "some
+                                  M.alloc (| Value.Array [ mk_str (| "some
 " |) ] |)
                                 |)
                               |)
@@ -78,7 +78,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "nothing
+                                  M.alloc (| Value.Array [ mk_str (| "nothing
 " |) ] |)
                                 |)
                               |)
@@ -95,7 +95,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "concurrent_tests::foo" foo.
+Global Instance Instance_IsFunction_foo : M.IsFunction.C "concurrent_tests::foo" foo.
 Admitted.
 Global Typeclasses Opaque foo.
 
@@ -196,12 +196,12 @@ Module tests.
                           |)
                         |)
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      mk_str (| "ferris.txt" |)
                     ]
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
                   |)
                 ]
               |)
@@ -327,10 +327,8 @@ Module tests.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Ferris
-" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Ferris
+" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -341,9 +339,7 @@ Module tests.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "Could not write to ferris.txt"
-                                              |)
+                                              mk_str (| "Could not write to ferris.txt" |)
                                             |)
                                           |)
                                         ]
@@ -361,7 +357,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_file :
-    M.IsFunction.Trait "concurrent_tests::tests::test_file'1" test_file.
+    M.IsFunction.C "concurrent_tests::tests::test_file'1" test_file.
   Admitted.
   Global Typeclasses Opaque test_file.
   
@@ -461,12 +457,12 @@ Module tests.
                           |)
                         |)
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      mk_str (| "ferris.txt" |)
                     ]
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
                   |)
                 ]
               |)
@@ -592,10 +588,8 @@ Module tests.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Corro
-" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Corro
+" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -606,9 +600,7 @@ Module tests.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "Could not write to ferris.txt"
-                                              |)
+                                              mk_str (| "Could not write to ferris.txt" |)
                                             |)
                                           |)
                                         ]
@@ -626,7 +618,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_file_also :
-    M.IsFunction.Trait "concurrent_tests::tests::test_file_also'1" test_file_also.
+    M.IsFunction.C "concurrent_tests::tests::test_file_also'1" test_file_also.
   Admitted.
   Global Typeclasses Opaque test_file_also.
 End tests.

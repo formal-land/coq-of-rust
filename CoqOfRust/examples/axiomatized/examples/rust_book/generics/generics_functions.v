@@ -27,28 +27,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reg_fn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_reg_fn : M.IsFunction.Trait "generics_functions::reg_fn" reg_fn.
+Global Instance Instance_IsFunction_reg_fn : M.IsFunction.C "generics_functions::reg_fn" reg_fn.
 Admitted.
 
 Parameter gen_spec_t : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_gen_spec_t :
-  M.IsFunction.Trait "generics_functions::gen_spec_t" gen_spec_t.
+  M.IsFunction.C "generics_functions::gen_spec_t" gen_spec_t.
 Admitted.
 
 Parameter gen_spec_i32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_gen_spec_i32 :
-  M.IsFunction.Trait "generics_functions::gen_spec_i32" gen_spec_i32.
+  M.IsFunction.C "generics_functions::gen_spec_i32" gen_spec_i32.
 Admitted.
 
 Parameter generic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_generic :
-  M.IsFunction.Trait "generics_functions::generic" generic.
+Global Instance Instance_IsFunction_generic : M.IsFunction.C "generics_functions::generic" generic.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_functions::main" main.
 Admitted.

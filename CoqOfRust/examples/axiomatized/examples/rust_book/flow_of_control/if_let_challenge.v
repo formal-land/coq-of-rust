@@ -20,5 +20,5 @@ Axiom IsDiscriminant_Foo_Bar : M.IsDiscriminant "if_let_challenge::Foo::Bar" 0.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "if_let_challenge::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "if_let_challenge::main" main.
 Admitted.

@@ -473,58 +473,58 @@ Module binary_config.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "module_handles" |);
+                            mk_str (| "module_handles" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                              M.deref (| mk_str (| "struct_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                              M.deref (| mk_str (| "function_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                              M.deref (| mk_str (| "function_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "signatures" |) |)
+                              M.deref (| mk_str (| "signatures" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                              M.deref (| mk_str (| "constant_pool" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                              M.deref (| mk_str (| "identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                              M.deref (| mk_str (| "address_identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_defs" |) |)
+                              M.deref (| mk_str (| "struct_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                              M.deref (| mk_str (| "struct_def_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                              M.deref (| mk_str (| "function_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                              M.deref (| mk_str (| "field_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                              M.deref (| mk_str (| "field_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                              M.deref (| mk_str (| "friend_decls" |) |)
                             |)
                           ]
                       |)
@@ -758,10 +758,7 @@ Module binary_config.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "TableConfig" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TableConfig" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -810,25 +807,39 @@ Module binary_config.
           (Value.StructRecord
             "move_binary_format::binary_config::TableConfig"
             [
-              ("module_handles", M.read (| M.get_constant "core::num::MAX" |));
-              ("struct_handles", M.read (| M.get_constant "core::num::MAX" |));
-              ("function_handles", M.read (| M.get_constant "core::num::MAX" |));
-              ("function_instantiations", M.read (| M.get_constant "core::num::MAX" |));
-              ("signatures", M.read (| M.get_constant "core::num::MAX" |));
-              ("constant_pool", M.read (| M.get_constant "core::num::MAX" |));
-              ("identifiers", M.read (| M.get_constant "core::num::MAX" |));
-              ("address_identifiers", M.read (| M.get_constant "core::num::MAX" |));
-              ("struct_defs", M.read (| M.get_constant "core::num::MAX" |));
-              ("struct_def_instantiations", M.read (| M.get_constant "core::num::MAX" |));
-              ("function_defs", M.read (| M.get_constant "core::num::MAX" |));
-              ("field_handles", M.read (| M.get_constant "core::num::MAX" |));
-              ("field_instantiations", M.read (| M.get_constant "core::num::MAX" |));
-              ("friend_decls", M.read (| M.get_constant "core::num::MAX" |))
+              ("module_handles",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("struct_handles",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("function_handles",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("function_instantiations",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("signatures",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("constant_pool",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("identifiers",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("address_identifiers",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("struct_defs",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("struct_def_instantiations",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("function_defs",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("field_handles",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("field_instantiations",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
+              ("friend_decls",
+                M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.Trait Self "legacy" legacy.
+    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.C Self "legacy" legacy.
     Admitted.
     Global Typeclasses Opaque legacy.
   End Impl_move_binary_format_binary_config_TableConfig.
@@ -978,13 +989,10 @@ Module binary_config.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BinaryConfig" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "BinaryConfig" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "max_binary_format_version" |) |)
+                M.deref (| mk_str (| "max_binary_format_version" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1001,7 +1009,7 @@ Module binary_config.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "check_no_extraneous_bytes" |) |)
+                M.deref (| mk_str (| "check_no_extraneous_bytes" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1016,10 +1024,7 @@ Module binary_config.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "table_config" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "table_config" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1085,7 +1090,7 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1124,7 +1129,7 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.Trait Self "legacy" legacy.
+    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.C Self "legacy" legacy.
     Admitted.
     Global Typeclasses Opaque legacy.
     
@@ -1150,7 +1155,12 @@ Module binary_config.
             "move_binary_format::binary_config::BinaryConfig"
             [
               ("max_binary_format_version",
-                M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
+                M.read (|
+                  get_constant (|
+                    "move_binary_format::file_format_common::VERSION_MAX",
+                    Ty.path "u32"
+                  |)
+                |));
               ("check_no_extraneous_bytes", M.read (| check_no_extraneous_bytes |));
               ("table_config",
                 M.call_closure (|
@@ -1168,7 +1178,7 @@ Module binary_config.
       end.
     
     Global Instance AssociatedFunction_with_extraneous_bytes_check :
-      M.IsAssociatedFunction.Trait Self "with_extraneous_bytes_check" with_extraneous_bytes_check.
+      M.IsAssociatedFunction.C Self "with_extraneous_bytes_check" with_extraneous_bytes_check.
     Admitted.
     Global Typeclasses Opaque with_extraneous_bytes_check.
     
@@ -1189,7 +1199,12 @@ Module binary_config.
             "move_binary_format::binary_config::BinaryConfig"
             [
               ("max_binary_format_version",
-                M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
+                M.read (|
+                  get_constant (|
+                    "move_binary_format::file_format_common::VERSION_MAX",
+                    Ty.path "u32"
+                  |)
+                |));
               ("check_no_extraneous_bytes", Value.Bool true);
               ("table_config",
                 M.call_closure (|
@@ -1206,8 +1221,7 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_standard :
-      M.IsAssociatedFunction.Trait Self "standard" standard.
+    Global Instance AssociatedFunction_standard : M.IsAssociatedFunction.C Self "standard" standard.
     Admitted.
     Global Typeclasses Opaque standard.
   End Impl_move_binary_format_binary_config_BinaryConfig.

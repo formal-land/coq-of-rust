@@ -428,7 +428,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_is_8digits :
-        M.IsFunction.Trait "core::num::dec2flt::common::is_8digits" is_8digits.
+        M.IsFunction.C "core::num::dec2flt::common::is_8digits" is_8digits.
       Admitted.
       Global Typeclasses Opaque is_8digits.
       
@@ -463,11 +463,8 @@ Module num.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "BiasedFp" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "f" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BiasedFp" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "f" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -481,7 +478,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "e" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "e" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -744,7 +741,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_zero_pow2 :
-          M.IsAssociatedFunction.Trait Self "zero_pow2" zero_pow2.
+          M.IsAssociatedFunction.C Self "zero_pow2" zero_pow2.
         Admitted.
         Global Typeclasses Opaque zero_pow2.
       End Impl_core_num_dec2flt_common_BiasedFp.

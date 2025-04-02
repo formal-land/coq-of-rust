@@ -248,28 +248,26 @@ Module compatibility.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "check_struct_and_pub_function_linking" |);
+                            mk_str (| "check_struct_and_pub_function_linking" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_struct_layout" |) |)
+                              M.deref (| mk_str (| "check_struct_layout" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_friend_linking" |) |)
+                              M.deref (| mk_str (| "check_friend_linking" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_private_entry_linking" |) |)
+                              M.deref (| mk_str (| "check_private_entry_linking" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "disallowed_new_abilities" |) |)
+                              M.deref (| mk_str (| "disallowed_new_abilities" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "disallow_change_struct_type_params" |)
-                              |)
+                              M.deref (| mk_str (| "disallow_change_struct_type_params" |) |)
                             |)
                           ]
                       |)
@@ -399,10 +397,7 @@ Module compatibility.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Compatibility" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Compatibility" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -496,7 +491,13 @@ Module compatibility.
               ("check_friend_linking", Value.Bool true);
               ("check_private_entry_linking", Value.Bool true);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "move_binary_format::file_format::AbilitySet",
+                    "EMPTY",
+                    Ty.path "move_binary_format::file_format::AbilitySet"
+                  |)
+                |));
               ("disallow_change_struct_type_params", Value.Bool true)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -540,7 +541,7 @@ Module compatibility.
       end.
     
     Global Instance AssociatedFunction_full_check :
-      M.IsAssociatedFunction.Trait Self "full_check" full_check.
+      M.IsAssociatedFunction.C Self "full_check" full_check.
     Admitted.
     Global Typeclasses Opaque full_check.
     
@@ -568,14 +569,19 @@ Module compatibility.
               ("check_friend_linking", Value.Bool false);
               ("check_private_entry_linking", Value.Bool false);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "move_binary_format::file_format::AbilitySet",
+                    "EMPTY",
+                    Ty.path "move_binary_format::file_format::AbilitySet"
+                  |)
+                |));
               ("disallow_change_struct_type_params", Value.Bool false)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_no_check :
-      M.IsAssociatedFunction.Trait Self "no_check" no_check.
+    Global Instance AssociatedFunction_no_check : M.IsAssociatedFunction.C Self "no_check" no_check.
     Admitted.
     Global Typeclasses Opaque no_check.
     
@@ -636,7 +642,7 @@ Module compatibility.
       end.
     
     Global Instance AssociatedFunction_need_check_compat :
-      M.IsAssociatedFunction.Trait Self "need_check_compat" need_check_compat.
+      M.IsAssociatedFunction.C Self "need_check_compat" need_check_compat.
     Admitted.
     Global Typeclasses Opaque need_check_compat.
     
@@ -1691,8 +1697,10 @@ Module compatibility.
                                                                             |)
                                                                           |),
                                                                           M.read (|
-                                                                            M.get_constant
-                                                                              "move_binary_format::file_format_common::VERSION_5"
+                                                                            get_constant (|
+                                                                              "move_binary_format::file_format_common::VERSION_5",
+                                                                              Ty.path "u32"
+                                                                            |)
                                                                           |)
                                                                         |),
                                                                         ltac:(M.monadic
@@ -1709,8 +1717,10 @@ Module compatibility.
                                                                               |)
                                                                             |),
                                                                             M.read (|
-                                                                              M.get_constant
-                                                                                "move_binary_format::file_format_common::VERSION_5"
+                                                                              get_constant (|
+                                                                                "move_binary_format::file_format_common::VERSION_5",
+                                                                                Ty.path "u32"
+                                                                              |)
                                                                             |)
                                                                           |)))
                                                                       |),
@@ -2717,7 +2727,7 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.C Self "check" check.
     Admitted.
     Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_Compatibility.
@@ -2844,7 +2854,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_struct_abilities_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::struct_abilities_compatible"
       struct_abilities_compatible.
   Admitted.
@@ -3080,7 +3090,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_fun_type_parameters_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::fun_type_parameters_compatible"
       fun_type_parameters_compatible.
   Admitted.
@@ -3357,7 +3367,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_struct_type_parameters_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::struct_type_parameters_compatible"
       struct_type_parameters_compatible.
   Admitted.
@@ -3436,7 +3446,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_type_parameter_constraints_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::type_parameter_constraints_compatible"
       type_parameter_constraints_compatible.
   Admitted.
@@ -3526,7 +3536,7 @@ Module compatibility.
     end.
   
   Global Instance Instance_IsFunction_type_parameter_phantom_decl_compatible :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::compatibility::type_parameter_phantom_decl_compatible"
       type_parameter_phantom_decl_compatible.
   Admitted.
@@ -3643,10 +3653,7 @@ Module compatibility.
                             "move_binary_format::compatibility::InclusionCheck::Subset"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Subset" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Subset" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3657,10 +3664,7 @@ Module compatibility.
                             "move_binary_format::compatibility::InclusionCheck::Equal"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Equal" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Equal" |) |) |)
                         |)))
                   ]
                 |)
@@ -4964,7 +4968,7 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.C Self "check" check.
     Admitted.
     Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_InclusionCheck.

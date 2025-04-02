@@ -50,12 +50,20 @@ Definition assign (target : Value.t) (source : Value.t) : M :=
   let* _ := M.write target source in
   M.alloc (Value.Tuple []).
 
+Definition get_constant (name : string) (return_ty : Ty.t) : M :=
+  let* constant := call_primitive (Primitive.GetFunction name [] []) in
+  call_closure (Ty.apply (Ty.path "*") [] [return_ty]) constant [].
+
+Definition get_associated_constant (ty : Ty.t) (name : string) (return_ty : Ty.t) : M :=
+  let* constant := call_primitive (Primitive.GetAssociatedFunction ty name [] []) in
+  call_closure (Ty.apply (Ty.path "*") [] [return_ty]) constant [].
+
 (** ** Integer types *)
 
 (** A value with an address of type `ref str`. *)
 Definition mk_str (s : string) : M :=
   let* pointer := M.alloc (Value.String s) in
-  M.alloc pointer.
+  M.borrow Pointer.Kind.Ref pointer.
 
 Module Integer.
   Definition min (kind : IntegerKind.t) : Z :=

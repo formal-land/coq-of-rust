@@ -3,50 +3,50 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module slice.
   Module memchr.
-    Definition value_LO_USIZE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
-              [ Value.Integer IntegerKind.U8 1 ]
-            |)
-          |))).
+    Definition value_LO_USIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
+            [ Value.Integer IntegerKind.U8 1 ]
+          |)
+        |))).
     
-    Axiom Constant_value_LO_USIZE :
-      (M.get_constant "core::slice::memchr::LO_USIZE") = value_LO_USIZE.
-    Global Hint Rewrite Constant_value_LO_USIZE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LO_USIZE :
+      M.IsFunction.C "core::slice::memchr::LO_USIZE" value_LO_USIZE.
+    Admitted.
+    Global Typeclasses Opaque value_LO_USIZE.
     
-    Definition value_HI_USIZE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
-              [ Value.Integer IntegerKind.U8 128 ]
-            |)
-          |))).
+    Definition value_HI_USIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
+            [ Value.Integer IntegerKind.U8 128 ]
+          |)
+        |))).
     
-    Axiom Constant_value_HI_USIZE :
-      (M.get_constant "core::slice::memchr::HI_USIZE") = value_HI_USIZE.
-    Global Hint Rewrite Constant_value_HI_USIZE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_HI_USIZE :
+      M.IsFunction.C "core::slice::memchr::HI_USIZE" value_HI_USIZE.
+    Admitted.
+    Global Typeclasses Opaque value_HI_USIZE.
     
-    Definition value_USIZE_BYTES : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
-              []
-            |)
-          |))).
+    Definition value_USIZE_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+            []
+          |)
+        |))).
     
-    Axiom Constant_value_USIZE_BYTES :
-      (M.get_constant "core::slice::memchr::USIZE_BYTES") = value_USIZE_BYTES.
-    Global Hint Rewrite Constant_value_USIZE_BYTES : constant_rewrites.
+    Global Instance Instance_IsConstant_value_USIZE_BYTES :
+      M.IsFunction.C "core::slice::memchr::USIZE_BYTES" value_USIZE_BYTES.
+    Admitted.
+    Global Typeclasses Opaque value_USIZE_BYTES.
     
     (*
     const fn contains_zero_byte(x: usize) -> bool {
@@ -64,17 +64,20 @@ Module slice.
                 (M.call_closure (|
                   Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
-                  [ M.read (| x |); M.read (| M.get_constant "core::slice::memchr::LO_USIZE" |) ]
+                  [
+                    M.read (| x |);
+                    M.read (| get_constant (| "core::slice::memchr::LO_USIZE", Ty.path "usize" |) |)
+                  ]
                 |))
                 (UnOp.not (| M.read (| x |) |)))
-              (M.read (| M.get_constant "core::slice::memchr::HI_USIZE" |)),
+              (M.read (| get_constant (| "core::slice::memchr::HI_USIZE", Ty.path "usize" |) |)),
             Value.Integer IntegerKind.Usize 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance Instance_IsFunction_contains_zero_byte :
-      M.IsFunction.Trait "core::slice::memchr::contains_zero_byte" contains_zero_byte.
+      M.IsFunction.C "core::slice::memchr::contains_zero_byte" contains_zero_byte.
     Admitted.
     Global Typeclasses Opaque contains_zero_byte.
     
@@ -125,7 +128,12 @@ Module slice.
                                   |),
                                   BinOp.Wrap.mul (|
                                     Value.Integer IntegerKind.Usize 2,
-                                    M.read (| M.get_constant "core::slice::memchr::USIZE_BYTES" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::slice::memchr::USIZE_BYTES",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -176,7 +184,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_memchr :
-      M.IsFunction.Trait "core::slice::memchr::memchr" memchr.
+      M.IsFunction.C "core::slice::memchr::memchr" memchr.
     Admitted.
     Global Typeclasses Opaque memchr.
     
@@ -317,7 +325,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_memchr_naive :
-      M.IsFunction.Trait "core::slice::memchr::memchr_naive" memchr_naive.
+      M.IsFunction.C "core::slice::memchr::memchr_naive" memchr_naive.
     Admitted.
     Global Typeclasses Opaque memchr_naive.
     
@@ -422,7 +430,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_memchr_aligned :
-      M.IsFunction.Trait "core::slice::memchr::memchr_aligned" memchr_aligned.
+      M.IsFunction.C "core::slice::memchr::memchr_aligned" memchr_aligned.
     Admitted.
     Global Typeclasses Opaque memchr_aligned.
     
@@ -1049,7 +1057,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_memrchr :
-      M.IsFunction.Trait "core::slice::memchr::memrchr" memrchr.
+      M.IsFunction.C "core::slice::memchr::memrchr" memrchr.
     Admitted.
     Global Typeclasses Opaque memrchr.
     

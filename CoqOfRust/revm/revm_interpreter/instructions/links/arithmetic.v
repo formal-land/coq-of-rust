@@ -1,20 +1,27 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
-Require Import revm.revm_interpreter.instructions.arithmetic.
+Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import ruint.links.add.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
 Require Import ruint.links.mul.
+Require Import ruint.links.modular.
+Require Import ruint.links.pow.
+Require Import core.links.cmp.
 
 Import Impl_Gas.
 Import add.Impl_Uint.
 Import cmp.Impl_Uint.
 Import div.Impl_Uint.
 Import mul.Impl_Uint.
+Import modular.Impl_Uint.
+Import pow.Impl_Uint.
 
 (*
 pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -27,7 +34,6 @@ Instance run_add
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
     {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-    (run_Host_for_H : Host.Run H H_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -38,14 +44,12 @@ Proof.
   cbn.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* Seems like the code doesnt envolve proofs on `H` *)
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  run_symbolic. 
+  run_symbolic.
 Defined.
 
 (*
@@ -77,7 +81,7 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  run_symbolic. 
+  run_symbolic.
 Defined.
 
 (*
@@ -105,7 +109,7 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  run_symbolic. 
+  run_symbolic.
 Defined.
 
 (*
@@ -161,10 +165,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: revm_interpreter::instructions::i256::i256_div *)
   run_symbolic.
-(* Defined. *)
-Admitted.
+Defined.
 
 (*
 pub fn rem<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -219,10 +221,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: revm_interpreter::instructions::i256::i256_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn addmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -249,10 +249,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: Uint::add_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn mulmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -279,10 +277,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: Uint::mul_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn exp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -312,9 +308,9 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   (* TODO:
   - calc.gas.calc.exp_cost
-  - Uint::pow*)
+  *)
   run_symbolic.
-  Admitted.
+Admitted.
 (* Defined. *)
 
 (*

@@ -116,6 +116,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_inputs_and_outputs_another_example::main" main.
+  M.IsFunction.C "inline_assembly_inputs_and_outputs_another_example::main" main.
 Admitted.
 Global Typeclasses Opaque main.

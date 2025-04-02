@@ -75,24 +75,57 @@ Module Impl_erc20_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
+  Global Typeclasses Opaque insert.
 End Impl_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -392,7 +425,7 @@ Module Impl_erc20_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -401,11 +434,26 @@ Module Impl_erc20_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
 End Impl_erc20_Env.
 
 Module Impl_erc20_Erc20.
@@ -416,11 +464,23 @@ Module Impl_erc20_Erc20.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -440,7 +500,7 @@ Module Impl_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   (*
@@ -600,7 +660,7 @@ Module Impl_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -625,7 +685,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_total_supply :
-    M.IsAssociatedFunction.Trait Self "total_supply" total_supply.
+    M.IsAssociatedFunction.C Self "total_supply" total_supply.
   Admitted.
   Global Typeclasses Opaque total_supply.
   
@@ -678,7 +738,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_balance_of_impl :
-    M.IsAssociatedFunction.Trait Self "balance_of_impl" balance_of_impl.
+    M.IsAssociatedFunction.C Self "balance_of_impl" balance_of_impl.
   Admitted.
   Global Typeclasses Opaque balance_of_impl.
   
@@ -705,7 +765,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_balance_of :
-    M.IsAssociatedFunction.Trait Self "balance_of" balance_of.
+    M.IsAssociatedFunction.C Self "balance_of" balance_of.
   Admitted.
   Global Typeclasses Opaque balance_of.
   
@@ -776,7 +836,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_allowance_impl :
-    M.IsAssociatedFunction.Trait Self "allowance_impl" allowance_impl.
+    M.IsAssociatedFunction.C Self "allowance_impl" allowance_impl.
   Admitted.
   Global Typeclasses Opaque allowance_impl.
   
@@ -805,7 +865,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_allowance :
-    M.IsAssociatedFunction.Trait Self "allowance" allowance.
+    M.IsAssociatedFunction.C Self "allowance" allowance.
   Admitted.
   Global Typeclasses Opaque allowance.
   
@@ -995,7 +1055,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_transfer_from_to :
-    M.IsAssociatedFunction.Trait Self "transfer_from_to" transfer_from_to.
+    M.IsAssociatedFunction.C Self "transfer_from_to" transfer_from_to.
   Admitted.
   Global Typeclasses Opaque transfer_from_to.
   
@@ -1051,8 +1111,7 @@ Module Impl_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
   Global Typeclasses Opaque transfer.
   
@@ -1160,7 +1219,7 @@ Module Impl_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.Trait Self "approve" approve.
+  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.C Self "approve" approve.
   Admitted.
   Global Typeclasses Opaque approve.
   
@@ -1406,7 +1465,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Global Instance AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+    M.IsAssociatedFunction.C Self "transfer_from" transfer_from.
   Admitted.
   Global Typeclasses Opaque transfer_from.
 End Impl_erc20_Erc20.

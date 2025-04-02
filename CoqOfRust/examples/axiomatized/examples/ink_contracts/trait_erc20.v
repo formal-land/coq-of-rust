@@ -35,14 +35,14 @@ Module Impl_trait_erc20_Mapping_K_V.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
 End Impl_trait_erc20_Mapping_K_V.
 
@@ -282,13 +282,13 @@ Module Impl_trait_erc20_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
 End Impl_trait_erc20_Env.
 
@@ -297,36 +297,35 @@ Module Impl_trait_erc20_Erc20.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter balance_of_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_balance_of_impl :
-    M.IsAssociatedFunction.Trait Self "balance_of_impl" balance_of_impl.
+    M.IsAssociatedFunction.C Self "balance_of_impl" balance_of_impl.
   Admitted.
   
   Parameter allowance_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_allowance_impl :
-    M.IsAssociatedFunction.Trait Self "allowance_impl" allowance_impl.
+    M.IsAssociatedFunction.C Self "allowance_impl" allowance_impl.
   Admitted.
   
   Parameter transfer_from_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_from_to :
-    M.IsAssociatedFunction.Trait Self "transfer_from_to" transfer_from_to.
+    M.IsAssociatedFunction.C Self "transfer_from_to" transfer_from_to.
   Admitted.
 End Impl_trait_erc20_Erc20.
 

@@ -1,13 +1,13 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.links.dependencies.
+Require Import alloy_primitives.bytes.links.mod.
 Require Import revm.revm_interpreter.links.instruction_result.
 Require Import revm_interpreter.links.gas.
 
 Module InterpreterResult.
   Record t : Set := {
     result: InstructionResult.t;
-    output: alloy_primitives.links.bytes_.Bytes.t;
+    output: Bytes.t;
     gas: Gas.t;
   }.
 
@@ -43,7 +43,7 @@ Module InterpreterResult.
 
   Definition of_value
       (result : InstructionResult.t) result'
-      (output : alloy_primitives.links.bytes_.Bytes.t) output'
+      (output : Bytes.t) output'
       (gas : Gas.t) gas' :
     result' = φ result ->
     output' = φ output ->

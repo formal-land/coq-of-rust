@@ -119,7 +119,7 @@ Module Impl_contract_transfer_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -128,32 +128,75 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.C Self "balance" balance.
   Admitted.
+  Global Typeclasses Opaque balance.
   
   (*
       fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _to; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _to := M.alloc (| _to |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
+  Global Typeclasses Opaque transfer.
   
   (*
       fn transferred_value(&self) -> Balance {
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition transferred_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_transferred_value :
-    M.IsAssociatedFunction.Trait Self "transferred_value" transferred_value.
+    M.IsAssociatedFunction.C Self "transferred_value" transferred_value.
   Admitted.
+  Global Typeclasses Opaque transferred_value.
 End Impl_contract_transfer_Env.
 
 (* StructTuple
@@ -172,11 +215,23 @@ Module Impl_contract_transfer_GiveMe.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -196,7 +251,7 @@ Module Impl_contract_transfer_GiveMe.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -211,7 +266,7 @@ Module Impl_contract_transfer_GiveMe.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -260,12 +315,8 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "requested value: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "requested value: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -326,12 +377,8 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "contract balance: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "contract balance: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -464,7 +511,7 @@ Module Impl_contract_transfer_GiveMe.
                             [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
-                          [ M.read (| Value.String "insufficient funds!" |) ]
+                          [ mk_str (| "insufficient funds!" |) ]
                         |)
                       |)
                     |)));
@@ -577,9 +624,8 @@ Module Impl_contract_transfer_GiveMe.
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
-                          M.read (|
-                            Value.String
-                              "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
+                          mk_str (|
+                            "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
                           |)
                         ]
                       |)
@@ -592,7 +638,7 @@ Module Impl_contract_transfer_GiveMe.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_give_me : M.IsAssociatedFunction.Trait Self "give_me" give_me.
+  Global Instance AssociatedFunction_give_me : M.IsAssociatedFunction.C Self "give_me" give_me.
   Admitted.
   Global Typeclasses Opaque give_me.
   
@@ -630,12 +676,8 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "received payment: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "received payment: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -768,7 +810,7 @@ Module Impl_contract_transfer_GiveMe.
                             [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
-                          [ M.read (| Value.String "payment was not ten" |) ]
+                          [ mk_str (| "payment was not ten" |) ]
                         |)
                       |)
                     |)));
@@ -781,7 +823,7 @@ Module Impl_contract_transfer_GiveMe.
     end.
   
   Global Instance AssociatedFunction_was_it_ten :
-    M.IsAssociatedFunction.Trait Self "was_it_ten" was_it_ten.
+    M.IsAssociatedFunction.C Self "was_it_ten" was_it_ten.
   Admitted.
   Global Typeclasses Opaque was_it_ten.
 End Impl_contract_transfer_GiveMe.

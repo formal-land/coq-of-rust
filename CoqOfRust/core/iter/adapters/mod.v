@@ -149,7 +149,7 @@ Module iter.
       end.
     
     Global Instance Instance_IsFunction_try_process :
-      M.IsFunction.Trait "core::iter::adapters::try_process" try_process.
+      M.IsFunction.C "core::iter::adapters::try_process" try_process.
     Admitted.
     Global Typeclasses Opaque try_process.
     
@@ -914,21 +914,42 @@ Module iter.
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_EXPAND_BY (I R : Ty.t) : Value.t :=
+      Definition value_EXPAND_BY
+          (I R : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I R in
-        M.run
-          ltac:(M.monadic
-            (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+        ltac:(M.monadic
+          (get_constant (|
+            "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          |))).
       
       (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-      Definition value_MERGE_BY (I R : Ty.t) : Value.t :=
+      Definition value_MERGE_BY
+          (I R : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I R in
-        M.run
-          ltac:(M.monadic (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+        ltac:(M.monadic
+          (get_constant (|
+            "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          |))).
       
       Axiom Implements :
         forall (I R : Ty.t),
@@ -939,8 +960,8 @@ Module iter.
           (Self I R)
           (* Instance *)
           [
-            ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I R));
-            ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I R))
+            ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I R));
+            ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I R))
           ].
     End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_GenericShunt_I_R.
   End adapters.

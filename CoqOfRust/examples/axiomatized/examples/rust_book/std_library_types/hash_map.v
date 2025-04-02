@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_call : M.IsFunction.Trait "hash_map::call" call.
+Global Instance Instance_IsFunction_call : M.IsFunction.C "hash_map::call" call.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hash_map::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "hash_map::main" main.
 Admitted.

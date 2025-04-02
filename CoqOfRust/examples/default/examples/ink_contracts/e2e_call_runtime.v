@@ -104,10 +104,24 @@ Module Impl_e2e_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.C Self "balance" balance.
   Admitted.
+  Global Typeclasses Opaque balance.
 End Impl_e2e_call_runtime_Env.
 
 (* StructTuple
@@ -145,11 +159,23 @@ Module Impl_e2e_call_runtime_Contract.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -169,7 +195,7 @@ Module Impl_e2e_call_runtime_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -184,7 +210,7 @@ Module Impl_e2e_call_runtime_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -223,7 +249,7 @@ Module Impl_e2e_call_runtime_Contract.
     end.
   
   Global Instance AssociatedFunction_get_contract_balance :
-    M.IsAssociatedFunction.Trait Self "get_contract_balance" get_contract_balance.
+    M.IsAssociatedFunction.C Self "get_contract_balance" get_contract_balance.
   Admitted.
   Global Typeclasses Opaque get_contract_balance.
 End Impl_e2e_call_runtime_Contract.

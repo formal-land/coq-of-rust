@@ -339,11 +339,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "FromBytesWithNulError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromBytesWithNulError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -663,7 +660,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InteriorNul" |) |)
+                              M.deref (| mk_str (| "InteriorNul" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -696,7 +693,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NotNulTerminated" |) |)
+                              M.deref (| mk_str (| "NotNulTerminated" |) |)
                             |)
                           ]
                         |)
@@ -741,7 +738,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_interior_nul :
-        M.IsAssociatedFunction.Trait Self "interior_nul" interior_nul.
+        M.IsAssociatedFunction.C Self "interior_nul" interior_nul.
       Admitted.
       Global Typeclasses Opaque interior_nul.
       
@@ -766,7 +763,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_not_nul_terminated :
-        M.IsAssociatedFunction.Trait Self "not_nul_terminated" not_nul_terminated.
+        M.IsAssociatedFunction.C Self "not_nul_terminated" not_nul_terminated.
       Admitted.
       Global Typeclasses Opaque not_nul_terminated.
     End Impl_core_ffi_c_str_FromBytesWithNulError.
@@ -808,9 +805,7 @@ Module ffi.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "data provided contains an interior nul byte" |)
-                          |)
+                          M.deref (| mk_str (| "data provided contains an interior nul byte" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -823,9 +818,7 @@ Module ffi.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "data provided is not nul terminated" |)
-                          |)
+                          M.deref (| mk_str (| "data provided is not nul terminated" |) |)
                         |)
                       |)))
                 ]
@@ -1025,7 +1018,7 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "FromBytesUntilNulError" |) |)
+                  M.deref (| mk_str (| "FromBytesUntilNulError" |) |)
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1096,8 +1089,7 @@ Module ffi.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "data provided does not contain a nul" |) ]
+                            Value.Array [ mk_str (| "data provided does not contain a nul" |) ]
                           |)
                         |)
                       |)
@@ -1154,10 +1146,7 @@ Module ffi.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
-                          |)
+                          M.alloc (| Value.Array [ mk_str (| """" |); mk_str (| """" |) ] |)
                         |)
                       |)
                     |);
@@ -1288,7 +1277,15 @@ Module ffi.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
-                            M.read (| M.get_constant "core::ffi::c_str::default::SLICE" |)
+                            M.read (|
+                              get_constant (|
+                                "core::ffi::c_str::default::SLICE",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -1541,9 +1538,7 @@ Module ffi.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String " at byte pos " |)
-                                                        ]
+                                                      Value.Array [ mk_str (| " at byte pos " |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -1751,7 +1746,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_from_ptr :
-        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+        M.IsAssociatedFunction.C Self "from_ptr" from_ptr.
       Admitted.
       Global Typeclasses Opaque from_ptr.
       
@@ -1888,7 +1883,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_from_bytes_until_nul :
-        M.IsAssociatedFunction.Trait Self "from_bytes_until_nul" from_bytes_until_nul.
+        M.IsAssociatedFunction.C Self "from_bytes_until_nul" from_bytes_until_nul.
       Admitted.
       Global Typeclasses Opaque from_bytes_until_nul.
       
@@ -2040,7 +2035,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_from_bytes_with_nul :
-        M.IsAssociatedFunction.Trait Self "from_bytes_with_nul" from_bytes_with_nul.
+        M.IsAssociatedFunction.C Self "from_bytes_with_nul" from_bytes_with_nul.
       Admitted.
       Global Typeclasses Opaque from_bytes_with_nul.
       
@@ -2143,10 +2138,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_from_bytes_with_nul_unchecked :
-        M.IsAssociatedFunction.Trait
-          Self
-          "from_bytes_with_nul_unchecked"
-          from_bytes_with_nul_unchecked.
+        M.IsAssociatedFunction.C Self "from_bytes_with_nul_unchecked" from_bytes_with_nul_unchecked.
       Admitted.
       Global Typeclasses Opaque from_bytes_with_nul_unchecked.
       
@@ -2182,7 +2174,7 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
       Admitted.
       Global Typeclasses Opaque as_ptr.
       
@@ -2257,7 +2249,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_as_non_null_ptr :
-        M.IsAssociatedFunction.Trait Self "as_non_null_ptr" as_non_null_ptr.
+        M.IsAssociatedFunction.C Self "as_non_null_ptr" as_non_null_ptr.
       Admitted.
       Global Typeclasses Opaque as_non_null_ptr.
       
@@ -2297,7 +2289,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_count_bytes :
-        M.IsAssociatedFunction.Trait Self "count_bytes" count_bytes.
+        M.IsAssociatedFunction.C Self "count_bytes" count_bytes.
       Admitted.
       Global Typeclasses Opaque count_bytes.
       
@@ -2344,7 +2336,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -2417,7 +2409,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_to_bytes :
-        M.IsAssociatedFunction.Trait Self "to_bytes" to_bytes.
+        M.IsAssociatedFunction.C Self "to_bytes" to_bytes.
       Admitted.
       Global Typeclasses Opaque to_bytes.
       
@@ -2460,7 +2452,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_to_bytes_with_nul :
-        M.IsAssociatedFunction.Trait Self "to_bytes_with_nul" to_bytes_with_nul.
+        M.IsAssociatedFunction.C Self "to_bytes_with_nul" to_bytes_with_nul.
       Admitted.
       Global Typeclasses Opaque to_bytes_with_nul.
       
@@ -2482,7 +2474,7 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.Trait Self "bytes" bytes.
+      Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.C Self "bytes" bytes.
       Admitted.
       Global Typeclasses Opaque bytes.
       
@@ -2528,7 +2520,7 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_str : M.IsAssociatedFunction.Trait Self "to_str" to_str.
+      Global Instance AssociatedFunction_to_str : M.IsAssociatedFunction.C Self "to_str" to_str.
       Admitted.
       Global Typeclasses Opaque to_str.
     End Impl_core_ffi_c_str_CStr.
@@ -2867,10 +2859,8 @@ Module ffi.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "index out of bounds: the len is "
-                                              |);
-                                              M.read (| Value.String " but the index is " |)
+                                              mk_str (| "index out of bounds: the len is " |);
+                                              mk_str (| " but the index is " |)
                                             ]
                                         |)
                                       |)
@@ -3052,8 +3042,7 @@ Module ffi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_strlen :
-      M.IsFunction.Trait "core::ffi::c_str::strlen" strlen.
+    Global Instance Instance_IsFunction_strlen : M.IsFunction.C "core::ffi::c_str::strlen" strlen.
     Admitted.
     Global Typeclasses Opaque strlen.
     
@@ -3062,7 +3051,7 @@ Module ffi.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
         Global Instance Instance_IsFunction_strlen :
-          M.IsFunction.Trait "core::ffi::c_str::strlen::runtime::strlen" strlen.
+          M.IsFunction.C "core::ffi::c_str::strlen::runtime::strlen" strlen.
         Admitted.
       End runtime.
     End strlen.
@@ -3199,8 +3188,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bytes" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ptr" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ptr" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3214,7 +3203,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "phantom" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "phantom" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3314,7 +3303,7 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -3356,7 +3345,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
     End Impl_core_ffi_c_str_Bytes.

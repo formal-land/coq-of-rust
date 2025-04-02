@@ -136,14 +136,14 @@ Module Impl_constructors_return_value_ReturnFlags.
   Parameter new_with_reverted : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_new_with_reverted :
-    M.IsAssociatedFunction.Trait Self "new_with_reverted" new_with_reverted.
+    M.IsAssociatedFunction.C Self "new_with_reverted" new_with_reverted.
   Admitted.
 End Impl_constructors_return_value_ReturnFlags.
 
 Parameter return_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_return_value :
-  M.IsFunction.Trait "constructors_return_value::return_value" return_value.
+  M.IsFunction.C "constructors_return_value::return_value" return_value.
 Admitted.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
@@ -151,29 +151,29 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter try_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
   Admitted.
   
   Parameter revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_revert_new :
-    M.IsAssociatedFunction.Trait Self "revert_new" revert_new.
+    M.IsAssociatedFunction.C Self "revert_new" revert_new.
   Admitted.
   
   Parameter try_revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_try_revert_new :
-    M.IsAssociatedFunction.Trait Self "try_revert_new" try_revert_new.
+    M.IsAssociatedFunction.C Self "try_revert_new" try_revert_new.
   Admitted.
   
   Parameter get_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_value :
-    M.IsAssociatedFunction.Trait Self "get_value" get_value.
+    M.IsAssociatedFunction.C Self "get_value" get_value.
   Admitted.
 End Impl_constructors_return_value_ConstructorsReturnValue.

@@ -51,7 +51,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_u32 :
-      M.IsFunction.Trait "core::char::convert::from_u32" from_u32.
+      M.IsFunction.C "core::char::convert::from_u32" from_u32.
     Admitted.
     Global Typeclasses Opaque from_u32.
     
@@ -123,7 +123,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_u32_unchecked :
-      M.IsFunction.Trait "core::char::convert::from_u32_unchecked" from_u32_unchecked.
+      M.IsFunction.C "core::char::convert::from_u32_unchecked" from_u32_unchecked.
     Admitted.
     Global Typeclasses Opaque from_u32_unchecked.
     
@@ -525,11 +525,8 @@ Module char.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ParseCharError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseCharError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -751,7 +748,7 @@ Module char.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "EmptyString" |) |)
+                              M.deref (| mk_str (| "EmptyString" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -765,7 +762,7 @@ Module char.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "TooManyChars" |) |)
+                              M.deref (| mk_str (| "TooManyChars" |) |)
                             |)
                           |)))
                     ]
@@ -908,9 +905,7 @@ Module char.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "cannot parse char from empty string" |)
-                          |)
+                          M.deref (| mk_str (| "cannot parse char from empty string" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -923,7 +918,7 @@ Module char.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "too many characters in string" |) |)
+                          M.deref (| mk_str (| "too many characters in string" |) |)
                         |)
                       |)))
                 ]
@@ -1223,7 +1218,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_char_try_from_u32 :
-      M.IsFunction.Trait "core::char::convert::char_try_from_u32" char_try_from_u32.
+      M.IsFunction.C "core::char::convert::char_try_from_u32" char_try_from_u32.
     Admitted.
     Global Typeclasses Opaque char_try_from_u32.
     
@@ -1335,10 +1330,7 @@ Module char.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharTryFromError" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharTryFromError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1491,9 +1483,7 @@ Module char.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "converted integer out of range for `char`" |)
-                  |)
+                  M.deref (| mk_str (| "converted integer out of range for `char`" |) |)
                 |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
@@ -1566,9 +1556,8 @@ Module char.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "from_digit: radix is too high (maximum 36)"
+                                              mk_str (|
+                                                "from_digit: radix is too high (maximum 36)"
                                               |)
                                             ]
                                         |)
@@ -1648,7 +1637,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_digit :
-      M.IsFunction.Trait "core::char::convert::from_digit" from_digit.
+      M.IsFunction.C "core::char::convert::from_digit" from_digit.
     Admitted.
     Global Typeclasses Opaque from_digit.
   End convert.

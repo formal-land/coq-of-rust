@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_inlateout_mul::main" main.
+  M.IsFunction.C "inline_assembly_inlateout_mul::main" main.
 Admitted.
 
 Module main.
   Parameter mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_mul :
-    M.IsFunction.Trait "inline_assembly_inlateout_mul::main::mul" mul.
+    M.IsFunction.C "inline_assembly_inlateout_mul::main::mul" mul.
   Admitted.
 End main.

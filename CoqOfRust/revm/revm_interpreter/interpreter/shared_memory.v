@@ -454,55 +454,60 @@ Module interpreter.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
-    Definition value_EMPTY_SHARED_MEMORY : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructRecord
-              "revm_interpreter::interpreter::shared_memory::SharedMemory"
-              [
-                ("buffer",
-                  M.call_closure (|
+    Definition value_EMPTY_SHARED_MEMORY
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructRecord
+            "revm_interpreter::interpreter::shared_memory::SharedMemory"
+            [
+              ("buffer",
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "new",
-                      [],
-                      []
-                    |),
+                    "new",
+                    [],
                     []
-                  |));
-                ("checkpoints",
-                  M.call_closure (|
+                  |),
+                  []
+                |));
+              ("checkpoints",
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                      "new",
-                      [],
-                      []
-                    |),
+                    "new",
+                    [],
                     []
-                  |));
-                ("last_checkpoint", Value.Integer IntegerKind.Usize 0)
-              ]
-          |))).
+                  |),
+                  []
+                |));
+              ("last_checkpoint", Value.Integer IntegerKind.Usize 0)
+            ]
+        |))).
     
-    Axiom Constant_value_EMPTY_SHARED_MEMORY :
-      (M.get_constant "revm_interpreter::interpreter::shared_memory::EMPTY_SHARED_MEMORY") =
+    Global Instance Instance_IsConstant_value_EMPTY_SHARED_MEMORY :
+      M.IsFunction.C
+        "revm_interpreter::interpreter::shared_memory::EMPTY_SHARED_MEMORY"
         value_EMPTY_SHARED_MEMORY.
-    Global Hint Rewrite Constant_value_EMPTY_SHARED_MEMORY : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_EMPTY_SHARED_MEMORY.
     
     Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
       Definition Self : Ty.t :=
@@ -579,7 +584,7 @@ Module interpreter.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "SharedMemory" |) |)
+                                          M.deref (| mk_str (| "SharedMemory" |) |)
                                         |)
                                       ]
                                     |)
@@ -587,7 +592,7 @@ Module interpreter.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "current_len" |) |)
+                                  M.deref (| mk_str (| "current_len" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -621,7 +626,7 @@ Module interpreter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "context_memory" |) |)
+                          M.deref (| mk_str (| "context_memory" |) |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1629,7 +1634,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1692,7 +1697,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_with_capacity :
-        M.IsAssociatedFunction.Trait Self "with_capacity" with_capacity.
+        M.IsAssociatedFunction.C Self "with_capacity" with_capacity.
       Admitted.
       Global Typeclasses Opaque with_capacity.
       
@@ -1777,7 +1782,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_new_context :
-        M.IsAssociatedFunction.Trait Self "new_context" new_context.
+        M.IsAssociatedFunction.C Self "new_context" new_context.
       Admitted.
       Global Typeclasses Opaque new_context.
       
@@ -1953,7 +1958,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_free_context :
-        M.IsAssociatedFunction.Trait Self "free_context" free_context.
+        M.IsAssociatedFunction.C Self "free_context" free_context.
       Admitted.
       Global Typeclasses Opaque free_context.
       
@@ -2001,7 +2006,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -2032,7 +2037,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -2089,7 +2094,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_resize : M.IsAssociatedFunction.Trait Self "resize" resize.
+      Global Instance AssociatedFunction_resize : M.IsAssociatedFunction.C Self "resize" resize.
       Admitted.
       Global Typeclasses Opaque resize.
       
@@ -2132,7 +2137,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_slice_len :
-        M.IsAssociatedFunction.Trait Self "slice_len" slice_len.
+        M.IsAssociatedFunction.C Self "slice_len" slice_len.
       Admitted.
       Global Typeclasses Opaque slice_len.
       
@@ -2287,12 +2292,11 @@ Module interpreter.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "internal error: entered unreachable code: slice OOB: "
+                                                              mk_str (|
+                                                                "internal error: entered unreachable code: slice OOB: "
                                                               |);
-                                                              M.read (| Value.String ".." |);
-                                                              M.read (| Value.String "; len: " |)
+                                                              mk_str (| ".." |);
+                                                              mk_str (| "; len: " |)
                                                             ]
                                                         |)
                                                       |)
@@ -2472,7 +2476,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_slice_range :
-        M.IsAssociatedFunction.Trait Self "slice_range" slice_range.
+        M.IsAssociatedFunction.C Self "slice_range" slice_range.
       Admitted.
       Global Typeclasses Opaque slice_range.
       
@@ -2628,11 +2632,10 @@ Module interpreter.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "internal error: entered unreachable code: slice OOB: "
+                                                                  mk_str (|
+                                                                    "internal error: entered unreachable code: slice OOB: "
                                                                   |);
-                                                                  M.read (| Value.String ".." |)
+                                                                  mk_str (| ".." |)
                                                                 ]
                                                             |)
                                                           |)
@@ -2739,7 +2742,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_slice_mut :
-        M.IsAssociatedFunction.Trait Self "slice_mut" slice_mut.
+        M.IsAssociatedFunction.C Self "slice_mut" slice_mut.
       Admitted.
       Global Typeclasses Opaque slice_mut.
       
@@ -2779,7 +2782,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_get_byte :
-        M.IsAssociatedFunction.Trait Self "get_byte" get_byte.
+        M.IsAssociatedFunction.C Self "get_byte" get_byte.
       Admitted.
       Global Typeclasses Opaque get_byte.
       
@@ -2871,7 +2874,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_get_word :
-        M.IsAssociatedFunction.Trait Self "get_word" get_word.
+        M.IsAssociatedFunction.C Self "get_word" get_word.
       Admitted.
       Global Typeclasses Opaque get_word.
       
@@ -2931,7 +2934,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_get_u256 :
-        M.IsAssociatedFunction.Trait Self "get_u256" get_u256.
+        M.IsAssociatedFunction.C Self "get_u256" get_u256.
       Admitted.
       Global Typeclasses Opaque get_u256.
       
@@ -2979,7 +2982,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_set_byte :
-        M.IsAssociatedFunction.Trait Self "set_byte" set_byte.
+        M.IsAssociatedFunction.C Self "set_byte" set_byte.
       Admitted.
       Global Typeclasses Opaque set_byte.
       
@@ -3050,7 +3053,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_set_word :
-        M.IsAssociatedFunction.Trait Self "set_word" set_word.
+        M.IsAssociatedFunction.C Self "set_word" set_word.
       Admitted.
       Global Typeclasses Opaque set_word.
       
@@ -3118,7 +3121,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_set_u256 :
-        M.IsAssociatedFunction.Trait Self "set_u256" set_u256.
+        M.IsAssociatedFunction.C Self "set_u256" set_u256.
       Admitted.
       Global Typeclasses Opaque set_u256.
       
@@ -3224,7 +3227,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_set : M.IsAssociatedFunction.Trait Self "set" set.
+      Global Instance AssociatedFunction_set : M.IsAssociatedFunction.C Self "set" set.
       Admitted.
       Global Typeclasses Opaque set.
       
@@ -3446,9 +3449,8 @@ Module interpreter.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: data_offset < data.len() && data_end <= data.len()"
+                                              mk_str (|
+                                                "assertion failed: data_offset < data.len() && data_end <= data.len()"
                                               |)
                                             ]
                                           |)
@@ -3578,7 +3580,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_set_data :
-        M.IsAssociatedFunction.Trait Self "set_data" set_data.
+        M.IsAssociatedFunction.C Self "set_data" set_data.
       Admitted.
       Global Typeclasses Opaque set_data.
       
@@ -3640,7 +3642,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_copy : M.IsAssociatedFunction.Trait Self "copy" copy.
+      Global Instance AssociatedFunction_copy : M.IsAssociatedFunction.C Self "copy" copy.
       Admitted.
       Global Typeclasses Opaque copy.
       
@@ -3746,7 +3748,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_context_memory :
-        M.IsAssociatedFunction.Trait Self "context_memory" context_memory.
+        M.IsAssociatedFunction.C Self "context_memory" context_memory.
       Admitted.
       Global Typeclasses Opaque context_memory.
       
@@ -3875,7 +3877,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_context_memory_mut :
-        M.IsAssociatedFunction.Trait Self "context_memory_mut" context_memory_mut.
+        M.IsAssociatedFunction.C Self "context_memory_mut" context_memory_mut.
       Admitted.
       Global Typeclasses Opaque context_memory_mut.
     End Impl_revm_interpreter_interpreter_shared_memory_SharedMemory.
@@ -3902,7 +3904,7 @@ Module interpreter.
       end.
     
     Global Instance Instance_IsFunction_num_words :
-      M.IsFunction.Trait "revm_interpreter::interpreter::shared_memory::num_words" num_words.
+      M.IsFunction.C "revm_interpreter::interpreter::shared_memory::num_words" num_words.
     Admitted.
     Global Typeclasses Opaque num_words.
   End shared_memory.

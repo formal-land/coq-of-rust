@@ -56,12 +56,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Tell me about " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Tell me about " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -140,9 +136,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "First is `0`, `y` is " |);
-                                        M.read (| Value.String ", and `z` is " |);
-                                        M.read (| Value.String "
+                                        mk_str (| "First is `0`, `y` is " |);
+                                        mk_str (| ", and `z` is " |);
+                                        mk_str (| "
 " |)
                                       ]
                                   |)
@@ -230,12 +226,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "First is `1` and the rest doesn't matter
-"
-                                        |)
-                                      ]
+                                      [ mk_str (| "First is `1` and the rest doesn't matter
+" |) ]
                                   |)
                                 |)
                               |)
@@ -278,12 +270,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "last is `2` and the rest doesn't matter
-"
-                                        |)
-                                      ]
+                                      [ mk_str (| "last is `2` and the rest doesn't matter
+" |) ]
                                   |)
                                 |)
                               |)
@@ -332,9 +320,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "First is `3`, last is `4`, and the rest doesn't matter
+                                        mk_str (|
+                                          "First is `3`, last is `4`, and the rest doesn't matter
 "
                                         |)
                                       ]
@@ -371,10 +358,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "It doesn't matter what they are
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "It doesn't matter what they are
+" |) ]
                                   |)
                                 |)
                               |)
@@ -392,6 +377,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "match_destructuring_tuples_fixed::main" main.
+  M.IsFunction.C "match_destructuring_tuples_fixed::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -81,14 +81,8 @@ Module interpreter_action.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Tx" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "initdata" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tx" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initdata" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -134,23 +128,14 @@ Module interpreter_action.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Opcode" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "initcode" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Opcode" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initcode" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "input" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "created_address" |) |)
+                              M.deref (| mk_str (| "created_address" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -715,7 +700,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_created_address :
-        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+        M.IsAssociatedFunction.C Self "created_address" created_address.
       Admitted.
       Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
@@ -838,11 +823,8 @@ Module interpreter_action.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EOFCreateInputs" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "caller" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EOFCreateInputs" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "caller" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -856,7 +838,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -870,10 +852,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "gas_limit" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_limit" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -887,7 +866,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1412,7 +1391,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1472,7 +1451,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_new_opcode :
-        M.IsAssociatedFunction.Trait Self "new_opcode" new_opcode.
+        M.IsAssociatedFunction.C Self "new_opcode" new_opcode.
       Admitted.
       Global Typeclasses Opaque new_opcode.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.

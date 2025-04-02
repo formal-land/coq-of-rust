@@ -190,7 +190,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "pulling_results_out_of_options::double_first" double_first.
+  M.IsFunction.C "pulling_results_out_of_options::double_first" double_first.
 Admitted.
 Global Typeclasses Opaque double_first.
 
@@ -263,15 +263,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "42" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "42" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -352,15 +346,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "tofu" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "tofu" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -391,12 +379,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The first doubled is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "The first doubled is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -496,12 +480,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The first doubled is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "The first doubled is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -601,12 +581,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The first doubled is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "The first doubled is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -690,6 +666,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "pulling_results_out_of_options::main" main.
+  M.IsFunction.C "pulling_results_out_of_options::main" main.
 Admitted.
 Global Typeclasses Opaque main.

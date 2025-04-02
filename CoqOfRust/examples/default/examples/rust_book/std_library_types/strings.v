@@ -49,7 +49,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ pangram : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "the quick brown fox jumps over the lazy dog" |) in
+          M.alloc (| mk_str (| "the quick brown fox jumps over the lazy dog" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -71,14 +71,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Pangram: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Pangram: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -137,10 +131,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Words in reverse
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Words in reverse
+" |) ] |)
                           |)
                         |)
                       |)
@@ -275,11 +267,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "> " |);
-                                                            M.read (| Value.String "
-" |)
-                                                          ]
+                                                          [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                       |)
                                                     |)
                                                   |)
@@ -532,7 +521,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (| Pointer.Kind.MutRef, string |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String ", " |) |)
+                                            M.deref (| mk_str (| ", " |) |)
                                           |)
                                         ]
                                       |)
@@ -618,12 +607,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Used characters: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Used characters: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -675,7 +660,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "I like dogs" |) ]
+              [ mk_str (| "I like dogs" |) ]
             |)
           |) in
         let~ bob : Ty.path "alloc::string::String" :=
@@ -707,8 +692,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |)
                 |);
-                M.read (| Value.String "dog" |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "cat" |) |) |)
+                mk_str (| "dog" |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "cat" |) |) |)
               ]
             |)
           |) in
@@ -734,12 +719,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Alice says: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Alice says: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -800,12 +781,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Bob says: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Bob says: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -849,6 +826,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "strings::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "strings::main" main.
 Admitted.
 Global Typeclasses Opaque main.

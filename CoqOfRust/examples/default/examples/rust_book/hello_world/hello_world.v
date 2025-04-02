@@ -35,7 +35,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "Hello World!
+                            M.alloc (| Value.Array [ mk_str (| "Hello World!
 " |) ] |)
                           |)
                         |)
@@ -51,6 +51,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hello_world::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "hello_world::main" main.
 Admitted.
 Global Typeclasses Opaque main.

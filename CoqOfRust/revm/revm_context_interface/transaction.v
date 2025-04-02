@@ -32,9 +32,7 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "not implemented: legacy tx not supported" |)
-                              ]
+                            Value.Array [ mk_str (| "not implemented: legacy tx not supported" |) ]
                           |)
                         |)
                       |)
@@ -97,12 +95,7 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "not implemented: Eip2930 tx not supported"
-                                |)
-                              ]
+                            Value.Array [ mk_str (| "not implemented: Eip2930 tx not supported" |) ]
                           |)
                         |)
                       |)
@@ -165,12 +158,7 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "not implemented: Eip1559 tx not supported"
-                                |)
-                              ]
+                            Value.Array [ mk_str (| "not implemented: Eip1559 tx not supported" |) ]
                           |)
                         |)
                       |)
@@ -233,12 +221,7 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "not implemented: Eip4844 tx not supported"
-                                |)
-                              ]
+                            Value.Array [ mk_str (| "not implemented: Eip4844 tx not supported" |) ]
                           |)
                         |)
                       |)
@@ -301,12 +284,7 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "not implemented: Eip7702 tx not supported"
-                                |)
-                              ]
+                            Value.Array [ mk_str (| "not implemented: Eip7702 tx not supported" |) ]
                           |)
                         |)
                       |)
@@ -660,9 +638,8 @@ Module transaction.
                                               M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "not implemented: Custom tx not supported"
+                                                    mk_str (|
+                                                      "not implemented: Custom tx not supported"
                                                     |)
                                                   ]
                                               |)
@@ -1076,11 +1053,7 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "not implemented: Custom tx not supported"
-                                            |)
+                                          [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
                                       |)
                                     |)
@@ -1704,9 +1677,8 @@ Module transaction.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "not implemented: Custom tx not supported"
+                                                  mk_str (|
+                                                    "not implemented: Custom tx not supported"
                                                   |)
                                                 ]
                                             |)
@@ -2166,11 +2138,7 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "not implemented: Custom tx not supported"
-                                            |)
+                                          [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
                                       |)
                                     |)
@@ -2648,11 +2616,7 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "not implemented: Custom tx not supported"
-                                            |)
+                                          [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
                                       |)
                                     |)

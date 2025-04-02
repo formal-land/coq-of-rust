@@ -17,11 +17,11 @@ Module file_format_common.
     
     (*     pub const MOVE_MAGIC_SIZE: usize = 4; *)
     (* Ty.path "usize" *)
-    Definition value_MOVE_MAGIC_SIZE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+    Definition value_MOVE_MAGIC_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
     Global Instance AssociatedConstant_value_MOVE_MAGIC_SIZE :
-      M.IsAssociatedConstant.Trait Self "value_MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
+      M.IsAssociatedFunction.C Self "MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
     Admitted.
     Global Typeclasses Opaque value_MOVE_MAGIC_SIZE.
     
@@ -30,330 +30,469 @@ Module file_format_common.
       (Ty.path "array")
       [
         M.unevaluated_const
-          (M.get_constant "move_binary_format::file_format_common::MOVE_MAGIC_discriminant")
+          (mk_str (| "move_binary_format_file_format_common_MOVE_MAGIC_discriminant" |))
       ]
       [ Ty.path "u8" ] *)
-    Definition value_MOVE_MAGIC : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.Array
-              [
-                Value.Integer IntegerKind.U8 161;
-                Value.Integer IntegerKind.U8 28;
-                Value.Integer IntegerKind.U8 235;
-                Value.Integer IntegerKind.U8 11
-              ]
-          |))).
+    Definition value_MOVE_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.Array
+            [
+              Value.Integer IntegerKind.U8 161;
+              Value.Integer IntegerKind.U8 28;
+              Value.Integer IntegerKind.U8 235;
+              Value.Integer IntegerKind.U8 11
+            ]
+        |))).
     
     Global Instance AssociatedConstant_value_MOVE_MAGIC :
-      M.IsAssociatedConstant.Trait Self "value_MOVE_MAGIC" value_MOVE_MAGIC.
+      M.IsAssociatedFunction.C Self "MOVE_MAGIC" value_MOVE_MAGIC.
     Admitted.
     Global Typeclasses Opaque value_MOVE_MAGIC.
     
     (*     pub const HEADER_SIZE: usize = BinaryConstants::MOVE_MAGIC_SIZE + 5; *)
     (* Ty.path "usize" *)
-    Definition value_HEADER_SIZE : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.add (|
-              M.read (| M.get_constant "move_binary_format::file_format_common::MOVE_MAGIC_SIZE" |),
-              Value.Integer IntegerKind.Usize 5
-            |)
-          |))).
+    Definition value_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.add (|
+            M.read (|
+              get_associated_constant (|
+                Ty.path "move_binary_format::file_format_common::BinaryConstants",
+                "MOVE_MAGIC_SIZE",
+                Ty.path "usize"
+              |)
+            |),
+            Value.Integer IntegerKind.Usize 5
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_HEADER_SIZE :
-      M.IsAssociatedConstant.Trait Self "value_HEADER_SIZE" value_HEADER_SIZE.
+      M.IsAssociatedFunction.C Self "HEADER_SIZE" value_HEADER_SIZE.
     Admitted.
     Global Typeclasses Opaque value_HEADER_SIZE.
     
     (*     pub const TABLE_HEADER_SIZE: u8 = size_of::<u32>() as u8 * 2 + 1; *)
     (* Ty.path "u8" *)
-    Definition value_TABLE_HEADER_SIZE : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.add (|
-              BinOp.Wrap.mul (|
-                M.cast
-                  (Ty.path "u8")
-                  (M.call_closure (|
-                    Ty.path "usize",
-                    M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
-                    []
-                  |)),
-                Value.Integer IntegerKind.U8 2
-              |),
-              Value.Integer IntegerKind.U8 1
-            |)
-          |))).
+    Definition value_TABLE_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.add (|
+            BinOp.Wrap.mul (|
+              M.cast
+                (Ty.path "u8")
+                (M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
+                  []
+                |)),
+              Value.Integer IntegerKind.U8 2
+            |),
+            Value.Integer IntegerKind.U8 1
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_TABLE_HEADER_SIZE :
-      M.IsAssociatedConstant.Trait Self "value_TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
+      M.IsAssociatedFunction.C Self "TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
     Admitted.
     Global Typeclasses Opaque value_TABLE_HEADER_SIZE.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
-  Definition value_TABLE_COUNT_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_TABLE_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_TABLE_COUNT_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TABLE_COUNT_MAX") =
-      value_TABLE_COUNT_MAX.
-  Global Hint Rewrite Constant_value_TABLE_COUNT_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TABLE_COUNT_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::TABLE_COUNT_MAX" value_TABLE_COUNT_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_TABLE_COUNT_MAX.
   
-  Definition value_TABLE_OFFSET_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  Definition value_TABLE_OFFSET_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
   
-  Axiom Constant_value_TABLE_OFFSET_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TABLE_OFFSET_MAX") =
+  Global Instance Instance_IsConstant_value_TABLE_OFFSET_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::TABLE_OFFSET_MAX"
       value_TABLE_OFFSET_MAX.
-  Global Hint Rewrite Constant_value_TABLE_OFFSET_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TABLE_OFFSET_MAX.
   
-  Definition value_TABLE_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  Definition value_TABLE_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
   
-  Axiom Constant_value_TABLE_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TABLE_SIZE_MAX") =
-      value_TABLE_SIZE_MAX.
-  Global Hint Rewrite Constant_value_TABLE_SIZE_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TABLE_SIZE_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::TABLE_SIZE_MAX" value_TABLE_SIZE_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_TABLE_SIZE_MAX.
   
-  Definition value_TABLE_CONTENT_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  Definition value_TABLE_CONTENT_SIZE_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
   
-  Axiom Constant_value_TABLE_CONTENT_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TABLE_CONTENT_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_TABLE_CONTENT_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::TABLE_CONTENT_SIZE_MAX"
       value_TABLE_CONTENT_SIZE_MAX.
-  Global Hint Rewrite Constant_value_TABLE_CONTENT_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TABLE_CONTENT_SIZE_MAX.
   
-  Definition value_TABLE_INDEX_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_TABLE_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_TABLE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX") =
-      value_TABLE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_TABLE_INDEX_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TABLE_INDEX_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::TABLE_INDEX_MAX" value_TABLE_INDEX_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_TABLE_INDEX_MAX.
   
-  Definition value_SIGNATURE_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_SIGNATURE_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_SIGNATURE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_SIGNATURE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX"
       value_SIGNATURE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_SIGNATURE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_SIGNATURE_INDEX_MAX.
   
-  Definition value_ADDRESS_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_ADDRESS_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_ADDRESS_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::ADDRESS_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_ADDRESS_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::ADDRESS_INDEX_MAX"
       value_ADDRESS_INDEX_MAX.
-  Global Hint Rewrite Constant_value_ADDRESS_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_ADDRESS_INDEX_MAX.
   
-  Definition value_IDENTIFIER_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_IDENTIFIER_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_IDENTIFIER_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_IDENTIFIER_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX"
       value_IDENTIFIER_INDEX_MAX.
-  Global Hint Rewrite Constant_value_IDENTIFIER_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_IDENTIFIER_INDEX_MAX.
   
-  Definition value_MODULE_HANDLE_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_MODULE_HANDLE_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_MODULE_HANDLE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_MODULE_HANDLE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX"
       value_MODULE_HANDLE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_MODULE_HANDLE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_MODULE_HANDLE_INDEX_MAX.
   
-  Definition value_STRUCT_HANDLE_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_STRUCT_HANDLE_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_STRUCT_HANDLE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_STRUCT_HANDLE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX"
       value_STRUCT_HANDLE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_STRUCT_HANDLE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_STRUCT_HANDLE_INDEX_MAX.
   
-  Definition value_STRUCT_DEF_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_STRUCT_DEF_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_STRUCT_DEF_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_STRUCT_DEF_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX"
       value_STRUCT_DEF_INDEX_MAX.
-  Global Hint Rewrite Constant_value_STRUCT_DEF_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_STRUCT_DEF_INDEX_MAX.
   
-  Definition value_FUNCTION_HANDLE_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_FUNCTION_HANDLE_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_FUNCTION_HANDLE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_FUNCTION_HANDLE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX"
       value_FUNCTION_HANDLE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_FUNCTION_HANDLE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_FUNCTION_HANDLE_INDEX_MAX.
   
-  Definition value_FUNCTION_INST_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_FUNCTION_INST_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_FUNCTION_INST_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_FUNCTION_INST_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX"
       value_FUNCTION_INST_INDEX_MAX.
-  Global Hint Rewrite Constant_value_FUNCTION_INST_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_FUNCTION_INST_INDEX_MAX.
   
-  Definition value_FIELD_HANDLE_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_FIELD_HANDLE_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_FIELD_HANDLE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_FIELD_HANDLE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX"
       value_FIELD_HANDLE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_FIELD_HANDLE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_FIELD_HANDLE_INDEX_MAX.
   
-  Definition value_FIELD_INST_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_FIELD_INST_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_FIELD_INST_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_FIELD_INST_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX"
       value_FIELD_INST_INDEX_MAX.
-  Global Hint Rewrite Constant_value_FIELD_INST_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_FIELD_INST_INDEX_MAX.
   
-  Definition value_STRUCT_DEF_INST_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_STRUCT_DEF_INST_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_STRUCT_DEF_INST_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_STRUCT_DEF_INST_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX"
       value_STRUCT_DEF_INST_INDEX_MAX.
-  Global Hint Rewrite Constant_value_STRUCT_DEF_INST_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_STRUCT_DEF_INST_INDEX_MAX.
   
-  Definition value_CONSTANT_INDEX_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  Definition value_CONSTANT_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (|
+        "move_binary_format::file_format_common::TABLE_INDEX_MAX",
+        Ty.path "u64"
+      |))).
   
-  Axiom Constant_value_CONSTANT_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::CONSTANT_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_CONSTANT_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::CONSTANT_INDEX_MAX"
       value_CONSTANT_INDEX_MAX.
-  Global Hint Rewrite Constant_value_CONSTANT_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_CONSTANT_INDEX_MAX.
   
-  Definition value_BYTECODE_COUNT_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_BYTECODE_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_BYTECODE_COUNT_MAX :
-    (M.get_constant "move_binary_format::file_format_common::BYTECODE_COUNT_MAX") =
+  Global Instance Instance_IsConstant_value_BYTECODE_COUNT_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::BYTECODE_COUNT_MAX"
       value_BYTECODE_COUNT_MAX.
-  Global Hint Rewrite Constant_value_BYTECODE_COUNT_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BYTECODE_COUNT_MAX.
   
-  Definition value_BYTECODE_INDEX_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_BYTECODE_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_BYTECODE_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::BYTECODE_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_BYTECODE_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::BYTECODE_INDEX_MAX"
       value_BYTECODE_INDEX_MAX.
-  Global Hint Rewrite Constant_value_BYTECODE_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BYTECODE_INDEX_MAX.
   
-  Definition value_LOCAL_INDEX_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_LOCAL_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_LOCAL_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::LOCAL_INDEX_MAX") =
-      value_LOCAL_INDEX_MAX.
-  Global Hint Rewrite Constant_value_LOCAL_INDEX_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_LOCAL_INDEX_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::LOCAL_INDEX_MAX" value_LOCAL_INDEX_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_LOCAL_INDEX_MAX.
   
-  Definition value_IDENTIFIER_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_IDENTIFIER_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_IDENTIFIER_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_IDENTIFIER_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX"
       value_IDENTIFIER_SIZE_MAX.
-  Global Hint Rewrite Constant_value_IDENTIFIER_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_IDENTIFIER_SIZE_MAX.
   
-  Definition value_CONSTANT_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_CONSTANT_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_CONSTANT_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::CONSTANT_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_CONSTANT_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::CONSTANT_SIZE_MAX"
       value_CONSTANT_SIZE_MAX.
-  Global Hint Rewrite Constant_value_CONSTANT_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_CONSTANT_SIZE_MAX.
   
-  Definition value_METADATA_KEY_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
+  Definition value_METADATA_KEY_SIZE_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
   
-  Axiom Constant_value_METADATA_KEY_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_METADATA_KEY_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX"
       value_METADATA_KEY_SIZE_MAX.
-  Global Hint Rewrite Constant_value_METADATA_KEY_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_METADATA_KEY_SIZE_MAX.
   
-  Definition value_METADATA_VALUE_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  Definition value_METADATA_VALUE_SIZE_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
   
-  Axiom Constant_value_METADATA_VALUE_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_METADATA_VALUE_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX"
       value_METADATA_VALUE_SIZE_MAX.
-  Global Hint Rewrite Constant_value_METADATA_VALUE_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_METADATA_VALUE_SIZE_MAX.
   
-  Definition value_SIGNATURE_SIZE_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_SIGNATURE_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_SIGNATURE_SIZE_MAX :
-    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX") =
+  Global Instance Instance_IsConstant_value_SIGNATURE_SIZE_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX"
       value_SIGNATURE_SIZE_MAX.
-  Global Hint Rewrite Constant_value_SIGNATURE_SIZE_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_SIGNATURE_SIZE_MAX.
   
-  Definition value_ACQUIRES_COUNT_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_ACQUIRES_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_ACQUIRES_COUNT_MAX :
-    (M.get_constant "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX") =
+  Global Instance Instance_IsConstant_value_ACQUIRES_COUNT_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX"
       value_ACQUIRES_COUNT_MAX.
-  Global Hint Rewrite Constant_value_ACQUIRES_COUNT_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_ACQUIRES_COUNT_MAX.
   
-  Definition value_FIELD_COUNT_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_FIELD_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_FIELD_COUNT_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FIELD_COUNT_MAX") =
-      value_FIELD_COUNT_MAX.
-  Global Hint Rewrite Constant_value_FIELD_COUNT_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_FIELD_COUNT_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::FIELD_COUNT_MAX" value_FIELD_COUNT_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_FIELD_COUNT_MAX.
   
-  Definition value_FIELD_OFFSET_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_FIELD_OFFSET_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_FIELD_OFFSET_MAX :
-    (M.get_constant "move_binary_format::file_format_common::FIELD_OFFSET_MAX") =
+  Global Instance Instance_IsConstant_value_FIELD_OFFSET_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::FIELD_OFFSET_MAX"
       value_FIELD_OFFSET_MAX.
-  Global Hint Rewrite Constant_value_FIELD_OFFSET_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_FIELD_OFFSET_MAX.
   
-  Definition value_TYPE_PARAMETER_COUNT_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  Definition value_TYPE_PARAMETER_COUNT_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
   
-  Axiom Constant_value_TYPE_PARAMETER_COUNT_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX") =
+  Global Instance Instance_IsConstant_value_TYPE_PARAMETER_COUNT_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
       value_TYPE_PARAMETER_COUNT_MAX.
-  Global Hint Rewrite Constant_value_TYPE_PARAMETER_COUNT_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TYPE_PARAMETER_COUNT_MAX.
   
-  Definition value_TYPE_PARAMETER_INDEX_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
+  Definition value_TYPE_PARAMETER_INDEX_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
   
-  Axiom Constant_value_TYPE_PARAMETER_INDEX_MAX :
-    (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX") =
+  Global Instance Instance_IsConstant_value_TYPE_PARAMETER_INDEX_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX"
       value_TYPE_PARAMETER_INDEX_MAX.
-  Global Hint Rewrite Constant_value_TYPE_PARAMETER_INDEX_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_TYPE_PARAMETER_INDEX_MAX.
   
-  Definition value_SIGNATURE_TOKEN_DEPTH_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+  Definition value_SIGNATURE_TOKEN_DEPTH_MAX
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   
-  Axiom Constant_value_SIGNATURE_TOKEN_DEPTH_MAX :
-    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX") =
+  Global Instance Instance_IsConstant_value_SIGNATURE_TOKEN_DEPTH_MAX :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX"
       value_SIGNATURE_TOKEN_DEPTH_MAX.
-  Global Hint Rewrite Constant_value_SIGNATURE_TOKEN_DEPTH_MAX : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_SIGNATURE_TOKEN_DEPTH_MAX.
   
   (*
   Enum TableType
@@ -525,7 +664,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MODULE_HANDLES" |) |)
+                            M.deref (| mk_str (| "MODULE_HANDLES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -539,7 +678,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STRUCT_HANDLES" |) |)
+                            M.deref (| mk_str (| "STRUCT_HANDLES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -553,7 +692,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FUNCTION_HANDLES" |) |)
+                            M.deref (| mk_str (| "FUNCTION_HANDLES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -567,7 +706,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FUNCTION_INST" |) |)
+                            M.deref (| mk_str (| "FUNCTION_INST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -579,10 +718,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::SIGNATURES"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SIGNATURES" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNATURES" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -595,7 +731,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CONSTANT_POOL" |) |)
+                            M.deref (| mk_str (| "CONSTANT_POOL" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -607,10 +743,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::IDENTIFIERS"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IDENTIFIERS" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IDENTIFIERS" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -623,7 +756,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ADDRESS_IDENTIFIERS" |) |)
+                            M.deref (| mk_str (| "ADDRESS_IDENTIFIERS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -635,10 +768,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STRUCT_DEFS" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_DEFS" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -651,7 +781,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STRUCT_DEF_INST" |) |)
+                            M.deref (| mk_str (| "STRUCT_DEF_INST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -665,7 +795,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FUNCTION_DEFS" |) |)
+                            M.deref (| mk_str (| "FUNCTION_DEFS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -677,10 +807,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FIELD_HANDLE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_HANDLE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -691,10 +818,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FIELD_INST"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FIELD_INST" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_INST" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -705,10 +829,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FRIEND_DECLS" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRIEND_DECLS" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -719,10 +840,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::METADATA"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "METADATA" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "METADATA" |) |) |)
                         |)))
                   ]
                 |)
@@ -1055,10 +1173,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::BOOL"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BOOL" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BOOL" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1069,10 +1184,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U8"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1083,10 +1195,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U64"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1097,10 +1206,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U128"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1111,10 +1217,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::ADDRESS"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ADDRESS" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADDRESS" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1125,10 +1228,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::REFERENCE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "REFERENCE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "REFERENCE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1141,7 +1241,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUTABLE_REFERENCE" |) |)
+                            M.deref (| mk_str (| "MUTABLE_REFERENCE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1153,10 +1253,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::STRUCT"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STRUCT" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1169,7 +1266,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TYPE_PARAMETER" |) |)
+                            M.deref (| mk_str (| "TYPE_PARAMETER" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1181,10 +1278,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::VECTOR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VECTOR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VECTOR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1195,10 +1289,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::STRUCT_INST"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STRUCT_INST" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_INST" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1209,10 +1300,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::SIGNER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SIGNER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1223,10 +1311,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U16"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1237,10 +1322,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U32"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1251,10 +1333,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U256"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |)
                         |)))
                   ]
                 |)
@@ -1368,10 +1447,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NATIVE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NATIVE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1382,10 +1458,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DECLARED" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DECLARED" |) |) |)
                         |)))
                   ]
                 |)
@@ -1958,10 +2031,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::POP"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "POP" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "POP" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1972,10 +2042,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::RET"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RET" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RET" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1986,10 +2053,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BR_TRUE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BR_TRUE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_TRUE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2000,10 +2064,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BR_FALSE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BR_FALSE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_FALSE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2014,10 +2075,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BRANCH"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BRANCH" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BRANCH" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2028,10 +2086,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U64"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U64" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2042,10 +2097,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_CONST"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_CONST" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_CONST" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2056,10 +2108,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_TRUE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_TRUE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_TRUE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2070,10 +2119,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_FALSE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_FALSE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_FALSE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2084,10 +2130,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::COPY_LOC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "COPY_LOC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "COPY_LOC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2098,10 +2141,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVE_LOC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOVE_LOC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2112,10 +2152,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ST_LOC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ST_LOC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ST_LOC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2128,7 +2165,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUT_BORROW_LOC" |) |)
+                            M.deref (| mk_str (| "MUT_BORROW_LOC" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2142,7 +2179,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IMM_BORROW_LOC" |) |)
+                            M.deref (| mk_str (| "IMM_BORROW_LOC" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2156,7 +2193,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUT_BORROW_FIELD" |) |)
+                            M.deref (| mk_str (| "MUT_BORROW_FIELD" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2170,7 +2207,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IMM_BORROW_FIELD" |) |)
+                            M.deref (| mk_str (| "IMM_BORROW_FIELD" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2182,10 +2219,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CALL"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CALL" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2196,10 +2230,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::PACK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PACK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2210,10 +2241,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::UNPACK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNPACK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNPACK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2224,10 +2252,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::READ_REF"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "READ_REF" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "READ_REF" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2238,10 +2263,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::WRITE_REF"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "WRITE_REF" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "WRITE_REF" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2252,10 +2274,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ADD"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ADD" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2266,10 +2285,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SUB"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SUB" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SUB" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2280,10 +2296,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUL"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUL" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUL" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2294,10 +2307,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOD"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOD" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOD" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2308,10 +2318,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::DIV"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DIV" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DIV" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2322,10 +2329,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BIT_OR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BIT_OR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_OR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2336,10 +2340,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BIT_AND"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BIT_AND" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_AND" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2350,10 +2351,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::XOR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "XOR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "XOR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2364,10 +2362,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::OR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2378,10 +2373,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::AND"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AND" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AND" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2392,10 +2384,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NOT"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NOT" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOT" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2406,10 +2395,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::EQ"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EQ" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EQ" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2420,10 +2406,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NEQ"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NEQ" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NEQ" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2434,10 +2417,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LT"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LT" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LT" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2448,10 +2428,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::GT"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GT" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GT" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2462,10 +2439,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2476,10 +2450,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::GE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2490,10 +2461,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ABORT"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ABORT" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORT" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2504,10 +2472,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NOP"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NOP" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOP" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2518,10 +2483,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FREEZE_REF" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FREEZE_REF" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2532,10 +2494,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SHL"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SHL" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHL" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2546,10 +2505,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SHR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SHR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2560,10 +2516,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U8"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U8" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U8" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2574,10 +2527,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U128"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U128" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2588,10 +2538,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U8"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U8" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U8" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2602,10 +2549,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U64"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U64" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2616,10 +2560,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U128"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U128" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2632,7 +2573,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUT_BORROW_FIELD_GENERIC" |) |)
+                            M.deref (| mk_str (| "MUT_BORROW_FIELD_GENERIC" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2646,7 +2587,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IMM_BORROW_FIELD_GENERIC" |) |)
+                            M.deref (| mk_str (| "IMM_BORROW_FIELD_GENERIC" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2658,10 +2599,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CALL_GENERIC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL_GENERIC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2672,10 +2610,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PACK_GENERIC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK_GENERIC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2688,7 +2623,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNPACK_GENERIC" |) |)
+                            M.deref (| mk_str (| "UNPACK_GENERIC" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2700,10 +2635,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_PACK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_PACK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_PACK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2714,10 +2646,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_LEN"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_LEN" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_LEN" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2730,7 +2659,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_IMM_BORROW" |) |)
+                            M.deref (| mk_str (| "VEC_IMM_BORROW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2744,7 +2673,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_MUT_BORROW" |) |)
+                            M.deref (| mk_str (| "VEC_MUT_BORROW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2758,7 +2687,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_PUSH_BACK" |) |)
+                            M.deref (| mk_str (| "VEC_PUSH_BACK" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2770,10 +2699,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_POP_BACK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_POP_BACK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2784,10 +2710,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_UNPACK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_UNPACK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2798,10 +2721,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VEC_SWAP" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_SWAP" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2812,10 +2732,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U16"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U16" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2826,10 +2743,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U32"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U32" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2840,10 +2754,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U256"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LD_U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U256" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2854,10 +2765,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U16"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U16" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2868,10 +2776,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U32"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U32" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2882,10 +2787,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U256"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CAST_U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U256" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2898,7 +2800,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXISTS_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "EXISTS_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2912,7 +2814,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUT_BORROW_GLOBAL_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "MUT_BORROW_GLOBAL_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2926,7 +2828,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IMM_BORROW_GLOBAL_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "IMM_BORROW_GLOBAL_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2940,7 +2842,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVE_FROM_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "MOVE_FROM_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2954,7 +2856,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVE_TO_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "MOVE_TO_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2968,7 +2870,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXISTS_GENERIC_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "EXISTS_GENERIC_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2982,9 +2884,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
-                            |)
+                            M.deref (| mk_str (| "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2998,9 +2898,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED" |)
-                            |)
+                            M.deref (| mk_str (| "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3014,7 +2912,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVE_FROM_GENERIC_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "MOVE_FROM_GENERIC_DEPRECATED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3028,7 +2926,7 @@ Module file_format_common.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVE_TO_GENERIC_DEPRECATED" |) |)
+                            M.deref (| mk_str (| "MOVE_TO_GENERIC_DEPRECATED" |) |)
                           |)
                         |)))
                   ]
@@ -3048,21 +2946,22 @@ Module file_format_common.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_file_format_common_Opcodes.
   
-  Definition value_BINARY_SIZE_LIMIT : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
-            Ty.path "usize",
-            M.get_associated_function (| Ty.path "usize", "max_value", [], [] |),
-            []
-          |)
-        |))).
+  Definition value_BINARY_SIZE_LIMIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.path "usize",
+          M.get_associated_function (| Ty.path "usize", "max_value", [], [] |),
+          []
+        |)
+      |))).
   
-  Axiom Constant_value_BINARY_SIZE_LIMIT :
-    (M.get_constant "move_binary_format::file_format_common::BINARY_SIZE_LIMIT") =
+  Global Instance Instance_IsConstant_value_BINARY_SIZE_LIMIT :
+    M.IsFunction.C
+      "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
       value_BINARY_SIZE_LIMIT.
-  Global Hint Rewrite Constant_value_BINARY_SIZE_LIMIT : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_BINARY_SIZE_LIMIT.
   
   (* StructRecord
     {
@@ -3146,8 +3045,8 @@ Module file_format_common.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "BinaryData" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_binary" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BinaryData" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_binary" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3218,7 +3117,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -3270,8 +3169,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_inner :
-      M.IsAssociatedFunction.Trait Self "as_inner" as_inner.
+    Global Instance AssociatedFunction_as_inner : M.IsAssociatedFunction.C Self "as_inner" as_inner.
     Admitted.
     Global Typeclasses Opaque as_inner.
     
@@ -3296,7 +3194,7 @@ Module file_format_common.
       end.
     
     Global Instance AssociatedFunction_into_inner :
-      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      M.IsAssociatedFunction.C Self "into_inner" into_inner.
     Admitted.
     Global Typeclasses Opaque into_inner.
     
@@ -3470,17 +3368,13 @@ Module file_format_common.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "binary size ("
+                                                                        mk_str (|
+                                                                          "binary size ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            ") + 1 is greater than limit ("
+                                                                        mk_str (|
+                                                                          ") + 1 is greater than limit ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String ")"
-                                                                        |)
+                                                                        mk_str (| ")" |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -3554,8 +3448,10 @@ Module file_format_common.
                                                                               M.deref (|
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
-                                                                                  M.get_constant
-                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                                  get_constant (|
+                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -3590,7 +3486,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.C Self "push" push.
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -3787,20 +3683,14 @@ Module file_format_common.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "binary size ("
+                                                                        mk_str (|
+                                                                          "binary size ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String ") + "
+                                                                        mk_str (| ") + " |);
+                                                                        mk_str (|
+                                                                          " is greater than limit ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " is greater than limit ("
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String ")"
-                                                                        |)
+                                                                        mk_str (| ")" |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -3924,8 +3814,10 @@ Module file_format_common.
                                                                               M.deref (|
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
-                                                                                  M.get_constant
-                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                                  get_constant (|
+                                                                                    "move_binary_format::file_format_common::BINARY_SIZE_LIMIT",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -3960,7 +3852,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+    Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.C Self "extend" extend.
     Admitted.
     Global Typeclasses Opaque extend.
     
@@ -3999,7 +3891,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -4038,8 +3930,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -4084,7 +3975,7 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.C Self "clear" clear.
     Admitted.
     Global Typeclasses Opaque clear.
   End Impl_move_binary_format_file_format_common_BinaryData.
@@ -4418,7 +4309,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u64_as_uleb128 :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::file_format_common::write_u64_as_uleb128"
       write_u64_as_uleb128.
   Admitted.
@@ -4469,7 +4360,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u16 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::write_u16" write_u16.
+    M.IsFunction.C "move_binary_format::file_format_common::write_u16" write_u16.
   Admitted.
   Global Typeclasses Opaque write_u16.
   
@@ -4518,7 +4409,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u32 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::write_u32" write_u32.
+    M.IsFunction.C "move_binary_format::file_format_common::write_u32" write_u32.
   Admitted.
   Global Typeclasses Opaque write_u32.
   
@@ -4567,7 +4458,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u64 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::write_u64" write_u64.
+    M.IsFunction.C "move_binary_format::file_format_common::write_u64" write_u64.
   Admitted.
   Global Typeclasses Opaque write_u64.
   
@@ -4616,7 +4507,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u128 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::write_u128" write_u128.
+    M.IsFunction.C "move_binary_format::file_format_common::write_u128" write_u128.
   Admitted.
   Global Typeclasses Opaque write_u128.
   
@@ -4673,7 +4564,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_write_u256 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::write_u256" write_u256.
+    M.IsFunction.C "move_binary_format::file_format_common::write_u256" write_u256.
   Admitted.
   Global Typeclasses Opaque write_u256.
   
@@ -4834,7 +4725,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_read_u8 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::read_u8" read_u8.
+    M.IsFunction.C "move_binary_format::file_format_common::read_u8" read_u8.
   Admitted.
   Global Typeclasses Opaque read_u8.
   
@@ -4997,7 +4888,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_read_u32 :
-    M.IsFunction.Trait "move_binary_format::file_format_common::read_u32" read_u32.
+    M.IsFunction.C "move_binary_format::file_format_common::read_u32" read_u32.
   Admitted.
   Global Typeclasses Opaque read_u32.
   
@@ -5148,9 +5039,8 @@ Module file_format_common.
                                                                         M.alloc (|
                                                                           Value.Array
                                                                             [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "invalid ULEB128 repr for usize"
+                                                                              mk_str (|
+                                                                                "invalid ULEB128 repr for usize"
                                                                               |)
                                                                             ]
                                                                         |)
@@ -5276,9 +5166,8 @@ Module file_format_common.
                                                                                         M.alloc (|
                                                                                           Value.Array
                                                                                             [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "invalid ULEB128 repr for usize"
+                                                                                              mk_str (|
+                                                                                                "invalid ULEB128 repr for usize"
                                                                                               |)
                                                                                             ]
                                                                                         |)
@@ -5335,7 +5224,13 @@ Module file_format_common.
                                           (M.alloc (|
                                             BinOp.gt (|
                                               M.read (| shift |),
-                                              M.read (| M.get_constant "core::num::BITS" |)
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.path "u64",
+                                                  "BITS",
+                                                  Ty.path "u32"
+                                                |)
+                                              |)
                                             |)
                                           |)) in
                                       let _ :=
@@ -5392,11 +5287,7 @@ Module file_format_common.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String "invalid ULEB128 repr for usize"
-                                                |)
-                                              ]
+                                              [ mk_str (| "invalid ULEB128 repr for usize" |) ]
                                           |)
                                         |)
                                       |)
@@ -5417,69 +5308,77 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_read_uleb128_as_u64 :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::file_format_common::read_uleb128_as_u64"
       read_uleb128_as_u64.
   Admitted.
   Global Typeclasses Opaque read_uleb128_as_u64.
   
-  Definition value_VERSION_1 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
+  Definition value_VERSION_1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
   
-  Axiom Constant_value_VERSION_1 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_1") = value_VERSION_1.
-  Global Hint Rewrite Constant_value_VERSION_1 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_1 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_1" value_VERSION_1.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_1.
   
-  Definition value_VERSION_2 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
+  Definition value_VERSION_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
   
-  Axiom Constant_value_VERSION_2 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_2") = value_VERSION_2.
-  Global Hint Rewrite Constant_value_VERSION_2 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_2 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_2" value_VERSION_2.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_2.
   
-  Definition value_VERSION_3 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
+  Definition value_VERSION_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
   
-  Axiom Constant_value_VERSION_3 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_3") = value_VERSION_3.
-  Global Hint Rewrite Constant_value_VERSION_3 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_3 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_3" value_VERSION_3.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_3.
   
-  Definition value_VERSION_4 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
+  Definition value_VERSION_4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
   
-  Axiom Constant_value_VERSION_4 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_4") = value_VERSION_4.
-  Global Hint Rewrite Constant_value_VERSION_4 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_4 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_4" value_VERSION_4.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_4.
   
-  Definition value_VERSION_5 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
+  Definition value_VERSION_5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
   
-  Axiom Constant_value_VERSION_5 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_5") = value_VERSION_5.
-  Global Hint Rewrite Constant_value_VERSION_5 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_5 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_5" value_VERSION_5.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_5.
   
-  Definition value_VERSION_6 : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
+  Definition value_VERSION_6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
   
-  Axiom Constant_value_VERSION_6 :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_6") = value_VERSION_6.
-  Global Hint Rewrite Constant_value_VERSION_6 : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_6 :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_6" value_VERSION_6.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_6.
   
-  Definition value_VERSION_MAX : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::VERSION_6")).
+  Definition value_VERSION_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (| "move_binary_format::file_format_common::VERSION_6", Ty.path "u32" |))).
   
-  Axiom Constant_value_VERSION_MAX :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_MAX") = value_VERSION_MAX.
-  Global Hint Rewrite Constant_value_VERSION_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_MAX :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_MAX" value_VERSION_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_MAX.
   
-  Definition value_VERSION_MIN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::VERSION_5")).
+  Definition value_VERSION_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_constant (| "move_binary_format::file_format_common::VERSION_5", Ty.path "u32" |))).
   
-  Axiom Constant_value_VERSION_MIN :
-    (M.get_constant "move_binary_format::file_format_common::VERSION_MIN") = value_VERSION_MIN.
-  Global Hint Rewrite Constant_value_VERSION_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_VERSION_MIN :
+    M.IsFunction.C "move_binary_format::file_format_common::VERSION_MIN" value_VERSION_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_VERSION_MIN.
   
   (*
   pub fn instruction_key(instruction: &Bytecode) -> u8 {
@@ -6586,7 +6485,7 @@ Module file_format_common.
     end.
   
   Global Instance Instance_IsFunction_instruction_key :
-    M.IsFunction.Trait "move_binary_format::file_format_common::instruction_key" instruction_key.
+    M.IsFunction.C "move_binary_format::file_format_common::instruction_key" instruction_key.
   Admitted.
   Global Typeclasses Opaque instruction_key.
 End file_format_common.

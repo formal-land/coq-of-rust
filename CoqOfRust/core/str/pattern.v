@@ -476,9 +476,8 @@ Module str.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "The first search step from Searcher must include the first character"
+                                                                                  mk_str (|
+                                                                                    "The first search step from Searcher must include the first character"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -777,9 +776,8 @@ Module str.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "The first search step from ReverseSearcher must include the last character"
+                                                                                  mk_str (|
+                                                                                    "The first search step from ReverseSearcher must include the last character"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -1207,7 +1205,7 @@ Module str.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "StringPattern" |) |)
+                              M.deref (| mk_str (| "StringPattern" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1242,7 +1240,7 @@ Module str.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CharPattern" |) |)
+                              M.deref (| mk_str (| "CharPattern" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1636,10 +1634,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Match" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1679,10 +1674,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Reject" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reject" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1709,10 +1701,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Done" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Done" |) |) |)
                           ]
                         |)
                       |)))
@@ -2368,26 +2357,20 @@ Module str.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "haystack" |);
+                              mk_str (| "haystack" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finger" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "finger" |) |)
+                                M.deref (| mk_str (| "finger_back" |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "needle" |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| mk_str (| "utf8_size" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "finger_back" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "needle" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "utf8_size" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "utf8_encoded" |) |)
+                                M.deref (| mk_str (| "utf8_encoded" |) |)
                               |)
                             ]
                         |)
@@ -2517,10 +2500,7 @@ Module str.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "CharSearcher" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharSearcher" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -2577,7 +2557,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_utf8_size :
-        M.IsAssociatedFunction.Trait Self "utf8_size" utf8_size.
+        M.IsAssociatedFunction.C Self "utf8_size" utf8_size.
       Admitted.
       Global Typeclasses Opaque utf8_size.
     End Impl_core_str_pattern_CharSearcher.
@@ -4694,7 +4674,7 @@ Module str.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "char len should be less than 255" |) |)
+                        M.deref (| mk_str (| "char len should be less than 255" |) |)
                       |)
                     ]
                   |)
@@ -5582,11 +5562,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "MultiCharEqSearcher" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "char_eq" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MultiCharEqSearcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_eq" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5600,7 +5577,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "haystack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5614,10 +5591,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "char_indices" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_indices" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6334,10 +6308,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharArraySearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharArraySearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6487,10 +6458,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharArrayRefSearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharArrayRefSearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7999,10 +7967,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharSliceSearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharSliceSearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -8778,9 +8743,7 @@ Module str.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "CharPredicateSearcher" |)
-                                          |)
+                                          M.deref (| mk_str (| "CharPredicateSearcher" |) |)
                                         |)
                                       ]
                                     |)
@@ -8788,7 +8751,7 @@ Module str.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "haystack" |) |)
+                                  M.deref (| mk_str (| "haystack" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -8811,10 +8774,7 @@ Module str.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "char_indices" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_indices" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -11172,11 +11132,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "StrSearcher" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StrSearcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "haystack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11190,7 +11147,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "needle" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "needle" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11204,7 +11161,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "searcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "searcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11393,10 +11350,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Empty" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -11428,10 +11382,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "TwoWay" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TwoWay" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -11657,11 +11608,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EmptyNeedle" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "position" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyNeedle" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "position" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11675,7 +11623,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11689,10 +11637,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_match_fw" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_match_fw" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11706,10 +11651,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_match_bw" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_match_bw" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11723,10 +11665,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_finished" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_finished" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11922,7 +11861,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_str_pattern_StrSearcher.
@@ -12331,7 +12270,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -12722,7 +12667,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -13288,7 +13239,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -13678,7 +13635,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -14184,34 +14147,22 @@ Module str.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "crit_pos" |);
+                              mk_str (| "crit_pos" |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "crit_pos_back" |) |)
+                                M.deref (| mk_str (| "crit_pos_back" |) |)
                               |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "period" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "byteset" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "period" |) |)
+                                M.deref (| mk_str (| "position" |) |)
                               |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "byteset" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "position" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "end" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "memory" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "memory_back" |) |)
+                                M.deref (| mk_str (| "memory_back" |) |)
                               |)
                             ]
                         |)
@@ -14367,10 +14318,7 @@ Module str.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "TwoWaySearcher" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TwoWaySearcher" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -14920,9 +14868,21 @@ Module str.
                                                     ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
                                                     ("memory",
-                                                      M.read (| M.get_constant "core::num::MAX" |));
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.path "usize",
+                                                          "MAX",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |));
                                                     ("memory_back",
-                                                      M.read (| M.get_constant "core::num::MAX" |))
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.path "usize",
+                                                          "MAX",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |))
                                                   ]
                                               |)))
                                         ]
@@ -14937,7 +14897,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -15035,7 +14995,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_byteset_create :
-        M.IsAssociatedFunction.Trait Self "byteset_create" byteset_create.
+        M.IsAssociatedFunction.C Self "byteset_create" byteset_create.
       Admitted.
       Global Typeclasses Opaque byteset_create.
       
@@ -15071,7 +15031,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_byteset_contains :
-        M.IsAssociatedFunction.Trait Self "byteset_contains" byteset_contains.
+        M.IsAssociatedFunction.C Self "byteset_contains" byteset_contains.
       Admitted.
       Global Typeclasses Opaque byteset_contains.
       
@@ -16256,7 +16216,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_next : M.IsAssociatedFunction.Trait Self "next" next.
+      Global Instance AssociatedFunction_next : M.IsAssociatedFunction.C Self "next" next.
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -17526,7 +17486,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_next_back :
-        M.IsAssociatedFunction.Trait Self "next_back" next_back.
+        M.IsAssociatedFunction.C Self "next_back" next_back.
       Admitted.
       Global Typeclasses Opaque next_back.
       
@@ -17807,7 +17767,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_maximal_suffix :
-        M.IsAssociatedFunction.Trait Self "maximal_suffix" maximal_suffix.
+        M.IsAssociatedFunction.C Self "maximal_suffix" maximal_suffix.
       Admitted.
       Global Typeclasses Opaque maximal_suffix.
       
@@ -18173,11 +18133,7 @@ Module str.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: period <= known_period"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: period <= known_period" |) ]
                                       |)
                                     |)
                                   |)));
@@ -18194,7 +18150,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_reverse_maximal_suffix :
-        M.IsAssociatedFunction.Trait Self "reverse_maximal_suffix" reverse_maximal_suffix.
+        M.IsAssociatedFunction.C Self "reverse_maximal_suffix" reverse_maximal_suffix.
       Admitted.
       Global Typeclasses Opaque reverse_maximal_suffix.
     End Impl_core_str_pattern_TwoWaySearcher.
@@ -18557,11 +18513,7 @@ Module str.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: needle.len() > 1"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: needle.len() > 1" |) ]
                                         |)
                                       |)
                                     |)));
@@ -18793,7 +18745,16 @@ Module str.
                                     ]
                                   |),
                                   BinOp.Wrap.add (|
-                                    M.read (| M.get_constant "core::core_simd::vector::LEN" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "core::core_simd::vector::Simd")
+                                          [ Value.Integer IntegerKind.Usize 16 ]
+                                          [ Ty.path "u8" ],
+                                        "LEN",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     M.read (| last_byte_offset |)
                                   |)
                                 |)
@@ -19791,11 +19752,20 @@ Module str.
                                           |),
                                           BinOp.Wrap.mul (|
                                             M.read (|
-                                              M.get_constant
-                                                "core::str::pattern::simd_contains::UNROLL"
+                                              get_constant (|
+                                                "core::str::pattern::simd_contains::UNROLL",
+                                                Ty.path "usize"
+                                              |)
                                             |),
                                             M.read (|
-                                              M.get_constant "core::core_simd::vector::LEN"
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "core::core_simd::vector::Simd")
+                                                  [ Value.Integer IntegerKind.Usize 16 ]
+                                                  [ Ty.path "u8" ],
+                                                "LEN",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |),
@@ -19863,8 +19833,10 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::str::pattern::simd_contains::UNROLL"
+                                                  get_constant (|
+                                                    "core::str::pattern::simd_contains::UNROLL",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -19962,8 +19934,19 @@ Module str.
                                                                         BinOp.Wrap.mul (|
                                                                           M.read (| j |),
                                                                           M.read (|
-                                                                            M.get_constant
-                                                                              "core::core_simd::vector::LEN"
+                                                                            get_associated_constant (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::core_simd::vector::Simd")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    16
+                                                                                ]
+                                                                                [ Ty.path "u8" ],
+                                                                              "LEN",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -20008,8 +19991,10 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::str::pattern::simd_contains::UNROLL"
+                                                  get_constant (|
+                                                    "core::str::pattern::simd_contains::UNROLL",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -20149,8 +20134,23 @@ Module str.
                                                                                   BinOp.Wrap.mul (|
                                                                                     M.read (| j |),
                                                                                     M.read (|
-                                                                                      M.get_constant
-                                                                                        "core::core_simd::vector::LEN"
+                                                                                      get_associated_constant (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::core_simd::vector::Simd")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              16
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ],
+                                                                                        "LEN",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |);
@@ -20182,9 +20182,21 @@ Module str.
                                       M.read (| β |),
                                       BinOp.Wrap.mul (|
                                         M.read (|
-                                          M.get_constant "core::str::pattern::simd_contains::UNROLL"
+                                          get_constant (|
+                                            "core::str::pattern::simd_contains::UNROLL",
+                                            Ty.path "usize"
+                                          |)
                                         |),
-                                        M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "core::core_simd::vector::Simd")
+                                              [ Value.Integer IntegerKind.Usize 16 ]
+                                              [ Ty.path "u8" ],
+                                            "LEN",
+                                            Ty.path "usize"
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -20226,7 +20238,16 @@ Module str.
                                             M.read (| i |),
                                             M.read (| last_byte_offset |)
                                           |),
-                                          M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.apply
+                                                (Ty.path "core::core_simd::vector::Simd")
+                                                [ Value.Integer IntegerKind.Usize 16 ]
+                                                [ Ty.path "u8" ],
+                                              "LEN",
+                                              Ty.path "usize"
+                                            |)
+                                          |)
                                         |),
                                         M.call_closure (|
                                           Ty.path "usize",
@@ -20348,7 +20369,16 @@ Module str.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "core::core_simd::vector::Simd")
+                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                            [ Ty.path "u8" ],
+                                          "LEN",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -20385,7 +20415,16 @@ Module str.
                         |),
                         M.read (| last_byte_offset |)
                       |),
-                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                      M.read (|
+                        get_associated_constant (|
+                          Ty.apply
+                            (Ty.path "core::core_simd::vector::Simd")
+                            [ Value.Integer IntegerKind.Usize 16 ]
+                            [ Ty.path "u8" ],
+                          "LEN",
+                          Ty.path "usize"
+                        |)
+                      |)
                     |)
                   |) in
                 let~ mask : Ty.path "u16" :=
@@ -20462,17 +20501,18 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_simd_contains :
-      M.IsFunction.Trait "core::str::pattern::simd_contains" simd_contains.
+      M.IsFunction.C "core::str::pattern::simd_contains" simd_contains.
     Admitted.
     Global Typeclasses Opaque simd_contains.
     
     Module simd_contains.
-      Definition value_UNROLL : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      Definition value_UNROLL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
       
-      Axiom Constant_value_UNROLL :
-        (M.get_constant "core::str::pattern::simd_contains::UNROLL") = value_UNROLL.
-      Global Hint Rewrite Constant_value_UNROLL : constant_rewrites.
+      Global Instance Instance_IsConstant_value_UNROLL :
+        M.IsFunction.C "core::str::pattern::simd_contains::UNROLL" value_UNROLL.
+      Admitted.
+      Global Typeclasses Opaque value_UNROLL.
     End simd_contains.
     
     (*
@@ -21285,7 +21325,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_small_slice_eq :
-      M.IsFunction.Trait "core::str::pattern::small_slice_eq" small_slice_eq.
+      M.IsFunction.C "core::str::pattern::small_slice_eq" small_slice_eq.
     Admitted.
     Global Typeclasses Opaque small_slice_eq.
   End pattern.

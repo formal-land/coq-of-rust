@@ -64,7 +64,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_take_mut :
-        M.IsFunction.Trait "alloc::collections::btree::mem::take_mut" take_mut.
+        M.IsFunction.C "alloc::collections::btree::mem::take_mut" take_mut.
       Admitted.
       Global Typeclasses Opaque take_mut.
       
@@ -165,7 +165,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_replace :
-        M.IsFunction.Trait "alloc::collections::btree::mem::replace" replace.
+        M.IsFunction.C "alloc::collections::btree::mem::replace" replace.
       Admitted.
       Global Typeclasses Opaque replace.
       

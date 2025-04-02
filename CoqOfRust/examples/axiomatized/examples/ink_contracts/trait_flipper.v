@@ -17,7 +17,7 @@ Module Impl_trait_flipper_Flipper.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
 End Impl_trait_flipper_Flipper.
 

@@ -264,10 +264,7 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Call" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -299,10 +296,7 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Create" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -334,10 +328,7 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EOFCreate" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EOFCreate" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -891,10 +882,7 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NewFrame" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NewFrame" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -926,14 +914,8 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Return" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "result" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -963,10 +945,7 @@ Module interpreter_action.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "None" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |)
                         ]
                       |)
                     |)))
@@ -1255,8 +1234,7 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_call :
-      M.IsAssociatedFunction.Trait Self "is_call" is_call.
+    Global Instance AssociatedFunction_is_call : M.IsAssociatedFunction.C Self "is_call" is_call.
     Admitted.
     Global Typeclasses Opaque is_call.
     
@@ -1298,7 +1276,7 @@ Module interpreter_action.
       end.
     
     Global Instance AssociatedFunction_is_create :
-      M.IsAssociatedFunction.Trait Self "is_create" is_create.
+      M.IsAssociatedFunction.C Self "is_create" is_create.
     Admitted.
     Global Typeclasses Opaque is_create.
     
@@ -1334,7 +1312,7 @@ Module interpreter_action.
       end.
     
     Global Instance AssociatedFunction_is_return :
-      M.IsAssociatedFunction.Trait Self "is_return" is_return.
+      M.IsAssociatedFunction.C Self "is_return" is_return.
     Admitted.
     Global Typeclasses Opaque is_return.
     
@@ -1369,8 +1347,7 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_none :
-      M.IsAssociatedFunction.Trait Self "is_none" is_none.
+    Global Instance AssociatedFunction_is_none : M.IsAssociatedFunction.C Self "is_none" is_none.
     Admitted.
     Global Typeclasses Opaque is_none.
     
@@ -1399,8 +1376,7 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_some :
-      M.IsAssociatedFunction.Trait Self "is_some" is_some.
+    Global Instance AssociatedFunction_is_some : M.IsAssociatedFunction.C Self "is_some" is_some.
     Admitted.
     Global Typeclasses Opaque is_some.
     
@@ -1447,7 +1423,7 @@ Module interpreter_action.
       end.
     
     Global Instance AssociatedFunction_into_result_return :
-      M.IsAssociatedFunction.Trait Self "into_result_return" into_result_return.
+      M.IsAssociatedFunction.C Self "into_result_return" into_result_return.
     Admitted.
     Global Typeclasses Opaque into_result_return.
   End Impl_revm_interpreter_interpreter_action_InterpreterAction.

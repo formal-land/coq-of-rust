@@ -22,7 +22,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_from_fn :
-        M.IsFunction.Trait "core::iter::sources::from_fn::from_fn" from_fn.
+        M.IsFunction.C "core::iter::sources::from_fn::from_fn" from_fn.
       Admitted.
       Global Typeclasses Opaque from_fn.
       
@@ -177,10 +177,7 @@ Module iter.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FromFn" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromFn" |) |) |)
                         ]
                       |)
                     |)

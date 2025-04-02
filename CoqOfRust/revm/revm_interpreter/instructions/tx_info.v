@@ -81,7 +81,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -350,7 +353,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_gasprice :
-      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::gasprice" gasprice.
+      M.IsFunction.C "revm_interpreter::instructions::tx_info::gasprice" gasprice.
     Admitted.
     Global Typeclasses Opaque gasprice.
     
@@ -431,7 +434,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -711,7 +717,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_origin :
-      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::origin" origin.
+      M.IsFunction.C "revm_interpreter::instructions::tx_info::origin" origin.
     Admitted.
     Global Typeclasses Opaque origin.
     
@@ -901,7 +907,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1150,7 +1159,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -1158,7 +1171,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -1712,11 +1731,47 @@ Module instructions.
                                                         end))
                                                 ]
                                               |);
-                                              M.read (| M.get_constant "ruint::ZERO" |)
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "ZERO",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)))
                                   ]
                                 |)
                               |)
@@ -1731,7 +1786,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_blob_hash :
-      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::blob_hash" blob_hash.
+      M.IsFunction.C "revm_interpreter::instructions::tx_info::blob_hash" blob_hash.
     Admitted.
     Global Typeclasses Opaque blob_hash.
   End tx_info.

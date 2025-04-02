@@ -59,11 +59,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -77,7 +73,9 @@ Module algorithms.
               let~ r : Ty.path "u128" :=
                 M.alloc (|
                   BinOp.Wrap.div (|
-                    M.read (| M.get_constant "core::num::MAX" |),
+                    M.read (|
+                      get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |)
+                    |),
                     M.call_closure (|
                       Ty.path "u128",
                       M.get_trait_method (|
@@ -133,11 +131,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: r >= (1 << 64)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: r >= (1 << 64)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -188,11 +182,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: r < (1 << 65)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: r < (1 << 65)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -209,7 +199,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_reciprocal_ref :
-        M.IsFunction.Trait "ruint::algorithms::div::reciprocal::reciprocal_ref" reciprocal_ref.
+        M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_ref" reciprocal_ref.
       Admitted.
       Global Typeclasses Opaque reciprocal_ref.
       
@@ -304,11 +294,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -339,7 +325,10 @@ Module algorithms.
                     [
                       M.read (| d |);
                       M.read (|
-                        M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE"
+                        get_constant (|
+                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE",
+                          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ]
+                        |)
                       |)
                     ]
                   |)
@@ -375,7 +364,10 @@ Module algorithms.
                     |),
                     [
                       M.read (|
-                        M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE"
+                        get_constant (|
+                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE",
+                          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ]
+                        |)
                       |);
                       M.call_closure (|
                         Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
@@ -422,8 +414,13 @@ Module algorithms.
                         [
                           M.read (| d |);
                           M.read (|
-                            M.get_constant
-                              "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE"
+                            get_constant (|
+                              "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE",
+                              Ty.apply
+                                (Ty.path "core::num::wrapping::Wrapping")
+                                []
+                                [ Ty.path "u64" ]
+                            |)
                           |)
                         ]
                       |);
@@ -453,8 +450,18 @@ Module algorithms.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.read (|
-                                      M.get_constant
-                                        "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE"
+                                      get_constant (|
+                                        "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 256 ]
+                                              [ Ty.path "u16" ]
+                                          ]
+                                      |)
                                     |)
                                   |)
                                 |);
@@ -590,7 +597,10 @@ Module algorithms.
                         ]
                       |);
                       M.read (|
-                        M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE"
+                        get_constant (|
+                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE",
+                          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ]
+                        |)
                       |)
                     ]
                   |)
@@ -697,8 +707,13 @@ Module algorithms.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant
-                                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE"
+                                        get_constant (|
+                                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE",
+                                          Ty.apply
+                                            (Ty.path "core::num::wrapping::Wrapping")
+                                            []
+                                            [ Ty.path "u64" ]
+                                        |)
                                       |);
                                       Value.Integer IntegerKind.Usize 60
                                     ]
@@ -801,8 +816,13 @@ Module algorithms.
                             |),
                             [
                               M.read (|
-                                M.get_constant
-                                  "ruint::algorithms::div::reciprocal::reciprocal_mg10::ZERO"
+                                get_constant (|
+                                  "ruint::algorithms::div::reciprocal::reciprocal_mg10::ZERO",
+                                  Ty.apply
+                                    (Ty.path "core::num::wrapping::Wrapping")
+                                    []
+                                    [ Ty.path "u64" ]
+                                |)
                               |);
                               M.read (| d0 |)
                             ]
@@ -929,308 +949,303 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_reciprocal_mg10 :
-        M.IsFunction.Trait "ruint::algorithms::div::reciprocal::reciprocal_mg10" reciprocal_mg10.
+        M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_mg10" reciprocal_mg10.
       Admitted.
       Global Typeclasses Opaque reciprocal_mg10.
       
       Module reciprocal_mg10.
-        Definition value_ZERO : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                Value.StructTuple
-                  "core::num::wrapping::Wrapping"
-                  [ Value.Integer IntegerKind.U64 0 ]
-              |))).
+        Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer IntegerKind.U64 0 ]
+            |))).
         
-        Axiom Constant_value_ZERO :
-          (M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::ZERO") = value_ZERO.
-        Global Hint Rewrite Constant_value_ZERO : constant_rewrites.
+        Global Instance Instance_IsConstant_value_ZERO :
+          M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_mg10::ZERO" value_ZERO.
+        Admitted.
+        Global Typeclasses Opaque value_ZERO.
         
-        Definition value_ONE : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                Value.StructTuple
-                  "core::num::wrapping::Wrapping"
-                  [ Value.Integer IntegerKind.U64 1 ]
-              |))).
+        Definition value_ONE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer IntegerKind.U64 1 ]
+            |))).
         
-        Axiom Constant_value_ONE :
-          (M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE") = value_ONE.
-        Global Hint Rewrite Constant_value_ONE : constant_rewrites.
+        Global Instance Instance_IsConstant_value_ONE :
+          M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_mg10::ONE" value_ONE.
+        Admitted.
+        Global Typeclasses Opaque value_ONE.
         
-        Definition value_TABLE : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U16 2045;
-                      Value.Integer IntegerKind.U16 2037;
-                      Value.Integer IntegerKind.U16 2029;
-                      Value.Integer IntegerKind.U16 2021;
-                      Value.Integer IntegerKind.U16 2013;
-                      Value.Integer IntegerKind.U16 2005;
-                      Value.Integer IntegerKind.U16 1998;
-                      Value.Integer IntegerKind.U16 1990;
-                      Value.Integer IntegerKind.U16 1983;
-                      Value.Integer IntegerKind.U16 1975;
-                      Value.Integer IntegerKind.U16 1968;
-                      Value.Integer IntegerKind.U16 1960;
-                      Value.Integer IntegerKind.U16 1953;
-                      Value.Integer IntegerKind.U16 1946;
-                      Value.Integer IntegerKind.U16 1938;
-                      Value.Integer IntegerKind.U16 1931;
-                      Value.Integer IntegerKind.U16 1924;
-                      Value.Integer IntegerKind.U16 1917;
-                      Value.Integer IntegerKind.U16 1910;
-                      Value.Integer IntegerKind.U16 1903;
-                      Value.Integer IntegerKind.U16 1896;
-                      Value.Integer IntegerKind.U16 1889;
-                      Value.Integer IntegerKind.U16 1883;
-                      Value.Integer IntegerKind.U16 1876;
-                      Value.Integer IntegerKind.U16 1869;
-                      Value.Integer IntegerKind.U16 1863;
-                      Value.Integer IntegerKind.U16 1856;
-                      Value.Integer IntegerKind.U16 1849;
-                      Value.Integer IntegerKind.U16 1843;
-                      Value.Integer IntegerKind.U16 1836;
-                      Value.Integer IntegerKind.U16 1830;
-                      Value.Integer IntegerKind.U16 1824;
-                      Value.Integer IntegerKind.U16 1817;
-                      Value.Integer IntegerKind.U16 1811;
-                      Value.Integer IntegerKind.U16 1805;
-                      Value.Integer IntegerKind.U16 1799;
-                      Value.Integer IntegerKind.U16 1792;
-                      Value.Integer IntegerKind.U16 1786;
-                      Value.Integer IntegerKind.U16 1780;
-                      Value.Integer IntegerKind.U16 1774;
-                      Value.Integer IntegerKind.U16 1768;
-                      Value.Integer IntegerKind.U16 1762;
-                      Value.Integer IntegerKind.U16 1756;
-                      Value.Integer IntegerKind.U16 1750;
-                      Value.Integer IntegerKind.U16 1745;
-                      Value.Integer IntegerKind.U16 1739;
-                      Value.Integer IntegerKind.U16 1733;
-                      Value.Integer IntegerKind.U16 1727;
-                      Value.Integer IntegerKind.U16 1722;
-                      Value.Integer IntegerKind.U16 1716;
-                      Value.Integer IntegerKind.U16 1710;
-                      Value.Integer IntegerKind.U16 1705;
-                      Value.Integer IntegerKind.U16 1699;
-                      Value.Integer IntegerKind.U16 1694;
-                      Value.Integer IntegerKind.U16 1688;
-                      Value.Integer IntegerKind.U16 1683;
-                      Value.Integer IntegerKind.U16 1677;
-                      Value.Integer IntegerKind.U16 1672;
-                      Value.Integer IntegerKind.U16 1667;
-                      Value.Integer IntegerKind.U16 1661;
-                      Value.Integer IntegerKind.U16 1656;
-                      Value.Integer IntegerKind.U16 1651;
-                      Value.Integer IntegerKind.U16 1646;
-                      Value.Integer IntegerKind.U16 1641;
-                      Value.Integer IntegerKind.U16 1636;
-                      Value.Integer IntegerKind.U16 1630;
-                      Value.Integer IntegerKind.U16 1625;
-                      Value.Integer IntegerKind.U16 1620;
-                      Value.Integer IntegerKind.U16 1615;
-                      Value.Integer IntegerKind.U16 1610;
-                      Value.Integer IntegerKind.U16 1605;
-                      Value.Integer IntegerKind.U16 1600;
-                      Value.Integer IntegerKind.U16 1596;
-                      Value.Integer IntegerKind.U16 1591;
-                      Value.Integer IntegerKind.U16 1586;
-                      Value.Integer IntegerKind.U16 1581;
-                      Value.Integer IntegerKind.U16 1576;
-                      Value.Integer IntegerKind.U16 1572;
-                      Value.Integer IntegerKind.U16 1567;
-                      Value.Integer IntegerKind.U16 1562;
-                      Value.Integer IntegerKind.U16 1558;
-                      Value.Integer IntegerKind.U16 1553;
-                      Value.Integer IntegerKind.U16 1548;
-                      Value.Integer IntegerKind.U16 1544;
-                      Value.Integer IntegerKind.U16 1539;
-                      Value.Integer IntegerKind.U16 1535;
-                      Value.Integer IntegerKind.U16 1530;
-                      Value.Integer IntegerKind.U16 1526;
-                      Value.Integer IntegerKind.U16 1521;
-                      Value.Integer IntegerKind.U16 1517;
-                      Value.Integer IntegerKind.U16 1513;
-                      Value.Integer IntegerKind.U16 1508;
-                      Value.Integer IntegerKind.U16 1504;
-                      Value.Integer IntegerKind.U16 1500;
-                      Value.Integer IntegerKind.U16 1495;
-                      Value.Integer IntegerKind.U16 1491;
-                      Value.Integer IntegerKind.U16 1487;
-                      Value.Integer IntegerKind.U16 1483;
-                      Value.Integer IntegerKind.U16 1478;
-                      Value.Integer IntegerKind.U16 1474;
-                      Value.Integer IntegerKind.U16 1470;
-                      Value.Integer IntegerKind.U16 1466;
-                      Value.Integer IntegerKind.U16 1462;
-                      Value.Integer IntegerKind.U16 1458;
-                      Value.Integer IntegerKind.U16 1454;
-                      Value.Integer IntegerKind.U16 1450;
-                      Value.Integer IntegerKind.U16 1446;
-                      Value.Integer IntegerKind.U16 1442;
-                      Value.Integer IntegerKind.U16 1438;
-                      Value.Integer IntegerKind.U16 1434;
-                      Value.Integer IntegerKind.U16 1430;
-                      Value.Integer IntegerKind.U16 1426;
-                      Value.Integer IntegerKind.U16 1422;
-                      Value.Integer IntegerKind.U16 1418;
-                      Value.Integer IntegerKind.U16 1414;
-                      Value.Integer IntegerKind.U16 1411;
-                      Value.Integer IntegerKind.U16 1407;
-                      Value.Integer IntegerKind.U16 1403;
-                      Value.Integer IntegerKind.U16 1399;
-                      Value.Integer IntegerKind.U16 1396;
-                      Value.Integer IntegerKind.U16 1392;
-                      Value.Integer IntegerKind.U16 1388;
-                      Value.Integer IntegerKind.U16 1384;
-                      Value.Integer IntegerKind.U16 1381;
-                      Value.Integer IntegerKind.U16 1377;
-                      Value.Integer IntegerKind.U16 1374;
-                      Value.Integer IntegerKind.U16 1370;
-                      Value.Integer IntegerKind.U16 1366;
-                      Value.Integer IntegerKind.U16 1363;
-                      Value.Integer IntegerKind.U16 1359;
-                      Value.Integer IntegerKind.U16 1356;
-                      Value.Integer IntegerKind.U16 1352;
-                      Value.Integer IntegerKind.U16 1349;
-                      Value.Integer IntegerKind.U16 1345;
-                      Value.Integer IntegerKind.U16 1342;
-                      Value.Integer IntegerKind.U16 1338;
-                      Value.Integer IntegerKind.U16 1335;
-                      Value.Integer IntegerKind.U16 1332;
-                      Value.Integer IntegerKind.U16 1328;
-                      Value.Integer IntegerKind.U16 1325;
-                      Value.Integer IntegerKind.U16 1322;
-                      Value.Integer IntegerKind.U16 1318;
-                      Value.Integer IntegerKind.U16 1315;
-                      Value.Integer IntegerKind.U16 1312;
-                      Value.Integer IntegerKind.U16 1308;
-                      Value.Integer IntegerKind.U16 1305;
-                      Value.Integer IntegerKind.U16 1302;
-                      Value.Integer IntegerKind.U16 1299;
-                      Value.Integer IntegerKind.U16 1295;
-                      Value.Integer IntegerKind.U16 1292;
-                      Value.Integer IntegerKind.U16 1289;
-                      Value.Integer IntegerKind.U16 1286;
-                      Value.Integer IntegerKind.U16 1283;
-                      Value.Integer IntegerKind.U16 1280;
-                      Value.Integer IntegerKind.U16 1276;
-                      Value.Integer IntegerKind.U16 1273;
-                      Value.Integer IntegerKind.U16 1270;
-                      Value.Integer IntegerKind.U16 1267;
-                      Value.Integer IntegerKind.U16 1264;
-                      Value.Integer IntegerKind.U16 1261;
-                      Value.Integer IntegerKind.U16 1258;
-                      Value.Integer IntegerKind.U16 1255;
-                      Value.Integer IntegerKind.U16 1252;
-                      Value.Integer IntegerKind.U16 1249;
-                      Value.Integer IntegerKind.U16 1246;
-                      Value.Integer IntegerKind.U16 1243;
-                      Value.Integer IntegerKind.U16 1240;
-                      Value.Integer IntegerKind.U16 1237;
-                      Value.Integer IntegerKind.U16 1234;
-                      Value.Integer IntegerKind.U16 1231;
-                      Value.Integer IntegerKind.U16 1228;
-                      Value.Integer IntegerKind.U16 1226;
-                      Value.Integer IntegerKind.U16 1223;
-                      Value.Integer IntegerKind.U16 1220;
-                      Value.Integer IntegerKind.U16 1217;
-                      Value.Integer IntegerKind.U16 1214;
-                      Value.Integer IntegerKind.U16 1211;
-                      Value.Integer IntegerKind.U16 1209;
-                      Value.Integer IntegerKind.U16 1206;
-                      Value.Integer IntegerKind.U16 1203;
-                      Value.Integer IntegerKind.U16 1200;
-                      Value.Integer IntegerKind.U16 1197;
-                      Value.Integer IntegerKind.U16 1195;
-                      Value.Integer IntegerKind.U16 1192;
-                      Value.Integer IntegerKind.U16 1189;
-                      Value.Integer IntegerKind.U16 1187;
-                      Value.Integer IntegerKind.U16 1184;
-                      Value.Integer IntegerKind.U16 1181;
-                      Value.Integer IntegerKind.U16 1179;
-                      Value.Integer IntegerKind.U16 1176;
-                      Value.Integer IntegerKind.U16 1173;
-                      Value.Integer IntegerKind.U16 1171;
-                      Value.Integer IntegerKind.U16 1168;
-                      Value.Integer IntegerKind.U16 1165;
-                      Value.Integer IntegerKind.U16 1163;
-                      Value.Integer IntegerKind.U16 1160;
-                      Value.Integer IntegerKind.U16 1158;
-                      Value.Integer IntegerKind.U16 1155;
-                      Value.Integer IntegerKind.U16 1153;
-                      Value.Integer IntegerKind.U16 1150;
-                      Value.Integer IntegerKind.U16 1148;
-                      Value.Integer IntegerKind.U16 1145;
-                      Value.Integer IntegerKind.U16 1143;
-                      Value.Integer IntegerKind.U16 1140;
-                      Value.Integer IntegerKind.U16 1138;
-                      Value.Integer IntegerKind.U16 1135;
-                      Value.Integer IntegerKind.U16 1133;
-                      Value.Integer IntegerKind.U16 1130;
-                      Value.Integer IntegerKind.U16 1128;
-                      Value.Integer IntegerKind.U16 1125;
-                      Value.Integer IntegerKind.U16 1123;
-                      Value.Integer IntegerKind.U16 1121;
-                      Value.Integer IntegerKind.U16 1118;
-                      Value.Integer IntegerKind.U16 1116;
-                      Value.Integer IntegerKind.U16 1113;
-                      Value.Integer IntegerKind.U16 1111;
-                      Value.Integer IntegerKind.U16 1109;
-                      Value.Integer IntegerKind.U16 1106;
-                      Value.Integer IntegerKind.U16 1104;
-                      Value.Integer IntegerKind.U16 1102;
-                      Value.Integer IntegerKind.U16 1099;
-                      Value.Integer IntegerKind.U16 1097;
-                      Value.Integer IntegerKind.U16 1095;
-                      Value.Integer IntegerKind.U16 1092;
-                      Value.Integer IntegerKind.U16 1090;
-                      Value.Integer IntegerKind.U16 1088;
-                      Value.Integer IntegerKind.U16 1086;
-                      Value.Integer IntegerKind.U16 1083;
-                      Value.Integer IntegerKind.U16 1081;
-                      Value.Integer IntegerKind.U16 1079;
-                      Value.Integer IntegerKind.U16 1077;
-                      Value.Integer IntegerKind.U16 1074;
-                      Value.Integer IntegerKind.U16 1072;
-                      Value.Integer IntegerKind.U16 1070;
-                      Value.Integer IntegerKind.U16 1068;
-                      Value.Integer IntegerKind.U16 1066;
-                      Value.Integer IntegerKind.U16 1064;
-                      Value.Integer IntegerKind.U16 1061;
-                      Value.Integer IntegerKind.U16 1059;
-                      Value.Integer IntegerKind.U16 1057;
-                      Value.Integer IntegerKind.U16 1055;
-                      Value.Integer IntegerKind.U16 1053;
-                      Value.Integer IntegerKind.U16 1051;
-                      Value.Integer IntegerKind.U16 1049;
-                      Value.Integer IntegerKind.U16 1047;
-                      Value.Integer IntegerKind.U16 1044;
-                      Value.Integer IntegerKind.U16 1042;
-                      Value.Integer IntegerKind.U16 1040;
-                      Value.Integer IntegerKind.U16 1038;
-                      Value.Integer IntegerKind.U16 1036;
-                      Value.Integer IntegerKind.U16 1034;
-                      Value.Integer IntegerKind.U16 1032;
-                      Value.Integer IntegerKind.U16 1030;
-                      Value.Integer IntegerKind.U16 1028;
-                      Value.Integer IntegerKind.U16 1026;
-                      Value.Integer IntegerKind.U16 1024
-                    ]
-                |)
-              |))).
+        Definition value_TABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U16 2045;
+                    Value.Integer IntegerKind.U16 2037;
+                    Value.Integer IntegerKind.U16 2029;
+                    Value.Integer IntegerKind.U16 2021;
+                    Value.Integer IntegerKind.U16 2013;
+                    Value.Integer IntegerKind.U16 2005;
+                    Value.Integer IntegerKind.U16 1998;
+                    Value.Integer IntegerKind.U16 1990;
+                    Value.Integer IntegerKind.U16 1983;
+                    Value.Integer IntegerKind.U16 1975;
+                    Value.Integer IntegerKind.U16 1968;
+                    Value.Integer IntegerKind.U16 1960;
+                    Value.Integer IntegerKind.U16 1953;
+                    Value.Integer IntegerKind.U16 1946;
+                    Value.Integer IntegerKind.U16 1938;
+                    Value.Integer IntegerKind.U16 1931;
+                    Value.Integer IntegerKind.U16 1924;
+                    Value.Integer IntegerKind.U16 1917;
+                    Value.Integer IntegerKind.U16 1910;
+                    Value.Integer IntegerKind.U16 1903;
+                    Value.Integer IntegerKind.U16 1896;
+                    Value.Integer IntegerKind.U16 1889;
+                    Value.Integer IntegerKind.U16 1883;
+                    Value.Integer IntegerKind.U16 1876;
+                    Value.Integer IntegerKind.U16 1869;
+                    Value.Integer IntegerKind.U16 1863;
+                    Value.Integer IntegerKind.U16 1856;
+                    Value.Integer IntegerKind.U16 1849;
+                    Value.Integer IntegerKind.U16 1843;
+                    Value.Integer IntegerKind.U16 1836;
+                    Value.Integer IntegerKind.U16 1830;
+                    Value.Integer IntegerKind.U16 1824;
+                    Value.Integer IntegerKind.U16 1817;
+                    Value.Integer IntegerKind.U16 1811;
+                    Value.Integer IntegerKind.U16 1805;
+                    Value.Integer IntegerKind.U16 1799;
+                    Value.Integer IntegerKind.U16 1792;
+                    Value.Integer IntegerKind.U16 1786;
+                    Value.Integer IntegerKind.U16 1780;
+                    Value.Integer IntegerKind.U16 1774;
+                    Value.Integer IntegerKind.U16 1768;
+                    Value.Integer IntegerKind.U16 1762;
+                    Value.Integer IntegerKind.U16 1756;
+                    Value.Integer IntegerKind.U16 1750;
+                    Value.Integer IntegerKind.U16 1745;
+                    Value.Integer IntegerKind.U16 1739;
+                    Value.Integer IntegerKind.U16 1733;
+                    Value.Integer IntegerKind.U16 1727;
+                    Value.Integer IntegerKind.U16 1722;
+                    Value.Integer IntegerKind.U16 1716;
+                    Value.Integer IntegerKind.U16 1710;
+                    Value.Integer IntegerKind.U16 1705;
+                    Value.Integer IntegerKind.U16 1699;
+                    Value.Integer IntegerKind.U16 1694;
+                    Value.Integer IntegerKind.U16 1688;
+                    Value.Integer IntegerKind.U16 1683;
+                    Value.Integer IntegerKind.U16 1677;
+                    Value.Integer IntegerKind.U16 1672;
+                    Value.Integer IntegerKind.U16 1667;
+                    Value.Integer IntegerKind.U16 1661;
+                    Value.Integer IntegerKind.U16 1656;
+                    Value.Integer IntegerKind.U16 1651;
+                    Value.Integer IntegerKind.U16 1646;
+                    Value.Integer IntegerKind.U16 1641;
+                    Value.Integer IntegerKind.U16 1636;
+                    Value.Integer IntegerKind.U16 1630;
+                    Value.Integer IntegerKind.U16 1625;
+                    Value.Integer IntegerKind.U16 1620;
+                    Value.Integer IntegerKind.U16 1615;
+                    Value.Integer IntegerKind.U16 1610;
+                    Value.Integer IntegerKind.U16 1605;
+                    Value.Integer IntegerKind.U16 1600;
+                    Value.Integer IntegerKind.U16 1596;
+                    Value.Integer IntegerKind.U16 1591;
+                    Value.Integer IntegerKind.U16 1586;
+                    Value.Integer IntegerKind.U16 1581;
+                    Value.Integer IntegerKind.U16 1576;
+                    Value.Integer IntegerKind.U16 1572;
+                    Value.Integer IntegerKind.U16 1567;
+                    Value.Integer IntegerKind.U16 1562;
+                    Value.Integer IntegerKind.U16 1558;
+                    Value.Integer IntegerKind.U16 1553;
+                    Value.Integer IntegerKind.U16 1548;
+                    Value.Integer IntegerKind.U16 1544;
+                    Value.Integer IntegerKind.U16 1539;
+                    Value.Integer IntegerKind.U16 1535;
+                    Value.Integer IntegerKind.U16 1530;
+                    Value.Integer IntegerKind.U16 1526;
+                    Value.Integer IntegerKind.U16 1521;
+                    Value.Integer IntegerKind.U16 1517;
+                    Value.Integer IntegerKind.U16 1513;
+                    Value.Integer IntegerKind.U16 1508;
+                    Value.Integer IntegerKind.U16 1504;
+                    Value.Integer IntegerKind.U16 1500;
+                    Value.Integer IntegerKind.U16 1495;
+                    Value.Integer IntegerKind.U16 1491;
+                    Value.Integer IntegerKind.U16 1487;
+                    Value.Integer IntegerKind.U16 1483;
+                    Value.Integer IntegerKind.U16 1478;
+                    Value.Integer IntegerKind.U16 1474;
+                    Value.Integer IntegerKind.U16 1470;
+                    Value.Integer IntegerKind.U16 1466;
+                    Value.Integer IntegerKind.U16 1462;
+                    Value.Integer IntegerKind.U16 1458;
+                    Value.Integer IntegerKind.U16 1454;
+                    Value.Integer IntegerKind.U16 1450;
+                    Value.Integer IntegerKind.U16 1446;
+                    Value.Integer IntegerKind.U16 1442;
+                    Value.Integer IntegerKind.U16 1438;
+                    Value.Integer IntegerKind.U16 1434;
+                    Value.Integer IntegerKind.U16 1430;
+                    Value.Integer IntegerKind.U16 1426;
+                    Value.Integer IntegerKind.U16 1422;
+                    Value.Integer IntegerKind.U16 1418;
+                    Value.Integer IntegerKind.U16 1414;
+                    Value.Integer IntegerKind.U16 1411;
+                    Value.Integer IntegerKind.U16 1407;
+                    Value.Integer IntegerKind.U16 1403;
+                    Value.Integer IntegerKind.U16 1399;
+                    Value.Integer IntegerKind.U16 1396;
+                    Value.Integer IntegerKind.U16 1392;
+                    Value.Integer IntegerKind.U16 1388;
+                    Value.Integer IntegerKind.U16 1384;
+                    Value.Integer IntegerKind.U16 1381;
+                    Value.Integer IntegerKind.U16 1377;
+                    Value.Integer IntegerKind.U16 1374;
+                    Value.Integer IntegerKind.U16 1370;
+                    Value.Integer IntegerKind.U16 1366;
+                    Value.Integer IntegerKind.U16 1363;
+                    Value.Integer IntegerKind.U16 1359;
+                    Value.Integer IntegerKind.U16 1356;
+                    Value.Integer IntegerKind.U16 1352;
+                    Value.Integer IntegerKind.U16 1349;
+                    Value.Integer IntegerKind.U16 1345;
+                    Value.Integer IntegerKind.U16 1342;
+                    Value.Integer IntegerKind.U16 1338;
+                    Value.Integer IntegerKind.U16 1335;
+                    Value.Integer IntegerKind.U16 1332;
+                    Value.Integer IntegerKind.U16 1328;
+                    Value.Integer IntegerKind.U16 1325;
+                    Value.Integer IntegerKind.U16 1322;
+                    Value.Integer IntegerKind.U16 1318;
+                    Value.Integer IntegerKind.U16 1315;
+                    Value.Integer IntegerKind.U16 1312;
+                    Value.Integer IntegerKind.U16 1308;
+                    Value.Integer IntegerKind.U16 1305;
+                    Value.Integer IntegerKind.U16 1302;
+                    Value.Integer IntegerKind.U16 1299;
+                    Value.Integer IntegerKind.U16 1295;
+                    Value.Integer IntegerKind.U16 1292;
+                    Value.Integer IntegerKind.U16 1289;
+                    Value.Integer IntegerKind.U16 1286;
+                    Value.Integer IntegerKind.U16 1283;
+                    Value.Integer IntegerKind.U16 1280;
+                    Value.Integer IntegerKind.U16 1276;
+                    Value.Integer IntegerKind.U16 1273;
+                    Value.Integer IntegerKind.U16 1270;
+                    Value.Integer IntegerKind.U16 1267;
+                    Value.Integer IntegerKind.U16 1264;
+                    Value.Integer IntegerKind.U16 1261;
+                    Value.Integer IntegerKind.U16 1258;
+                    Value.Integer IntegerKind.U16 1255;
+                    Value.Integer IntegerKind.U16 1252;
+                    Value.Integer IntegerKind.U16 1249;
+                    Value.Integer IntegerKind.U16 1246;
+                    Value.Integer IntegerKind.U16 1243;
+                    Value.Integer IntegerKind.U16 1240;
+                    Value.Integer IntegerKind.U16 1237;
+                    Value.Integer IntegerKind.U16 1234;
+                    Value.Integer IntegerKind.U16 1231;
+                    Value.Integer IntegerKind.U16 1228;
+                    Value.Integer IntegerKind.U16 1226;
+                    Value.Integer IntegerKind.U16 1223;
+                    Value.Integer IntegerKind.U16 1220;
+                    Value.Integer IntegerKind.U16 1217;
+                    Value.Integer IntegerKind.U16 1214;
+                    Value.Integer IntegerKind.U16 1211;
+                    Value.Integer IntegerKind.U16 1209;
+                    Value.Integer IntegerKind.U16 1206;
+                    Value.Integer IntegerKind.U16 1203;
+                    Value.Integer IntegerKind.U16 1200;
+                    Value.Integer IntegerKind.U16 1197;
+                    Value.Integer IntegerKind.U16 1195;
+                    Value.Integer IntegerKind.U16 1192;
+                    Value.Integer IntegerKind.U16 1189;
+                    Value.Integer IntegerKind.U16 1187;
+                    Value.Integer IntegerKind.U16 1184;
+                    Value.Integer IntegerKind.U16 1181;
+                    Value.Integer IntegerKind.U16 1179;
+                    Value.Integer IntegerKind.U16 1176;
+                    Value.Integer IntegerKind.U16 1173;
+                    Value.Integer IntegerKind.U16 1171;
+                    Value.Integer IntegerKind.U16 1168;
+                    Value.Integer IntegerKind.U16 1165;
+                    Value.Integer IntegerKind.U16 1163;
+                    Value.Integer IntegerKind.U16 1160;
+                    Value.Integer IntegerKind.U16 1158;
+                    Value.Integer IntegerKind.U16 1155;
+                    Value.Integer IntegerKind.U16 1153;
+                    Value.Integer IntegerKind.U16 1150;
+                    Value.Integer IntegerKind.U16 1148;
+                    Value.Integer IntegerKind.U16 1145;
+                    Value.Integer IntegerKind.U16 1143;
+                    Value.Integer IntegerKind.U16 1140;
+                    Value.Integer IntegerKind.U16 1138;
+                    Value.Integer IntegerKind.U16 1135;
+                    Value.Integer IntegerKind.U16 1133;
+                    Value.Integer IntegerKind.U16 1130;
+                    Value.Integer IntegerKind.U16 1128;
+                    Value.Integer IntegerKind.U16 1125;
+                    Value.Integer IntegerKind.U16 1123;
+                    Value.Integer IntegerKind.U16 1121;
+                    Value.Integer IntegerKind.U16 1118;
+                    Value.Integer IntegerKind.U16 1116;
+                    Value.Integer IntegerKind.U16 1113;
+                    Value.Integer IntegerKind.U16 1111;
+                    Value.Integer IntegerKind.U16 1109;
+                    Value.Integer IntegerKind.U16 1106;
+                    Value.Integer IntegerKind.U16 1104;
+                    Value.Integer IntegerKind.U16 1102;
+                    Value.Integer IntegerKind.U16 1099;
+                    Value.Integer IntegerKind.U16 1097;
+                    Value.Integer IntegerKind.U16 1095;
+                    Value.Integer IntegerKind.U16 1092;
+                    Value.Integer IntegerKind.U16 1090;
+                    Value.Integer IntegerKind.U16 1088;
+                    Value.Integer IntegerKind.U16 1086;
+                    Value.Integer IntegerKind.U16 1083;
+                    Value.Integer IntegerKind.U16 1081;
+                    Value.Integer IntegerKind.U16 1079;
+                    Value.Integer IntegerKind.U16 1077;
+                    Value.Integer IntegerKind.U16 1074;
+                    Value.Integer IntegerKind.U16 1072;
+                    Value.Integer IntegerKind.U16 1070;
+                    Value.Integer IntegerKind.U16 1068;
+                    Value.Integer IntegerKind.U16 1066;
+                    Value.Integer IntegerKind.U16 1064;
+                    Value.Integer IntegerKind.U16 1061;
+                    Value.Integer IntegerKind.U16 1059;
+                    Value.Integer IntegerKind.U16 1057;
+                    Value.Integer IntegerKind.U16 1055;
+                    Value.Integer IntegerKind.U16 1053;
+                    Value.Integer IntegerKind.U16 1051;
+                    Value.Integer IntegerKind.U16 1049;
+                    Value.Integer IntegerKind.U16 1047;
+                    Value.Integer IntegerKind.U16 1044;
+                    Value.Integer IntegerKind.U16 1042;
+                    Value.Integer IntegerKind.U16 1040;
+                    Value.Integer IntegerKind.U16 1038;
+                    Value.Integer IntegerKind.U16 1036;
+                    Value.Integer IntegerKind.U16 1034;
+                    Value.Integer IntegerKind.U16 1032;
+                    Value.Integer IntegerKind.U16 1030;
+                    Value.Integer IntegerKind.U16 1028;
+                    Value.Integer IntegerKind.U16 1026;
+                    Value.Integer IntegerKind.U16 1024
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_TABLE :
-          (M.get_constant "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE") =
-            value_TABLE.
-        Global Hint Rewrite Constant_value_TABLE : constant_rewrites.
+        Global Instance Instance_IsConstant_value_TABLE :
+          M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE" value_TABLE.
+        Admitted.
+        Global Typeclasses Opaque value_TABLE.
       End reciprocal_mg10.
       
       (*
@@ -1311,11 +1326,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 127)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 127)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -1610,9 +1621,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_reciprocal_2_mg10 :
-        M.IsFunction.Trait
-          "ruint::algorithms::div::reciprocal::reciprocal_2_mg10"
-          reciprocal_2_mg10.
+        M.IsFunction.C "ruint::algorithms::div::reciprocal::reciprocal_2_mg10" reciprocal_2_mg10.
       Admitted.
       Global Typeclasses Opaque reciprocal_2_mg10.
       
@@ -1695,7 +1704,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_mul_hi :
-        M.IsFunction.Trait "ruint::algorithms::div::reciprocal::mul_hi" mul_hi.
+        M.IsFunction.C "ruint::algorithms::div::reciprocal::mul_hi" mul_hi.
       Admitted.
       Global Typeclasses Opaque mul_hi.
       
@@ -1809,7 +1818,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_muladd_hi :
-        M.IsFunction.Trait "ruint::algorithms::div::reciprocal::muladd_hi" muladd_hi.
+        M.IsFunction.C "ruint::algorithms::div::reciprocal::muladd_hi" muladd_hi.
       Admitted.
       Global Typeclasses Opaque muladd_hi.
     End reciprocal.

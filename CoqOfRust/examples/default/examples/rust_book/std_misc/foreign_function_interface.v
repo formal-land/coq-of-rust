@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter csqrtf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_csqrtf :
-  M.IsFunction.Trait "foreign_function_interface::csqrtf" csqrtf.
+  M.IsFunction.C "foreign_function_interface::csqrtf" csqrtf.
 Admitted.
 
 Parameter ccosf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_ccosf :
-  M.IsFunction.Trait "foreign_function_interface::ccosf" ccosf.
+  M.IsFunction.C "foreign_function_interface::ccosf" ccosf.
 Admitted.
 
 (*
@@ -31,7 +31,7 @@ Definition cos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_cos : M.IsFunction.Trait "foreign_function_interface::cos" cos.
+Global Instance Instance_IsFunction_cos : M.IsFunction.C "foreign_function_interface::cos" cos.
 Admitted.
 Global Typeclasses Opaque cos.
 
@@ -92,9 +92,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "the square root of " |);
-                                  M.read (| Value.String " is " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "the square root of " |);
+                                  mk_str (| " is " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -173,12 +173,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "cos(" |);
-                                  M.read (| Value.String ") = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "cos(" |); mk_str (| ") = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -252,8 +248,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "foreign_function_interface::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "foreign_function_interface::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -380,11 +375,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "-" |);
-                                        M.read (| Value.String "i" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "-" |); mk_str (| "i" |) ]
                                   |)
                                 |)
                               |)
@@ -494,11 +485,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "+" |);
-                                        M.read (| Value.String "i" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "+" |); mk_str (| "i" |) ]
                                   |)
                                 |)
                               |)

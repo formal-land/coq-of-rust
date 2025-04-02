@@ -250,7 +250,7 @@ Module algorithms.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Matrix" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Matrix" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -340,23 +340,22 @@ Module algorithms.
         
         (*     pub const IDENTITY: Self = Self(1, 0, 0, 1, true); *)
         (* Ty.path "ruint::algorithms::gcd::matrix::Matrix" *)
-        Definition value_IDENTITY : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                Value.StructTuple
-                  "ruint::algorithms::gcd::matrix::Matrix"
-                  [
-                    Value.Integer IntegerKind.U64 1;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 1;
-                    Value.Bool true
-                  ]
-              |))).
+        Definition value_IDENTITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              Value.StructTuple
+                "ruint::algorithms::gcd::matrix::Matrix"
+                [
+                  Value.Integer IntegerKind.U64 1;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 1;
+                  Value.Bool true
+                ]
+            |))).
         
         Global Instance AssociatedConstant_value_IDENTITY :
-          M.IsAssociatedConstant.Trait Self "value_IDENTITY" value_IDENTITY.
+          M.IsAssociatedFunction.C Self "IDENTITY" value_IDENTITY.
         Admitted.
         Global Typeclasses Opaque value_IDENTITY.
         
@@ -538,7 +537,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_compose :
-          M.IsAssociatedFunction.Trait Self "compose" compose.
+          M.IsAssociatedFunction.C Self "compose" compose.
         Admitted.
         Global Typeclasses Opaque compose.
         
@@ -588,12 +587,7 @@ Module algorithms.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::apply::BITS"
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |)
+                                    BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -988,7 +982,7 @@ Module algorithms.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.Trait Self "apply" apply.
+        Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.C Self "apply" apply.
         Admitted.
         Global Typeclasses Opaque apply.
         
@@ -1271,7 +1265,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_apply_u128 :
-          M.IsAssociatedFunction.Trait Self "apply_u128" apply_u128.
+          M.IsAssociatedFunction.C Self "apply_u128" apply_u128.
         Admitted.
         Global Typeclasses Opaque apply_u128.
         
@@ -1338,7 +1332,7 @@ Module algorithms.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: a >= b" |) ]
+                                [ mk_str (| "assertion failed: a >= b" |) ]
                               |)
                             |)
                           |)));
@@ -1737,7 +1731,7 @@ Module algorithms.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_from : M.IsAssociatedFunction.Trait Self "from" from.
+        Global Instance AssociatedFunction_from : M.IsAssociatedFunction.C Self "from" from.
         Admitted.
         Global Typeclasses Opaque from.
         
@@ -1816,11 +1810,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: r0 >= r1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: r0 >= r1" |) ]
                                             |)
                                           |)
                                         |)));
@@ -1853,7 +1843,11 @@ Module algorithms.
                                   M.read (|
                                     M.return_ (|
                                       M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                        get_associated_constant (|
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                          "IDENTITY",
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2035,7 +2029,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u64 :
-          M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+          M.IsAssociatedFunction.C Self "from_u64" from_u64.
         Admitted.
         Global Typeclasses Opaque from_u64.
         
@@ -2213,11 +2207,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a0 >= 1_u64 << 63"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a0 >= 1_u64 << 63" |) ]
                                             |)
                                           |)
                                         |)));
@@ -2265,11 +2255,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a0 >= a1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a0 >= a1" |) ]
                                             |)
                                           |)
                                         |)));
@@ -2302,8 +2288,10 @@ Module algorithms.
                                     BinOp.lt (|
                                       M.read (| a1 |),
                                       M.read (|
-                                        M.get_constant
-                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                        get_constant (|
+                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -2317,7 +2305,11 @@ Module algorithms.
                                   M.read (|
                                     M.return_ (|
                                       M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                        get_associated_constant (|
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                          "IDENTITY",
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2355,8 +2347,10 @@ Module algorithms.
                                     BinOp.lt (|
                                       M.read (| a2 |),
                                       M.read (|
-                                        M.get_constant
-                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                        get_constant (|
+                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -2377,8 +2371,10 @@ Module algorithms.
                                   BinOp.Wrap.rem (|
                                     M.read (| k2 |),
                                     M.read (|
-                                      M.get_constant
-                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                      get_constant (|
+                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                        Ty.path "u64"
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -2432,8 +2428,11 @@ Module algorithms.
                                           M.read (|
                                             M.return_ (|
                                               M.read (|
-                                                M.get_constant
-                                                  "ruint::algorithms::gcd::matrix::IDENTITY"
+                                                get_associated_constant (|
+                                                  Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                                  "IDENTITY",
+                                                  Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -2476,8 +2475,10 @@ Module algorithms.
                                         BinOp.ge (|
                                           M.read (| a3 |),
                                           M.read (|
-                                            M.get_constant
-                                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                            get_constant (|
+                                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                              Ty.path "u64"
+                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -2545,9 +2546,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 < a3"
+                                                              mk_str (|
+                                                                "assertion failed: a2 < a3"
                                                               |)
                                                             ]
                                                           |)
@@ -2606,9 +2606,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 > 0"
+                                                              mk_str (|
+                                                                "assertion failed: a2 > 0"
                                                               |)
                                                             ]
                                                           |)
@@ -2661,8 +2660,10 @@ Module algorithms.
                                                   BinOp.lt (|
                                                     M.read (| a3 |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                      get_constant (|
+                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -2744,9 +2745,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 < a3"
+                                                              mk_str (|
+                                                                "assertion failed: a2 < a3"
                                                               |)
                                                             ]
                                                           |)
@@ -2805,9 +2805,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 > 0"
+                                                              mk_str (|
+                                                                "assertion failed: a2 > 0"
                                                               |)
                                                             ]
                                                           |)
@@ -2885,7 +2884,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k0 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2894,7 +2896,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k1 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2903,7 +2908,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k2 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2912,7 +2920,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k3 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2943,8 +2954,10 @@ Module algorithms.
                                                 BinOp.ge (|
                                                   M.read (| a2 |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                    get_constant (|
+                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                      Ty.path "u64"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2959,11 +2972,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a2 >= LIMIT"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a2 >= LIMIT" |) ]
                                             |)
                                           |)
                                         |)));
@@ -3001,8 +3010,10 @@ Module algorithms.
                                                 BinOp.lt (|
                                                   M.read (| a3 |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                    get_constant (|
+                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                      Ty.path "u64"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -3017,11 +3028,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a3 < LIMIT"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a3 < LIMIT" |) ]
                                             |)
                                           |)
                                         |)));
@@ -3085,11 +3092,7 @@ Module algorithms.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String "assertion failed: a2 >= v2"
-                                                        |)
-                                                      ]
+                                                      [ mk_str (| "assertion failed: a2 >= v2" |) ]
                                                     |)
                                                   |)
                                                 |)));
@@ -3235,11 +3238,7 @@ Module algorithms.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String "assertion failed: a2 >= u2"
-                                                        |)
-                                                      ]
+                                                      [ mk_str (| "assertion failed: a2 >= u2" |) ]
                                                     |)
                                                   |)
                                                 |)));
@@ -3347,7 +3346,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u64_prefix :
-          M.IsAssociatedFunction.Trait Self "from_u64_prefix" from_u64_prefix.
+          M.IsAssociatedFunction.C Self "from_u64_prefix" from_u64_prefix.
         Admitted.
         Global Typeclasses Opaque from_u64_prefix.
         
@@ -3424,11 +3423,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: r0 >= r1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: r0 >= r1" |) ]
                                             |)
                                           |)
                                         |)));
@@ -3502,7 +3497,11 @@ Module algorithms.
                                         M.borrow (| Pointer.Kind.Ref, q |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                          get_associated_constant (|
+                                            Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                            "IDENTITY",
+                                            Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3525,7 +3524,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u128_prefix :
-          M.IsAssociatedFunction.Trait Self "from_u128_prefix" from_u128_prefix.
+          M.IsAssociatedFunction.C Self "from_u128_prefix" from_u128_prefix.
         Admitted.
         Global Typeclasses Opaque from_u128_prefix.
       End Impl_ruint_algorithms_gcd_matrix_Matrix.

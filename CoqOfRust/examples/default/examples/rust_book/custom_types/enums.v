@@ -89,14 +89,13 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (|
-                                          Value.String
-                                            ("page loaded, r"
-                                              ++
-                                              (String.String
-                                                "233"
-                                                ("f" ++ (String.String "233" "
-"))))
+                                        mk_str (|
+                                          String.append
+                                            "page loaded, r"
+                                            (String.String
+                                              "233"
+                                              (String.append "f" (String.String "233" "
+")))
                                         |)
                                       ]
                                   |)
@@ -132,10 +131,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "page unloaded
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "page unloaded
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -172,12 +169,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "pressed '" |);
-                                        M.read (| Value.String "'.
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "pressed '" |); mk_str (| "'.
+" |) ]
                                   |)
                                 |)
                               |)
@@ -243,12 +236,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "pasted """ |);
-                                        M.read (| Value.String """.
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "pasted """ |); mk_str (| """.
+" |) ]
                                   |)
                                 |)
                               |)
@@ -320,9 +309,9 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "clicked at x=" |);
-                                          M.read (| Value.String ", y=" |);
-                                          M.read (| Value.String ".
+                                          mk_str (| "clicked at x=" |);
+                                          mk_str (| ", y=" |);
+                                          mk_str (| ".
 " |)
                                         ]
                                     |)
@@ -385,7 +374,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_inspect : M.IsFunction.Trait "enums::inspect" inspect.
+Global Instance Instance_IsFunction_inspect : M.IsFunction.C "enums::inspect" inspect.
 Admitted.
 Global Typeclasses Opaque inspect.
 
@@ -428,12 +417,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     []
                   |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "my text" |) |)
-                    |)
-                  ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "my text" |) |) |) ]
                 |)
               ]
           |) in
@@ -492,6 +476,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums::main" main.
 Admitted.
 Global Typeclasses Opaque main.

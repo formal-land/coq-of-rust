@@ -45,8 +45,8 @@ Module vec.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Splice" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drain" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Splice" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "drain" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -60,10 +60,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "replace_with" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "replace_with" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1188,9 +1185,8 @@ Module vec.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: filled"
+                                                              mk_str (|
+                                                                "assertion failed: filled"
                                                               |)
                                                             ]
                                                           |)
@@ -1699,7 +1695,7 @@ Module vec.
       
       Global Instance AssociatedFunction_fill :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "fill" (fill T A).
+        M.IsAssociatedFunction.C (Self T A) "fill" (fill T A).
       Admitted.
       Global Typeclasses Opaque fill.
       
@@ -1913,7 +1909,7 @@ Module vec.
       
       Global Instance AssociatedFunction_move_tail :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "move_tail" (move_tail T A).
+        M.IsAssociatedFunction.C (Self T A) "move_tail" (move_tail T A).
       Admitted.
       Global Typeclasses Opaque move_tail.
     End Impl_alloc_vec_drain_Drain_T_A.

@@ -53,11 +53,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "size of `x` in bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "size of `x` in bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -139,11 +136,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "size of `y` in bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "size of `y` in bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -225,11 +219,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "size of `z` in bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "size of `z` in bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -311,11 +302,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "size of `i` in bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "size of `i` in bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -397,11 +385,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "size of `f` in bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "size of `f` in bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -465,6 +450,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "literals::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "literals::main" main.
 Admitted.
 Global Typeclasses Opaque main.

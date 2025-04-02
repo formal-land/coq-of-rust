@@ -198,7 +198,7 @@ Module table.
     
     Global Instance AssociatedFunction_insert :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "insert" (insert WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "insert" (insert WIRE H CI).
     Admitted.
     Global Typeclasses Opaque insert.
     
@@ -325,7 +325,7 @@ Module table.
     
     Global Instance AssociatedFunction_to_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "to_custom" (to_custom WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "to_custom" (to_custom WIRE H CI).
     Admitted.
     Global Typeclasses Opaque to_custom.
     
@@ -443,7 +443,7 @@ Module table.
     
     Global Instance AssociatedFunction_to_custom_with :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "to_custom_with" (to_custom_with WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "to_custom_with" (to_custom_with WIRE H CI).
     Admitted.
     Global Typeclasses Opaque to_custom_with.
     
@@ -583,7 +583,7 @@ Module table.
     
     Global Instance AssociatedFunction_to_custom_with_slow :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self WIRE H CI)
         "to_custom_with_slow"
         (to_custom_with_slow WIRE H CI).
@@ -651,7 +651,7 @@ Module table.
     
     Global Instance AssociatedFunction_get_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "get_custom" (get_custom WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "get_custom" (get_custom WIRE H CI).
     Admitted.
     Global Typeclasses Opaque get_custom.
     
@@ -705,7 +705,7 @@ Module table.
     
     Global Instance AssociatedFunction_insert_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "insert_custom" (insert_custom WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "insert_custom" (insert_custom WIRE H CI).
     Admitted.
     Global Typeclasses Opaque insert_custom.
     
@@ -760,7 +760,7 @@ Module table.
     
     Global Instance AssociatedFunction_replace_boxed :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction.Trait (Self WIRE H CI) "replace_boxed" (replace_boxed WIRE H CI).
+      M.IsAssociatedFunction.C (Self WIRE H CI) "replace_boxed" (replace_boxed WIRE H CI).
     Admitted.
     Global Typeclasses Opaque replace_boxed.
   End Impl_revm_interpreter_table_InstructionTables_WIRE_H_CI.
@@ -784,13 +784,30 @@ Module table.
     | [], [ WIRE; H ], [] =>
       ltac:(M.monadic
         (M.read (|
-          M.get_constant "revm_interpreter::table::make_instruction_table_discriminant"
+          get_constant (|
+            "revm_interpreter::table::make_instruction_table_discriminant",
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 256 ]
+              [
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ]
+                      ];
+                    Ty.apply (Ty.path "&mut") [] [ H ]
+                  ]
+                  (Ty.tuple [])
+              ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_make_instruction_table :
-    M.IsFunction.Trait "revm_interpreter::table::make_instruction_table" make_instruction_table.
+    M.IsFunction.C "revm_interpreter::table::make_instruction_table" make_instruction_table.
   Admitted.
   Global Typeclasses Opaque make_instruction_table.
   
@@ -891,7 +908,7 @@ Module table.
     end.
   
   Global Instance Instance_IsFunction_make_custom_instruction_table :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "revm_interpreter::table::make_custom_instruction_table"
       make_custom_instruction_table.
   Admitted.

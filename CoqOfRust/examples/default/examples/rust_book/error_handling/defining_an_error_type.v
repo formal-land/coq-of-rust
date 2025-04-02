@@ -24,7 +24,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "DoubleError" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DoubleError" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -102,9 +102,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "invalid first item to double" |) ]
-                      |)
+                      M.alloc (| Value.Array [ mk_str (| "invalid first item to double" |) ] |)
                     |)
                   |)
                 |)
@@ -388,7 +386,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "defining_an_error_type::double_first" double_first.
+  M.IsFunction.C "defining_an_error_type::double_first" double_first.
 Admitted.
 Global Typeclasses Opaque double_first.
 
@@ -438,11 +436,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "The first doubled is " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "The first doubled is " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -508,12 +503,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Error: " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "Error: " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -558,8 +549,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "defining_an_error_type::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "defining_an_error_type::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -628,15 +618,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "42" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "42" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -717,15 +701,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "tofu" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "tofu" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -790,6 +768,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "defining_an_error_type::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "defining_an_error_type::main" main.
 Admitted.
 Global Typeclasses Opaque main.

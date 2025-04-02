@@ -1097,14 +1097,8 @@ Module host.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "SStoreResult" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "original_value" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SStoreResult" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "original_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1118,10 +1112,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "present_value" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "present_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1135,7 +1126,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "new_value" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "new_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1494,7 +1485,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_new_eq_present :
-      M.IsAssociatedFunction.Trait Self "is_new_eq_present" is_new_eq_present.
+      M.IsAssociatedFunction.C Self "is_new_eq_present" is_new_eq_present.
     Admitted.
     Global Typeclasses Opaque is_new_eq_present.
     
@@ -1550,7 +1541,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_eq_present :
-      M.IsAssociatedFunction.Trait Self "is_original_eq_present" is_original_eq_present.
+      M.IsAssociatedFunction.C Self "is_original_eq_present" is_original_eq_present.
     Admitted.
     Global Typeclasses Opaque is_original_eq_present.
     
@@ -1606,7 +1597,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_eq_new :
-      M.IsAssociatedFunction.Trait Self "is_original_eq_new" is_original_eq_new.
+      M.IsAssociatedFunction.C Self "is_original_eq_new" is_original_eq_new.
     Admitted.
     Global Typeclasses Opaque is_original_eq_new.
     
@@ -1646,7 +1637,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_original_zero :
-      M.IsAssociatedFunction.Trait Self "is_original_zero" is_original_zero.
+      M.IsAssociatedFunction.C Self "is_original_zero" is_original_zero.
     Admitted.
     Global Typeclasses Opaque is_original_zero.
     
@@ -1686,7 +1677,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_present_zero :
-      M.IsAssociatedFunction.Trait Self "is_present_zero" is_present_zero.
+      M.IsAssociatedFunction.C Self "is_present_zero" is_present_zero.
     Admitted.
     Global Typeclasses Opaque is_present_zero.
     
@@ -1726,7 +1717,7 @@ Module host.
       end.
     
     Global Instance AssociatedFunction_is_new_zero :
-      M.IsAssociatedFunction.Trait Self "is_new_zero" is_new_zero.
+      M.IsAssociatedFunction.C Self "is_new_zero" is_new_zero.
     Admitted.
     Global Typeclasses Opaque is_new_zero.
   End Impl_revm_context_interface_host_SStoreResult.
@@ -1876,11 +1867,8 @@ Module host.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "SelfDestructResult" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "had_value" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestructResult" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "had_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1894,10 +1882,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "target_exists" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "target_exists" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1911,10 +1896,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "previously_destroyed" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "previously_destroyed" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

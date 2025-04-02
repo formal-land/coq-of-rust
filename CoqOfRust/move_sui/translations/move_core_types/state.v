@@ -103,10 +103,7 @@ Module state.
                             "move_core_types::state::VMState::DESERIALIZER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DESERIALIZER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -114,10 +111,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VERIFIER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -125,10 +119,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RUNTIME" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -136,10 +127,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OTHER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)
                         |)))
                   ]
                 |)
@@ -291,7 +279,21 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              get_constant (|
+                "move_core_types::state::STATE",
+                Ty.apply
+                  (Ty.path "std::thread::local::LocalKey")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::cell::RefCell")
+                      []
+                      [ Ty.path "move_core_types::state::VMState" ]
+                  ]
+              |)
+            |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -347,7 +349,7 @@ Module state.
     end.
   
   Global Instance Instance_IsFunction_set_state :
-    M.IsFunction.Trait "move_core_types::state::set_state" set_state.
+    M.IsFunction.C "move_core_types::state::set_state" set_state.
   Admitted.
   Global Typeclasses Opaque set_state.
   
@@ -395,7 +397,21 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              get_constant (|
+                "move_core_types::state::STATE",
+                Ty.apply
+                  (Ty.path "std::thread::local::LocalKey")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::cell::RefCell")
+                      []
+                      [ Ty.path "move_core_types::state::VMState" ]
+                  ]
+              |)
+            |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -485,7 +501,7 @@ Module state.
     end.
   
   Global Instance Instance_IsFunction_get_state :
-    M.IsFunction.Trait "move_core_types::state::get_state" get_state.
+    M.IsFunction.C "move_core_types::state::get_state" get_state.
   Admitted.
   Global Typeclasses Opaque get_state.
 End state.

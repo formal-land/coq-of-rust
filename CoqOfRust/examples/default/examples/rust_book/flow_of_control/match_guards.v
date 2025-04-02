@@ -89,11 +89,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "C is above 30 Celsius
-" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "C is above 30 Celsius
+" |) ]
                                   |)
                                 |)
                               |)
@@ -164,11 +161,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "C is below 30 Celsius
-" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "C is below 30 Celsius
+" |) ]
                                   |)
                                 |)
                               |)
@@ -242,11 +236,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "F is above 86 Fahrenheit
-" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "F is above 86 Fahrenheit
+" |) ]
                                   |)
                                 |)
                               |)
@@ -317,11 +308,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "F is below 86 Fahrenheit
-" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "F is below 86 Fahrenheit
+" |) ]
                                   |)
                                 |)
                               |)
@@ -366,6 +354,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match_guards::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "match_guards::main" main.
 Admitted.
 Global Typeclasses Opaque main.

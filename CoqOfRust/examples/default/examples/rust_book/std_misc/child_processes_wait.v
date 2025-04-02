@@ -58,11 +58,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
-                                  [ M.read (| Value.String "sleep" |) ]
+                                  [ mk_str (| "sleep" |) ]
                                 |)
                               |)
                             |);
-                            M.read (| Value.String "5" |)
+                            mk_str (| "5" |)
                           ]
                         |)
                       |)
@@ -118,10 +118,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "reached end of main
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "reached end of main
+" |) ] |)
                           |)
                         |)
                       |)
@@ -136,6 +134,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "child_processes_wait::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "child_processes_wait::main" main.
 Admitted.
 Global Typeclasses Opaque main.

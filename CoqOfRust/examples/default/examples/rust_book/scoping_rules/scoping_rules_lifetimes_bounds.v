@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ref" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -101,12 +101,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`print`: t is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`print`: t is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -151,7 +147,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print" print.
+  M.IsFunction.C "scoping_rules_lifetimes_bounds::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -191,12 +187,8 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`print_ref`: t is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`print_ref`: t is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -241,7 +233,7 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   end.
 
 Global Instance Instance_IsFunction_print_ref :
-  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+  M.IsFunction.C "scoping_rules_lifetimes_bounds::print_ref" print_ref.
 Admitted.
 Global Typeclasses Opaque print_ref.
 
@@ -302,6 +294,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_bounds::main" main.
 Admitted.
 Global Typeclasses Opaque main.

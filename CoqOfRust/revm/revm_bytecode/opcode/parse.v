@@ -34,10 +34,7 @@ Module opcode.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "OpCodeError" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OpCodeError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -189,10 +186,7 @@ Module opcode.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "invalid opcode" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid opcode" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -331,7 +325,23 @@ Module opcode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (| M.get_constant "revm_bytecode::opcode::NAME_TO_OPCODE" |)
+                        M.read (|
+                          get_constant (|
+                            "revm_bytecode::opcode::NAME_TO_OPCODE",
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "phf::map::Map")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                  ]
+                              ]
+                          |)
+                        |)
                       |)
                     |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
@@ -342,7 +352,7 @@ Module opcode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_parse : M.IsAssociatedFunction.Trait Self "parse" parse.
+      Global Instance AssociatedFunction_parse : M.IsAssociatedFunction.C Self "parse" parse.
       Admitted.
       Global Typeclasses Opaque parse.
     End Impl_revm_bytecode_opcode_OpCode.

@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "macro_rules_designators::foo" foo.
+Global Instance Instance_IsFunction_foo : M.IsFunction.C "macro_rules_designators::foo" foo.
 Admitted.
 
 Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_bar : M.IsFunction.Trait "macro_rules_designators::bar" bar.
+Global Instance Instance_IsFunction_bar : M.IsFunction.C "macro_rules_designators::bar" bar.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "macro_rules_designators::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "macro_rules_designators::main" main.
 Admitted.

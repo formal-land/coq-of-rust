@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
-
-Module Address := dependencies.alloy_primitives.bits.links.address.Address.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.links.aliases.
+Require Import core.links.option.
 
 (* 
 #[auto_impl(&, &mut, Box, Arc)]
@@ -68,7 +68,7 @@ Module Block.
   Definition Run_difficulty (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "difficulty" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        Run.Trait method [] [] [ φ self ] U256.t
+        Run.Trait method [] [] [ φ self ] aliases.U256.t
     ).
 
   (* fn blob_gasprice(&self) -> Option<u128> *)
@@ -114,18 +114,18 @@ Module BlockGetter.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("revm_context_interface::block::BlockGetter", [], [], Φ Self).
 
-  Definition Run_block (Self : Set) `{Link Self} : Set :=
+  Definition Run_block (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
     TraitMethod.C (trait Self) "block" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        Run.Trait method [] [] [ φ self ] unit
+        Run.Trait method [] [] [ φ self ] (Ref.t Pointer.Kind.Ref types.(Types.Block))
     ).
 
-  Class Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
+  Class Run (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set := {
     Block_IsAssociated : 
       IsTraitAssociatedType
         "revm_context_interface::block::BlockGetter" [] [] (Φ Self)
         "Block" (Φ types.(Types.Block));
     run_Block_for_Block : Block.Run types.(Types.Block);
-    block : Run_block Self;
+    block : Run_block Self types;
   }.
 End BlockGetter.

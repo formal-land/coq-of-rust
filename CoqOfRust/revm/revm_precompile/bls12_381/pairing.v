@@ -3,57 +3,75 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module pairing.
-    Definition value_PRECOMPILE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.call_closure (|
-                  Ty.path "alloy_primitives::bits::address::Address",
-                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant "revm_precompile::bls12_381::pairing::ADDRESS" |) ]
-                |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::pairing::pairing", [], [] |))
-              ]
-          |))).
+    Definition value_PRECOMPILE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+                [
+                  M.read (|
+                    get_constant (| "revm_precompile::bls12_381::pairing::ADDRESS", Ty.path "u64" |)
+                  |)
+                ]
+              |);
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::bls12_381::pairing::pairing", [], [] |))
+            ]
+        |))).
     
-    Axiom Constant_value_PRECOMPILE :
-      (M.get_constant "revm_precompile::bls12_381::pairing::PRECOMPILE") = value_PRECOMPILE.
-    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PRECOMPILE :
+      M.IsFunction.C "revm_precompile::bls12_381::pairing::PRECOMPILE" value_PRECOMPILE.
+    Admitted.
+    Global Typeclasses Opaque value_PRECOMPILE.
     
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 17 |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 17 |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bls12_381::pairing::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bls12_381::pairing::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
-    Definition value_PAIRING_MULTIPLIER_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 43000 |))).
+    Definition value_PAIRING_MULTIPLIER_BASE
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 43000 |))).
     
-    Axiom Constant_value_PAIRING_MULTIPLIER_BASE :
-      (M.get_constant "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE") =
+    Global Instance Instance_IsConstant_value_PAIRING_MULTIPLIER_BASE :
+      M.IsFunction.C
+        "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE"
         value_PAIRING_MULTIPLIER_BASE.
-    Global Hint Rewrite Constant_value_PAIRING_MULTIPLIER_BASE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_PAIRING_MULTIPLIER_BASE.
     
-    Definition value_PAIRING_OFFSET_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65000 |))).
+    Definition value_PAIRING_OFFSET_BASE
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65000 |))).
     
-    Axiom Constant_value_PAIRING_OFFSET_BASE :
-      (M.get_constant "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE") =
+    Global Instance Instance_IsConstant_value_PAIRING_OFFSET_BASE :
+      M.IsFunction.C
+        "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE"
         value_PAIRING_OFFSET_BASE.
-    Global Hint Rewrite Constant_value_PAIRING_OFFSET_BASE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_PAIRING_OFFSET_BASE.
     
-    Definition value_INPUT_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 384 |))).
+    Definition value_INPUT_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 384 |))).
     
-    Axiom Constant_value_INPUT_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::pairing::INPUT_LENGTH") = value_INPUT_LENGTH.
-    Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_INPUT_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::pairing::INPUT_LENGTH" value_INPUT_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_INPUT_LENGTH.
     
     (*
     pub(super) fn pairing(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -188,8 +206,10 @@ Module bls12_381.
                                       BinOp.Wrap.rem (|
                                         M.read (| input_len |),
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |),
                                       Value.Integer IntegerKind.Usize 0
@@ -260,13 +280,10 @@ Module bls12_381.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "Pairing input length should be multiple of "
+                                                                            mk_str (|
+                                                                              "Pairing input length should be multiple of "
                                                                             |);
-                                                                            M.read (|
-                                                                              Value.String ", was "
-                                                                            |)
+                                                                            mk_str (| ", was " |)
                                                                           ]
                                                                       |)
                                                                     |)
@@ -296,8 +313,11 @@ Module bls12_381.
                                                                                   M.deref (|
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
-                                                                                      M.get_constant
-                                                                                        "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                                                                      get_constant (|
+                                                                                        "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -355,7 +375,10 @@ Module bls12_381.
                     BinOp.Wrap.div (|
                       M.read (| input_len |),
                       M.read (|
-                        M.get_constant "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                        get_constant (|
+                          "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                          Ty.path "usize"
+                        |)
                       |)
                     |)
                   |) in
@@ -364,13 +387,18 @@ Module bls12_381.
                     BinOp.Wrap.add (|
                       BinOp.Wrap.mul (|
                         M.read (|
-                          M.get_constant
-                            "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE"
+                          get_constant (|
+                            "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE",
+                            Ty.path "u64"
+                          |)
                         |),
                         M.cast (Ty.path "u64") (M.read (| k |))
                       |),
                       M.read (|
-                        M.get_constant "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE"
+                        get_constant (|
+                          "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE",
+                          Ty.path "u64"
+                        |)
                       |)
                     |)
                   |) in
@@ -684,8 +712,10 @@ Module bls12_381.
                                                                               BinOp.Wrap.mul (|
                                                                                 M.read (| i |),
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                                                                  get_constant (|
+                                                                                    "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |));
                                                                             ("end_",
@@ -693,13 +723,18 @@ Module bls12_381.
                                                                                 BinOp.Wrap.mul (|
                                                                                   M.read (| i |),
                                                                                   M.read (|
-                                                                                    M.get_constant
-                                                                                      "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                                                                    get_constant (|
+                                                                                      "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
                                                                                 |),
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
+                                                                                  get_constant (|
+                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |))
                                                                           ]
@@ -954,13 +989,18 @@ Module bls12_381.
                                                                                 BinOp.Wrap.mul (|
                                                                                   M.read (| i |),
                                                                                   M.read (|
-                                                                                    M.get_constant
-                                                                                      "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                                                                    get_constant (|
+                                                                                      "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
                                                                                 |),
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
+                                                                                  get_constant (|
+                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |));
                                                                             ("end_",
@@ -969,18 +1009,26 @@ Module bls12_381.
                                                                                   BinOp.Wrap.mul (|
                                                                                     M.read (| i |),
                                                                                     M.read (|
-                                                                                      M.get_constant
-                                                                                        "revm_precompile::bls12_381::pairing::INPUT_LENGTH"
+                                                                                      get_constant (|
+                                                                                        "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.get_constant
-                                                                                      "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
+                                                                                    get_constant (|
+                                                                                      "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
                                                                                 |),
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                                                  get_constant (|
+                                                                                    "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                                    Ty.path "usize"
+                                                                                  |)
                                                                                 |)
                                                                               |))
                                                                           ]
@@ -1357,7 +1405,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_pairing :
-      M.IsFunction.Trait "revm_precompile::bls12_381::pairing::pairing" pairing.
+      M.IsFunction.C "revm_precompile::bls12_381::pairing::pairing" pairing.
     Admitted.
     Global Typeclasses Opaque pairing.
   End pairing.

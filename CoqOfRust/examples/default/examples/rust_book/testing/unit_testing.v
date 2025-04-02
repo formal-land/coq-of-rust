@@ -16,7 +16,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_add : M.IsFunction.Trait "unit_testing::add" add.
+Global Instance Instance_IsFunction_add : M.IsFunction.C "unit_testing::add" add.
 Admitted.
 Global Typeclasses Opaque add.
 
@@ -35,7 +35,7 @@ Definition bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_bad_add : M.IsFunction.Trait "unit_testing::bad_add" bad_add.
+Global Instance Instance_IsFunction_bad_add : M.IsFunction.C "unit_testing::bad_add" bad_add.
 Admitted.
 Global Typeclasses Opaque bad_add.
 
@@ -147,7 +147,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_add :
-    M.IsFunction.Trait "unit_testing::tests::test_add'1" test_add.
+    M.IsFunction.C "unit_testing::tests::test_add'1" test_add.
   Admitted.
   Global Typeclasses Opaque test_add.
   
@@ -260,7 +260,7 @@ Module tests.
     end.
   
   Global Instance Instance_IsFunction_test_bad_add :
-    M.IsFunction.Trait "unit_testing::tests::test_bad_add'1" test_bad_add.
+    M.IsFunction.C "unit_testing::tests::test_bad_add'1" test_bad_add.
   Admitted.
   Global Typeclasses Opaque test_bad_add.
 End tests.

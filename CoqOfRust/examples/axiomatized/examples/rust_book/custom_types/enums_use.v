@@ -47,5 +47,5 @@ Axiom IsDiscriminant_Work_Soldier : M.IsDiscriminant "enums_use::Work::Soldier" 
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums_use::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_use::main" main.
 Admitted.

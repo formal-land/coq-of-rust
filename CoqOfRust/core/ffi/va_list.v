@@ -50,14 +50,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "VaListImpl" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "gp_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VaListImpl" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gp_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -71,10 +65,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "fp_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fp_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -88,10 +79,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "overflow_arg_area" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "overflow_arg_area" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -105,10 +93,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "reg_save_area" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reg_save_area" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -122,7 +107,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -194,8 +179,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "VaList" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VaList" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -209,7 +194,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -265,7 +250,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_as_va_list :
-        M.IsAssociatedFunction.Trait Self "as_va_list" as_va_list.
+        M.IsAssociatedFunction.C Self "as_va_list" as_va_list.
       Admitted.
       Global Typeclasses Opaque as_va_list.
       (*
@@ -287,7 +272,7 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_arg : M.IsAssociatedFunction.Trait Self "arg" arg.
+      Global Instance AssociatedFunction_arg : M.IsAssociatedFunction.C Self "arg" arg.
       Admitted.
       Global Typeclasses Opaque arg.
       
@@ -380,7 +365,7 @@ Module ffi.
         end.
       
       Global Instance AssociatedFunction_with_copy :
-        M.IsAssociatedFunction.Trait Self "with_copy" with_copy.
+        M.IsAssociatedFunction.C Self "with_copy" with_copy.
       Admitted.
       Global Typeclasses Opaque with_copy.
     End Impl_core_ffi_va_list_VaListImpl.
@@ -772,20 +757,18 @@ Module ffi.
     
     Parameter va_end : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Global Instance Instance_IsFunction_va_end :
-      M.IsFunction.Trait "core::ffi::va_list::va_end" va_end.
+    Global Instance Instance_IsFunction_va_end : M.IsFunction.C "core::ffi::va_list::va_end" va_end.
     Admitted.
     
     Parameter va_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_va_copy :
-      M.IsFunction.Trait "core::ffi::va_list::va_copy" va_copy.
+      M.IsFunction.C "core::ffi::va_list::va_copy" va_copy.
     Admitted.
     
     Parameter va_arg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Global Instance Instance_IsFunction_va_arg :
-      M.IsFunction.Trait "core::ffi::va_list::va_arg" va_arg.
+    Global Instance Instance_IsFunction_va_arg : M.IsFunction.C "core::ffi::va_list::va_arg" va_arg.
     Admitted.
   End va_list.
 End ffi.

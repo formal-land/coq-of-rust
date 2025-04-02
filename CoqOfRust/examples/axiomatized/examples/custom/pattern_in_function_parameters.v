@@ -3,12 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter sum : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_sum :
-  M.IsFunction.Trait "pattern_in_function_parameters::sum" sum.
+Global Instance Instance_IsFunction_sum : M.IsFunction.C "pattern_in_function_parameters::sum" sum.
 Admitted.
 
 Parameter steps_between : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_steps_between :
-  M.IsFunction.Trait "pattern_in_function_parameters::steps_between" steps_between.
+  M.IsFunction.C "pattern_in_function_parameters::steps_between" steps_between.
 Admitted.

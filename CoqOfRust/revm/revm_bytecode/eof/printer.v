@@ -101,7 +101,18 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_array_field (|
-                                M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                                get_constant (|
+                                  "revm_bytecode::opcode::OPCODE_INFO",
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                                    ]
+                                |),
                                 M.cast (Ty.path "usize") (M.read (| op |))
                               |)
                             |)
@@ -248,9 +259,8 @@ Module eof.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Malformed code: immediate out of bounds
+                                                                                  mk_str (|
+                                                                                    "Malformed code: immediate out of bounds
 "
                                                                                   |)
                                                                                 ]
@@ -299,9 +309,7 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -517,12 +525,7 @@ Module eof.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String " : 0x"
-                                                                    |)
-                                                                  ]
+                                                                Value.Array [ mk_str (| " : 0x" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -666,12 +669,8 @@ Module eof.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String " ("
-                                                                            |);
-                                                                            M.read (|
-                                                                              Value.String ")"
-                                                                            |)
+                                                                            mk_str (| " (" |);
+                                                                            mk_str (| ")" |)
                                                                           ]
                                                                       |)
                                                                     |)
@@ -869,10 +868,8 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "
-" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "
+" |) ] |)
                                                   |)
                                                 |)
                                               |)
@@ -939,7 +936,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_print :
-      M.IsFunction.Trait "revm_bytecode::eof::printer::print" print.
+      M.IsFunction.C "revm_bytecode::eof::printer::print" print.
     Admitted.
     Global Typeclasses Opaque print.
   End printer.

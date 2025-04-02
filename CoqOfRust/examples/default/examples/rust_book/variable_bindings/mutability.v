@@ -47,12 +47,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Before mutation: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Before mutation: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -120,12 +116,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "After mutation: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "After mutation: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -171,6 +163,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "mutability::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "mutability::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -100,11 +100,8 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "AbstractStack" |) |)
-            |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "values" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AbstractStack" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "values" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -118,7 +115,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "len" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "len" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -196,7 +193,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_new :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    M.IsAssociatedFunction.C (Self T) "new" (new T).
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -289,9 +286,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: !self.values.is_empty() || self.len == 0"
+                                      mk_str (|
+                                        "assertion failed: !self.values.is_empty() || self.len == 0"
                                       |)
                                     ]
                                   |)
@@ -471,9 +467,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.values.is_empty() || self.values.last().unwrap().0 <= self.len"
+                                      mk_str (|
+                                        "assertion failed: self.values.is_empty() || self.values.last().unwrap().0 <= self.len"
                                       |)
                                     ]
                                   |)
@@ -516,7 +511,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_is_empty :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+    M.IsAssociatedFunction.C (Self T) "is_empty" (is_empty T).
   Admitted.
   Global Typeclasses Opaque is_empty.
   
@@ -609,9 +604,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.len != 0 || self.values.is_empty()"
+                                      mk_str (|
+                                        "assertion failed: self.len != 0 || self.values.is_empty()"
                                       |)
                                     ]
                                   |)
@@ -808,9 +802,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.len == 0 ||
+                                      mk_str (|
+                                        "assertion failed: self.len == 0 ||
     (!self.values.is_empty() && self.values.last().unwrap().0 <= self.len)"
                                       |)
                                     ]
@@ -835,7 +828,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_len :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+    M.IsAssociatedFunction.C (Self T) "len" (len T).
   Admitted.
   Global Typeclasses Opaque len.
   
@@ -873,7 +866,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_push :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "push" (push T).
+    M.IsAssociatedFunction.C (Self T) "push" (push T).
   Admitted.
   Global Typeclasses Opaque push.
   
@@ -1121,9 +1114,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "assertion failed: *count > 0"
+                                                            mk_str (|
+                                                              "assertion failed: *count > 0"
                                                             |)
                                                           ]
                                                         |)
@@ -1188,7 +1180,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_push_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "push_n" (push_n T).
+    M.IsAssociatedFunction.C (Self T) "push_n" (push_n T).
   Admitted.
   Global Typeclasses Opaque push_n.
   
@@ -1250,7 +1242,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop" (pop T).
+    M.IsAssociatedFunction.C (Self T) "pop" (pop T).
   Admitted.
   Global Typeclasses Opaque pop.
   
@@ -1477,11 +1469,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   [],
                                                   []
                                                 |),
-                                                [
-                                                  M.read (|
-                                                    Value.String "assertion failed: *count > 0"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "assertion failed: *count > 0" |) ]
                                               |)
                                             |)
                                           |)));
@@ -1653,7 +1641,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop_eq_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop_eq_n" (pop_eq_n T).
+    M.IsAssociatedFunction.C (Self T) "pop_eq_n" (pop_eq_n T).
   Admitted.
   Global Typeclasses Opaque pop_eq_n.
   
@@ -1922,9 +1910,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: *count > 0"
+                                                                mk_str (|
+                                                                  "assertion failed: *count > 0"
                                                                 |)
                                                               ]
                                                             |)
@@ -2118,7 +2105,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop_any_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop_any_n" (pop_any_n T).
+    M.IsAssociatedFunction.C (Self T) "pop_any_n" (pop_any_n T).
   Admitted.
   Global Typeclasses Opaque pop_any_n.
 End Impl_move_abstract_stack_AbstractStack_T.
@@ -2442,7 +2429,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "ElementNotEqual" |) |)
+                          M.deref (| mk_str (| "ElementNotEqual" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -2454,10 +2441,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                           "move_abstract_stack::AbsStackError::Underflow"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Underflow" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Underflow" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2465,10 +2449,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Overflow" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |)
                       |)))
                 ]
               |)
@@ -2558,11 +2539,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Popped element is not equal to specified item"
-                                        |)
+                                      [ mk_str (| "Popped element is not equal to specified item" |)
                                       ]
                                   |)
                                 |)
@@ -2608,11 +2585,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Popped more values than are on the stack"
-                                        |)
-                                      ]
+                                      [ mk_str (| "Popped more values than are on the stack" |) ]
                                   |)
                                 |)
                               |)
@@ -2657,11 +2630,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Pushed too many elements on the stack"
-                                        |)
-                                      ]
+                                      [ mk_str (| "Pushed too many elements on the stack" |) ]
                                   |)
                                 |)
                               |)

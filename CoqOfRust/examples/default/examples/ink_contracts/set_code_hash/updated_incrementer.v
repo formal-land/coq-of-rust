@@ -116,11 +116,26 @@ Module Impl_updated_incrementer_Env.
           unimplemented!()
       }
   *)
-  Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition set_code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ E ], [ self; code_hash ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_set_code_hash :
-    M.IsAssociatedFunction.Trait Self "set_code_hash" set_code_hash.
+    M.IsAssociatedFunction.C Self "set_code_hash" set_code_hash.
   Admitted.
+  Global Typeclasses Opaque set_code_hash.
 End Impl_updated_incrementer_Env.
 
 (* StructRecord
@@ -139,11 +154,23 @@ Module Impl_updated_incrementer_Incrementer.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -168,7 +195,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -195,7 +222,11 @@ Module Impl_updated_incrementer_Incrementer.
                 M.deref (|
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    Value.String "Constructors are not called when upgrading using `set_code_hash`."
+                    M.alloc (|
+                      mk_str (|
+                        "Constructors are not called when upgrading using `set_code_hash`."
+                      |)
+                    |)
                   |)
                 |)
               |)
@@ -205,7 +236,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -258,10 +289,9 @@ Module Impl_updated_incrementer_Incrementer.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "The new count is " |);
-                                    M.read (|
-                                      Value.String
-                                        ", it was modified using the updated `new_incrementer` code.
+                                    mk_str (| "The new count is " |);
+                                    mk_str (|
+                                      ", it was modified using the updated `new_incrementer` code.
 "
                                     |)
                                   ]
@@ -317,7 +347,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.C Self "inc" inc.
   Admitted.
   Global Typeclasses Opaque inc.
   
@@ -341,7 +371,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -438,9 +468,8 @@ Module Impl_updated_incrementer_Incrementer.
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          mk_str (|
+                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
                                           |)
                                         ]
                                       |)
@@ -475,11 +504,8 @@ Module Impl_updated_incrementer_Incrementer.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "Switched code hash to " |);
-                                    M.read (| Value.String ".
-" |)
-                                  ]
+                                  [ mk_str (| "Switched code hash to " |); mk_str (| ".
+" |) ]
                               |)
                             |)
                           |)
@@ -528,8 +554,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_set_code :
-    M.IsAssociatedFunction.Trait Self "set_code" set_code.
+  Global Instance AssociatedFunction_set_code : M.IsAssociatedFunction.C Self "set_code" set_code.
   Admitted.
   Global Typeclasses Opaque set_code.
 End Impl_updated_incrementer_Incrementer.

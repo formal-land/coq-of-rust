@@ -197,7 +197,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_read_lines :
-  M.IsFunction.Trait "file_io_read_lines_efficient_method::read_lines" read_lines.
+  M.IsFunction.C "file_io_read_lines_efficient_method::read_lines" read_lines.
 Admitted.
 Global Typeclasses Opaque read_lines.
 
@@ -248,7 +248,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "./hosts" |) ]
+                      [ mk_str (| "./hosts" |) ]
                     |)
                   |) in
                 let γ0_0 :=
@@ -399,13 +399,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String "
-"
-                                                                          |)
+                                                                          mk_str (| "" |);
+                                                                          mk_str (| "
+" |)
                                                                         ]
                                                                     |)
                                                                   |)
@@ -473,6 +469,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "file_io_read_lines_efficient_method::main" main.
+  M.IsFunction.C "file_io_read_lines_efficient_method::main" main.
 Admitted.
 Global Typeclasses Opaque main.

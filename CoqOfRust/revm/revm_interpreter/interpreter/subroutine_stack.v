@@ -35,11 +35,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SubRoutineReturnFrame" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "idx" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineReturnFrame" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "idx" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -53,7 +50,7 @@ Module interpreter.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "pc" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pc" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -394,7 +391,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
@@ -538,14 +535,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SubRoutineImpl" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "return_stack" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineImpl" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_stack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -559,10 +550,7 @@ Module interpreter.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "current_code_idx" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_code_idx" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -855,7 +843,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -898,7 +886,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -942,7 +930,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -986,7 +974,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_return_stack_len :
-        M.IsAssociatedFunction.Trait Self "return_stack_len" return_stack_len.
+        M.IsAssociatedFunction.C Self "return_stack_len" return_stack_len.
       Admitted.
       Global Typeclasses Opaque return_stack_len.
       
@@ -1019,7 +1007,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_set_current_code_idx :
-        M.IsAssociatedFunction.Trait Self "set_current_code_idx" set_current_code_idx.
+        M.IsAssociatedFunction.C Self "set_current_code_idx" set_current_code_idx.
       Admitted.
       Global Typeclasses Opaque set_current_code_idx.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.

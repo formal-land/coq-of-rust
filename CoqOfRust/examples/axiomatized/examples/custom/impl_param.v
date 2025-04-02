@@ -3,6 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter with_impls : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_with_impls :
-  M.IsFunction.Trait "impl_param::with_impls" with_impls.
+Global Instance Instance_IsFunction_with_impls : M.IsFunction.C "impl_param::with_impls" with_impls.
 Admitted.

@@ -73,10 +73,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "New" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "New" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -108,10 +105,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Modify" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Modify" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -137,10 +131,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Delete" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Delete" |) |) |)
                         ]
                       |)
                     |)))
@@ -842,7 +833,7 @@ Module effects.
     
     Global Instance AssociatedFunction_as_ref :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+      M.IsAssociatedFunction.C (Self T) "as_ref" (as_ref T).
     Admitted.
     Global Typeclasses Opaque as_ref.
     
@@ -940,7 +931,7 @@ Module effects.
     
     Global Instance AssociatedFunction_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      M.IsAssociatedFunction.C (Self T) "map" (map T).
     Admitted.
     Global Typeclasses Opaque map.
     
@@ -1014,7 +1005,7 @@ Module effects.
     
     Global Instance AssociatedFunction_ok :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "ok" (ok T).
+      M.IsAssociatedFunction.C (Self T) "ok" (ok T).
     Admitted.
     Global Typeclasses Opaque ok.
   End Impl_move_core_types_effects_Op_T.
@@ -1086,11 +1077,8 @@ Module effects.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "AccountChangeSet" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "modules" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountChangeSet" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "modules" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1104,7 +1092,7 @@ Module effects.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "resources" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "resources" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2279,9 +2267,8 @@ Module effects.
                                                                                                   M.alloc (|
                                                                                                     Value.Array
                                                                                                       [
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            "The given change sets cannot be squashed"
+                                                                                                        mk_str (|
+                                                                                                          "The given change sets cannot be squashed"
                                                                                                         |)
                                                                                                       ]
                                                                                                   |)
@@ -2531,7 +2518,7 @@ Module effects.
     end.
   
   Global Instance Instance_IsFunction_squash :
-    M.IsFunction.Trait "move_core_types::effects::squash" squash.
+    M.IsFunction.C "move_core_types::effects::squash" squash.
   Admitted.
   Global Typeclasses Opaque squash.
   
@@ -2559,7 +2546,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_from_modules_resources :
-      M.IsAssociatedFunction.Trait Self "from_modules_resources" from_modules_resources.
+      M.IsAssociatedFunction.C Self "from_modules_resources" from_modules_resources.
     Admitted.
     Global Typeclasses Opaque from_modules_resources.
     
@@ -2664,7 +2651,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2812,12 +2799,9 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "Module "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists"
+                                                                        mk_str (| "Module " |);
+                                                                        mk_str (|
+                                                                          " already exists"
                                                                         |)
                                                                       ]
                                                                   |)
@@ -3005,7 +2989,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_add_module_op :
-      M.IsAssociatedFunction.Trait Self "add_module_op" add_module_op.
+      M.IsAssociatedFunction.C Self "add_module_op" add_module_op.
     Admitted.
     Global Typeclasses Opaque add_module_op.
     
@@ -3153,12 +3137,9 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "Resource "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists"
+                                                                        mk_str (| "Resource " |);
+                                                                        mk_str (|
+                                                                          " already exists"
                                                                         |)
                                                                       ]
                                                                   |)
@@ -3346,7 +3327,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_add_resource_op :
-      M.IsAssociatedFunction.Trait Self "add_resource_op" add_resource_op.
+      M.IsAssociatedFunction.C Self "add_resource_op" add_resource_op.
     Admitted.
     Global Typeclasses Opaque add_resource_op.
     
@@ -3386,7 +3367,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_into_inner :
-      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      M.IsAssociatedFunction.C Self "into_inner" into_inner.
     Admitted.
     Global Typeclasses Opaque into_inner.
     
@@ -3411,7 +3392,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_into_resources :
-      M.IsAssociatedFunction.Trait Self "into_resources" into_resources.
+      M.IsAssociatedFunction.C Self "into_resources" into_resources.
     Admitted.
     Global Typeclasses Opaque into_resources.
     
@@ -3436,7 +3417,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_into_modules :
-      M.IsAssociatedFunction.Trait Self "into_modules" into_modules.
+      M.IsAssociatedFunction.C Self "into_modules" into_modules.
     Admitted.
     Global Typeclasses Opaque into_modules.
     
@@ -3466,8 +3447,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_modules :
-      M.IsAssociatedFunction.Trait Self "modules" modules.
+    Global Instance AssociatedFunction_modules : M.IsAssociatedFunction.C Self "modules" modules.
     Admitted.
     Global Typeclasses Opaque modules.
     
@@ -3498,7 +3478,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_resources :
-      M.IsAssociatedFunction.Trait Self "resources" resources.
+      M.IsAssociatedFunction.C Self "resources" resources.
     Admitted.
     Global Typeclasses Opaque resources.
     
@@ -3586,8 +3566,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -3779,7 +3758,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.Trait Self "squash" squash.
+    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.C Self "squash" squash.
     Admitted.
     Global Typeclasses Opaque squash.
   End Impl_move_core_types_effects_AccountChangeSet.
@@ -3826,8 +3805,8 @@ Module effects.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ChangeSet" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "accounts" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ChangeSet" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "accounts" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4267,7 +4246,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -4403,13 +4382,11 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Failed to add account change set. Account "
+                                                                        mk_str (|
+                                                                          "Failed to add account change set. Account "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists."
+                                                                        mk_str (|
+                                                                          " already exists."
                                                                         |)
                                                                       ]
                                                                   |)
@@ -4516,7 +4493,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_add_account_changeset :
-      M.IsAssociatedFunction.Trait Self "add_account_changeset" add_account_changeset.
+      M.IsAssociatedFunction.C Self "add_account_changeset" add_account_changeset.
     Admitted.
     Global Typeclasses Opaque add_account_changeset.
     
@@ -4546,8 +4523,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_accounts :
-      M.IsAssociatedFunction.Trait Self "accounts" accounts.
+    Global Instance AssociatedFunction_accounts : M.IsAssociatedFunction.C Self "accounts" accounts.
     Admitted.
     Global Typeclasses Opaque accounts.
     
@@ -4572,7 +4548,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_into_inner :
-      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      M.IsAssociatedFunction.C Self "into_inner" into_inner.
     Admitted.
     Global Typeclasses Opaque into_inner.
     
@@ -4743,7 +4719,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_get_or_insert_account_changeset :
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         Self
         "get_or_insert_account_changeset"
         get_or_insert_account_changeset.
@@ -4858,7 +4834,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_add_module_op :
-      M.IsAssociatedFunction.Trait Self "add_module_op" add_module_op.
+      M.IsAssociatedFunction.C Self "add_module_op" add_module_op.
     Admitted.
     Global Typeclasses Opaque add_module_op.
     
@@ -4929,7 +4905,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_add_resource_op :
-      M.IsAssociatedFunction.Trait Self "add_resource_op" add_resource_op.
+      M.IsAssociatedFunction.C Self "add_resource_op" add_resource_op.
     Admitted.
     Global Typeclasses Opaque add_resource_op.
     
@@ -5348,7 +5324,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.Trait Self "squash" squash.
+    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.C Self "squash" squash.
     Admitted.
     Global Typeclasses Opaque squash.
     
@@ -6024,7 +6000,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_into_modules :
-      M.IsAssociatedFunction.Trait Self "into_modules" into_modules.
+      M.IsAssociatedFunction.C Self "into_modules" into_modules.
     Admitted.
     Global Typeclasses Opaque into_modules.
     
@@ -7090,8 +7066,7 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_modules :
-      M.IsAssociatedFunction.Trait Self "modules" modules.
+    Global Instance AssociatedFunction_modules : M.IsAssociatedFunction.C Self "modules" modules.
     Admitted.
     Global Typeclasses Opaque modules.
     
@@ -8166,7 +8141,7 @@ Module effects.
       end.
     
     Global Instance AssociatedFunction_resources :
-      M.IsAssociatedFunction.Trait Self "resources" resources.
+      M.IsAssociatedFunction.C Self "resources" resources.
     Admitted.
     Global Typeclasses Opaque resources.
   End Impl_move_core_types_effects_ChangeSet.

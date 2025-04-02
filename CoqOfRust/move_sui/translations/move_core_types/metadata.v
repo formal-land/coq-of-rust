@@ -292,8 +292,8 @@ Module metadata.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Metadata" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "key" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Metadata" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "key" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -307,7 +307,7 @@ Module metadata.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -390,7 +390,7 @@ Module metadata.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "Metadata" |);
+                              mk_str (| "Metadata" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -471,7 +471,7 @@ Module metadata.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "key" |);
+                            mk_str (| "key" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -557,7 +557,7 @@ Module metadata.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "value" |);
+                            mk_str (| "value" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -669,8 +669,21 @@ Module metadata.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "Metadata" |);
-                M.read (| M.get_constant "move_core_types::metadata::_'1::deserialize::FIELDS" |);
+                mk_str (| "Metadata" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::metadata::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::metadata::_'1::deserialize::__Visitor"
                   [

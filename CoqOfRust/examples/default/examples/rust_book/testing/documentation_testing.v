@@ -16,7 +16,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_add : M.IsFunction.Trait "documentation_testing::add" add.
+Global Instance Instance_IsFunction_add : M.IsFunction.C "documentation_testing::add" add.
 Admitted.
 Global Typeclasses Opaque add.
 
@@ -58,7 +58,7 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Divide-by-zero error" |) ]
+                        [ mk_str (| "Divide-by-zero error" |) ]
                       |)
                     |)
                   |)));
@@ -70,6 +70,6 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_div : M.IsFunction.Trait "documentation_testing::div" div.
+Global Instance Instance_IsFunction_div : M.IsFunction.C "documentation_testing::div" div.
 Admitted.
 Global Typeclasses Opaque div.

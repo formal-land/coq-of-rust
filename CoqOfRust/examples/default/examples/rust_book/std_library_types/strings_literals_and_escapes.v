@@ -29,7 +29,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ byte_escape : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "I'm writing Rust!" |) in
+          M.alloc (| mk_str (| "I'm writing Rust!" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -54,8 +54,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "What are you doing? (\x3F means ?) " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "What are you doing? (\x3F means ?) " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -97,9 +97,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ unicode_codepoint : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String (String.String "029" "") |) in
+          M.alloc (| mk_str (| String.String "029" "" |) |) in
         let~ character_name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
+          M.alloc (| mk_str (| """DOUBLE-STRUCK CAPITAL R""" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -124,9 +124,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Unicode character " |);
-                                  M.read (| Value.String " (U+211D) is called " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "Unicode character " |);
+                                  mk_str (| " (U+211D) is called " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -187,11 +187,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ long_string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (|
-            Value.String
+          M.alloc (|
+            mk_str (|
               "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!"
+            |)
           |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
@@ -214,11 +215,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -261,7 +259,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "strings_literals_and_escapes::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "strings_literals_and_escapes::main" main.
 Admitted.
 Global Typeclasses Opaque main.

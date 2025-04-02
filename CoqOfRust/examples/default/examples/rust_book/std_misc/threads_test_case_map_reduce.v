@@ -94,8 +94,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ data : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (|
-            Value.String
+          M.alloc (|
+            mk_str (|
               "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
@@ -104,6 +104,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668"
+            |)
           |) in
         let~ children :
             Ty.apply
@@ -272,11 +273,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String "data segment "
-                                                            |);
-                                                            M.read (| Value.String " is """ |);
-                                                            M.read (| Value.String """
+                                                            mk_str (| "data segment " |);
+                                                            mk_str (| " is """ |);
+                                                            mk_str (| """
 " |)
                                                           ]
                                                       |)
@@ -560,9 +559,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.deref (|
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            "should be a digit"
+                                                                                                        mk_str (|
+                                                                                                          "should be a digit"
                                                                                                         |)
                                                                                                       |)
                                                                                                     |)
@@ -616,17 +614,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "processed segment "
+                                                                                            mk_str (|
+                                                                                              "processed segment "
                                                                                             |);
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ", result="
+                                                                                            mk_str (|
+                                                                                              ", result="
                                                                                             |);
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "
+                                                                                            mk_str (|
+                                                                                              "
 "
                                                                                             |)
                                                                                           ]
@@ -931,12 +926,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Final sum result: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Final sum result: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -980,7 +971,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "threads_test_case_map_reduce::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "threads_test_case_map_reduce::main" main.
 Admitted.
 Global Typeclasses Opaque main.

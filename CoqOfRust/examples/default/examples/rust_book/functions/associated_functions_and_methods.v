@@ -27,7 +27,7 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_origin : M.IsAssociatedFunction.Trait Self "origin" origin.
+  Global Instance AssociatedFunction_origin : M.IsAssociatedFunction.C Self "origin" origin.
   Admitted.
   Global Typeclasses Opaque origin.
   
@@ -48,7 +48,7 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
 End Impl_associated_functions_and_methods_Point.
@@ -88,7 +88,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get_p1 : M.IsAssociatedFunction.Trait Self "get_p1" get_p1.
+  Global Instance AssociatedFunction_get_p1 : M.IsAssociatedFunction.C Self "get_p1" get_p1.
   Admitted.
   Global Typeclasses Opaque get_p1.
   
@@ -177,7 +177,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_area : M.IsAssociatedFunction.Trait Self "area" area.
+  Global Instance AssociatedFunction_area : M.IsAssociatedFunction.C Self "area" area.
   Admitted.
   Global Typeclasses Opaque area.
   
@@ -269,7 +269,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     end.
   
   Global Instance AssociatedFunction_perimeter :
-    M.IsAssociatedFunction.Trait Self "perimeter" perimeter.
+    M.IsAssociatedFunction.C Self "perimeter" perimeter.
   Admitted.
   Global Typeclasses Opaque perimeter.
   
@@ -352,7 +352,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     end.
   
   Global Instance AssociatedFunction_translate :
-    M.IsAssociatedFunction.Trait Self "translate" translate.
+    M.IsAssociatedFunction.C Self "translate" translate.
   Admitted.
   Global Typeclasses Opaque translate.
 End Impl_associated_functions_and_methods_Rectangle.
@@ -435,9 +435,9 @@ Module Impl_associated_functions_and_methods_Pair.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "Destroying Pair(" |);
-                                            M.read (| Value.String ", " |);
-                                            M.read (| Value.String ")
+                                            mk_str (| "Destroying Pair(" |);
+                                            mk_str (| ", " |);
+                                            mk_str (| ")
 " |)
                                           ]
                                       |)
@@ -516,7 +516,7 @@ Module Impl_associated_functions_and_methods_Pair.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_destroy : M.IsAssociatedFunction.Trait Self "destroy" destroy.
+  Global Instance AssociatedFunction_destroy : M.IsAssociatedFunction.C Self "destroy" destroy.
   Admitted.
   Global Typeclasses Opaque destroy.
 End Impl_associated_functions_and_methods_Pair.
@@ -613,12 +613,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Rectangle perimeter: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Rectangle perimeter: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -696,12 +692,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Rectangle area: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Rectangle area: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -861,6 +853,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "associated_functions_and_methods::main" main.
+  M.IsFunction.C "associated_functions_and_methods::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -113,8 +113,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Skip" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Skip" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -128,7 +128,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "n" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "n" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -186,7 +186,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_skip_Skip_I.
@@ -2046,8 +2046,10 @@ Module iter.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   M.read (|
-                                    M.get_constant
-                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                    get_constant (|
+                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                      Ty.path "bool"
+                                    |)
                                   |),
                                   ltac:(M.monadic
                                     (BinOp.eq (|
@@ -2931,9 +2933,8 @@ Module iter.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "ExactSizeIterator contract violation"
+                                                  mk_str (|
+                                                    "ExactSizeIterator contract violation"
                                                   |)
                                                 ]
                                             |)
@@ -3155,22 +3156,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -3181,8 +3202,8 @@ Module iter.
             (Self I)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_skip_Skip_I.
       
@@ -3206,12 +3227,18 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = I::MAY_HAVE_SIDE_EFFECT; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant
-                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+              Ty.path "bool"
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -3221,8 +3248,7 @@ Module iter.
             (* Trait polymorphic types *) []
             (Self I)
             (* Instance *)
-            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT I))
-            ].
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT I)) ].
       End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_skip_Skip_I.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_skip_Skip_I.

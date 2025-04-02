@@ -296,11 +296,8 @@ Module string.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FromUtf8Error" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf8Error" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -314,7 +311,7 @@ Module string.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "error" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -611,10 +608,7 @@ Module string.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FromUtf16Error" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf16Error" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -683,7 +677,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -722,7 +716,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_with_capacity :
-      M.IsAssociatedFunction.Trait Self "with_capacity" with_capacity.
+      M.IsAssociatedFunction.C Self "with_capacity" with_capacity.
     Admitted.
     Global Typeclasses Opaque with_capacity.
     
@@ -885,7 +879,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_try_with_capacity :
-      M.IsAssociatedFunction.Trait Self "try_with_capacity" try_with_capacity.
+      M.IsAssociatedFunction.C Self "try_with_capacity" try_with_capacity.
     Admitted.
     Global Typeclasses Opaque try_with_capacity.
     
@@ -982,7 +976,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf8 :
-      M.IsAssociatedFunction.Trait Self "from_utf8" from_utf8.
+      M.IsAssociatedFunction.C Self "from_utf8" from_utf8.
     Admitted.
     Global Typeclasses Opaque from_utf8.
     
@@ -1361,7 +1355,7 @@ Module string.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "" |) |)
+                                          M.deref (| mk_str (| "" |) |)
                                         |)
                                       ]
                                   |)
@@ -1427,7 +1421,10 @@ Module string.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.read (|
-                              M.get_constant "alloc::string::from_utf8_lossy::REPLACEMENT"
+                              get_constant (|
+                                "alloc::string::from_utf8_lossy::REPLACEMENT",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              |)
                             |)
                           |)
                         |)
@@ -1612,8 +1609,13 @@ Module string.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "alloc::string::from_utf8_lossy::REPLACEMENT"
+                                                                get_constant (|
+                                                                  "alloc::string::from_utf8_lossy::REPLACEMENT",
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "str" ]
+                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -1638,7 +1640,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf8_lossy :
-      M.IsAssociatedFunction.Trait Self "from_utf8_lossy" from_utf8_lossy.
+      M.IsAssociatedFunction.C Self "from_utf8_lossy" from_utf8_lossy.
     Admitted.
     Global Typeclasses Opaque from_utf8_lossy.
     
@@ -1736,7 +1738,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf8_lossy_owned :
-      M.IsAssociatedFunction.Trait Self "from_utf8_lossy_owned" from_utf8_lossy_owned.
+      M.IsAssociatedFunction.C Self "from_utf8_lossy_owned" from_utf8_lossy_owned.
     Admitted.
     Global Typeclasses Opaque from_utf8_lossy_owned.
     
@@ -2043,7 +2045,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16 :
-      M.IsAssociatedFunction.Trait Self "from_utf16" from_utf16.
+      M.IsAssociatedFunction.C Self "from_utf16" from_utf16.
     Admitted.
     Global Typeclasses Opaque from_utf16.
     
@@ -2247,8 +2249,11 @@ Module string.
                                       [
                                         M.read (| r |);
                                         M.read (|
-                                          M.get_constant
-                                            "core::char::methods::REPLACEMENT_CHARACTER"
+                                          get_associated_constant (|
+                                            Ty.path "char",
+                                            "REPLACEMENT_CHARACTER",
+                                            Ty.path "char"
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -2264,7 +2269,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16_lossy :
-      M.IsAssociatedFunction.Trait Self "from_utf16_lossy" from_utf16_lossy.
+      M.IsAssociatedFunction.C Self "from_utf16_lossy" from_utf16_lossy.
     Admitted.
     Global Typeclasses Opaque from_utf16_lossy.
     
@@ -2470,8 +2475,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -2517,8 +2523,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_le_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_le_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2549,8 +2556,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_le_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_le_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2579,8 +2587,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_le_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_le_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2609,8 +2618,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_le_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_le_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2714,7 +2724,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16le :
-      M.IsAssociatedFunction.Trait Self "from_utf16le" from_utf16le.
+      M.IsAssociatedFunction.C Self "from_utf16le" from_utf16le.
     Admitted.
     Global Typeclasses Opaque from_utf16le.
     
@@ -2835,7 +2845,7 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                            M.deref (| mk_str (| String.String "253" "" |) |)
                           |)
                         ]
                       |)
@@ -2900,8 +2910,9 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant
-                                                    "core::num::from_le_bytes_discriminant")
+                                                  (mk_str (|
+                                                    "core_num_from_le_bytes_discriminant"
+                                                  |))
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -2963,8 +2974,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3016,8 +3028,9 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant
-                                                    "core::num::from_le_bytes_discriminant")
+                                                  (mk_str (|
+                                                    "core_num_from_le_bytes_discriminant"
+                                                  |))
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -3076,8 +3089,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3113,8 +3127,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3148,8 +3163,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3183,8 +3199,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_le_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_le_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3317,8 +3334,11 @@ Module string.
                                                     [
                                                       M.read (| r |);
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::char::methods::REPLACEMENT_CHARACTER"
+                                                        get_associated_constant (|
+                                                          Ty.path "char",
+                                                          "REPLACEMENT_CHARACTER",
+                                                          Ty.path "char"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)))
@@ -3394,7 +3414,7 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                    M.deref (| mk_str (| String.String "253" "" |) |)
                                   |)
                                 ]
                               |)
@@ -3408,7 +3428,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16le_lossy :
-      M.IsAssociatedFunction.Trait Self "from_utf16le_lossy" from_utf16le_lossy.
+      M.IsAssociatedFunction.C Self "from_utf16le_lossy" from_utf16le_lossy.
     Admitted.
     Global Typeclasses Opaque from_utf16le_lossy.
     
@@ -3614,8 +3634,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3661,8 +3682,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_be_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_be_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3693,8 +3715,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_be_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_be_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3723,8 +3746,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_be_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_be_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3753,8 +3777,9 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant
-                                                        "core::num::from_be_bytes_discriminant")
+                                                      (mk_str (|
+                                                        "core_num_from_be_bytes_discriminant"
+                                                      |))
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3858,7 +3883,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16be :
-      M.IsAssociatedFunction.Trait Self "from_utf16be" from_utf16be.
+      M.IsAssociatedFunction.C Self "from_utf16be" from_utf16be.
     Admitted.
     Global Typeclasses Opaque from_utf16be.
     
@@ -3979,7 +4004,7 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                            M.deref (| mk_str (| String.String "253" "" |) |)
                           |)
                         ]
                       |)
@@ -4044,8 +4069,9 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant
-                                                    "core::num::from_be_bytes_discriminant")
+                                                  (mk_str (|
+                                                    "core_num_from_be_bytes_discriminant"
+                                                  |))
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -4107,8 +4133,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -4160,8 +4187,9 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant
-                                                    "core::num::from_be_bytes_discriminant")
+                                                  (mk_str (|
+                                                    "core_num_from_be_bytes_discriminant"
+                                                  |))
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -4220,8 +4248,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -4257,8 +4286,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -4292,8 +4322,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -4327,8 +4358,9 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant
-                                                      "core::num::from_be_bytes_discriminant")
+                                                    (mk_str (|
+                                                      "core_num_from_be_bytes_discriminant"
+                                                    |))
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -4461,8 +4493,11 @@ Module string.
                                                     [
                                                       M.read (| r |);
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::char::methods::REPLACEMENT_CHARACTER"
+                                                        get_associated_constant (|
+                                                          Ty.path "char",
+                                                          "REPLACEMENT_CHARACTER",
+                                                          Ty.path "char"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)))
@@ -4538,7 +4573,7 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                    M.deref (| mk_str (| String.String "253" "" |) |)
                                   |)
                                 ]
                               |)
@@ -4552,7 +4587,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf16be_lossy :
-      M.IsAssociatedFunction.Trait Self "from_utf16be_lossy" from_utf16be_lossy.
+      M.IsAssociatedFunction.C Self "from_utf16be_lossy" from_utf16be_lossy.
     Admitted.
     Global Typeclasses Opaque from_utf16be_lossy.
     
@@ -4588,7 +4623,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_into_raw_parts :
-      M.IsAssociatedFunction.Trait Self "into_raw_parts" into_raw_parts.
+      M.IsAssociatedFunction.C Self "into_raw_parts" into_raw_parts.
     Admitted.
     Global Typeclasses Opaque into_raw_parts.
     
@@ -4629,7 +4664,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_raw_parts :
-      M.IsAssociatedFunction.Trait Self "from_raw_parts" from_raw_parts.
+      M.IsAssociatedFunction.C Self "from_raw_parts" from_raw_parts.
     Admitted.
     Global Typeclasses Opaque from_raw_parts.
     
@@ -4648,7 +4683,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_from_utf8_unchecked :
-      M.IsAssociatedFunction.Trait Self "from_utf8_unchecked" from_utf8_unchecked.
+      M.IsAssociatedFunction.C Self "from_utf8_unchecked" from_utf8_unchecked.
     Admitted.
     Global Typeclasses Opaque from_utf8_unchecked.
     
@@ -4669,7 +4704,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_into_bytes :
-      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      M.IsAssociatedFunction.C Self "into_bytes" into_bytes.
     Admitted.
     Global Typeclasses Opaque into_bytes.
     
@@ -4729,7 +4764,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -4800,7 +4835,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_as_mut_str :
-      M.IsAssociatedFunction.Trait Self "as_mut_str" as_mut_str.
+      M.IsAssociatedFunction.C Self "as_mut_str" as_mut_str.
     Admitted.
     Global Typeclasses Opaque as_mut_str.
     
@@ -4850,8 +4885,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push_str :
-      M.IsAssociatedFunction.Trait Self "push_str" push_str.
+    Global Instance AssociatedFunction_push_str : M.IsAssociatedFunction.C Self "push_str" push_str.
     Admitted.
     Global Typeclasses Opaque push_str.
     
@@ -4977,11 +5011,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(start)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(start)" |)
                                     ]
                                   |)
                                 |)
@@ -5047,11 +5077,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(end)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(end)" |) ]
                                   |)
                                 |)
                               |)));
@@ -5092,7 +5118,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_extend_from_within :
-      M.IsAssociatedFunction.Trait Self "extend_from_within" extend_from_within.
+      M.IsAssociatedFunction.C Self "extend_from_within" extend_from_within.
     Admitted.
     Global Typeclasses Opaque extend_from_within.
     
@@ -5131,8 +5157,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_capacity :
-      M.IsAssociatedFunction.Trait Self "capacity" capacity.
+    Global Instance AssociatedFunction_capacity : M.IsAssociatedFunction.C Self "capacity" capacity.
     Admitted.
     Global Typeclasses Opaque capacity.
     
@@ -5173,8 +5198,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_reserve :
-      M.IsAssociatedFunction.Trait Self "reserve" reserve.
+    Global Instance AssociatedFunction_reserve : M.IsAssociatedFunction.C Self "reserve" reserve.
     Admitted.
     Global Typeclasses Opaque reserve.
     
@@ -5216,7 +5240,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_reserve_exact :
-      M.IsAssociatedFunction.Trait Self "reserve_exact" reserve_exact.
+      M.IsAssociatedFunction.C Self "reserve_exact" reserve_exact.
     Admitted.
     Global Typeclasses Opaque reserve_exact.
     
@@ -5261,7 +5285,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_try_reserve :
-      M.IsAssociatedFunction.Trait Self "try_reserve" try_reserve.
+      M.IsAssociatedFunction.C Self "try_reserve" try_reserve.
     Admitted.
     Global Typeclasses Opaque try_reserve.
     
@@ -5306,7 +5330,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_try_reserve_exact :
-      M.IsAssociatedFunction.Trait Self "try_reserve_exact" try_reserve_exact.
+      M.IsAssociatedFunction.C Self "try_reserve_exact" try_reserve_exact.
     Admitted.
     Global Typeclasses Opaque try_reserve_exact.
     
@@ -5346,7 +5370,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_shrink_to_fit :
-      M.IsAssociatedFunction.Trait Self "shrink_to_fit" shrink_to_fit.
+      M.IsAssociatedFunction.C Self "shrink_to_fit" shrink_to_fit.
     Admitted.
     Global Typeclasses Opaque shrink_to_fit.
     
@@ -5388,7 +5412,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_shrink_to :
-      M.IsAssociatedFunction.Trait Self "shrink_to" shrink_to.
+      M.IsAssociatedFunction.C Self "shrink_to" shrink_to.
     Admitted.
     Global Typeclasses Opaque shrink_to.
     
@@ -5526,7 +5550,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.C Self "push" push.
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -5570,8 +5594,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_bytes :
-      M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+    Global Instance AssociatedFunction_as_bytes : M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
     Admitted.
     Global Typeclasses Opaque as_bytes.
     
@@ -5673,9 +5696,8 @@ Module string.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(new_len)"
+                                      mk_str (|
+                                        "assertion failed: self.is_char_boundary(new_len)"
                                       |)
                                     ]
                                   |)
@@ -5716,8 +5738,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_truncate :
-      M.IsAssociatedFunction.Trait Self "truncate" truncate.
+    Global Instance AssociatedFunction_truncate : M.IsAssociatedFunction.C Self "truncate" truncate.
     Admitted.
     Global Typeclasses Opaque truncate.
     
@@ -5950,7 +5971,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_pop : M.IsAssociatedFunction.Trait Self "pop" pop.
+    Global Instance AssociatedFunction_pop : M.IsAssociatedFunction.C Self "pop" pop.
     Admitted.
     Global Typeclasses Opaque pop.
     
@@ -6076,9 +6097,8 @@ Module string.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "cannot remove a char from the end of a string"
+                                                mk_str (|
+                                                  "cannot remove a char from the end of a string"
                                                 |)
                                               ]
                                           |)
@@ -6227,7 +6247,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_remove : M.IsAssociatedFunction.Trait Self "remove" remove.
+    Global Instance AssociatedFunction_remove : M.IsAssociatedFunction.C Self "remove" remove.
     Admitted.
     Global Typeclasses Opaque remove.
     
@@ -6975,7 +6995,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_remove_matches :
-      M.IsAssociatedFunction.Trait Self "remove_matches" remove_matches.
+      M.IsAssociatedFunction.C Self "remove_matches" remove_matches.
     Admitted.
     Global Typeclasses Opaque remove_matches.
     
@@ -7466,7 +7486,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_retain : M.IsAssociatedFunction.Trait Self "retain" retain.
+    Global Instance AssociatedFunction_retain : M.IsAssociatedFunction.C Self "retain" retain.
     Admitted.
     Global Typeclasses Opaque retain.
     
@@ -7543,11 +7563,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(idx)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(idx)" |) ]
                           |)
                         |)
                       |)));
@@ -7607,7 +7623,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_insert : M.IsAssociatedFunction.Trait Self "insert" insert.
+    Global Instance AssociatedFunction_insert : M.IsAssociatedFunction.C Self "insert" insert.
     Admitted.
     Global Typeclasses Opaque insert.
     
@@ -7847,7 +7863,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_insert_bytes :
-      M.IsAssociatedFunction.Trait Self "insert_bytes" insert_bytes.
+      M.IsAssociatedFunction.C Self "insert_bytes" insert_bytes.
     Admitted.
     Global Typeclasses Opaque insert_bytes.
     
@@ -7922,11 +7938,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(idx)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(idx)" |) ]
                           |)
                         |)
                       |)));
@@ -7968,7 +7980,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_insert_str :
-      M.IsAssociatedFunction.Trait Self "insert_str" insert_str.
+      M.IsAssociatedFunction.C Self "insert_str" insert_str.
     Admitted.
     Global Typeclasses Opaque insert_str.
     
@@ -8004,7 +8016,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_as_mut_vec :
-      M.IsAssociatedFunction.Trait Self "as_mut_vec" as_mut_vec.
+      M.IsAssociatedFunction.C Self "as_mut_vec" as_mut_vec.
     Admitted.
     Global Typeclasses Opaque as_mut_vec.
     
@@ -8043,7 +8055,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -8068,8 +8080,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -8141,11 +8152,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(at)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(at)" |) ]
                           |)
                         |)
                       |)));
@@ -8202,7 +8209,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_split_off :
-      M.IsAssociatedFunction.Trait Self "split_off" split_off.
+      M.IsAssociatedFunction.C Self "split_off" split_off.
     Admitted.
     Global Typeclasses Opaque split_off.
     
@@ -8241,7 +8248,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.C Self "clear" clear.
     Admitted.
     Global Typeclasses Opaque clear.
     
@@ -8377,11 +8384,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(start)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(start)" |)
                                     ]
                                   |)
                                 |)
@@ -8447,11 +8450,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(end)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(end)" |) ]
                                   |)
                                 |)
                               |)));
@@ -8538,7 +8537,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_drain : M.IsAssociatedFunction.Trait Self "drain" drain.
+    Global Instance AssociatedFunction_drain : M.IsAssociatedFunction.C Self "drain" drain.
     Admitted.
     Global Typeclasses Opaque drain.
     
@@ -8676,11 +8675,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(n)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n)" |) ]
                                   |)
                                 |)
                               |)));
@@ -8757,11 +8752,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(n + 1)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n + 1)" |)
                                     ]
                                   |)
                                 |)
@@ -8873,11 +8864,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(n + 1)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n + 1)" |)
                                     ]
                                   |)
                                 |)
@@ -8952,11 +8939,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(n)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n)" |) ]
                                   |)
                                 |)
                               |)));
@@ -9041,7 +9024,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_replace_range :
-      M.IsAssociatedFunction.Trait Self "replace_range" replace_range.
+      M.IsAssociatedFunction.C Self "replace_range" replace_range.
     Admitted.
     Global Typeclasses Opaque replace_range.
     
@@ -9105,7 +9088,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_into_boxed_str :
-      M.IsAssociatedFunction.Trait Self "into_boxed_str" into_boxed_str.
+      M.IsAssociatedFunction.C Self "into_boxed_str" into_boxed_str.
     Admitted.
     Global Typeclasses Opaque into_boxed_str.
     
@@ -9182,7 +9165,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_leak : M.IsAssociatedFunction.Trait Self "leak" leak.
+    Global Instance AssociatedFunction_leak : M.IsAssociatedFunction.C Self "leak" leak.
     Admitted.
     Global Typeclasses Opaque leak.
   End Impl_alloc_string_String.
@@ -9239,8 +9222,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_bytes :
-      M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+    Global Instance AssociatedFunction_as_bytes : M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
     Admitted.
     Global Typeclasses Opaque as_bytes.
     
@@ -9676,8 +9658,13 @@ Module string.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.read (|
-                                                            M.get_constant
-                                                              "alloc::string::into_utf8_lossy::REPLACEMENT"
+                                                            get_constant (|
+                                                              "alloc::string::into_utf8_lossy::REPLACEMENT",
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "str" ]
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -9700,7 +9687,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_into_utf8_lossy :
-      M.IsAssociatedFunction.Trait Self "into_utf8_lossy" into_utf8_lossy.
+      M.IsAssociatedFunction.C Self "into_utf8_lossy" into_utf8_lossy.
     Admitted.
     Global Typeclasses Opaque into_utf8_lossy.
     
@@ -9721,7 +9708,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_into_bytes :
-      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      M.IsAssociatedFunction.C Self "into_bytes" into_bytes.
     Admitted.
     Global Typeclasses Opaque into_bytes.
     
@@ -9746,7 +9733,7 @@ Module string.
       end.
     
     Global Instance AssociatedFunction_utf8_error :
-      M.IsAssociatedFunction.Trait Self "utf8_error" utf8_error.
+      M.IsAssociatedFunction.C Self "utf8_error" utf8_error.
     Admitted.
     Global Typeclasses Opaque utf8_error.
   End Impl_alloc_string_FromUtf8Error.
@@ -9831,7 +9818,7 @@ Module string.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "invalid utf-16: lone surrogate found" |) |)
+                M.deref (| mk_str (| "invalid utf-16: lone surrogate found" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
@@ -9861,7 +9848,7 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "invalid utf-8" |) |) |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid utf-8" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -9887,10 +9874,7 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "invalid utf-16" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid utf-16" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -14627,9 +14611,7 @@ Module string.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (|
-                          Value.String "a Display implementation returned an error unexpectedly"
-                        |)
+                        mk_str (| "a Display implementation returned an error unexpectedly" |)
                       |)
                     |)
                   ]
@@ -14799,14 +14781,11 @@ Module string.
                         (let γ := M.use (M.deref (| M.read (| self |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        Value.String "true"));
+                        M.alloc (| mk_str (| "true" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "false" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "false" |) |) |)
                         |)))
                   ]
                 |)
@@ -17159,10 +17138,7 @@ Module string.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Drain" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Drain" |) |) |)
                             ]
                           |)
                         |)
@@ -17447,7 +17423,7 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
   End Impl_alloc_string_Drain.

@@ -127,7 +127,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -555,7 +555,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+      M.IsAssociatedFunction.C Self "verify_module_impl" verify_module_impl.
     Admitted.
     Global Typeclasses Opaque verify_module_impl.
     
@@ -4432,8 +4432,11 @@ Module instruction_consistency.
                                                                             M.cast
                                                                               (Ty.path "u64")
                                                                               (M.read (|
-                                                                                M.get_constant
-                                                                                  "core::num::MAX"
+                                                                                get_associated_constant (|
+                                                                                  Ty.path "u16",
+                                                                                  "MAX",
+                                                                                  Ty.path "u16"
+                                                                                |)
                                                                               |))
                                                                           |)
                                                                         |)) in
@@ -4533,9 +4536,8 @@ Module instruction_consistency.
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
                                                                                           M.deref (|
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "VecPack/VecUnpack argument out of range"
+                                                                                            mk_str (|
+                                                                                              "VecPack/VecUnpack argument out of range"
                                                                                             |)
                                                                                           |)
                                                                                         |)
@@ -5104,7 +5106,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_check_instructions :
-      M.IsAssociatedFunction.Trait Self "check_instructions" check_instructions.
+      M.IsAssociatedFunction.C Self "check_instructions" check_instructions.
     Admitted.
     Global Typeclasses Opaque check_instructions.
     
@@ -5193,7 +5195,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_check_field_op :
-      M.IsAssociatedFunction.Trait Self "check_field_op" check_field_op.
+      M.IsAssociatedFunction.C Self "check_field_op" check_field_op.
     Admitted.
     Global Typeclasses Opaque check_field_op.
     
@@ -5235,7 +5237,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_current_function :
-      M.IsAssociatedFunction.Trait Self "current_function" current_function.
+      M.IsAssociatedFunction.C Self "current_function" current_function.
     Admitted.
     Global Typeclasses Opaque current_function.
     
@@ -5449,7 +5451,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_check_type_op :
-      M.IsAssociatedFunction.Trait Self "check_type_op" check_type_op.
+      M.IsAssociatedFunction.C Self "check_type_op" check_type_op.
     Admitted.
     Global Typeclasses Opaque check_type_op.
     
@@ -5621,7 +5623,7 @@ Module instruction_consistency.
       end.
     
     Global Instance AssociatedFunction_check_function_op :
-      M.IsAssociatedFunction.Trait Self "check_function_op" check_function_op.
+      M.IsAssociatedFunction.C Self "check_function_op" check_function_op.
     Admitted.
     Global Typeclasses Opaque check_function_op.
   End Impl_move_bytecode_verifier_instruction_consistency_InstructionConsistency.

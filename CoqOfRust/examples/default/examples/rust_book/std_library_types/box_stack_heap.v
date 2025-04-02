@@ -29,8 +29,8 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Point" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Point" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "y" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "y" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -144,7 +144,7 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_origin : M.IsFunction.Trait "box_stack_heap::origin" origin.
+Global Instance Instance_IsFunction_origin : M.IsFunction.C "box_stack_heap::origin" origin.
 Admitted.
 Global Typeclasses Opaque origin.
 
@@ -182,7 +182,7 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_boxed_origin :
-  M.IsFunction.Trait "box_stack_heap::boxed_origin" boxed_origin.
+  M.IsFunction.C "box_stack_heap::boxed_origin" boxed_origin.
 Admitted.
 Global Typeclasses Opaque boxed_origin.
 
@@ -414,8 +414,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -502,8 +502,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Rectangle occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Rectangle occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -590,8 +590,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -686,8 +686,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed rectangle occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed rectangle occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -785,8 +785,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed box occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed box occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -889,8 +889,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Unboxed point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Unboxed point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -958,6 +958,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "box_stack_heap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "box_stack_heap::main" main.
 Admitted.
 Global Typeclasses Opaque main.

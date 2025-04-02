@@ -76,7 +76,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -135,7 +135,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -199,7 +199,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -282,7 +282,7 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -356,7 +356,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -438,7 +438,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
     
@@ -502,8 +502,7 @@ Module any.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
-                                      ]
+                                      [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -542,7 +541,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_ref_unchecked" downcast_ref_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_ref_unchecked.
     
@@ -610,11 +609,7 @@ Module any.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.is::<T>()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -660,7 +655,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_mut_unchecked" downcast_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait.
@@ -692,7 +687,7 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -720,7 +715,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -748,7 +743,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
     
@@ -782,7 +777,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_ref_unchecked" downcast_ref_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_ref_unchecked.
     
@@ -826,7 +821,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_mut_unchecked" downcast_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
@@ -863,7 +858,7 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.C Self "is" is.
     Admitted.
     Global Typeclasses Opaque is.
     
@@ -891,7 +886,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref :
-      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+      M.IsAssociatedFunction.C Self "downcast_ref" downcast_ref.
     Admitted.
     Global Typeclasses Opaque downcast_ref.
     
@@ -919,7 +914,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut :
-      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+      M.IsAssociatedFunction.C Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
     
@@ -953,7 +948,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_ref_unchecked" downcast_ref_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_ref_unchecked.
     
@@ -997,7 +992,7 @@ Module any.
       end.
     
     Global Instance AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+      M.IsAssociatedFunction.C Self "downcast_mut_unchecked" downcast_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
@@ -1304,7 +1299,7 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_of : M.IsAssociatedFunction.Trait Self "of" of.
+    Global Instance AssociatedFunction_of : M.IsAssociatedFunction.C Self "of" of.
     Admitted.
     Global Typeclasses Opaque of.
     
@@ -1365,8 +1360,7 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_u128 :
-      M.IsAssociatedFunction.Trait Self "as_u128" as_u128.
+    Global Instance AssociatedFunction_as_u128 : M.IsAssociatedFunction.C Self "as_u128" as_u128.
     Admitted.
     Global Typeclasses Opaque as_u128.
   End Impl_core_any_TypeId.
@@ -1477,10 +1471,7 @@ Module any.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "TypeId(" |); M.read (| Value.String ")" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "TypeId(" |); mk_str (| ")" |) ] |)
                       |)
                     |)
                   |);
@@ -1603,8 +1594,7 @@ Module any.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_type_name :
-    M.IsFunction.Trait "core::any::type_name" type_name.
+  Global Instance Instance_IsFunction_type_name : M.IsFunction.C "core::any::type_name" type_name.
   Admitted.
   Global Typeclasses Opaque type_name.
   
@@ -1627,7 +1617,7 @@ Module any.
     end.
   
   Global Instance Instance_IsFunction_type_name_of_val :
-    M.IsFunction.Trait "core::any::type_name_of_val" type_name_of_val.
+    M.IsFunction.C "core::any::type_name_of_val" type_name_of_val.
   Admitted.
   Global Typeclasses Opaque type_name_of_val.
 End any.

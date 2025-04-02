@@ -87,7 +87,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -309,9 +309,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array [ M.read (| Value.String "" |) ]
-                                              |)
+                                              M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                             |)
                                           |)
                                         |);
@@ -565,11 +563,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
                                                                         Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String ", "
-                                                                            |)
-                                                                          ]
+                                                                          [ mk_str (| ", " |) ]
                                                                       |)
                                                                     |)
                                                                   |)
@@ -748,7 +742,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -850,7 +844,6 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_fmt_list :
-  M.IsFunction.Trait "move_core_types::fmt_list" fmt_list.
+Global Instance Instance_IsFunction_fmt_list : M.IsFunction.C "move_core_types::fmt_list" fmt_list.
 Admitted.
 Global Typeclasses Opaque fmt_list.

@@ -2,60 +2,75 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module eof.
-  Definition value_EOF_MAGIC_HASH : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_EOF_MAGIC_HASH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+            [ Value.Integer IntegerKind.Usize 32 ]
+            [],
+          M.get_associated_function (|
             Ty.apply
               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
               [ Value.Integer IntegerKind.Usize 32 ]
               [],
+            "new",
+            [],
+            []
+          |),
+          [
+            M.read (|
+              get_constant (|
+                "revm_bytecode::eof::EOF_MAGIC_HASH::RES",
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+              |)
+            |)
+          ]
+        |)
+      |))).
+  
+  Global Instance Instance_IsConstant_value_EOF_MAGIC_HASH :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC_HASH" value_EOF_MAGIC_HASH.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC_HASH.
+  
+  Definition value_EOF_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61184 |))).
+  
+  Global Instance Instance_IsConstant_value_EOF_MAGIC :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC" value_EOF_MAGIC.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC.
+  
+  Definition value_EOF_MAGIC_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
-              Ty.apply
-                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                [ Value.Integer IntegerKind.Usize 32 ]
-                [],
-              "new",
+              Ty.path "alloy_primitives::bytes_::Bytes",
+              "from_static",
               [],
               []
             |),
-            [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH::RES" |) ]
+            [
+              M.read (|
+                get_constant (|
+                  "revm_bytecode::eof::EOF_MAGIC_BYTES::STATIC_BYTES",
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                |)
+              |)
+            ]
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_EOF_MAGIC_HASH :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH") = value_EOF_MAGIC_HASH.
-  Global Hint Rewrite Constant_value_EOF_MAGIC_HASH : constant_rewrites.
-  
-  Definition value_EOF_MAGIC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61184 |))).
-  
-  Axiom Constant_value_EOF_MAGIC :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC") = value_EOF_MAGIC.
-  Global Hint Rewrite Constant_value_EOF_MAGIC : constant_rewrites.
-  
-  Definition value_EOF_MAGIC_BYTES : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "alloy_primitives::bytes_::Bytes",
-              M.get_associated_function (|
-                Ty.path "alloy_primitives::bytes_::Bytes",
-                "from_static",
-                [],
-                []
-              |),
-              [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_BYTES::STATIC_BYTES" |) ]
-            |)
-          |)
-        |))).
-  
-  Axiom Constant_value_EOF_MAGIC_BYTES :
-    (M.get_constant "revm_bytecode::eof::EOF_MAGIC_BYTES") = value_EOF_MAGIC_BYTES.
-  Global Hint Rewrite Constant_value_EOF_MAGIC_BYTES : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EOF_MAGIC_BYTES :
+    M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC_BYTES" value_EOF_MAGIC_BYTES.
+  Admitted.
+  Global Typeclasses Opaque value_EOF_MAGIC_BYTES.
   
   (* StructRecord
     {
@@ -202,8 +217,8 @@ Module eof.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Eof" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "header" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "header" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -217,7 +232,7 @@ Module eof.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "body" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "body" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -231,7 +246,7 @@ Module eof.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "raw" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "raw" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1179,8 +1194,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_validate :
-      M.IsAssociatedFunction.Trait Self "validate" validate.
+    Global Instance AssociatedFunction_validate : M.IsAssociatedFunction.C Self "validate" validate.
     Admitted.
     Global Typeclasses Opaque validate.
     
@@ -1209,7 +1223,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_valitate_raw :
-      M.IsAssociatedFunction.Trait Self "valitate_raw" valitate_raw.
+      M.IsAssociatedFunction.C Self "valitate_raw" valitate_raw.
     Admitted.
     Global Typeclasses Opaque valitate_raw.
     
@@ -1239,7 +1253,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_validate_mode :
-      M.IsAssociatedFunction.Trait Self "validate_mode" validate_mode.
+      M.IsAssociatedFunction.C Self "validate_mode" validate_mode.
     Admitted.
     Global Typeclasses Opaque validate_mode.
     
@@ -1266,7 +1280,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1323,7 +1337,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.C Self "size" size.
     Admitted.
     Global Typeclasses Opaque size.
     
@@ -1353,7 +1367,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.Trait Self "raw" raw.
+    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.C Self "raw" raw.
     Admitted.
     Global Typeclasses Opaque raw.
     
@@ -1622,7 +1636,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_data_slice :
-      M.IsAssociatedFunction.Trait Self "data_slice" data_slice.
+      M.IsAssociatedFunction.C Self "data_slice" data_slice.
     Admitted.
     Global Typeclasses Opaque data_slice.
     
@@ -1694,7 +1708,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
     Admitted.
     Global Typeclasses Opaque data.
     
@@ -1821,7 +1835,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_encode_slow :
-      M.IsAssociatedFunction.Trait Self "encode_slow" encode_slow.
+      M.IsAssociatedFunction.C Self "encode_slow" encode_slow.
     Admitted.
     Global Typeclasses Opaque encode_slow.
     
@@ -2321,7 +2335,7 @@ Module eof.
       end.
     
     Global Instance AssociatedFunction_decode_dangling :
-      M.IsAssociatedFunction.Trait Self "decode_dangling" decode_dangling.
+      M.IsAssociatedFunction.C Self "decode_dangling" decode_dangling.
     Admitted.
     Global Typeclasses Opaque decode_dangling.
     
@@ -2688,7 +2702,7 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+    Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.C Self "decode" decode.
     Admitted.
     Global Typeclasses Opaque decode.
   End Impl_revm_bytecode_eof_Eof.
@@ -2891,10 +2905,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MissingInput"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MissingInput" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MissingInput" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2907,7 +2918,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MissingBodyWithoutData" |) |)
+                            M.deref (| mk_str (| "MissingBodyWithoutData" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2919,10 +2930,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::DanglingData"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DanglingData" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DanglingData" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2935,7 +2943,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidTypesSection" |) |)
+                            M.deref (| mk_str (| "InvalidTypesSection" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2949,7 +2957,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidTypesSectionSize" |) |)
+                            M.deref (| mk_str (| "InvalidTypesSectionSize" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2963,7 +2971,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEOFMagicNumber" |) |)
+                            M.deref (| mk_str (| "InvalidEOFMagicNumber" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2977,7 +2985,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEOFVersion" |) |)
+                            M.deref (| mk_str (| "InvalidEOFVersion" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2991,7 +2999,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidTypesKind" |) |)
+                            M.deref (| mk_str (| "InvalidTypesKind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3005,7 +3013,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidCodeKind" |) |)
+                            M.deref (| mk_str (| "InvalidCodeKind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3019,7 +3027,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidTerminalByte" |) |)
+                            M.deref (| mk_str (| "InvalidTerminalByte" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3033,7 +3041,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidDataKind" |) |)
+                            M.deref (| mk_str (| "InvalidDataKind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3047,7 +3055,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidKindAfterCode" |) |)
+                            M.deref (| mk_str (| "InvalidKindAfterCode" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3061,7 +3069,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MismatchCodeAndTypesSize" |) |)
+                            M.deref (| mk_str (| "MismatchCodeAndTypesSize" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3073,10 +3081,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::NonSizes"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonSizes" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonSizes" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3089,7 +3094,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ShortInputForSizes" |) |)
+                            M.deref (| mk_str (| "ShortInputForSizes" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3101,10 +3106,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ZeroSize"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ZeroSize" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ZeroSize" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3117,7 +3119,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooManyCodeSections" |) |)
+                            M.deref (| mk_str (| "TooManyCodeSections" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3131,7 +3133,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ZeroCodeSections" |) |)
+                            M.deref (| mk_str (| "ZeroCodeSections" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3145,7 +3147,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooManyContainerSections" |) |)
+                            M.deref (| mk_str (| "TooManyContainerSections" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3159,7 +3161,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEOFSize" |) |)
+                            M.deref (| mk_str (| "InvalidEOFSize" |) |)
                           |)
                         |)))
                   ]
@@ -3511,7 +3513,7 @@ Module eof.
                             γ,
                             "revm_bytecode::eof::EofDecodeError::MissingInput"
                           |) in
-                        Value.String "Short input while processing EOF"));
+                        M.alloc (| mk_str (| "Short input while processing EOF" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3523,9 +3525,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "Short body while processing EOF" |)
-                            |)
+                            M.deref (| mk_str (| "Short body while processing EOF" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3540,9 +3540,7 @@ Module eof.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "Body size is more than specified in the header"
-                              |)
+                              mk_str (| "Body size is more than specified in the header" |)
                             |)
                           |)
                         |)));
@@ -3557,7 +3555,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid types section data" |) |)
+                            M.deref (| mk_str (| "Invalid types section data" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3571,7 +3569,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid types section size" |) |)
+                            M.deref (| mk_str (| "Invalid types section size" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3585,7 +3583,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid EOF magic number" |) |)
+                            M.deref (| mk_str (| "Invalid EOF magic number" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3599,7 +3597,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid EOF version" |) |)
+                            M.deref (| mk_str (| "Invalid EOF version" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3613,7 +3611,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid number for types kind" |) |)
+                            M.deref (| mk_str (| "Invalid number for types kind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3627,7 +3625,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid number for code kind" |) |)
+                            M.deref (| mk_str (| "Invalid number for code kind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3641,7 +3639,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid terminal code" |) |)
+                            M.deref (| mk_str (| "Invalid terminal code" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3655,7 +3653,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid data kind" |) |)
+                            M.deref (| mk_str (| "Invalid data kind" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3669,7 +3667,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid kind after code" |) |)
+                            M.deref (| mk_str (| "Invalid kind after code" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3683,9 +3681,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "Mismatch of code and types sizes" |)
-                            |)
+                            M.deref (| mk_str (| "Mismatch of code and types sizes" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3699,9 +3695,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "There should be at least one size" |)
-                            |)
+                            M.deref (| mk_str (| "There should be at least one size" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3713,10 +3707,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ShortInputForSizes"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Missing size" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Missing size" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3729,7 +3720,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Size cant be zero" |) |)
+                            M.deref (| mk_str (| "Size cant be zero" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3743,7 +3734,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid code number" |) |)
+                            M.deref (| mk_str (| "Invalid code number" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3757,9 +3748,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "Invalid number of code sections" |)
-                            |)
+                            M.deref (| mk_str (| "Invalid number of code sections" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3773,7 +3762,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid container number" |) |)
+                            M.deref (| mk_str (| "Invalid container number" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3787,7 +3776,7 @@ Module eof.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Invalid initcode size" |) |)
+                            M.deref (| mk_str (| "Invalid initcode size" |) |)
                           |)
                         |)))
                   ]

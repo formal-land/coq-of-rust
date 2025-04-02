@@ -2,26 +2,18 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
-Require Import CoqOfRust.core.links.option.
-Require Import CoqOfRust.core.links.array.
+Require Import core.links.array.
+Require Import core.links.option.
+Require Import core.num.links.mod.
+Require Import revm_interpreter.interpreter.shared_memory.
+
+Import Impl_usize.
 
 (*
-  /// A sequential memory shared between calls, which uses
-  /// a `Vec` for internal representation.
-  /// A [SharedMemory] instance should always be obtained using
-  /// the `new` static method to ensure memory safety.
-  #[derive(Clone, PartialEq, Eq, Hash)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
   pub struct SharedMemory {
-      /// The underlying buffer.
       buffer: Vec<u8>,
-      /// Memory checkpoints for each depth.
-      /// Invariant: these are always in bounds of `data`.
       checkpoints: Vec<usize>,
-      /// Invariant: equals `self.checkpoints.last()`
       last_checkpoint: usize,
-      /// Memory limit. See [`CfgEnv`](revm_primitives::CfgEnv).
-      #[cfg(feature = "memory_limit")]
       memory_limit: u64,
   }
 *)
@@ -44,3 +36,13 @@ Module SharedMemory.
       ];
   }.
 End SharedMemory.
+
+(* pub const fn num_words(len: usize) -> usize *)
+Instance run_num_words (len : Usize.t) :
+  Run.Trait
+    interpreter.shared_memory.num_words [] [] [ φ len ]
+    Usize.t.
+Proof.
+  constructor.
+  run_symbolic.
+Defined.

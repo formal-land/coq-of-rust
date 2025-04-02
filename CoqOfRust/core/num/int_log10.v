@@ -35,11 +35,11 @@ Module num.
                 BinOp.bit_and
                   (BinOp.Wrap.add (|
                     M.read (| val |),
-                    M.read (| M.get_constant "core::num::int_log10::u8::C1" |)
+                    M.read (| get_constant (| "core::num::int_log10::u8::C1", Ty.path "u32" |) |)
                   |))
                   (BinOp.Wrap.add (|
                     M.read (| val |),
-                    M.read (| M.get_constant "core::num::int_log10::u8::C2" |)
+                    M.read (| get_constant (| "core::num::int_log10::u8::C2", Ty.path "u32" |) |)
                   |)),
                 Value.Integer IntegerKind.I32 8
               |)
@@ -48,36 +48,35 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u8 : M.IsFunction.Trait "core::num::int_log10::u8" u8.
+    Global Instance Instance_IsFunction_u8 : M.IsFunction.C "core::num::int_log10::u8" u8.
     Admitted.
     Global Typeclasses Opaque u8.
     
     Module u8.
-      Definition value_C1 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 768,
-                Value.Integer IntegerKind.U32 10
-              |)
-            |))).
+      Definition value_C1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 768, Value.Integer IntegerKind.U32 10 |)
+          |))).
       
-      Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::u8::C1") = value_C1.
-      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C1 :
+        M.IsFunction.C "core::num::int_log10::u8::C1" value_C1.
+      Admitted.
+      Global Typeclasses Opaque value_C1.
       
-      Definition value_C2 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 512,
-                Value.Integer IntegerKind.U32 100
-              |)
-            |))).
+      Definition value_C2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 512,
+              Value.Integer IntegerKind.U32 100
+            |)
+          |))).
       
-      Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::u8::C2") = value_C2.
-      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C2 :
+        M.IsFunction.C "core::num::int_log10::u8::C2" value_C2.
+      Admitted.
+      Global Typeclasses Opaque value_C2.
     End u8.
     
     (*
@@ -110,20 +109,28 @@ Module num.
               (BinOp.bit_and
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C1" |)
+                  M.read (|
+                    get_constant (| "core::num::int_log10::less_than_5::C1", Ty.path "u32" |)
+                  |)
                 |))
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C2" |)
+                  M.read (|
+                    get_constant (| "core::num::int_log10::less_than_5::C2", Ty.path "u32" |)
+                  |)
                 |)))
               (BinOp.bit_and
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C3" |)
+                  M.read (|
+                    get_constant (| "core::num::int_log10::less_than_5::C3", Ty.path "u32" |)
+                  |)
                 |))
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C4" |)
+                  M.read (|
+                    get_constant (| "core::num::int_log10::less_than_5::C4", Ty.path "u32" |)
+                  |)
                 |))),
             Value.Integer IntegerKind.I32 17
           |)))
@@ -131,62 +138,66 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_less_than_5 :
-      M.IsFunction.Trait "core::num::int_log10::less_than_5" less_than_5.
+      M.IsFunction.C "core::num::int_log10::less_than_5" less_than_5.
     Admitted.
     Global Typeclasses Opaque less_than_5.
     
     Module less_than_5.
-      Definition value_C1 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 393216,
-                Value.Integer IntegerKind.U32 10
-              |)
-            |))).
+      Definition value_C1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 393216,
+              Value.Integer IntegerKind.U32 10
+            |)
+          |))).
       
-      Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::less_than_5::C1") = value_C1.
-      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C1 :
+        M.IsFunction.C "core::num::int_log10::less_than_5::C1" value_C1.
+      Admitted.
+      Global Typeclasses Opaque value_C1.
       
-      Definition value_C2 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 524288,
-                Value.Integer IntegerKind.U32 100
-              |)
-            |))).
+      Definition value_C2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 524288,
+              Value.Integer IntegerKind.U32 100
+            |)
+          |))).
       
-      Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::less_than_5::C2") = value_C2.
-      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C2 :
+        M.IsFunction.C "core::num::int_log10::less_than_5::C2" value_C2.
+      Admitted.
+      Global Typeclasses Opaque value_C2.
       
-      Definition value_C3 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 917504,
-                Value.Integer IntegerKind.U32 1000
-              |)
-            |))).
+      Definition value_C3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 917504,
+              Value.Integer IntegerKind.U32 1000
+            |)
+          |))).
       
-      Axiom Constant_value_C3 : (M.get_constant "core::num::int_log10::less_than_5::C3") = value_C3.
-      Global Hint Rewrite Constant_value_C3 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C3 :
+        M.IsFunction.C "core::num::int_log10::less_than_5::C3" value_C3.
+      Admitted.
+      Global Typeclasses Opaque value_C3.
       
-      Definition value_C4 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Wrap.sub (|
-                Value.Integer IntegerKind.U32 524288,
-                Value.Integer IntegerKind.U32 10000
-              |)
-            |))).
+      Definition value_C4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Wrap.sub (|
+              Value.Integer IntegerKind.U32 524288,
+              Value.Integer IntegerKind.U32 10000
+            |)
+          |))).
       
-      Axiom Constant_value_C4 : (M.get_constant "core::num::int_log10::less_than_5::C4") = value_C4.
-      Global Hint Rewrite Constant_value_C4 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_C4 :
+        M.IsFunction.C "core::num::int_log10::less_than_5::C4" value_C4.
+      Admitted.
+      Global Typeclasses Opaque value_C4.
     End less_than_5.
     
     (*
@@ -207,7 +218,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u16 : M.IsFunction.Trait "core::num::int_log10::u16" u16.
+    Global Instance Instance_IsFunction_u16 : M.IsFunction.C "core::num::int_log10::u16" u16.
     Admitted.
     Global Typeclasses Opaque u16.
     
@@ -278,7 +289,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u32 : M.IsFunction.Trait "core::num::int_log10::u32" u32.
+    Global Instance Instance_IsFunction_u32 : M.IsFunction.C "core::num::int_log10::u32" u32.
     Admitted.
     Global Typeclasses Opaque u32.
     
@@ -392,7 +403,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u64 : M.IsFunction.Trait "core::num::int_log10::u64" u64.
+    Global Instance Instance_IsFunction_u64 : M.IsFunction.C "core::num::int_log10::u64" u64.
     Admitted.
     Global Typeclasses Opaque u64.
     
@@ -538,7 +549,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_u128 : M.IsFunction.Trait "core::num::int_log10::u128" u128.
+    Global Instance Instance_IsFunction_u128 : M.IsFunction.C "core::num::int_log10::u128" u128.
     Admitted.
     Global Typeclasses Opaque u128.
     
@@ -560,8 +571,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_usize :
-      M.IsFunction.Trait "core::num::int_log10::usize" usize.
+    Global Instance Instance_IsFunction_usize : M.IsFunction.C "core::num::int_log10::usize" usize.
     Admitted.
     Global Typeclasses Opaque usize.
     
@@ -583,7 +593,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i8 : M.IsFunction.Trait "core::num::int_log10::i8" i8.
+    Global Instance Instance_IsFunction_i8 : M.IsFunction.C "core::num::int_log10::i8" i8.
     Admitted.
     Global Typeclasses Opaque i8.
     
@@ -605,7 +615,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i16 : M.IsFunction.Trait "core::num::int_log10::i16" i16.
+    Global Instance Instance_IsFunction_i16 : M.IsFunction.C "core::num::int_log10::i16" i16.
     Admitted.
     Global Typeclasses Opaque i16.
     
@@ -627,7 +637,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i32 : M.IsFunction.Trait "core::num::int_log10::i32" i32.
+    Global Instance Instance_IsFunction_i32 : M.IsFunction.C "core::num::int_log10::i32" i32.
     Admitted.
     Global Typeclasses Opaque i32.
     
@@ -649,7 +659,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i64 : M.IsFunction.Trait "core::num::int_log10::i64" i64.
+    Global Instance Instance_IsFunction_i64 : M.IsFunction.C "core::num::int_log10::i64" i64.
     Admitted.
     Global Typeclasses Opaque i64.
     
@@ -671,7 +681,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_i128 : M.IsFunction.Trait "core::num::int_log10::i128" i128.
+    Global Instance Instance_IsFunction_i128 : M.IsFunction.C "core::num::int_log10::i128" i128.
     Admitted.
     Global Typeclasses Opaque i128.
     
@@ -708,11 +718,7 @@ Module num.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "argument of integer logarithm must be positive"
-                              |)
-                            ]
+                            [ mk_str (| "argument of integer logarithm must be positive" |) ]
                         |)
                       |)
                     |)
@@ -725,7 +731,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_panic_for_nonpositive_argument :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::num::int_log10::panic_for_nonpositive_argument"
         panic_for_nonpositive_argument.
     Admitted.

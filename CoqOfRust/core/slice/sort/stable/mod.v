@@ -77,7 +77,11 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -145,8 +149,10 @@ Module slice.
                                       BinOp.le (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant
-                                            "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
+                                          get_constant (|
+                                            "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -208,18 +214,24 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_sort :
-        M.IsFunction.Trait "core::slice::sort::stable::sort" sort.
+        M.IsFunction.C "core::slice::sort::stable::sort" sort.
       Admitted.
       Global Typeclasses Opaque sort.
       
       Module sort.
-        Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+        Definition value_MAX_LEN_ALWAYS_INSERTION_SORT
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
         
-        Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
-          (M.get_constant "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
+        Global Instance Instance_IsConstant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
+          M.IsFunction.C
+            "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
             value_MAX_LEN_ALWAYS_INSERTION_SORT.
-        Global Hint Rewrite Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_MAX_LEN_ALWAYS_INSERTION_SORT.
       End sort.
       
       (*
@@ -268,8 +280,10 @@ Module slice.
                 M.alloc (|
                   BinOp.Wrap.div (|
                     M.read (|
-                      M.get_constant
-                        "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES"
+                      get_constant (|
+                        "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES",
+                        Ty.path "usize"
+                      |)
                     |),
                     M.call_closure (|
                       Ty.path "usize",
@@ -310,8 +324,10 @@ Module slice.
                         ]
                       |);
                       M.read (|
-                        M.get_constant
-                          "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
+                        get_constant (|
+                          "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
+                          Ty.path "usize"
+                        |)
                       |)
                     ]
                   |)
@@ -534,18 +550,24 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_driftsort_main :
-        M.IsFunction.Trait "core::slice::sort::stable::driftsort_main" driftsort_main.
+        M.IsFunction.C "core::slice::sort::stable::driftsort_main" driftsort_main.
       Admitted.
       Global Typeclasses Opaque driftsort_main.
       
       Module driftsort_main.
-        Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8000000 |))).
+        Definition value_MAX_FULL_ALLOC_BYTES
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8000000 |))).
         
-        Axiom Constant_value_MAX_FULL_ALLOC_BYTES :
-          (M.get_constant "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES") =
+        Global Instance Instance_IsConstant_value_MAX_FULL_ALLOC_BYTES :
+          M.IsFunction.C
+            "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES"
             value_MAX_FULL_ALLOC_BYTES.
-        Global Hint Rewrite Constant_value_MAX_FULL_ALLOC_BYTES : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_MAX_FULL_ALLOC_BYTES.
       End driftsort_main.
       
       (* Trait *)
@@ -593,7 +615,15 @@ Module slice.
                   ("_align", Value.Array []);
                   ("storage",
                     repeat (|
-                      M.read (| M.get_constant "core::slice::sort::stable::new_discriminant" |),
+                      M.read (|
+                        get_constant (|
+                          "core::slice::sort::stable::new_discriminant",
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        |)
+                      |),
                       N
                     |))
                 ]))
@@ -602,7 +632,7 @@ Module slice.
         
         Global Instance AssociatedFunction_new :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+          M.IsAssociatedFunction.C (Self N T) "new" (new N T).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -633,7 +663,7 @@ Module slice.
                     let~ len : Ty.path "usize" :=
                       M.alloc (|
                         BinOp.Wrap.div (|
-                          M.read (| M.get_constant "core::slice::sort::stable::N" |),
+                          N,
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_function (| "core::mem::size_of", [], [ T ] |),
@@ -757,7 +787,7 @@ Module slice.
         
         Global Instance AssociatedFunction_as_uninit_slice_mut :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
+          M.IsAssociatedFunction.C (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
         Admitted.
         Global Typeclasses Opaque as_uninit_slice_mut.
       End Impl_core_slice_sort_stable_AlignedStorage_N_T.

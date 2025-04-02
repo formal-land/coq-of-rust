@@ -11,6 +11,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "match_destructuring_structs::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "match_destructuring_structs::main" main.
 Admitted.

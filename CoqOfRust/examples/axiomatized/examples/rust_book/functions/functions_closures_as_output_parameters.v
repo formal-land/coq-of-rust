@@ -4,23 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter create_fn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_fn :
-  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fn" create_fn.
+  M.IsFunction.C "functions_closures_as_output_parameters::create_fn" create_fn.
 Admitted.
 
 Parameter create_fnmut : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_fnmut :
-  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
+  M.IsFunction.C "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
 Admitted.
 
 Parameter create_fnonce : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_fnonce :
-  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
+  M.IsFunction.C "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_as_output_parameters::main" main.
+  M.IsFunction.C "functions_closures_as_output_parameters::main" main.
 Admitted.

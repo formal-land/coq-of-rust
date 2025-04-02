@@ -28,7 +28,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_successors :
-        M.IsFunction.Trait "core::iter::sources::successors::successors" successors.
+        M.IsFunction.C "core::iter::sources::successors::successors" successors.
       Admitted.
       Global Typeclasses Opaque successors.
       
@@ -444,16 +444,13 @@ Module iter.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Successors" |) |)
+                                    M.deref (| mk_str (| "Successors" |) |)
                                   |)
                                 ]
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "next" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

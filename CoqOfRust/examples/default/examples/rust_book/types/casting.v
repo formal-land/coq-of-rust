@@ -114,10 +114,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Casting: " |);
-                                  M.read (| Value.String " -> " |);
-                                  M.read (| Value.String " -> " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "Casting: " |);
+                                  mk_str (| " -> " |);
+                                  mk_str (| " -> " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -210,12 +210,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "1000 as a u16 is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "1000 as a u16 is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -281,12 +277,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "1000 as a u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "1000 as a u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -352,12 +344,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "  -1 as a u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "  -1 as a u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -427,12 +415,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "1000 mod 256 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "1000 mod 256 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -503,12 +487,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String " 128 as a i16 is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| " 128 as a i16 is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -574,12 +554,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String " 128 as a i8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| " 128 as a i8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -645,12 +621,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "1000 as a u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "1000 as a u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -716,12 +688,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String " 232 as a i8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| " 232 as a i8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -787,12 +755,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String " 300.0 as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| " 300.0 as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -862,12 +826,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "-100.0 as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "-100.0 as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -937,12 +897,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "   nan as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "   nan as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -972,7 +928,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "u8")
-                                                (M.read (| M.get_constant "core::f32::NAN" |))
+                                                (M.read (|
+                                                  get_associated_constant (|
+                                                    Ty.path "f32",
+                                                    "NAN",
+                                                    Ty.path "f32"
+                                                  |)
+                                                |))
                                             |)
                                           |)
                                         |)
@@ -1012,12 +974,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String " 300.0 as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| " 300.0 as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1094,12 +1052,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "-100.0 as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "-100.0 as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1176,12 +1130,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "   nan as u8 is : " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "   nan as u8 is : " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1217,7 +1167,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   [ Ty.path "u8" ]
                                                 |),
-                                                [ M.read (| M.get_constant "core::f32::NAN" |) ]
+                                                [
+                                                  M.read (|
+                                                    get_associated_constant (|
+                                                      Ty.path "f32",
+                                                      "NAN",
+                                                      Ty.path "f32"
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -1241,6 +1199,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "casting::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "casting::main" main.
 Admitted.
 Global Typeclasses Opaque main.

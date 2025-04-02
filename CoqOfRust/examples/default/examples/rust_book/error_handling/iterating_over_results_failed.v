@@ -62,15 +62,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "tofu" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
+                            mk_str (| "tofu" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
                           ]
                       |)
                     ]
@@ -276,14 +270,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Results: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Results: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -341,6 +329,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "iterating_over_results_failed::main" main.
+  M.IsFunction.C "iterating_over_results_failed::main" main.
 Admitted.
 Global Typeclasses Opaque main.

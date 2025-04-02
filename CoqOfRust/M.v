@@ -140,7 +140,7 @@ Module Pointer.
   Module Kind.
     Inductive t : Set :=
     (** The address kind for the allocation primitive. This is later converted to proper pointer
-        kinds. *)
+        kinds. This is not a native Rust kind of pointer. *)
     | Raw
     | Ref
     | MutRef
@@ -149,7 +149,7 @@ Module Pointer.
 
     Definition to_ty_path (kind : t) : string :=
       match kind with
-      | Raw => "raw" (* it should appear as it is not possible to manipulate raw pointers in Rust *)
+      | Raw => "*"
       | Ref => "&"
       | MutRef => "&mut"
       | ConstPointer => "*const"
@@ -275,12 +275,22 @@ End Value.
 
 Module Primitive.
   Inductive t : Set :=
-  | StateAlloc (value : Value.t)
-  | StateRead (pointer : Value.t)
-  | StateWrite (pointer : Value.t) (value : Value.t)
-  | GetSubPointer (pointer : Value.t) (index : Pointer.Index.t)
-  | AreEqual (value1 value2 : Value.t)
-  | GetFunction (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
+  | StateAlloc
+    (value : Value.t)
+  | StateRead
+    (pointer : Value.t)
+  | StateWrite
+    (pointer : Value.t)
+    (value : Value.t)
+  | GetSubPointer
+    (pointer : Value.t)
+    (index : Pointer.Index.t)
+  | AreEqual
+    (value1 value2 : Value.t)
+  | GetFunction
+    (path : string)
+    (generic_consts : list Value.t)
+    (generic_tys : list Ty.t)
   | GetAssociatedFunction
     (ty : Ty.t)
     (name : string)
@@ -376,7 +386,6 @@ End PolymorphicFunction.
 
 Module InstanceField.
   Inductive t : Set :=
-  | Constant (constant : Value.t)
   | Method (method : PolymorphicFunction.t)
   | Ty (ty : Ty.t).
 End InstanceField.
@@ -400,7 +409,7 @@ Module IsFunction.
     (function : PolymorphicFunction.t),
     Prop.
 
-  Class Trait
+  Class C
     (trait_name : string)
     (function : PolymorphicFunction.t) :
     Prop := {
@@ -415,7 +424,7 @@ Module IsAssociatedFunction.
     (function : PolymorphicFunction.t),
     Prop.
 
-  Class Trait
+  Class C
     (Self : Ty.t)
     (function_name : string)
     (function : PolymorphicFunction.t) :
@@ -423,22 +432,6 @@ Module IsAssociatedFunction.
     is_associated_function : t Self function_name function;
   }.
 End IsAssociatedFunction.
-
-Module IsAssociatedConstant.
-  Parameter t : forall
-    (Self : Ty.t)
-    (constant_name : string)
-    (constant : Value.t),
-    Prop.
-
-  Class Trait
-    (Self : Ty.t)
-    (constant_name : string)
-    (constant : Value.t) :
-    Prop := {
-    is_associated_constant : t Self constant_name constant;
-  }.
-End IsAssociatedConstant.
 
 Parameter IsProvidedMethod :
   forall
@@ -663,8 +656,6 @@ Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
 
 Definition are_equal (value1 value2 : Value.t) : M :=
   call_primitive (Primitive.AreEqual value1 value2).
-
-Parameter get_constant : string -> Value.t.
 
 Definition get_function (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t) :
     M :=
@@ -896,36 +887,3 @@ Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
 Parameter unevaluated_const : Value.t -> Value.t.
 
 Parameter yield : Value.t -> M.
-
-Fixpoint run_constant (constant : M) : Value.t :=
-  match constant with
-  | LowM.Pure value =>
-    match value with
-    | inl value => value
-    | inr _ => Value.Error "expected a success value"
-    end
-  | LowM.CallPrimitive primitive k =>
-    let value :=
-      match primitive with
-      | Primitive.StateAlloc value =>
-        Value.Pointer {|
-          Pointer.kind := Pointer.Kind.Raw;
-          Pointer.core := Pointer.Core.Immediate value;
-        |}
-      | Primitive.StateRead pointer =>
-        match pointer with
-        | Value.Pointer {|
-            Pointer.kind := Pointer.Kind.Raw;
-            Pointer.core := Pointer.Core.Immediate value;
-          |} =>
-          value
-        | _ => Value.Error "expected an immediate raw pointer"
-        end
-      | _ => Value.Error "unhandled primitive"
-      end in
-    run_constant (k value)
-  | LowM.CallClosure _ _ _ _ => Value.Error "unexpected closure call"
-  | LowM.Let _ _ _ => Value.Error "unexpected let"
-  | LowM.Loop _ _ _ => Value.Error "unexpected loop"
-  | LowM.Impossible _ => Value.Error "impossible"
-  end.

@@ -76,7 +76,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_dangling :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "dangling" (dangling T).
+        M.IsAssociatedFunction.C (Self T) "dangling" (dangling T).
       Admitted.
       Global Typeclasses Opaque dangling.
       (*
@@ -117,7 +117,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_new_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new_unchecked" (new_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "new_unchecked" (new_unchecked T).
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -193,7 +193,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -231,7 +231,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+        M.IsAssociatedFunction.C (Self T) "as_ptr" (as_ptr T).
       Admitted.
       Global Typeclasses Opaque as_ptr.
       
@@ -263,7 +263,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_non_null_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_non_null_ptr" (as_non_null_ptr T).
+        M.IsAssociatedFunction.C (Self T) "as_non_null_ptr" (as_non_null_ptr T).
       Admitted.
       Global Typeclasses Opaque as_non_null_ptr.
       
@@ -309,7 +309,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+        M.IsAssociatedFunction.C (Self T) "as_ref" (as_ref T).
       Admitted.
       Global Typeclasses Opaque as_ref.
       
@@ -365,7 +365,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+        M.IsAssociatedFunction.C (Self T) "as_mut" (as_mut T).
       Admitted.
       Global Typeclasses Opaque as_mut.
       
@@ -411,7 +411,7 @@ Module ptr.
       
       Global Instance AssociatedFunction_cast :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "cast" (cast T).
+        M.IsAssociatedFunction.C (Self T) "cast" (cast T).
       Admitted.
       Global Typeclasses Opaque cast.
     End Impl_core_ptr_unique_Unique_T.

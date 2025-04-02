@@ -21,7 +21,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_from_coroutine :
-        M.IsFunction.Trait "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
+        M.IsFunction.C "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
       Admitted.
       Global Typeclasses Opaque from_coroutine.
       
@@ -251,7 +251,7 @@ Module iter.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FromCoroutine" |) |)
+                            M.deref (| mk_str (| "FromCoroutine" |) |)
                           |)
                         ]
                       |)

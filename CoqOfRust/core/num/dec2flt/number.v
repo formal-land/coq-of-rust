@@ -4,34 +4,34 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module dec2flt.
     Module number.
-      Definition value_INT_POW10 : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.Array
-                [
-                  Value.Integer IntegerKind.U64 1;
-                  Value.Integer IntegerKind.U64 10;
-                  Value.Integer IntegerKind.U64 100;
-                  Value.Integer IntegerKind.U64 1000;
-                  Value.Integer IntegerKind.U64 10000;
-                  Value.Integer IntegerKind.U64 100000;
-                  Value.Integer IntegerKind.U64 1000000;
-                  Value.Integer IntegerKind.U64 10000000;
-                  Value.Integer IntegerKind.U64 100000000;
-                  Value.Integer IntegerKind.U64 1000000000;
-                  Value.Integer IntegerKind.U64 10000000000;
-                  Value.Integer IntegerKind.U64 100000000000;
-                  Value.Integer IntegerKind.U64 1000000000000;
-                  Value.Integer IntegerKind.U64 10000000000000;
-                  Value.Integer IntegerKind.U64 100000000000000;
-                  Value.Integer IntegerKind.U64 1000000000000000
-                ]
-            |))).
+      Definition value_INT_POW10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.U64 1;
+                Value.Integer IntegerKind.U64 10;
+                Value.Integer IntegerKind.U64 100;
+                Value.Integer IntegerKind.U64 1000;
+                Value.Integer IntegerKind.U64 10000;
+                Value.Integer IntegerKind.U64 100000;
+                Value.Integer IntegerKind.U64 1000000;
+                Value.Integer IntegerKind.U64 10000000;
+                Value.Integer IntegerKind.U64 100000000;
+                Value.Integer IntegerKind.U64 1000000000;
+                Value.Integer IntegerKind.U64 10000000000;
+                Value.Integer IntegerKind.U64 100000000000;
+                Value.Integer IntegerKind.U64 1000000000000;
+                Value.Integer IntegerKind.U64 10000000000000;
+                Value.Integer IntegerKind.U64 100000000000000;
+                Value.Integer IntegerKind.U64 1000000000000000
+              ]
+          |))).
       
-      Axiom Constant_value_INT_POW10 :
-        (M.get_constant "core::num::dec2flt::number::INT_POW10") = value_INT_POW10.
-      Global Hint Rewrite Constant_value_INT_POW10 : constant_rewrites.
+      Global Instance Instance_IsConstant_value_INT_POW10 :
+        M.IsFunction.C "core::num::dec2flt::number::INT_POW10" value_INT_POW10.
+      Admitted.
+      Global Typeclasses Opaque value_INT_POW10.
       
       (* StructRecord
         {
@@ -126,11 +126,8 @@ Module num.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Number" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "exponent" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Number" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "exponent" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -144,10 +141,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "mantissa" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "mantissa" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -161,10 +155,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "negative" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "negative" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -178,10 +169,7 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "many_digits" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "many_digits" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -471,7 +459,10 @@ Module num.
                   LogicalOp.and (|
                     BinOp.le (|
                       M.read (|
-                        M.get_constant "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH"
+                        get_constant (|
+                          "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH",
+                          Ty.path "i64"
+                        |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -491,8 +482,10 @@ Module num.
                           |)
                         |),
                         M.read (|
-                          M.get_constant
-                            "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_DISGUISED_FAST_PATH"
+                          get_constant (|
+                            "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_DISGUISED_FAST_PATH",
+                            Ty.path "i64"
+                          |)
                         |)
                       |)))
                   |),
@@ -506,7 +499,10 @@ Module num.
                         |)
                       |),
                       M.read (|
-                        M.get_constant "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
+                        get_constant (|
+                          "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                          Ty.path "u64"
+                        |)
                       |)
                     |)))
                 |),
@@ -525,7 +521,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_is_fast_path :
-          M.IsAssociatedFunction.Trait Self "is_fast_path" is_fast_path.
+          M.IsAssociatedFunction.C Self "is_fast_path" is_fast_path.
         Admitted.
         Global Typeclasses Opaque is_fast_path.
         
@@ -633,8 +629,10 @@ Module num.
                                                   |)
                                                 |),
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
+                                                  get_constant (|
+                                                    "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
+                                                    Ty.path "i64"
+                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -791,8 +789,10 @@ Module num.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
+                                                  Ty.path "i64"
+                                                |)
                                               |)
                                             |)
                                           |) in
@@ -846,8 +846,14 @@ Module num.
                                                         |);
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.get_constant
+                                                            get_constant (|
                                                               "core::num::dec2flt::number::INT_POW10",
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 16
+                                                                ]
+                                                                [ Ty.path "u64" ]
+                                                            |),
                                                             M.cast
                                                               (Ty.path "usize")
                                                               (M.read (| shift |))
@@ -929,8 +935,10 @@ Module num.
                                                         BinOp.gt (|
                                                           M.read (| mantissa |),
                                                           M.read (|
-                                                            M.get_constant
-                                                              "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
+                                                            get_constant (|
+                                                              "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                              Ty.path "u64"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)) in
@@ -995,8 +1003,10 @@ Module num.
                                                   M.cast
                                                     (Ty.path "usize")
                                                     (M.read (|
-                                                      M.get_constant
-                                                        "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
+                                                      get_constant (|
+                                                        "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
+                                                        Ty.path "i64"
+                                                      |)
                                                     |))
                                                 ]
                                               |)
@@ -1062,7 +1072,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_try_fast_path :
-          M.IsAssociatedFunction.Trait Self "try_fast_path" try_fast_path.
+          M.IsAssociatedFunction.C Self "try_fast_path" try_fast_path.
         Admitted.
         Global Typeclasses Opaque try_fast_path.
       End Impl_core_num_dec2flt_number_Number.

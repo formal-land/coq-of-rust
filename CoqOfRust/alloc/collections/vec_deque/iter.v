@@ -40,7 +40,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+          M.IsAssociatedFunction.C (Self T) "new" (new T).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -111,7 +111,7 @@ Module collections.
         
         Global Instance AssociatedFunction_as_slices :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "as_slices" (as_slices T).
+          M.IsAssociatedFunction.C (Self T) "as_slices" (as_slices T).
         Admitted.
         Global Typeclasses Opaque as_slices.
       End Impl_alloc_collections_vec_deque_iter_Iter_T.
@@ -189,7 +189,7 @@ Module collections.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "Iter" |) |)
+                                            M.deref (| mk_str (| "Iter" |) |)
                                           |)
                                         ]
                                       |)
@@ -1955,9 +1955,14 @@ Module collections.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+          ltac:(M.monadic (M.alloc (| Value.Bool false |))).
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -1967,8 +1972,7 @@ Module collections.
             (* Trait polymorphic types *) []
             (Self T)
             (* Instance *)
-            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T))
-            ].
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
       End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_alloc_collections_vec_deque_iter_Iter_T.
     End iter.
   End vec_deque.

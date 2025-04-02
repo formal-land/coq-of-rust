@@ -1,14 +1,19 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.links.array.
+Require Import ruint.lib.
 
 Module Uint.
-  Parameter t : Usize.t -> Usize.t -> Set.
+  Record t {BITS LIMBS : Usize.t} : Set := {
+    limbs : array.t U64.t LIMBS;
+  }.
+  Arguments t : clear implicits.
 
-  Parameter to_value : forall {BITS LIMBS : Usize.t}, t BITS LIMBS -> Value.t.
-
-  Global Instance IsLink : forall {BITS LIMBS : Usize.t}, Link (t BITS LIMBS) := {
+  Global Instance IsLink {BITS LIMBS : Usize.t} : Link (t BITS LIMBS) := {
     Φ := Ty.apply (Ty.path "ruint::Uint") [ φ BITS; φ LIMBS ] [];
-    φ := to_value;
+    φ x := Value.StructRecord "ruint::Uint" [
+      ("limbs", φ x.(limbs))
+    ];
   }.
 
   Definition of_ty (BITS' LIMBS' : Value.t) (BITS LIMBS : Usize.t) :
@@ -17,10 +22,48 @@ Module Uint.
     OfTy.t (Ty.apply (Ty.path "ruint::Uint") [ BITS' ; LIMBS' ] []).
   Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
-
-  (* TODO: 
-  - add_mod from ruint::modular
-  - mul_mod from ruint::modular
-  - pow from ruint::modular
-  *)
 End Uint.
+
+Module Impl_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  (* pub const fn from_limbs(limbs: [u64; LIMBS]) -> Self *)
+  Instance run_from_limbs (BITS LIMBS : Usize.t) (limbs : array.t U64.t LIMBS) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.from_limbs (φ BITS) (φ LIMBS)) [] [] [ φ limbs ]
+      (Self BITS LIMBS).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+
+  (* pub const ZERO: Self *)
+  Instance run_ZERO (BITS LIMBS : Usize.t) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.value_ZERO (φ BITS) (φ LIMBS)) [] [] []
+      (Ref.t Pointer.Kind.Raw (Self BITS LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+    constructor.
+    eapply Run.Rewrite. {
+      change (Value.Integer IntegerKind.U64 0) with (φ (A := U64.t) {| Integer.value := 0 |}).
+      rewrite array.repeat_nat_φ_eq.
+      reflexivity.
+    }
+    apply Run.run_f.
+  Defined.
+
+  (* pub const fn as_limbs(&self) -> &[u64; LIMBS] *)
+  Instance run_as_limbs
+    (BITS LIMBS : Usize.t)
+    (self : Ref.t Pointer.Kind.Ref (Uint.t BITS LIMBS)) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.as_limbs (φ BITS) (φ LIMBS)) [] [] [ φ self ]
+      (Ref.t Pointer.Kind.Ref (array.t U64.t LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+End Impl_Uint.

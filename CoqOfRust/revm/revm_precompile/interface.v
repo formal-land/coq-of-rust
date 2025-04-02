@@ -125,11 +125,8 @@ Module interface.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "PrecompileOutput" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "gas_used" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PrecompileOutput" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -143,7 +140,7 @@ Module interface.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -405,7 +402,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_revm_precompile_interface_PrecompileOutput.
@@ -578,10 +575,7 @@ Module interface.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Error" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Error" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -613,14 +607,8 @@ Module interface.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Fatal" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "msg" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fatal" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "msg" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1490,10 +1478,7 @@ Module interface.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfGas" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |)
                         ]
                       |)
                     |)));
@@ -1521,7 +1506,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Blake2WrongLength" |) |)
+                            M.deref (| mk_str (| "Blake2WrongLength" |) |)
                           |)
                         ]
                       |)
@@ -1550,7 +1535,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Blake2WrongFinalIndicatorFlag" |) |)
+                            M.deref (| mk_str (| "Blake2WrongFinalIndicatorFlag" |) |)
                           |)
                         ]
                       |)
@@ -1579,7 +1564,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ModexpExpOverflow" |) |)
+                            M.deref (| mk_str (| "ModexpExpOverflow" |) |)
                           |)
                         ]
                       |)
@@ -1608,7 +1593,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ModexpBaseOverflow" |) |)
+                            M.deref (| mk_str (| "ModexpBaseOverflow" |) |)
                           |)
                         ]
                       |)
@@ -1637,7 +1622,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ModexpModOverflow" |) |)
+                            M.deref (| mk_str (| "ModexpModOverflow" |) |)
                           |)
                         ]
                       |)
@@ -1666,7 +1651,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bn128FieldPointNotAMember" |) |)
+                            M.deref (| mk_str (| "Bn128FieldPointNotAMember" |) |)
                           |)
                         ]
                       |)
@@ -1695,7 +1680,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bn128AffineGFailedToCreate" |) |)
+                            M.deref (| mk_str (| "Bn128AffineGFailedToCreate" |) |)
                           |)
                         ]
                       |)
@@ -1724,7 +1709,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bn128PairLength" |) |)
+                            M.deref (| mk_str (| "Bn128PairLength" |) |)
                           |)
                         ]
                       |)
@@ -1753,7 +1738,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobInvalidInputLength" |) |)
+                            M.deref (| mk_str (| "BlobInvalidInputLength" |) |)
                           |)
                         ]
                       |)
@@ -1782,7 +1767,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobMismatchedVersion" |) |)
+                            M.deref (| mk_str (| "BlobMismatchedVersion" |) |)
                           |)
                         ]
                       |)
@@ -1811,7 +1796,7 @@ Module interface.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BlobVerifyKzgProofFailed" |) |)
+                            M.deref (| mk_str (| "BlobVerifyKzgProofFailed" |) |)
                           |)
                         ]
                       |)
@@ -1840,10 +1825,7 @@ Module interface.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Other" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Other" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2138,7 +2120,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_other : M.IsAssociatedFunction.Trait Self "other" other.
+    Global Instance AssociatedFunction_other : M.IsAssociatedFunction.C Self "other" other.
     Admitted.
     Global Typeclasses Opaque other.
     
@@ -2173,7 +2155,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_oog : M.IsAssociatedFunction.Trait Self "is_oog" is_oog.
+    Global Instance AssociatedFunction_is_oog : M.IsAssociatedFunction.C Self "is_oog" is_oog.
     Admitted.
     Global Typeclasses Opaque is_oog.
   End Impl_revm_precompile_interface_PrecompileError.
@@ -2262,7 +2244,7 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::OutOfGas"
                           |) in
-                        Value.String "out of gas"));
+                        M.alloc (| mk_str (| "out of gas" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2274,7 +2256,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "wrong input length for blake2" |) |)
+                            M.deref (| mk_str (| "wrong input length for blake2" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2288,9 +2270,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "wrong final indicator flag for blake2" |)
-                            |)
+                            M.deref (| mk_str (| "wrong final indicator flag for blake2" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2304,7 +2284,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "modexp exp overflow" |) |)
+                            M.deref (| mk_str (| "modexp exp overflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2318,7 +2298,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "modexp base overflow" |) |)
+                            M.deref (| mk_str (| "modexp base overflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2332,7 +2312,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "modexp mod overflow" |) |)
+                            M.deref (| mk_str (| "modexp mod overflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2346,9 +2326,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "field point not a member of bn128 curve" |)
-                            |)
+                            M.deref (| mk_str (| "field point not a member of bn128 curve" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2363,9 +2341,7 @@ Module interface.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "failed to create affine g point for bn128 curve"
-                              |)
+                              mk_str (| "failed to create affine g point for bn128 curve" |)
                             |)
                           |)
                         |)));
@@ -2380,7 +2356,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "bn128 invalid pair length" |) |)
+                            M.deref (| mk_str (| "bn128 invalid pair length" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2394,7 +2370,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "invalid blob input length" |) |)
+                            M.deref (| mk_str (| "invalid blob input length" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2408,7 +2384,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "mismatched blob version" |) |)
+                            M.deref (| mk_str (| "mismatched blob version" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2422,9 +2398,7 @@ Module interface.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "verifying blob kzg proof failed" |)
-                            |)
+                            M.deref (| mk_str (| "verifying blob kzg proof failed" |) |)
                           |)
                         |)));
                     fun γ =>

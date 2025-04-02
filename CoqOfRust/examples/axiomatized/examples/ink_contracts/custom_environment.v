@@ -133,13 +133,13 @@ Module Impl_custom_environment_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
 End Impl_custom_environment_Env.
 
@@ -148,22 +148,21 @@ Module Impl_custom_environment_Topics.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter trigger : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_trigger : M.IsAssociatedFunction.Trait Self "trigger" trigger.
+  Global Instance AssociatedFunction_trigger : M.IsAssociatedFunction.C Self "trigger" trigger.
   Admitted.
 End Impl_custom_environment_Topics.

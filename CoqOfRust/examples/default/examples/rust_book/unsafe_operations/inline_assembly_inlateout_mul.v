@@ -31,7 +31,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_inlateout_mul::main" main.
+  M.IsFunction.C "inline_assembly_inlateout_mul::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -81,7 +81,7 @@ Module main.
     end.
   
   Global Instance Instance_IsFunction_mul :
-    M.IsFunction.Trait "inline_assembly_inlateout_mul::main::mul" mul.
+    M.IsFunction.C "inline_assembly_inlateout_mul::main::mul" mul.
   Admitted.
   Global Typeclasses Opaque mul.
 End main.

@@ -34,14 +34,8 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Debug: `" |);
-                                  M.read (| Value.String "`
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Debug: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -101,12 +95,8 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Display: `" |);
-                                  M.read (| Value.String "`
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Display: `" |); mk_str (| "`
+" |) ]
                             |)
                           |)
                         |)
@@ -151,7 +141,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Global Instance Instance_IsFunction_compare_prints :
-  M.IsFunction.Trait "generics_multiple_bounds::compare_prints" compare_prints.
+  M.IsFunction.C "generics_multiple_bounds::compare_prints" compare_prints.
 Admitted.
 Global Typeclasses Opaque compare_prints.
 
@@ -189,11 +179,8 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "t: `" |); M.read (| Value.String "`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "t: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -252,11 +239,8 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "u: `" |); M.read (| Value.String "`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "u: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -300,7 +284,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_compare_types :
-  M.IsFunction.Trait "generics_multiple_bounds::compare_types" compare_types.
+  M.IsFunction.C "generics_multiple_bounds::compare_types" compare_types.
 Admitted.
 Global Typeclasses Opaque compare_types.
 
@@ -323,7 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "words" |) in
+          M.alloc (| mk_str (| "words" |) |) in
         let~ array :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ] :=
           M.alloc (|
@@ -443,6 +427,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_multiple_bounds::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_multiple_bounds::main" main.
 Admitted.
 Global Typeclasses Opaque main.

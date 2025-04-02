@@ -34,10 +34,8 @@ Module my_mod.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `my_mod::private_function()`
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "called `my_mod::private_function()`
+" |) ]
                               |)
                             |)
                           |)
@@ -54,7 +52,7 @@ Module my_mod.
     end.
   
   Global Instance Instance_IsFunction_private_function :
-    M.IsFunction.Trait "visibility::my_mod::private_function" private_function.
+    M.IsFunction.C "visibility::my_mod::private_function" private_function.
   Admitted.
   Global Typeclasses Opaque private_function.
   
@@ -90,8 +88,7 @@ Module my_mod.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `my_mod::function()`
+                                Value.Array [ mk_str (| "called `my_mod::function()`
 " |) ]
                               |)
                             |)
@@ -109,7 +106,7 @@ Module my_mod.
     end.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "visibility::my_mod::function" function.
+    M.IsFunction.C "visibility::my_mod::function" function.
   Admitted.
   Global Typeclasses Opaque function.
   
@@ -147,12 +144,8 @@ Module my_mod.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my_mod::indirect_access()`, that
-> "
-                                    |)
-                                  ]
+                                  [ mk_str (| "called `my_mod::indirect_access()`, that
+> " |) ]
                               |)
                             |)
                           |)
@@ -177,7 +170,7 @@ Module my_mod.
     end.
   
   Global Instance Instance_IsFunction_indirect_access :
-    M.IsFunction.Trait "visibility::my_mod::indirect_access" indirect_access.
+    M.IsFunction.C "visibility::my_mod::indirect_access" indirect_access.
   Admitted.
   Global Typeclasses Opaque indirect_access.
   
@@ -215,12 +208,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::nested::function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::nested::function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -237,7 +226,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "visibility::my_mod::nested::function" function.
+      M.IsFunction.C "visibility::my_mod::nested::function" function.
     Admitted.
     Global Typeclasses Opaque function.
     
@@ -274,12 +263,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::nested::private_function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::nested::private_function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -296,7 +281,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_private_function :
-      M.IsFunction.Trait "visibility::my_mod::nested::private_function" private_function.
+      M.IsFunction.C "visibility::my_mod::nested::private_function" private_function.
     Admitted.
     Global Typeclasses Opaque private_function.
     
@@ -339,9 +324,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_my_mod()`, that
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
                                       |)
                                     ]
@@ -373,7 +357,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_public_function_in_my_mod :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_my_mod"
         public_function_in_my_mod.
     Admitted.
@@ -417,9 +401,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_nested()`
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_nested()`
 "
                                       |)
                                     ]
@@ -439,7 +422,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_public_function_in_nested :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_nested"
         public_function_in_nested.
     Admitted.
@@ -483,9 +466,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_super_mod()`
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_super_mod()`
 "
                                       |)
                                     ]
@@ -505,7 +487,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_public_function_in_super_mod :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "visibility::my_mod::nested::public_function_in_super_mod"
         public_function_in_super_mod.
     Admitted.
@@ -553,9 +535,8 @@ Module my_mod.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "called `my_mod::call_public_function_in_my_mod()`, that
+                                    mk_str (|
+                                      "called `my_mod::call_public_function_in_my_mod()`, that
 > "
                                     |)
                                   ]
@@ -602,7 +583,7 @@ Module my_mod.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ M.read (| Value.String "> " |) ] |)
+                              M.alloc (| Value.Array [ mk_str (| "> " |) ] |)
                             |)
                           |)
                         |)
@@ -630,7 +611,7 @@ Module my_mod.
     end.
   
   Global Instance Instance_IsFunction_call_public_function_in_my_mod :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "visibility::my_mod::call_public_function_in_my_mod"
       call_public_function_in_my_mod.
   Admitted.
@@ -669,12 +650,8 @@ Module my_mod.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my_mod::public_function_in_crate()`
-"
-                                    |)
-                                  ]
+                                  [ mk_str (| "called `my_mod::public_function_in_crate()`
+" |) ]
                               |)
                             |)
                           |)
@@ -691,7 +668,7 @@ Module my_mod.
     end.
   
   Global Instance Instance_IsFunction_public_function_in_crate :
-    M.IsFunction.Trait "visibility::my_mod::public_function_in_crate" public_function_in_crate.
+    M.IsFunction.C "visibility::my_mod::public_function_in_crate" public_function_in_crate.
   Admitted.
   Global Typeclasses Opaque public_function_in_crate.
   
@@ -729,12 +706,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::private_nested::function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::private_nested::function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -751,7 +724,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "visibility::my_mod::private_nested::function" function.
+      M.IsFunction.C "visibility::my_mod::private_nested::function" function.
     Admitted.
     Global Typeclasses Opaque function.
     
@@ -789,9 +762,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::private_nested::restricted_function()`
+                                      mk_str (|
+                                        "called `my_mod::private_nested::restricted_function()`
 "
                                       |)
                                     ]
@@ -811,9 +783,7 @@ Module my_mod.
       end.
     
     Global Instance Instance_IsFunction_restricted_function :
-      M.IsFunction.Trait
-        "visibility::my_mod::private_nested::restricted_function"
-        restricted_function.
+      M.IsFunction.C "visibility::my_mod::private_nested::restricted_function" restricted_function.
     Admitted.
     Global Typeclasses Opaque restricted_function.
   End private_nested.
@@ -850,10 +820,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "called `function()`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -868,7 +836,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_function : M.IsFunction.Trait "visibility::function" function.
+Global Instance Instance_IsFunction_function : M.IsFunction.C "visibility::function" function.
 Admitted.
 Global Typeclasses Opaque function.
 
@@ -970,6 +938,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "visibility::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "visibility::main" main.
 Admitted.
 Global Typeclasses Opaque main.

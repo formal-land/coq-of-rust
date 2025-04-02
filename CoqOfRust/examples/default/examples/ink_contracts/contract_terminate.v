@@ -117,7 +117,7 @@ Module Impl_contract_terminate_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -126,11 +126,26 @@ Module Impl_contract_terminate_Env.
           unimplemented!()
       }
   *)
-  Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition terminate_contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _account ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _account := M.alloc (| _account |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_terminate_contract :
-    M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
+    M.IsAssociatedFunction.C Self "terminate_contract" terminate_contract.
   Admitted.
+  Global Typeclasses Opaque terminate_contract.
 End Impl_contract_terminate_Env.
 
 (* StructTuple
@@ -149,11 +164,23 @@ Module Impl_contract_terminate_JustTerminate.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -178,7 +205,7 @@ Module Impl_contract_terminate_JustTerminate.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -193,7 +220,7 @@ Module Impl_contract_terminate_JustTerminate.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -269,7 +296,7 @@ Module Impl_contract_terminate_JustTerminate.
     end.
   
   Global Instance AssociatedFunction_terminate_me :
-    M.IsAssociatedFunction.Trait Self "terminate_me" terminate_me.
+    M.IsAssociatedFunction.C Self "terminate_me" terminate_me.
   Admitted.
   Global Typeclasses Opaque terminate_me.
 End Impl_contract_terminate_JustTerminate.

@@ -13,7 +13,7 @@ Module account_address.
             (Ty.path "array")
             [
               M.unevaluated_const
-                (M.get_constant "move_core_types::account_address::AccountAddress::0_discriminant")
+                (mk_str (| "move_core_types_account_address_AccountAddress_0_discriminant" |))
             ]
             [ Ty.path "u8" ]
         ];
@@ -351,79 +351,73 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
     (*     pub const LENGTH: usize = 32; *)
     (* Ty.path "usize" *)
-    Definition value_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    Definition value_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
     Global Instance AssociatedConstant_value_LENGTH :
-      M.IsAssociatedConstant.Trait Self "value_LENGTH" value_LENGTH.
+      M.IsAssociatedFunction.C Self "LENGTH" value_LENGTH.
     Admitted.
     Global Typeclasses Opaque value_LENGTH.
     
     (*     pub const ZERO: Self = Self([0u8; Self::LENGTH]); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
-    Definition value_ZERO : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "move_core_types::account_address::AccountAddress"
-              [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
-          |))).
+    Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "move_core_types::account_address::AccountAddress"
+            [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
+        |))).
     
-    Global Instance AssociatedConstant_value_ZERO :
-      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
     Admitted.
     Global Typeclasses Opaque value_ZERO.
     
     (*     pub const ONE: Self = Self::get_hex_address_one(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
-    Definition value_ONE : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_ONE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "move_core_types::account_address::AccountAddress",
+            M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
-              M.get_associated_function (|
-                Ty.path "move_core_types::account_address::AccountAddress",
-                "get_hex_address_one",
-                [],
-                []
-              |),
+              "get_hex_address_one",
+              [],
               []
-            |)
-          |))).
+            |),
+            []
+          |)
+        |))).
     
-    Global Instance AssociatedConstant_value_ONE :
-      M.IsAssociatedConstant.Trait Self "value_ONE" value_ONE.
+    Global Instance AssociatedConstant_value_ONE : M.IsAssociatedFunction.C Self "ONE" value_ONE.
     Admitted.
     Global Typeclasses Opaque value_ONE.
     
     (*     pub const TWO: Self = Self::get_hex_address_two(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
-    Definition value_TWO : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_TWO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "move_core_types::account_address::AccountAddress",
+            M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
-              M.get_associated_function (|
-                Ty.path "move_core_types::account_address::AccountAddress",
-                "get_hex_address_two",
-                [],
-                []
-              |),
+              "get_hex_address_two",
+              [],
               []
-            |)
-          |))).
+            |),
+            []
+          |)
+        |))).
     
-    Global Instance AssociatedConstant_value_TWO :
-      M.IsAssociatedConstant.Trait Self "value_TWO" value_TWO.
+    Global Instance AssociatedConstant_value_TWO : M.IsAssociatedFunction.C Self "TWO" value_TWO.
     Admitted.
     Global Typeclasses Opaque value_TWO.
     
@@ -453,7 +447,13 @@ Module account_address.
                   M.SubPointer.get_array_field (|
                     addr,
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                      M.read (|
+                        get_associated_constant (|
+                          Ty.path "move_core_types::account_address::AccountAddress",
+                          "LENGTH",
+                          Ty.path "usize"
+                        |)
+                      |),
                       Value.Integer IntegerKind.Usize 1
                     |)
                   |),
@@ -470,7 +470,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_get_hex_address_one :
-      M.IsAssociatedFunction.Trait Self "get_hex_address_one" get_hex_address_one.
+      M.IsAssociatedFunction.C Self "get_hex_address_one" get_hex_address_one.
     Admitted.
     Global Typeclasses Opaque get_hex_address_one.
     
@@ -500,7 +500,13 @@ Module account_address.
                   M.SubPointer.get_array_field (|
                     addr,
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                      M.read (|
+                        get_associated_constant (|
+                          Ty.path "move_core_types::account_address::AccountAddress",
+                          "LENGTH",
+                          Ty.path "usize"
+                        |)
+                      |),
                       Value.Integer IntegerKind.Usize 1
                     |)
                   |),
@@ -517,7 +523,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_get_hex_address_two :
-      M.IsAssociatedFunction.Trait Self "get_hex_address_two" get_hex_address_two.
+      M.IsAssociatedFunction.C Self "get_hex_address_two" get_hex_address_two.
     Admitted.
     Global Typeclasses Opaque get_hex_address_two.
     
@@ -572,7 +578,7 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_random : M.IsAssociatedFunction.Trait Self "random" random.
+    Global Instance AssociatedFunction_random : M.IsAssociatedFunction.C Self "random" random.
     Admitted.
     Global Typeclasses Opaque random.
     
@@ -623,7 +629,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+      M.IsAssociatedFunction.C Self "to_canonical_string" to_canonical_string.
     Admitted.
     Global Typeclasses Opaque to_canonical_string.
     
@@ -678,7 +684,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+      M.IsAssociatedFunction.C Self "to_canonical_display" to_canonical_display.
     Admitted.
     Global Typeclasses Opaque to_canonical_display.
     
@@ -811,12 +817,7 @@ Module account_address.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "0" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "0" |) |) |) ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic hex_str)
@@ -827,7 +828,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_short_str_lossless :
-      M.IsAssociatedFunction.Trait Self "short_str_lossless" short_str_lossless.
+      M.IsAssociatedFunction.C Self "short_str_lossless" short_str_lossless.
     Admitted.
     Global Typeclasses Opaque short_str_lossless.
     
@@ -866,7 +867,7 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to_vec : M.IsAssociatedFunction.Trait Self "to_vec" to_vec.
+    Global Instance AssociatedFunction_to_vec : M.IsAssociatedFunction.C Self "to_vec" to_vec.
     Admitted.
     Global Typeclasses Opaque to_vec.
     
@@ -891,7 +892,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_into_bytes :
-      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      M.IsAssociatedFunction.C Self "into_bytes" into_bytes.
     Admitted.
     Global Typeclasses Opaque into_bytes.
     
@@ -948,7 +949,7 @@ Module account_address.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| literal |) |)
                                       |);
-                                      M.read (| Value.String "0x" |)
+                                      mk_str (| "0x" |)
                                     ]
                                   |)
                                 |)
@@ -1004,7 +1005,11 @@ Module account_address.
                                 M.read (| hex_len |),
                                 BinOp.Wrap.mul (|
                                   M.read (|
-                                    M.get_constant "move_core_types::account_address::LENGTH"
+                                    get_associated_constant (|
+                                      Ty.path "move_core_types::account_address::AccountAddress",
+                                      "LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
@@ -1025,7 +1030,11 @@ Module account_address.
                               [
                                 BinOp.Wrap.mul (|
                                   M.read (|
-                                    M.get_constant "move_core_types::account_address::LENGTH"
+                                    get_associated_constant (|
+                                      Ty.path "move_core_types::account_address::AccountAddress",
+                                      "LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
@@ -1063,8 +1072,12 @@ Module account_address.
                                           BinOp.Wrap.sub (|
                                             BinOp.Wrap.mul (|
                                               M.read (|
-                                                M.get_constant
-                                                  "move_core_types::account_address::LENGTH"
+                                                get_associated_constant (|
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress",
+                                                  "LENGTH",
+                                                  Ty.path "usize"
+                                                |)
                                               |),
                                               Value.Integer IntegerKind.Usize 2
                                             |),
@@ -1286,7 +1299,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_from_hex_literal :
-      M.IsAssociatedFunction.Trait Self "from_hex_literal" from_hex_literal.
+      M.IsAssociatedFunction.C Self "from_hex_literal" from_hex_literal.
     Admitted.
     Global Typeclasses Opaque from_hex_literal.
     
@@ -1326,7 +1339,7 @@ Module account_address.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                 |)
                               |)
                             |);
@@ -1393,7 +1406,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_to_hex_literal :
-      M.IsAssociatedFunction.Trait Self "to_hex_literal" to_hex_literal.
+      M.IsAssociatedFunction.C Self "to_hex_literal" to_hex_literal.
     Admitted.
     Global Typeclasses Opaque to_hex_literal.
     
@@ -1438,8 +1451,9 @@ Module account_address.
                       (Ty.path "array")
                       [
                         M.unevaluated_const
-                          (M.get_constant
-                            "move_core_types::account_address::AccountAddress::0_discriminant")
+                          (mk_str (|
+                            "move_core_types_account_address_AccountAddress_0_discriminant"
+                          |))
                       ]
                       [ Ty.path "u8" ]
                   ]
@@ -1535,8 +1549,7 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_hex :
-      M.IsAssociatedFunction.Trait Self "from_hex" from_hex.
+    Global Instance AssociatedFunction_from_hex : M.IsAssociatedFunction.C Self "from_hex" from_hex.
     Admitted.
     Global Typeclasses Opaque from_hex.
     
@@ -1576,7 +1589,7 @@ Module account_address.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                 |)
                               |)
                             |);
@@ -1628,7 +1641,7 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to_hex : M.IsAssociatedFunction.Trait Self "to_hex" to_hex.
+    Global Instance AssociatedFunction_to_hex : M.IsAssociatedFunction.C Self "to_hex" to_hex.
     Admitted.
     Global Typeclasses Opaque to_hex.
     
@@ -1673,8 +1686,9 @@ Module account_address.
                       (Ty.path "array")
                       [
                         M.unevaluated_const
-                          (M.get_constant
-                            "move_core_types::account_address::AccountAddress::0_discriminant")
+                          (mk_str (|
+                            "move_core_types_account_address_AccountAddress_0_discriminant"
+                          |))
                       ]
                       [ Ty.path "u8" ]
                   ]
@@ -1789,7 +1803,7 @@ Module account_address.
       end.
     
     Global Instance AssociatedFunction_from_bytes :
-      M.IsAssociatedFunction.Trait Self "from_bytes" from_bytes.
+      M.IsAssociatedFunction.C Self "from_bytes" from_bytes.
     Admitted.
     Global Typeclasses Opaque from_bytes.
     
@@ -1824,17 +1838,20 @@ Module account_address.
             [
               M.cast
                 (Ty.path "u64")
-                (M.read (| M.get_constant "move_core_types::account_address::LENGTH" |))
+                (M.read (|
+                  get_associated_constant (|
+                    Ty.path "move_core_types::account_address::AccountAddress",
+                    "LENGTH",
+                    Ty.path "usize"
+                  |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction.Trait
-        Self
-        "abstract_size_for_gas_metering"
-        abstract_size_for_gas_metering.
+      M.IsAssociatedFunction.C Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
     Admitted.
     Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_account_address_AccountAddress.
@@ -1884,10 +1901,7 @@ Module account_address.
     Definition _Target : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [
-          M.unevaluated_const
-            (M.get_constant "move_core_types::account_address::Target_discriminant")
-        ]
+        [ M.unevaluated_const (mk_str (| "move_core_types_account_address_Target_discriminant" |)) ]
         [ Ty.path "u8" ].
     
     (*
@@ -1960,10 +1974,7 @@ Module account_address.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2049,10 +2060,7 @@ Module account_address.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2213,9 +2221,7 @@ Module account_address.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "0x" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -2441,9 +2447,7 @@ Module account_address.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -2746,9 +2750,7 @@ Module account_address.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "0x" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -2974,9 +2976,7 @@ Module account_address.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -3204,7 +3204,7 @@ Module account_address.
         [
           Ty.apply
             (Ty.path "array")
-            [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
+            [ M.unevaluated_const (mk_str (| "move_core_types_account_address_discriminant" |)) ]
             [ Ty.path "u8" ]
         ]
         Self
@@ -3411,7 +3411,7 @@ Module account_address.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
+        [ M.unevaluated_const (mk_str (| "move_core_types_account_address_discriminant" |)) ]
         [ Ty.path "u8" ].
     
     (*
@@ -3447,7 +3447,7 @@ Module account_address.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
+        [ M.unevaluated_const (mk_str (| "move_core_types_account_address_discriminant" |)) ]
         [ Ty.path "u8" ].
     
     (*
@@ -4296,7 +4296,7 @@ Module account_address.
                         |),
                         [
                           M.read (| serializer |);
-                          M.read (| Value.String "AccountAddress" |);
+                          mk_str (| "AccountAddress" |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -4388,10 +4388,7 @@ Module account_address.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "AccountAddressParseError" |) |)
-              |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountAddressParseError" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4449,11 +4446,10 @@ Module account_address.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (|
-                                Value.String
-                                  "Unable to parse AccountAddress (must be hex string of length "
+                              mk_str (|
+                                "Unable to parse AccountAddress (must be hex string of length "
                               |);
-                              M.read (| Value.String ")" |)
+                              mk_str (| ")" |)
                             ]
                         |)
                       |)
@@ -4481,7 +4477,12 @@ Module account_address.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "move_core_types::account_address::LENGTH"
+                                        get_associated_constant (|
+                                          Ty.path
+                                            "move_core_types::account_address::AccountAddress",
+                                          "LENGTH",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     |)
                                   |)

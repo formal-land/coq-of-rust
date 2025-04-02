@@ -32,10 +32,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "called `function()`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -50,8 +48,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_function :
-  M.IsFunction.Trait "super_and_self::function" function.
+Global Instance Instance_IsFunction_function : M.IsFunction.C "super_and_self::function" function.
 Admitted.
 Global Typeclasses Opaque function.
 
@@ -88,8 +85,7 @@ Module cool.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `cool::function()`
+                                Value.Array [ mk_str (| "called `cool::function()`
 " |) ]
                               |)
                             |)
@@ -107,7 +103,7 @@ Module cool.
     end.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "super_and_self::cool::function" function.
+    M.IsFunction.C "super_and_self::cool::function" function.
   Admitted.
   Global Typeclasses Opaque function.
 End cool.
@@ -144,10 +140,8 @@ Module my.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "called `my::function()`
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "called `my::function()`
+" |) ] |)
                             |)
                           |)
                         |)
@@ -163,7 +157,7 @@ Module my.
     end.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "super_and_self::my::function" function.
+    M.IsFunction.C "super_and_self::my::function" function.
   Admitted.
   Global Typeclasses Opaque function.
   
@@ -200,8 +194,7 @@ Module my.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "called `my::cool::function()`
+                                  Value.Array [ mk_str (| "called `my::cool::function()`
 " |) ]
                                 |)
                               |)
@@ -219,7 +212,7 @@ Module my.
       end.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "super_and_self::my::cool::function" function.
+      M.IsFunction.C "super_and_self::my::cool::function" function.
     Admitted.
     Global Typeclasses Opaque function.
   End cool.
@@ -276,13 +269,8 @@ Module my.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my::indirect_call()`, that
-> "
-                                    |)
-                                  ]
+                                Value.Array [ mk_str (| "called `my::indirect_call()`, that
+> " |) ]
                               |)
                             |)
                           |)
@@ -339,7 +327,7 @@ Module my.
     end.
   
   Global Instance Instance_IsFunction_indirect_call :
-    M.IsFunction.Trait "super_and_self::my::indirect_call" indirect_call.
+    M.IsFunction.C "super_and_self::my::indirect_call" indirect_call.
   Admitted.
   Global Typeclasses Opaque indirect_call.
 End my.
@@ -367,6 +355,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "super_and_self::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "super_and_self::main" main.
 Admitted.
 Global Typeclasses Opaque main.

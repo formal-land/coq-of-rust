@@ -172,8 +172,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::DATA_LOAD_GAS"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::DATA_LOAD_GAS",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -422,7 +424,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -430,7 +436,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -587,7 +599,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_data_load :
-      M.IsFunction.Trait "revm_interpreter::instructions::data::data_load" data_load.
+      M.IsFunction.C "revm_interpreter::instructions::data::data_load" data_load.
     Admitted.
     Global Typeclasses Opaque data_load.
     
@@ -761,7 +773,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1122,7 +1137,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_data_loadn :
-      M.IsFunction.Trait "revm_interpreter::instructions::data::data_loadn" data_loadn.
+      M.IsFunction.C "revm_interpreter::instructions::data::data_loadn" data_loadn.
     Admitted.
     Global Typeclasses Opaque data_loadn.
     
@@ -1287,7 +1302,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1480,7 +1498,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_data_size :
-      M.IsFunction.Trait "revm_interpreter::instructions::data::data_size" data_size.
+      M.IsFunction.C "revm_interpreter::instructions::data::data_size" data_size.
     Admitted.
     Global Typeclasses Opaque data_size.
     
@@ -1662,7 +1680,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1832,7 +1853,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2009,7 +2034,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2292,7 +2321,10 @@ Module instructions.
                                 [
                                   M.read (| size |);
                                   M.read (|
-                                    M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                    get_constant (|
+                                      "revm_interpreter::gas::constants::VERYLOW",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2582,7 +2614,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -2590,7 +2626,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -2674,7 +2716,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_data_copy :
-      M.IsFunction.Trait "revm_interpreter::instructions::data::data_copy" data_copy.
+      M.IsFunction.C "revm_interpreter::instructions::data::data_copy" data_copy.
     Admitted.
     Global Typeclasses Opaque data_copy.
   End data.

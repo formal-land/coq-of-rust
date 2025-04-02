@@ -217,10 +217,7 @@ Module collections.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "A" |) |)
-                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "A" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -252,10 +249,7 @@ Module collections.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "B" |) |)
-                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "B" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -468,9 +462,7 @@ Module collections.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (| Value.String "MergeIterInner" |)
-                                                    |)
+                                                    M.deref (| mk_str (| "MergeIterInner" |) |)
                                                   |)
                                                 ]
                                               |)
@@ -570,7 +562,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -1157,7 +1149,7 @@ Module collections.
         
         Global Instance AssociatedFunction_nexts :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "nexts" (nexts I).
+          M.IsAssociatedFunction.C (Self I) "nexts" (nexts I).
         Admitted.
         Global Typeclasses Opaque nexts.
         
@@ -1379,7 +1371,7 @@ Module collections.
         
         Global Instance AssociatedFunction_lens :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "lens" (lens I).
+          M.IsAssociatedFunction.C (Self I) "lens" (lens I).
         Admitted.
         Global Typeclasses Opaque lens.
       End Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.

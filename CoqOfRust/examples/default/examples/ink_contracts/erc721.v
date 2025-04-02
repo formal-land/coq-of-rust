@@ -75,72 +75,169 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+    M.IsAssociatedFunction.C (Self K V) "contains" (contains K V).
   Admitted.
+  Global Typeclasses Opaque contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
+  Global Typeclasses Opaque insert.
   
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+    M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
   Admitted.
+  Global Typeclasses Opaque remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+    M.IsAssociatedFunction.C (Self K V) "size" (size K V).
   Admitted.
+  Global Typeclasses Opaque size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+    M.IsAssociatedFunction.C (Self K V) "take" (take K V).
   Admitted.
+  Global Typeclasses Opaque take.
 End Impl_erc721_Mapping_K_V.
 
 (* StructTuple
@@ -286,7 +383,20 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -699,7 +809,7 @@ Module Impl_erc721_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -708,11 +818,26 @@ Module Impl_erc721_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -723,11 +848,23 @@ Module Impl_erc721_Erc721.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -747,7 +884,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -776,7 +913,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -830,7 +967,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_balance_of_or_zero :
-    M.IsAssociatedFunction.Trait Self "balance_of_or_zero" balance_of_or_zero.
+    M.IsAssociatedFunction.C Self "balance_of_or_zero" balance_of_or_zero.
   Admitted.
   Global Typeclasses Opaque balance_of_or_zero.
   
@@ -878,7 +1015,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_clear_approval :
-    M.IsAssociatedFunction.Trait Self "clear_approval" clear_approval.
+    M.IsAssociatedFunction.C Self "clear_approval" clear_approval.
   Admitted.
   Global Typeclasses Opaque clear_approval.
   
@@ -930,7 +1067,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_approved_for_all :
-    M.IsAssociatedFunction.Trait Self "approved_for_all" approved_for_all.
+    M.IsAssociatedFunction.C Self "approved_for_all" approved_for_all.
   Admitted.
   Global Typeclasses Opaque approved_for_all.
   
@@ -968,8 +1105,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_owner_of :
-    M.IsAssociatedFunction.Trait Self "owner_of" owner_of.
+  Global Instance AssociatedFunction_owner_of : M.IsAssociatedFunction.C Self "owner_of" owner_of.
   Admitted.
   Global Typeclasses Opaque owner_of.
   
@@ -1164,7 +1300,7 @@ Module Impl_erc721_Erc721.
                             M.read (| owner |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Error with AccountId" |) |)
+                              M.deref (| mk_str (| "Error with AccountId" |) |)
                             |)
                           ]
                         |);
@@ -1183,7 +1319,7 @@ Module Impl_erc721_Erc721.
                             M.read (| from |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Error with AccountId" |) |)
+                              M.deref (| mk_str (| "Error with AccountId" |) |)
                             |)
                           ]
                         |)
@@ -1197,7 +1333,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_approved_or_owner :
-    M.IsAssociatedFunction.Trait Self "approved_or_owner" approved_or_owner.
+    M.IsAssociatedFunction.C Self "approved_or_owner" approved_or_owner.
   Admitted.
   Global Typeclasses Opaque approved_or_owner.
   
@@ -1235,7 +1371,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_exists_ : M.IsAssociatedFunction.Trait Self "exists_" exists_.
+  Global Instance AssociatedFunction_exists_ : M.IsAssociatedFunction.C Self "exists" exists_.
   Admitted.
   Global Typeclasses Opaque exists_.
   
@@ -1262,7 +1398,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_balance_of :
-    M.IsAssociatedFunction.Trait Self "balance_of" balance_of.
+    M.IsAssociatedFunction.C Self "balance_of" balance_of.
   Admitted.
   Global Typeclasses Opaque balance_of.
   
@@ -1301,7 +1437,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_get_approved :
-    M.IsAssociatedFunction.Trait Self "get_approved" get_approved.
+    M.IsAssociatedFunction.C Self "get_approved" get_approved.
   Admitted.
   Global Typeclasses Opaque get_approved.
   
@@ -1330,7 +1466,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_is_approved_for_all :
-    M.IsAssociatedFunction.Trait Self "is_approved_for_all" is_approved_for_all.
+    M.IsAssociatedFunction.C Self "is_approved_for_all" is_approved_for_all.
   Admitted.
   Global Typeclasses Opaque is_approved_for_all.
   
@@ -1541,7 +1677,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_approve_for_all :
-    M.IsAssociatedFunction.Trait Self "approve_for_all" approve_for_all.
+    M.IsAssociatedFunction.C Self "approve_for_all" approve_for_all.
   Admitted.
   Global Typeclasses Opaque approve_for_all.
   
@@ -1673,7 +1809,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_set_approval_for_all :
-    M.IsAssociatedFunction.Trait Self "set_approval_for_all" set_approval_for_all.
+    M.IsAssociatedFunction.C Self "set_approval_for_all" set_approval_for_all.
   Admitted.
   Global Typeclasses Opaque set_approval_for_all.
   
@@ -1819,9 +1955,7 @@ Module Impl_erc721_Erc721.
                                             M.read (| owner |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "Error with AccountId" |)
-                                              |)
+                                              M.deref (| mk_str (| "Error with AccountId" |) |)
                                             |)
                                           ]
                                         |);
@@ -2036,7 +2170,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_approve_for :
-    M.IsAssociatedFunction.Trait Self "approve_for" approve_for.
+    M.IsAssociatedFunction.C Self "approve_for" approve_for.
   Admitted.
   Global Typeclasses Opaque approve_for.
   
@@ -2170,7 +2304,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.Trait Self "approve" approve.
+  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.C Self "approve" approve.
   Admitted.
   Global Typeclasses Opaque approve.
   
@@ -2522,7 +2656,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_remove_token_from :
-    M.IsAssociatedFunction.Trait Self "remove_token_from" remove_token_from.
+    M.IsAssociatedFunction.C Self "remove_token_from" remove_token_from.
   Admitted.
   Global Typeclasses Opaque remove_token_from.
   
@@ -2556,7 +2690,7 @@ Module Impl_erc721_Erc721.
   Parameter add_token_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_add_token_to :
-    M.IsAssociatedFunction.Trait Self "add_token_to" add_token_to.
+    M.IsAssociatedFunction.C Self "add_token_to" add_token_to.
   Admitted.
   
   (*
@@ -2587,7 +2721,7 @@ Module Impl_erc721_Erc721.
   Parameter transfer_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_token_from :
-    M.IsAssociatedFunction.Trait Self "transfer_token_from" transfer_token_from.
+    M.IsAssociatedFunction.C Self "transfer_token_from" transfer_token_from.
   Admitted.
   
   (*
@@ -2744,8 +2878,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
   Global Typeclasses Opaque transfer.
   
@@ -2890,7 +3023,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Global Instance AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+    M.IsAssociatedFunction.C Self "transfer_from" transfer_from.
   Admitted.
   Global Typeclasses Opaque transfer_from.
   
@@ -3108,7 +3241,7 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.C Self "mint" mint.
   Admitted.
   Global Typeclasses Opaque mint.
   
@@ -3144,6 +3277,6 @@ Module Impl_erc721_Erc721.
   *)
   Parameter burn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_burn : M.IsAssociatedFunction.Trait Self "burn" burn.
+  Global Instance AssociatedFunction_burn : M.IsAssociatedFunction.C Self "burn" burn.
   Admitted.
 End Impl_erc721_Erc721.

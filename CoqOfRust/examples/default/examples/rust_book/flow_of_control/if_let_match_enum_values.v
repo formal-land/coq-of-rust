@@ -103,10 +103,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "a is foobar
-" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "a is foobar
+" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -150,10 +148,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "b is foobar
-" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "b is foobar
+" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -207,12 +203,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "c is " |);
-                                            M.read (| Value.String "
-" |)
-                                          ]
+                                        Value.Array [ mk_str (| "c is " |); mk_str (| "
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -297,10 +289,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "c is one hundred
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "c is one hundred
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -318,6 +308,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "if_let_match_enum_values::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "if_let_match_enum_values::main" main.
 Admitted.
 Global Typeclasses Opaque main.

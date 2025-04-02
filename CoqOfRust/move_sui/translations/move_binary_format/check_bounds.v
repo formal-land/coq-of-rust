@@ -203,7 +203,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_verify_module :
-      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+      M.IsAssociatedFunction.C Self "verify_module" verify_module.
     Admitted.
     Global Typeclasses Opaque verify_module.
     
@@ -1573,7 +1573,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_verify_impl :
-      M.IsAssociatedFunction.Trait Self "verify_impl" verify_impl.
+      M.IsAssociatedFunction.C Self "verify_impl" verify_impl.
     Admitted.
     Global Typeclasses Opaque verify_impl.
     
@@ -1863,7 +1863,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_signatures :
-      M.IsAssociatedFunction.Trait Self "check_signatures" check_signatures.
+      M.IsAssociatedFunction.C Self "check_signatures" check_signatures.
     Admitted.
     Global Typeclasses Opaque check_signatures.
     
@@ -2152,7 +2152,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_constants :
-      M.IsAssociatedFunction.Trait Self "check_constants" check_constants.
+      M.IsAssociatedFunction.C Self "check_constants" check_constants.
     Admitted.
     Global Typeclasses Opaque check_constants.
     
@@ -2446,7 +2446,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_module_handles :
-      M.IsAssociatedFunction.Trait Self "check_module_handles" check_module_handles.
+      M.IsAssociatedFunction.C Self "check_module_handles" check_module_handles.
     Admitted.
     Global Typeclasses Opaque check_module_handles.
     
@@ -2740,7 +2740,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_handles :
-      M.IsAssociatedFunction.Trait Self "check_struct_handles" check_struct_handles.
+      M.IsAssociatedFunction.C Self "check_struct_handles" check_struct_handles.
     Admitted.
     Global Typeclasses Opaque check_struct_handles.
     
@@ -3034,7 +3034,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_handles :
-      M.IsAssociatedFunction.Trait Self "check_function_handles" check_function_handles.
+      M.IsAssociatedFunction.C Self "check_function_handles" check_function_handles.
     Admitted.
     Global Typeclasses Opaque check_function_handles.
     
@@ -3326,7 +3326,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_field_handles :
-      M.IsAssociatedFunction.Trait Self "check_field_handles" check_field_handles.
+      M.IsAssociatedFunction.C Self "check_field_handles" check_field_handles.
     Admitted.
     Global Typeclasses Opaque check_field_handles.
     
@@ -3620,7 +3620,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_friend_decls :
-      M.IsAssociatedFunction.Trait Self "check_friend_decls" check_friend_decls.
+      M.IsAssociatedFunction.C Self "check_friend_decls" check_friend_decls.
     Admitted.
     Global Typeclasses Opaque check_friend_decls.
     
@@ -3926,7 +3926,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_instantiations :
-      M.IsAssociatedFunction.Trait Self "check_struct_instantiations" check_struct_instantiations.
+      M.IsAssociatedFunction.C Self "check_struct_instantiations" check_struct_instantiations.
     Admitted.
     Global Typeclasses Opaque check_struct_instantiations.
     
@@ -4230,10 +4230,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_instantiations :
-      M.IsAssociatedFunction.Trait
-        Self
-        "check_function_instantiations"
-        check_function_instantiations.
+      M.IsAssociatedFunction.C Self "check_function_instantiations" check_function_instantiations.
     Admitted.
     Global Typeclasses Opaque check_function_instantiations.
     
@@ -4534,7 +4531,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_field_instantiations :
-      M.IsAssociatedFunction.Trait Self "check_field_instantiations" check_field_instantiations.
+      M.IsAssociatedFunction.C Self "check_field_instantiations" check_field_instantiations.
     Admitted.
     Global Typeclasses Opaque check_field_instantiations.
     
@@ -4828,7 +4825,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_defs :
-      M.IsAssociatedFunction.Trait Self "check_struct_defs" check_struct_defs.
+      M.IsAssociatedFunction.C Self "check_struct_defs" check_struct_defs.
     Admitted.
     Global Typeclasses Opaque check_struct_defs.
     
@@ -5196,7 +5193,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_defs :
-      M.IsAssociatedFunction.Trait Self "check_function_defs" check_function_defs.
+      M.IsAssociatedFunction.C Self "check_function_defs" check_function_defs.
     Admitted.
     Global Typeclasses Opaque check_function_defs.
     
@@ -5441,7 +5438,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_module_handle :
-      M.IsAssociatedFunction.Trait Self "check_module_handle" check_module_handle.
+      M.IsAssociatedFunction.C Self "check_module_handle" check_module_handle.
     Admitted.
     Global Typeclasses Opaque check_module_handle.
     
@@ -5534,7 +5531,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_self_module_handle :
-      M.IsAssociatedFunction.Trait Self "check_self_module_handle" check_self_module_handle.
+      M.IsAssociatedFunction.C Self "check_self_module_handle" check_self_module_handle.
     Admitted.
     Global Typeclasses Opaque check_self_module_handle.
     
@@ -5777,7 +5774,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_handle :
-      M.IsAssociatedFunction.Trait Self "check_struct_handle" check_struct_handle.
+      M.IsAssociatedFunction.C Self "check_struct_handle" check_struct_handle.
     Admitted.
     Global Typeclasses Opaque check_struct_handle.
     
@@ -7187,7 +7184,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_handle :
-      M.IsAssociatedFunction.Trait Self "check_function_handle" check_function_handle.
+      M.IsAssociatedFunction.C Self "check_function_handle" check_function_handle.
     Admitted.
     Global Typeclasses Opaque check_function_handle.
     
@@ -7637,7 +7634,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_field_handle :
-      M.IsAssociatedFunction.Trait Self "check_field_handle" check_field_handle.
+      M.IsAssociatedFunction.C Self "check_field_handle" check_field_handle.
     Admitted.
     Global Typeclasses Opaque check_field_handle.
     
@@ -7892,7 +7889,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_instantiation :
-      M.IsAssociatedFunction.Trait Self "check_struct_instantiation" check_struct_instantiation.
+      M.IsAssociatedFunction.C Self "check_struct_instantiation" check_struct_instantiation.
     Admitted.
     Global Typeclasses Opaque check_struct_instantiation.
     
@@ -8150,7 +8147,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_instantiation :
-      M.IsAssociatedFunction.Trait Self "check_function_instantiation" check_function_instantiation.
+      M.IsAssociatedFunction.C Self "check_function_instantiation" check_function_instantiation.
     Admitted.
     Global Typeclasses Opaque check_function_instantiation.
     
@@ -8402,7 +8399,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_field_instantiation :
-      M.IsAssociatedFunction.Trait Self "check_field_instantiation" check_field_instantiation.
+      M.IsAssociatedFunction.C Self "check_field_instantiation" check_field_instantiation.
     Admitted.
     Global Typeclasses Opaque check_field_instantiation.
     
@@ -8677,7 +8674,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_signature :
-      M.IsAssociatedFunction.Trait Self "check_signature" check_signature.
+      M.IsAssociatedFunction.C Self "check_signature" check_signature.
     Admitted.
     Global Typeclasses Opaque check_signature.
     
@@ -8724,7 +8721,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_constant :
-      M.IsAssociatedFunction.Trait Self "check_constant" check_constant.
+      M.IsAssociatedFunction.C Self "check_constant" check_constant.
     Admitted.
     Global Typeclasses Opaque check_constant.
     
@@ -9731,7 +9728,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_struct_def :
-      M.IsAssociatedFunction.Trait Self "check_struct_def" check_struct_def.
+      M.IsAssociatedFunction.C Self "check_struct_def" check_struct_def.
     Admitted.
     Global Typeclasses Opaque check_struct_def.
     
@@ -10753,7 +10750,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_function_def :
-      M.IsAssociatedFunction.Trait Self "check_function_def" check_function_def.
+      M.IsAssociatedFunction.C Self "check_function_def" check_function_def.
     Admitted.
     Global Typeclasses Opaque check_function_def.
     
@@ -11328,7 +11325,13 @@ Module check_bounds.
                                   M.read (| locals_count |),
                                   M.cast
                                     (Ty.path "usize")
-                                    (M.read (| M.get_constant "core::num::MAX" |))
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u8",
+                                        "MAX",
+                                        Ty.path "u8"
+                                      |)
+                                    |))
                                 |)
                               |)) in
                           let _ :=
@@ -16646,7 +16649,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_code :
-      M.IsAssociatedFunction.Trait Self "check_code" check_code.
+      M.IsAssociatedFunction.C Self "check_code" check_code.
     Admitted.
     Global Typeclasses Opaque check_code.
     
@@ -17367,13 +17370,11 @@ Module check_bounds.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "expected "
+                                                                                                                mk_str (|
+                                                                                                                  "expected "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " type parameters got 0 (Struct)"
+                                                                                                                mk_str (|
+                                                                                                                  " type parameters got 0 (Struct)"
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -17981,13 +17982,11 @@ Module check_bounds.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "expected "
+                                                                                                                        mk_str (|
+                                                                                                                          "expected "
                                                                                                                         |);
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            " type parameters got "
+                                                                                                                        mk_str (|
+                                                                                                                          " type parameters got "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -18166,7 +18165,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_type :
-      M.IsAssociatedFunction.Trait Self "check_type" check_type.
+      M.IsAssociatedFunction.C Self "check_type" check_type.
     Admitted.
     Global Typeclasses Opaque check_type.
     
@@ -18556,7 +18555,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_type_parameter :
-      M.IsAssociatedFunction.Trait Self "check_type_parameter" check_type_parameter.
+      M.IsAssociatedFunction.C Self "check_type_parameter" check_type_parameter.
     Admitted.
     Global Typeclasses Opaque check_type_parameter.
     
@@ -18658,7 +18657,10 @@ Module check_bounds.
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                                 [];
                               M.read (|
-                                M.get_constant "move_binary_format::internals::ModuleIndex::KIND"
+                                get_constant (|
+                                  "move_binary_format::internals::ModuleIndex::KIND",
+                                  Ty.path "move_binary_format::IndexKind"
+                                |)
                               |);
                               M.read (| idx |);
                               M.read (| len |);
@@ -18677,7 +18679,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_check_code_unit_bounds_impl :
-      M.IsAssociatedFunction.Trait Self "check_code_unit_bounds_impl" check_code_unit_bounds_impl.
+      M.IsAssociatedFunction.C Self "check_code_unit_bounds_impl" check_code_unit_bounds_impl.
     Admitted.
     Global Typeclasses Opaque check_code_unit_bounds_impl.
     
@@ -18961,7 +18963,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_get_locals :
-      M.IsAssociatedFunction.Trait Self "get_locals" get_locals.
+      M.IsAssociatedFunction.C Self "get_locals" get_locals.
     Admitted.
     Global Typeclasses Opaque get_locals.
     
@@ -19055,12 +19057,9 @@ Module check_bounds.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String "Indexing into bytecode "
-                                                      |);
-                                                      M.read (|
-                                                        Value.String
-                                                          " during bounds checking but 'current_function' was not set"
+                                                      mk_str (| "Indexing into bytecode " |);
+                                                      mk_str (|
+                                                        " during bounds checking but 'current_function' was not set"
                                                       |)
                                                     ]
                                                 |)
@@ -19172,7 +19171,7 @@ Module check_bounds.
       end.
     
     Global Instance AssociatedFunction_offset_out_of_bounds :
-      M.IsAssociatedFunction.Trait Self "offset_out_of_bounds" offset_out_of_bounds.
+      M.IsAssociatedFunction.C Self "offset_out_of_bounds" offset_out_of_bounds.
     Admitted.
     Global Typeclasses Opaque offset_out_of_bounds.
   End Impl_move_binary_format_check_bounds_BoundsChecker.
@@ -19252,7 +19251,10 @@ Module check_bounds.
                               "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                               [];
                             M.read (|
-                              M.get_constant "move_binary_format::internals::ModuleIndex::KIND"
+                              get_constant (|
+                                "move_binary_format::internals::ModuleIndex::KIND",
+                                Ty.path "move_binary_format::IndexKind"
+                              |)
                             |);
                             M.cast (Ty.path "u16") (M.read (| idx |));
                             M.read (| len |)
@@ -19270,7 +19272,7 @@ Module check_bounds.
     end.
   
   Global Instance Instance_IsFunction_check_bounds_impl :
-    M.IsFunction.Trait "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
+    M.IsFunction.C "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
   Admitted.
   Global Typeclasses Opaque check_bounds_impl.
 End check_bounds.

@@ -1073,7 +1073,7 @@ Module hash.
     
     Global Instance AssociatedFunction_new :
       forall (H : Ty.t),
-      M.IsAssociatedFunction.Trait (Self H) "new" (new H).
+      M.IsAssociatedFunction.C (Self H) "new" (new H).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_hash_BuildHasherDefault_H.
@@ -1121,7 +1121,7 @@ Module hash.
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "BuildHasherDefault" |) |)
+                        M.deref (| mk_str (| "BuildHasherDefault" |) |)
                       |)
                     ]
                   |)

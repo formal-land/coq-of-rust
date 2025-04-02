@@ -116,9 +116,7 @@ Module io.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (| Value.String "BorrowedBuf" |)
-                                                  |)
+                                                  M.deref (| mk_str (| "BorrowedBuf" |) |)
                                                 |)
                                               ]
                                             |)
@@ -126,7 +124,7 @@ Module io.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "init" |) |)
+                                          M.deref (| mk_str (| "init" |) |)
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -147,7 +145,7 @@ Module io.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "filled" |) |)
+                                  M.deref (| mk_str (| "filled" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -166,10 +164,7 @@ Module io.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "capacity" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "capacity" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -445,7 +440,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_capacity :
-        M.IsAssociatedFunction.Trait Self "capacity" capacity.
+        M.IsAssociatedFunction.C Self "capacity" capacity.
       Admitted.
       Global Typeclasses Opaque capacity.
       
@@ -469,7 +464,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -494,7 +489,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_init_len :
-        M.IsAssociatedFunction.Trait Self "init_len" init_len.
+        M.IsAssociatedFunction.C Self "init_len" init_len.
       Admitted.
       Global Typeclasses Opaque init_len.
       
@@ -610,7 +605,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_filled : M.IsAssociatedFunction.Trait Self "filled" filled.
+      Global Instance AssociatedFunction_filled : M.IsAssociatedFunction.C Self "filled" filled.
       Admitted.
       Global Typeclasses Opaque filled.
       
@@ -745,7 +740,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_filled_mut :
-        M.IsAssociatedFunction.Trait Self "filled_mut" filled_mut.
+        M.IsAssociatedFunction.C Self "filled_mut" filled_mut.
       Admitted.
       Global Typeclasses Opaque filled_mut.
       
@@ -862,7 +857,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_into_filled :
-        M.IsAssociatedFunction.Trait Self "into_filled" into_filled.
+        M.IsAssociatedFunction.C Self "into_filled" into_filled.
       Admitted.
       Global Typeclasses Opaque into_filled.
       
@@ -997,7 +992,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_into_filled_mut :
-        M.IsAssociatedFunction.Trait Self "into_filled_mut" into_filled_mut.
+        M.IsAssociatedFunction.C Self "into_filled_mut" into_filled_mut.
       Admitted.
       Global Typeclasses Opaque into_filled_mut.
       
@@ -1066,7 +1061,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_unfilled :
-        M.IsAssociatedFunction.Trait Self "unfilled" unfilled.
+        M.IsAssociatedFunction.C Self "unfilled" unfilled.
       Admitted.
       Global Typeclasses Opaque unfilled.
       
@@ -1103,7 +1098,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+      Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.C Self "clear" clear.
       Admitted.
       Global Typeclasses Opaque clear.
       
@@ -1155,7 +1150,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_set_init :
-        M.IsAssociatedFunction.Trait Self "set_init" set_init.
+        M.IsAssociatedFunction.C Self "set_init" set_init.
       Admitted.
       Global Typeclasses Opaque set_init.
     End Impl_core_io_borrowed_buf_BorrowedBuf.
@@ -1195,11 +1190,8 @@ Module io.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "BorrowedCursor" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "buf" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorrowedCursor" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "buf" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1213,7 +1205,7 @@ Module io.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "start" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "start" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1329,7 +1321,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_reborrow :
-        M.IsAssociatedFunction.Trait Self "reborrow" reborrow.
+        M.IsAssociatedFunction.C Self "reborrow" reborrow.
       Admitted.
       Global Typeclasses Opaque reborrow.
       
@@ -1387,7 +1379,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_capacity :
-        M.IsAssociatedFunction.Trait Self "capacity" capacity.
+        M.IsAssociatedFunction.C Self "capacity" capacity.
       Admitted.
       Global Typeclasses Opaque capacity.
       
@@ -1428,8 +1420,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_written :
-        M.IsAssociatedFunction.Trait Self "written" written.
+      Global Instance AssociatedFunction_written : M.IsAssociatedFunction.C Self "written" written.
       Admitted.
       Global Typeclasses Opaque written.
       
@@ -1578,7 +1569,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_init_ref :
-        M.IsAssociatedFunction.Trait Self "init_ref" init_ref.
+        M.IsAssociatedFunction.C Self "init_ref" init_ref.
       Admitted.
       Global Typeclasses Opaque init_ref.
       
@@ -1741,7 +1732,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_init_mut :
-        M.IsAssociatedFunction.Trait Self "init_mut" init_mut.
+        M.IsAssociatedFunction.C Self "init_mut" init_mut.
       Admitted.
       Global Typeclasses Opaque init_mut.
       
@@ -1852,7 +1843,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_uninit_mut :
-        M.IsAssociatedFunction.Trait Self "uninit_mut" uninit_mut.
+        M.IsAssociatedFunction.C Self "uninit_mut" uninit_mut.
       Admitted.
       Global Typeclasses Opaque uninit_mut.
       
@@ -1962,7 +1953,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_mut : M.IsAssociatedFunction.Trait Self "as_mut" as_mut.
+      Global Instance AssociatedFunction_as_mut : M.IsAssociatedFunction.C Self "as_mut" as_mut.
       Admitted.
       Global Typeclasses Opaque as_mut.
       
@@ -2048,11 +2039,7 @@ Module io.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [
-                                    M.read (|
-                                      Value.String "assertion failed: filled <= self.buf.init"
-                                    |)
-                                  ]
+                                  [ mk_str (| "assertion failed: filled <= self.buf.init" |) ]
                                 |)
                               |)
                             |)));
@@ -2085,8 +2072,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_advance :
-        M.IsAssociatedFunction.Trait Self "advance" advance.
+      Global Instance AssociatedFunction_advance : M.IsAssociatedFunction.C Self "advance" advance.
       Admitted.
       Global Typeclasses Opaque advance.
       
@@ -2187,7 +2173,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_advance_unchecked :
-        M.IsAssociatedFunction.Trait Self "advance_unchecked" advance_unchecked.
+        M.IsAssociatedFunction.C Self "advance_unchecked" advance_unchecked.
       Admitted.
       Global Typeclasses Opaque advance_unchecked.
       
@@ -2372,7 +2358,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_ensure_init :
-        M.IsAssociatedFunction.Trait Self "ensure_init" ensure_init.
+        M.IsAssociatedFunction.C Self "ensure_init" ensure_init.
       Admitted.
       Global Typeclasses Opaque ensure_init.
       
@@ -2457,7 +2443,7 @@ Module io.
         end.
       
       Global Instance AssociatedFunction_set_init :
-        M.IsAssociatedFunction.Trait Self "set_init" set_init.
+        M.IsAssociatedFunction.C Self "set_init" set_init.
       Admitted.
       Global Typeclasses Opaque set_init.
       
@@ -2536,11 +2522,7 @@ Module io.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.capacity() >= buf.len()"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.capacity() >= buf.len()" |) ]
                             |)
                           |)
                         |)));
@@ -2749,7 +2731,7 @@ Module io.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_append : M.IsAssociatedFunction.Trait Self "append" append.
+      Global Instance AssociatedFunction_append : M.IsAssociatedFunction.C Self "append" append.
       Admitted.
       Global Typeclasses Opaque append.
     End Impl_core_io_borrowed_buf_BorrowedCursor.

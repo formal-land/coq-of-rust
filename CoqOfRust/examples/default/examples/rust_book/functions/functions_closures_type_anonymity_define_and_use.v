@@ -37,7 +37,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_apply :
-  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::apply" apply.
+  M.IsFunction.C "functions_closures_type_anonymity_define_and_use::apply" apply.
 Admitted.
 Global Typeclasses Opaque apply.
 
@@ -98,11 +98,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
                                                     Value.Array
-                                                      [
-                                                        M.read (| Value.String "" |);
-                                                        M.read (| Value.String "
-" |)
-                                                      ]
+                                                      [ mk_str (| "" |); mk_str (| "
+" |) ]
                                                   |)
                                                 |)
                                               |)
@@ -167,6 +164,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::main" main.
+  M.IsFunction.C "functions_closures_type_anonymity_define_and_use::main" main.
 Admitted.
 Global Typeclasses Opaque main.

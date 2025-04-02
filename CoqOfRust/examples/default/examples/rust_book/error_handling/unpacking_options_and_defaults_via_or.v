@@ -72,10 +72,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                           "unpacking_options_and_defaults_via_or::Fruit::Apple"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Apple" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apple" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -86,10 +83,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                           "unpacking_options_and_defaults_via_or::Fruit::Orange"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Orange" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Orange" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -100,10 +94,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                           "unpacking_options_and_defaults_via_or::Fruit::Banana"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Banana" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Banana" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -114,10 +105,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                           "unpacking_options_and_defaults_via_or::Fruit::Kiwi"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Kiwi" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Kiwi" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -128,10 +116,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                           "unpacking_options_and_defaults_via_or::Fruit::Lemon"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Lemon" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lemon" |) |) |)
                       |)))
                 ]
               |)
@@ -262,11 +247,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "first_available_fruit: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "first_available_fruit: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -318,6 +300,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "unpacking_options_and_defaults_via_or::main" main.
+  M.IsFunction.C "unpacking_options_and_defaults_via_or::main" main.
 Admitted.
 Global Typeclasses Opaque main.

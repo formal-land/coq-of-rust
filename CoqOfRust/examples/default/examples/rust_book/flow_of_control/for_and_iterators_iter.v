@@ -70,15 +70,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "Bob" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Frank" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ferris" |) |)
-                            |)
+                            mk_str (| "Bob" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Frank" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ferris" |) |) |)
                           ]
                       |)
                     ]
@@ -228,7 +222,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
-                                              Value.String "Ferris"
+                                              mk_str (| "Ferris" |)
                                             |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.alloc (|
@@ -257,9 +251,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "There is a rustacean among us!
+                                                                  mk_str (|
+                                                                    "There is a rustacean among us!
 "
                                                                   |)
                                                                 ]
@@ -305,10 +298,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String "Hello "
-                                                                  |);
-                                                                  M.read (| Value.String "
+                                                                  mk_str (| "Hello " |);
+                                                                  mk_str (| "
 " |)
                                                                 ]
                                                             |)
@@ -395,12 +386,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "names: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "names: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -451,6 +438,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "for_and_iterators_iter::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "for_and_iterators_iter::main" main.
 Admitted.
 Global Typeclasses Opaque main.

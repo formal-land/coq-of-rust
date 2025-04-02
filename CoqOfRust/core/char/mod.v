@@ -2,67 +2,94 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module char.
-  Definition value_TAG_CONT : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
+  Definition value_TAG_CONT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
   
-  Axiom Constant_value_TAG_CONT : (M.get_constant "core::char::TAG_CONT") = value_TAG_CONT.
-  Global Hint Rewrite Constant_value_TAG_CONT : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TAG_CONT :
+    M.IsFunction.C "core::char::TAG_CONT" value_TAG_CONT.
+  Admitted.
+  Global Typeclasses Opaque value_TAG_CONT.
   
-  Definition value_TAG_TWO_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
+  Definition value_TAG_TWO_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
   
-  Axiom Constant_value_TAG_TWO_B : (M.get_constant "core::char::TAG_TWO_B") = value_TAG_TWO_B.
-  Global Hint Rewrite Constant_value_TAG_TWO_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TAG_TWO_B :
+    M.IsFunction.C "core::char::TAG_TWO_B" value_TAG_TWO_B.
+  Admitted.
+  Global Typeclasses Opaque value_TAG_TWO_B.
   
-  Definition value_TAG_THREE_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
+  Definition value_TAG_THREE_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
   
-  Axiom Constant_value_TAG_THREE_B : (M.get_constant "core::char::TAG_THREE_B") = value_TAG_THREE_B.
-  Global Hint Rewrite Constant_value_TAG_THREE_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TAG_THREE_B :
+    M.IsFunction.C "core::char::TAG_THREE_B" value_TAG_THREE_B.
+  Admitted.
+  Global Typeclasses Opaque value_TAG_THREE_B.
   
-  Definition value_TAG_FOUR_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
+  Definition value_TAG_FOUR_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
   
-  Axiom Constant_value_TAG_FOUR_B : (M.get_constant "core::char::TAG_FOUR_B") = value_TAG_FOUR_B.
-  Global Hint Rewrite Constant_value_TAG_FOUR_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_TAG_FOUR_B :
+    M.IsFunction.C "core::char::TAG_FOUR_B" value_TAG_FOUR_B.
+  Admitted.
+  Global Typeclasses Opaque value_TAG_FOUR_B.
   
-  Definition value_MAX_ONE_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
+  Definition value_MAX_ONE_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
   
-  Axiom Constant_value_MAX_ONE_B : (M.get_constant "core::char::MAX_ONE_B") = value_MAX_ONE_B.
-  Global Hint Rewrite Constant_value_MAX_ONE_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_ONE_B :
+    M.IsFunction.C "core::char::MAX_ONE_B" value_MAX_ONE_B.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_ONE_B.
   
-  Definition value_MAX_TWO_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
+  Definition value_MAX_TWO_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
   
-  Axiom Constant_value_MAX_TWO_B : (M.get_constant "core::char::MAX_TWO_B") = value_MAX_TWO_B.
-  Global Hint Rewrite Constant_value_MAX_TWO_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_TWO_B :
+    M.IsFunction.C "core::char::MAX_TWO_B" value_MAX_TWO_B.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_TWO_B.
   
-  Definition value_MAX_THREE_B : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
+  Definition value_MAX_THREE_B (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
   
-  Axiom Constant_value_MAX_THREE_B : (M.get_constant "core::char::MAX_THREE_B") = value_MAX_THREE_B.
-  Global Hint Rewrite Constant_value_MAX_THREE_B : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_THREE_B :
+    M.IsFunction.C "core::char::MAX_THREE_B" value_MAX_THREE_B.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_THREE_B.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "char", "MAX", Ty.path "char" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::char::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::char::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
   
-  Definition value_REPLACEMENT_CHARACTER : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::REPLACEMENT_CHARACTER")).
+  Definition value_REPLACEMENT_CHARACTER
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (get_associated_constant (| Ty.path "char", "REPLACEMENT_CHARACTER", Ty.path "char" |))).
   
-  Axiom Constant_value_REPLACEMENT_CHARACTER :
-    (M.get_constant "core::char::REPLACEMENT_CHARACTER") = value_REPLACEMENT_CHARACTER.
-  Global Hint Rewrite Constant_value_REPLACEMENT_CHARACTER : constant_rewrites.
+  Global Instance Instance_IsConstant_value_REPLACEMENT_CHARACTER :
+    M.IsFunction.C "core::char::REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
+  Admitted.
+  Global Typeclasses Opaque value_REPLACEMENT_CHARACTER.
   
-  Definition value_UNICODE_VERSION : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::UNICODE_VERSION")).
+  Definition value_UNICODE_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (get_associated_constant (|
+        Ty.path "char",
+        "UNICODE_VERSION",
+        Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ]
+      |))).
   
-  Axiom Constant_value_UNICODE_VERSION :
-    (M.get_constant "core::char::UNICODE_VERSION") = value_UNICODE_VERSION.
-  Global Hint Rewrite Constant_value_UNICODE_VERSION : constant_rewrites.
+  Global Instance Instance_IsConstant_value_UNICODE_VERSION :
+    M.IsFunction.C "core::char::UNICODE_VERSION" value_UNICODE_VERSION.
+  Admitted.
+  Global Typeclasses Opaque value_UNICODE_VERSION.
   
   (*
   pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {
@@ -87,7 +114,7 @@ Module char.
     end.
   
   Global Instance Instance_IsFunction_decode_utf16 :
-    M.IsFunction.Trait "core::char::decode_utf16" decode_utf16.
+    M.IsFunction.C "core::char::decode_utf16" decode_utf16.
   Admitted.
   Global Typeclasses Opaque decode_utf16.
   
@@ -109,7 +136,7 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_u32 : M.IsFunction.Trait "core::char::from_u32" from_u32.
+  Global Instance Instance_IsFunction_from_u32 : M.IsFunction.C "core::char::from_u32" from_u32.
   Admitted.
   Global Typeclasses Opaque from_u32.
   
@@ -133,7 +160,7 @@ Module char.
     end.
   
   Global Instance Instance_IsFunction_from_u32_unchecked :
-    M.IsFunction.Trait "core::char::from_u32_unchecked" from_u32_unchecked.
+    M.IsFunction.C "core::char::from_u32_unchecked" from_u32_unchecked.
   Admitted.
   Global Typeclasses Opaque from_u32_unchecked.
   
@@ -157,7 +184,7 @@ Module char.
     end.
   
   Global Instance Instance_IsFunction_from_digit :
-    M.IsFunction.Trait "core::char::from_digit" from_digit.
+    M.IsFunction.C "core::char::from_digit" from_digit.
   Admitted.
   Global Typeclasses Opaque from_digit.
   
@@ -256,10 +283,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeUnicode" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeUnicode" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -328,7 +352,7 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_char_EscapeUnicode.
@@ -797,10 +821,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeDefault" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDefault" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -881,7 +902,7 @@ Module char.
       end.
     
     Global Instance AssociatedFunction_printable :
-      M.IsAssociatedFunction.Trait Self "printable" printable.
+      M.IsAssociatedFunction.C Self "printable" printable.
     Admitted.
     Global Typeclasses Opaque printable.
     
@@ -919,7 +940,7 @@ Module char.
       end.
     
     Global Instance AssociatedFunction_backslash :
-      M.IsAssociatedFunction.Trait Self "backslash" backslash.
+      M.IsAssociatedFunction.C Self "backslash" backslash.
     Admitted.
     Global Typeclasses Opaque backslash.
     
@@ -956,8 +977,7 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_unicode :
-      M.IsAssociatedFunction.Trait Self "unicode" unicode.
+    Global Instance AssociatedFunction_unicode : M.IsAssociatedFunction.C Self "unicode" unicode.
     Admitted.
     Global Typeclasses Opaque unicode.
   End Impl_core_char_EscapeDefault.
@@ -1414,10 +1434,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeDebug" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDebug" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1617,10 +1634,7 @@ Module char.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bytes" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1652,10 +1666,7 @@ Module char.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Char" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Char" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1698,7 +1709,7 @@ Module char.
       end.
     
     Global Instance AssociatedFunction_printable :
-      M.IsAssociatedFunction.Trait Self "printable" printable.
+      M.IsAssociatedFunction.C Self "printable" printable.
     Admitted.
     Global Typeclasses Opaque printable.
     
@@ -1740,7 +1751,7 @@ Module char.
       end.
     
     Global Instance AssociatedFunction_backslash :
-      M.IsAssociatedFunction.Trait Self "backslash" backslash.
+      M.IsAssociatedFunction.C Self "backslash" backslash.
     Admitted.
     Global Typeclasses Opaque backslash.
     
@@ -1781,8 +1792,7 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_unicode :
-      M.IsAssociatedFunction.Trait Self "unicode" unicode.
+    Global Instance AssociatedFunction_unicode : M.IsAssociatedFunction.C Self "unicode" unicode.
     Admitted.
     Global Typeclasses Opaque unicode.
     
@@ -1832,7 +1842,7 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.C Self "clear" clear.
     Admitted.
     Global Typeclasses Opaque clear.
   End Impl_core_char_EscapeDebug.
@@ -2271,10 +2281,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ToLowercase" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ToLowercase" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2873,8 +2880,12 @@ Module char.
     
     (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
     (* Ty.path "bool" *)
-    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    Definition value_MAY_HAVE_SIDE_EFFECT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Bool false |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2883,7 +2894,7 @@ Module char.
         (* Trait polymorphic types *) []
         Self
         (* Instance *)
-        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToLowercase.
   
   Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToLowercase.
@@ -2986,10 +2997,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ToUppercase" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ToUppercase" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3588,8 +3596,12 @@ Module char.
     
     (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
     (* Ty.path "bool" *)
-    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    Definition value_MAY_HAVE_SIDE_EFFECT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Bool false |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3598,7 +3610,7 @@ Module char.
         (* Trait polymorphic types *) []
         Self
         (* Instance *)
-        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToUppercase.
   
   Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToUppercase.
@@ -3707,10 +3719,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "CaseMappingIter" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CaseMappingIter" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3947,7 +3956,7 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_char_CaseMappingIter.
@@ -4502,8 +4511,12 @@ Module char.
     
     (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
     (* Ty.path "bool" *)
-    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    Definition value_MAY_HAVE_SIDE_EFFECT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Bool false |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -4512,7 +4525,7 @@ Module char.
         (* Trait polymorphic types *) []
         Self
         (* Instance *)
-        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_CaseMappingIter.
   
   Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_CaseMappingIter.
@@ -4830,10 +4843,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TryFromCharError" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromCharError" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5026,7 +5036,7 @@ Module char.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "unicode code point out of range" |) |)
+                M.deref (| mk_str (| "unicode code point out of range" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
             ]

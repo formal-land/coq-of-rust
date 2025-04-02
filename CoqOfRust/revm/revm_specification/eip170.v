@@ -2,10 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module eip170.
-  Definition value_MAX_CODE_SIZE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
+  Definition value_MAX_CODE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
   
-  Axiom Constant_value_MAX_CODE_SIZE :
-    (M.get_constant "revm_specification::eip170::MAX_CODE_SIZE") = value_MAX_CODE_SIZE.
-  Global Hint Rewrite Constant_value_MAX_CODE_SIZE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX_CODE_SIZE :
+    M.IsFunction.C "revm_specification::eip170::MAX_CODE_SIZE" value_MAX_CODE_SIZE.
+  Admitted.
+  Global Typeclasses Opaque value_MAX_CODE_SIZE.
 End eip170.

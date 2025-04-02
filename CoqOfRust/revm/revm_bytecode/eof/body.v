@@ -282,26 +282,23 @@ Module eof.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "types_section" |);
+                              mk_str (| "types_section" |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "code_section" |) |)
+                                M.deref (| mk_str (| "code_section" |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code" |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| mk_str (| "container_section" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "code" |) |)
+                                M.deref (| mk_str (| "data_section" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "container_section" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "data_section" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "is_data_filled" |) |)
+                                M.deref (| mk_str (| "is_data_filled" |) |)
                               |)
                             ]
                         |)
@@ -431,10 +428,7 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "EofBody" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EofBody" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -2225,7 +2219,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+      Global Instance AssociatedFunction_code : M.IsAssociatedFunction.C Self "code" code.
       Admitted.
       Global Typeclasses Opaque code.
       
@@ -3072,7 +3066,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_into_eof :
-        M.IsAssociatedFunction.Trait Self "into_eof" into_eof.
+        M.IsAssociatedFunction.C Self "into_eof" into_eof.
       Admitted.
       Global Typeclasses Opaque into_eof.
       
@@ -3192,7 +3186,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_eof_code_section_start :
-        M.IsAssociatedFunction.Trait Self "eof_code_section_start" eof_code_section_start.
+        M.IsAssociatedFunction.C Self "eof_code_section_start" eof_code_section_start.
       Admitted.
       Global Typeclasses Opaque eof_code_section_start.
       
@@ -3687,7 +3681,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.C Self "encode" encode.
       Admitted.
       Global Typeclasses Opaque encode.
       
@@ -5097,7 +5091,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.C Self "decode" decode.
       Admitted.
       Global Typeclasses Opaque decode.
     End Impl_revm_bytecode_eof_body_EofBody.

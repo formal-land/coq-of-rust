@@ -116,11 +116,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Collected (0..10) into: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Collected (0..10) into: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -248,12 +245,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Initial vector: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Initial vector: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -318,10 +311,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Push 4 into the vector
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Push 4 into the vector
+" |) ] |)
                           |)
                         |)
                       |)
@@ -368,14 +359,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Vector: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Vector: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -440,12 +425,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Vector length: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Vector length: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -526,12 +507,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Second element: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Second element: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -618,12 +595,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Pop last element: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Pop last element: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -711,10 +684,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Contents of xs:
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Contents of xs:
+" |) ] |)
                           |)
                         |)
                       |)
@@ -853,11 +824,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "> " |);
-                                                            M.read (| Value.String "
-" |)
-                                                          ]
+                                                          [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                       |)
                                                     |)
                                                   |)
@@ -1081,13 +1049,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String "In position "
-                                                            |);
-                                                            M.read (|
-                                                              Value.String " we have value "
-                                                            |);
-                                                            M.read (| Value.String "
+                                                            mk_str (| "In position " |);
+                                                            mk_str (| " we have value " |);
+                                                            mk_str (| "
 " |)
                                                           ]
                                                       |)
@@ -1311,12 +1275,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Updated vector: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Updated vector: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1365,6 +1325,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "vectors::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "vectors::main" main.
 Admitted.
 Global Typeclasses Opaque main.

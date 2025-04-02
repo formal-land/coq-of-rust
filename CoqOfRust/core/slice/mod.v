@@ -379,11 +379,7 @@ Module slice.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "internal error: entered unreachable code"
-                                  |)
-                                ]
+                                [ mk_str (| "internal error: entered unreachable code" |) ]
                               |)
                             |)
                           |)))
@@ -396,7 +392,7 @@ Module slice.
     end.
   
   Global Instance Instance_IsFunction_split_point_of :
-    M.IsFunction.Trait "core::slice::split_point_of" split_point_of.
+    M.IsFunction.C "core::slice::split_point_of" split_point_of.
   Admitted.
   Global Typeclasses Opaque split_point_of.
   
@@ -450,7 +446,7 @@ Module slice.
     
     Global Instance AssociatedFunction_len :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+      M.IsAssociatedFunction.C (Self T) "len" (len T).
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -478,7 +474,7 @@ Module slice.
     
     Global Instance AssociatedFunction_is_empty :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+      M.IsAssociatedFunction.C (Self T) "is_empty" (is_empty T).
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -521,7 +517,7 @@ Module slice.
     
     Global Instance AssociatedFunction_first :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "first" (first T).
+      M.IsAssociatedFunction.C (Self T) "first" (first T).
     Admitted.
     Global Typeclasses Opaque first.
     
@@ -567,7 +563,7 @@ Module slice.
     
     Global Instance AssociatedFunction_first_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "first_mut" (first_mut T).
+      M.IsAssociatedFunction.C (Self T) "first_mut" (first_mut T).
     Admitted.
     Global Typeclasses Opaque first_mut.
     
@@ -626,7 +622,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_first :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_first" (split_first T).
+      M.IsAssociatedFunction.C (Self T) "split_first" (split_first T).
     Admitted.
     Global Typeclasses Opaque split_first.
     
@@ -690,7 +686,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_first_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_first_mut" (split_first_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_first_mut" (split_first_mut T).
     Admitted.
     Global Typeclasses Opaque split_first_mut.
     
@@ -749,7 +745,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_last :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_last" (split_last T).
+      M.IsAssociatedFunction.C (Self T) "split_last" (split_last T).
     Admitted.
     Global Typeclasses Opaque split_last.
     
@@ -813,7 +809,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_last_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_last_mut" (split_last_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_last_mut" (split_last_mut T).
     Admitted.
     Global Typeclasses Opaque split_last_mut.
     
@@ -856,7 +852,7 @@ Module slice.
     
     Global Instance AssociatedFunction_last :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "last" (last T).
+      M.IsAssociatedFunction.C (Self T) "last" (last T).
     Admitted.
     Global Typeclasses Opaque last.
     
@@ -902,7 +898,7 @@ Module slice.
     
     Global Instance AssociatedFunction_last_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "last_mut" (last_mut T).
+      M.IsAssociatedFunction.C (Self T) "last_mut" (last_mut T).
     Admitted.
     Global Typeclasses Opaque last_mut.
     
@@ -948,7 +944,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::first_chunk::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1008,7 +1004,7 @@ Module slice.
     
     Global Instance AssociatedFunction_first_chunk :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "first_chunk" (first_chunk T).
+      M.IsAssociatedFunction.C (Self T) "first_chunk" (first_chunk T).
     Admitted.
     Global Typeclasses Opaque first_chunk.
     
@@ -1060,7 +1056,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::first_chunk_mut::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1125,7 +1121,7 @@ Module slice.
     
     Global Instance AssociatedFunction_first_chunk_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "first_chunk_mut" (first_chunk_mut T).
+      M.IsAssociatedFunction.C (Self T) "first_chunk_mut" (first_chunk_mut T).
     Admitted.
     Global Typeclasses Opaque first_chunk_mut.
     
@@ -1185,7 +1181,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::split_first_chunk::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1207,10 +1203,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| M.get_constant "core::slice::split_first_chunk::N" |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [
@@ -1282,7 +1275,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_first_chunk :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_first_chunk" (split_first_chunk T).
+      M.IsAssociatedFunction.C (Self T) "split_first_chunk" (split_first_chunk T).
     Admitted.
     Global Typeclasses Opaque split_first_chunk.
     
@@ -1345,7 +1338,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::split_first_chunk_mut::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1367,10 +1360,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.read (| M.get_constant "core::slice::split_first_chunk_mut::N" |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [
@@ -1447,7 +1437,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_first_chunk_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_first_chunk_mut" (split_first_chunk_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_first_chunk_mut" (split_first_chunk_mut T).
     Admitted.
     Global Typeclasses Opaque split_first_chunk_mut.
     
@@ -1507,7 +1497,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::split_last_chunk::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1542,7 +1532,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (| M.get_constant "core::slice::split_last_chunk::N" |)
+                              N
                             |)
                           ]
                         |)
@@ -1616,7 +1606,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_last_chunk :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_last_chunk" (split_last_chunk T).
+      M.IsAssociatedFunction.C (Self T) "split_last_chunk" (split_last_chunk T).
     Admitted.
     Global Typeclasses Opaque split_last_chunk.
     
@@ -1679,7 +1669,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::split_last_chunk_mut::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1714,7 +1704,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (| M.get_constant "core::slice::split_last_chunk_mut::N" |)
+                              N
                             |)
                           ]
                         |)
@@ -1793,7 +1783,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_last_chunk_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_last_chunk_mut" (split_last_chunk_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_last_chunk_mut" (split_last_chunk_mut T).
     Admitted.
     Global Typeclasses Opaque split_last_chunk_mut.
     
@@ -1843,7 +1833,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::last_chunk::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1885,7 +1875,7 @@ Module slice.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "core::slice::last_chunk::N" |)
+                                  N
                                 |)
                               ]
                             |)
@@ -1946,7 +1936,7 @@ Module slice.
     
     Global Instance AssociatedFunction_last_chunk :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "last_chunk" (last_chunk T).
+      M.IsAssociatedFunction.C (Self T) "last_chunk" (last_chunk T).
     Admitted.
     Global Typeclasses Opaque last_chunk.
     
@@ -2002,7 +1992,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::last_chunk_mut::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2057,7 +2047,7 @@ Module slice.
                                             |)
                                           ]
                                         |),
-                                        M.read (| M.get_constant "core::slice::last_chunk_mut::N" |)
+                                        N
                                       |)
                                     ]
                                   |)
@@ -2126,7 +2116,7 @@ Module slice.
     
     Global Instance AssociatedFunction_last_chunk_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "last_chunk_mut" (last_chunk_mut T).
+      M.IsAssociatedFunction.C (Self T) "last_chunk_mut" (last_chunk_mut T).
     Admitted.
     Global Typeclasses Opaque last_chunk_mut.
     
@@ -2178,7 +2168,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+      M.IsAssociatedFunction.C (Self T) "get" (get T).
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -2233,7 +2223,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -2296,7 +2286,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_unchecked" (get_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "get_unchecked" (get_unchecked T).
     Admitted.
     Global Typeclasses Opaque get_unchecked.
     
@@ -2377,7 +2367,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get_unchecked_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_unchecked_mut" (get_unchecked_mut T).
     Admitted.
     Global Typeclasses Opaque get_unchecked_mut.
     
@@ -2405,7 +2395,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      M.IsAssociatedFunction.C (Self T) "as_ptr" (as_ptr T).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -2433,7 +2423,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_mut_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_mut_ptr" (as_mut_ptr T).
+      M.IsAssociatedFunction.C (Self T) "as_mut_ptr" (as_mut_ptr T).
     Admitted.
     Global Typeclasses Opaque as_mut_ptr.
     
@@ -2517,7 +2507,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_ptr_range :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_ptr_range" (as_ptr_range T).
+      M.IsAssociatedFunction.C (Self T) "as_ptr_range" (as_ptr_range T).
     Admitted.
     Global Typeclasses Opaque as_ptr_range.
     
@@ -2585,7 +2575,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_mut_ptr_range :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_mut_ptr_range" (as_mut_ptr_range T).
+      M.IsAssociatedFunction.C (Self T) "as_mut_ptr_range" (as_mut_ptr_range T).
     Admitted.
     Global Typeclasses Opaque as_mut_ptr_range.
     
@@ -2633,7 +2623,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::as_array::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2676,7 +2666,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_array :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_array" (as_array T).
+      M.IsAssociatedFunction.C (Self T) "as_array" (as_array T).
     Admitted.
     Global Typeclasses Opaque as_array.
     
@@ -2724,7 +2714,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant "core::slice::as_mut_array::N" |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2769,7 +2759,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_mut_array :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_mut_array" (as_mut_array T).
+      M.IsAssociatedFunction.C (Self T) "as_mut_array" (as_mut_array T).
     Admitted.
     Global Typeclasses Opaque as_mut_array.
     
@@ -2826,7 +2816,7 @@ Module slice.
     
     Global Instance AssociatedFunction_swap :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+      M.IsAssociatedFunction.C (Self T) "swap" (swap T).
     Admitted.
     Global Typeclasses Opaque swap.
     
@@ -2959,7 +2949,7 @@ Module slice.
     
     Global Instance AssociatedFunction_swap_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "swap_unchecked" (swap_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "swap_unchecked" (swap_unchecked T).
     Admitted.
     Global Typeclasses Opaque swap_unchecked.
     
@@ -3135,7 +3125,7 @@ Module slice.
     
     Global Instance AssociatedFunction_reverse :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "reverse" (reverse T).
+      M.IsAssociatedFunction.C (Self T) "reverse" (reverse T).
     Admitted.
     Global Typeclasses Opaque reverse.
     
@@ -3165,7 +3155,7 @@ Module slice.
     
     Global Instance AssociatedFunction_iter :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "iter" (iter T).
+      M.IsAssociatedFunction.C (Self T) "iter" (iter T).
     Admitted.
     Global Typeclasses Opaque iter.
     
@@ -3195,7 +3185,7 @@ Module slice.
     
     Global Instance AssociatedFunction_iter_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "iter_mut" (iter_mut T).
+      M.IsAssociatedFunction.C (Self T) "iter_mut" (iter_mut T).
     Admitted.
     Global Typeclasses Opaque iter_mut.
     
@@ -3242,7 +3232,7 @@ Module slice.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "window size must be non-zero" |) |)
+                      M.deref (| mk_str (| "window size must be non-zero" |) |)
                     |)
                   ]
                 |)
@@ -3268,7 +3258,7 @@ Module slice.
     
     Global Instance AssociatedFunction_windows :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "windows" (windows T).
+      M.IsAssociatedFunction.C (Self T) "windows" (windows T).
     Admitted.
     Global Typeclasses Opaque windows.
     
@@ -3325,12 +3315,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3365,7 +3350,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunks :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunks" (chunks T).
+      M.IsAssociatedFunction.C (Self T) "chunks" (chunks T).
     Admitted.
     Global Typeclasses Opaque chunks.
     
@@ -3422,12 +3407,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3462,7 +3442,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunks_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunks_mut" (chunks_mut T).
+      M.IsAssociatedFunction.C (Self T) "chunks_mut" (chunks_mut T).
     Admitted.
     Global Typeclasses Opaque chunks_mut.
     
@@ -3519,12 +3499,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3559,7 +3534,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunks_exact :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunks_exact" (chunks_exact T).
+      M.IsAssociatedFunction.C (Self T) "chunks_exact" (chunks_exact T).
     Admitted.
     Global Typeclasses Opaque chunks_exact.
     
@@ -3621,12 +3596,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3661,7 +3631,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunks_exact_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunks_exact_mut" (chunks_exact_mut T).
+      M.IsAssociatedFunction.C (Self T) "chunks_exact_mut" (chunks_exact_mut T).
     Admitted.
     Global Typeclasses Opaque chunks_exact_mut.
     
@@ -3719,7 +3689,7 @@ Module slice.
                               []
                             |),
                             [
-                              M.read (| M.get_constant "core::slice::as_chunks_unchecked::N" |);
+                              N;
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_associated_function (|
@@ -3753,7 +3723,7 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    M.read (| M.get_constant "core::slice::as_chunks_unchecked::N" |)
+                    N
                   ]
                 |)
               |) in
@@ -3805,7 +3775,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_chunks_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_chunks_unchecked" (as_chunks_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "as_chunks_unchecked" (as_chunks_unchecked T).
     Admitted.
     Global Typeclasses Opaque as_chunks_unchecked.
     
@@ -3839,12 +3809,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::as_chunks::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3868,12 +3833,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3901,9 +3861,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| M.get_constant "core::slice::as_chunks::N" |)
+                    N
                   |),
-                  M.read (| M.get_constant "core::slice::as_chunks::N" |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -3980,7 +3940,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_chunks :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_chunks" (as_chunks T).
+      M.IsAssociatedFunction.C (Self T) "as_chunks" (as_chunks T).
     Admitted.
     Global Typeclasses Opaque as_chunks.
     
@@ -4012,12 +3972,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::as_rchunks::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4041,12 +3996,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4073,7 +4023,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| M.get_constant "core::slice::as_rchunks::N" |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4104,10 +4054,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
-                      BinOp.Wrap.mul (|
-                        M.read (| len |),
-                        M.read (| M.get_constant "core::slice::as_rchunks::N" |)
-                      |)
+                      BinOp.Wrap.mul (| M.read (| len |), N |)
                     |)
                   ]
                 |)
@@ -4165,7 +4112,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_rchunks :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_rchunks" (as_rchunks T).
+      M.IsAssociatedFunction.C (Self T) "as_rchunks" (as_rchunks T).
     Admitted.
     Global Typeclasses Opaque as_rchunks.
     
@@ -4192,12 +4139,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::array_chunks::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4221,12 +4163,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4258,7 +4195,7 @@ Module slice.
     
     Global Instance AssociatedFunction_array_chunks :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "array_chunks" (array_chunks T).
+      M.IsAssociatedFunction.C (Self T) "array_chunks" (array_chunks T).
     Admitted.
     Global Typeclasses Opaque array_chunks.
     
@@ -4320,9 +4257,7 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.read (|
-                                    M.get_constant "core::slice::as_chunks_unchecked_mut::N"
-                                  |);
+                                  N;
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -4361,7 +4296,7 @@ Module slice.
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |);
-                        M.read (| M.get_constant "core::slice::as_chunks_unchecked_mut::N" |)
+                        N
                       ]
                     |)
                   |) in
@@ -4433,7 +4368,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_chunks_unchecked_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_chunks_unchecked_mut" (as_chunks_unchecked_mut T).
+      M.IsAssociatedFunction.C (Self T) "as_chunks_unchecked_mut" (as_chunks_unchecked_mut T).
     Admitted.
     Global Typeclasses Opaque as_chunks_unchecked_mut.
     
@@ -4467,12 +4402,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::as_chunks_mut::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4496,12 +4426,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4529,9 +4454,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| M.get_constant "core::slice::as_chunks_mut::N" |)
+                    N
                   |),
-                  M.read (| M.get_constant "core::slice::as_chunks_mut::N" |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4616,7 +4541,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_chunks_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_chunks_mut" (as_chunks_mut T).
+      M.IsAssociatedFunction.C (Self T) "as_chunks_mut" (as_chunks_mut T).
     Admitted.
     Global Typeclasses Opaque as_chunks_mut.
     
@@ -4653,12 +4578,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4682,12 +4602,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4714,7 +4629,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4745,10 +4660,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
-                      BinOp.Wrap.mul (|
-                        M.read (| len |),
-                        M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |)
-                      |)
+                      BinOp.Wrap.mul (| M.read (| len |), N |)
                     |)
                   ]
                 |)
@@ -4811,7 +4723,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_rchunks_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_rchunks_mut" (as_rchunks_mut T).
+      M.IsAssociatedFunction.C (Self T) "as_rchunks_mut" (as_rchunks_mut T).
     Admitted.
     Global Typeclasses Opaque as_rchunks_mut.
     
@@ -4843,12 +4755,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::array_chunks_mut::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4872,12 +4779,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4909,7 +4811,7 @@ Module slice.
     
     Global Instance AssociatedFunction_array_chunks_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "array_chunks_mut" (array_chunks_mut T).
+      M.IsAssociatedFunction.C (Self T) "array_chunks_mut" (array_chunks_mut T).
     Admitted.
     Global Typeclasses Opaque array_chunks_mut.
     
@@ -4936,12 +4838,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (| M.get_constant "core::slice::array_windows::N" |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4966,11 +4863,7 @@ Module slice.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "window size must be non-zero"
-                                              |)
-                                            ]
+                                            [ mk_str (| "window size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5002,7 +4895,7 @@ Module slice.
     
     Global Instance AssociatedFunction_array_windows :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "array_windows" (array_windows T).
+      M.IsAssociatedFunction.C (Self T) "array_windows" (array_windows T).
     Admitted.
     Global Typeclasses Opaque array_windows.
     
@@ -5059,12 +4952,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5099,7 +4987,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rchunks :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rchunks" (rchunks T).
+      M.IsAssociatedFunction.C (Self T) "rchunks" (rchunks T).
     Admitted.
     Global Typeclasses Opaque rchunks.
     
@@ -5156,12 +5044,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5196,7 +5079,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rchunks_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rchunks_mut" (rchunks_mut T).
+      M.IsAssociatedFunction.C (Self T) "rchunks_mut" (rchunks_mut T).
     Admitted.
     Global Typeclasses Opaque rchunks_mut.
     
@@ -5253,12 +5136,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5293,7 +5171,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rchunks_exact :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rchunks_exact" (rchunks_exact T).
+      M.IsAssociatedFunction.C (Self T) "rchunks_exact" (rchunks_exact T).
     Admitted.
     Global Typeclasses Opaque rchunks_exact.
     
@@ -5355,12 +5233,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5395,7 +5268,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rchunks_exact_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rchunks_exact_mut" (rchunks_exact_mut T).
+      M.IsAssociatedFunction.C (Self T) "rchunks_exact_mut" (rchunks_exact_mut T).
     Admitted.
     Global Typeclasses Opaque rchunks_exact_mut.
     
@@ -5429,7 +5302,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunk_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunk_by" (chunk_by T).
+      M.IsAssociatedFunction.C (Self T) "chunk_by" (chunk_by T).
     Admitted.
     Global Typeclasses Opaque chunk_by.
     
@@ -5464,7 +5337,7 @@ Module slice.
     
     Global Instance AssociatedFunction_chunk_by_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "chunk_by_mut" (chunk_by_mut T).
+      M.IsAssociatedFunction.C (Self T) "chunk_by_mut" (chunk_by_mut T).
     Admitted.
     Global Typeclasses Opaque chunk_by_mut.
     
@@ -5549,9 +5422,7 @@ Module slice.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "mid > len" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -5569,7 +5440,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at" (split_at T).
+      M.IsAssociatedFunction.C (Self T) "split_at" (split_at T).
     Admitted.
     Global Typeclasses Opaque split_at.
     
@@ -5654,9 +5525,7 @@ Module slice.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "mid > len" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -5674,7 +5543,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at_mut" (split_at_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_at_mut" (split_at_mut T).
     Admitted.
     Global Typeclasses Opaque split_at_mut.
     
@@ -5821,7 +5690,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at_unchecked" (split_at_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "split_at_unchecked" (split_at_unchecked T).
     Admitted.
     Global Typeclasses Opaque split_at_unchecked.
     
@@ -5972,7 +5841,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at_mut_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at_mut_unchecked" (split_at_mut_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "split_at_mut_unchecked" (split_at_mut_unchecked T).
     Admitted.
     Global Typeclasses Opaque split_at_mut_unchecked.
     
@@ -6067,7 +5936,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at_checked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at_checked" (split_at_checked T).
+      M.IsAssociatedFunction.C (Self T) "split_at_checked" (split_at_checked T).
     Admitted.
     Global Typeclasses Opaque split_at_checked.
     
@@ -6165,7 +6034,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_at_mut_checked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_at_mut_checked" (split_at_mut_checked T).
+      M.IsAssociatedFunction.C (Self T) "split_at_mut_checked" (split_at_mut_checked T).
     Admitted.
     Global Typeclasses Opaque split_at_mut_checked.
     
@@ -6199,7 +6068,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split" (split T).
+      M.IsAssociatedFunction.C (Self T) "split" (split T).
     Admitted.
     Global Typeclasses Opaque split.
     
@@ -6234,7 +6103,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_mut" (split_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_mut" (split_mut T).
     Admitted.
     Global Typeclasses Opaque split_mut.
     
@@ -6273,7 +6142,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_inclusive :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_inclusive" (split_inclusive T).
+      M.IsAssociatedFunction.C (Self T) "split_inclusive" (split_inclusive T).
     Admitted.
     Global Typeclasses Opaque split_inclusive.
     
@@ -6313,7 +6182,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_inclusive_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_inclusive_mut" (split_inclusive_mut T).
+      M.IsAssociatedFunction.C (Self T) "split_inclusive_mut" (split_inclusive_mut T).
     Admitted.
     Global Typeclasses Opaque split_inclusive_mut.
     
@@ -6347,7 +6216,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rsplit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rsplit" (rsplit T).
+      M.IsAssociatedFunction.C (Self T) "rsplit" (rsplit T).
     Admitted.
     Global Typeclasses Opaque rsplit.
     
@@ -6382,7 +6251,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rsplit_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rsplit_mut" (rsplit_mut T).
+      M.IsAssociatedFunction.C (Self T) "rsplit_mut" (rsplit_mut T).
     Admitted.
     Global Typeclasses Opaque rsplit_mut.
     
@@ -6432,7 +6301,7 @@ Module slice.
     
     Global Instance AssociatedFunction_splitn :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "splitn" (splitn T).
+      M.IsAssociatedFunction.C (Self T) "splitn" (splitn T).
     Admitted.
     Global Typeclasses Opaque splitn.
     
@@ -6482,7 +6351,7 @@ Module slice.
     
     Global Instance AssociatedFunction_splitn_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "splitn_mut" (splitn_mut T).
+      M.IsAssociatedFunction.C (Self T) "splitn_mut" (splitn_mut T).
     Admitted.
     Global Typeclasses Opaque splitn_mut.
     
@@ -6532,7 +6401,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rsplitn :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rsplitn" (rsplitn T).
+      M.IsAssociatedFunction.C (Self T) "rsplitn" (rsplitn T).
     Admitted.
     Global Typeclasses Opaque rsplitn.
     
@@ -6582,7 +6451,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rsplitn_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rsplitn_mut" (rsplitn_mut T).
+      M.IsAssociatedFunction.C (Self T) "rsplitn_mut" (rsplitn_mut T).
     Admitted.
     Global Typeclasses Opaque rsplitn_mut.
     
@@ -6848,7 +6717,7 @@ Module slice.
     
     Global Instance AssociatedFunction_split_once :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "split_once" (split_once T).
+      M.IsAssociatedFunction.C (Self T) "split_once" (split_once T).
     Admitted.
     Global Typeclasses Opaque split_once.
     
@@ -7114,7 +6983,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rsplit_once :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rsplit_once" (rsplit_once T).
+      M.IsAssociatedFunction.C (Self T) "rsplit_once" (rsplit_once T).
     Admitted.
     Global Typeclasses Opaque rsplit_once.
     
@@ -7154,7 +7023,7 @@ Module slice.
     
     Global Instance AssociatedFunction_contains :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "contains" (contains T).
+      M.IsAssociatedFunction.C (Self T) "contains" (contains T).
     Admitted.
     Global Typeclasses Opaque contains.
     
@@ -7260,7 +7129,7 @@ Module slice.
     
     Global Instance AssociatedFunction_starts_with :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "starts_with" (starts_with T).
+      M.IsAssociatedFunction.C (Self T) "starts_with" (starts_with T).
     Admitted.
     Global Typeclasses Opaque starts_with.
     
@@ -7386,7 +7255,7 @@ Module slice.
     
     Global Instance AssociatedFunction_ends_with :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "ends_with" (ends_with T).
+      M.IsAssociatedFunction.C (Self T) "ends_with" (ends_with T).
     Admitted.
     Global Typeclasses Opaque ends_with.
     
@@ -7582,7 +7451,7 @@ Module slice.
     
     Global Instance AssociatedFunction_strip_prefix :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "strip_prefix" (strip_prefix T).
+      M.IsAssociatedFunction.C (Self T) "strip_prefix" (strip_prefix T).
     Admitted.
     Global Typeclasses Opaque strip_prefix.
     
@@ -7797,7 +7666,7 @@ Module slice.
     
     Global Instance AssociatedFunction_strip_suffix :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "strip_suffix" (strip_suffix T).
+      M.IsAssociatedFunction.C (Self T) "strip_suffix" (strip_suffix T).
     Admitted.
     Global Typeclasses Opaque strip_suffix.
     
@@ -7873,7 +7742,7 @@ Module slice.
     
     Global Instance AssociatedFunction_binary_search :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "binary_search" (binary_search T).
+      M.IsAssociatedFunction.C (Self T) "binary_search" (binary_search T).
     Admitted.
     Global Typeclasses Opaque binary_search.
     
@@ -8304,7 +8173,7 @@ Module slice.
     
     Global Instance AssociatedFunction_binary_search_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "binary_search_by" (binary_search_by T).
+      M.IsAssociatedFunction.C (Self T) "binary_search_by" (binary_search_by T).
     Admitted.
     Global Typeclasses Opaque binary_search_by.
     
@@ -8413,7 +8282,7 @@ Module slice.
     
     Global Instance AssociatedFunction_binary_search_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "binary_search_by_key" (binary_search_by_key T).
+      M.IsAssociatedFunction.C (Self T) "binary_search_by_key" (binary_search_by_key T).
     Admitted.
     Global Typeclasses Opaque binary_search_by_key.
     
@@ -8477,7 +8346,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_unstable :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_unstable" (sort_unstable T).
+      M.IsAssociatedFunction.C (Self T) "sort_unstable" (sort_unstable T).
     Admitted.
     Global Typeclasses Opaque sort_unstable.
     
@@ -8653,7 +8522,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_unstable_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_unstable_by" (sort_unstable_by T).
+      M.IsAssociatedFunction.C (Self T) "sort_unstable_by" (sort_unstable_by T).
     Admitted.
     Global Typeclasses Opaque sort_unstable_by.
     
@@ -8859,7 +8728,7 @@ Module slice.
     
     Global Instance AssociatedFunction_sort_unstable_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "sort_unstable_by_key" (sort_unstable_by_key T).
+      M.IsAssociatedFunction.C (Self T) "sort_unstable_by_key" (sort_unstable_by_key T).
     Admitted.
     Global Typeclasses Opaque sort_unstable_by_key.
     
@@ -8911,7 +8780,7 @@ Module slice.
     
     Global Instance AssociatedFunction_select_nth_unstable :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "select_nth_unstable" (select_nth_unstable T).
+      M.IsAssociatedFunction.C (Self T) "select_nth_unstable" (select_nth_unstable T).
     Admitted.
     Global Typeclasses Opaque select_nth_unstable.
     
@@ -9066,7 +8935,7 @@ Module slice.
     
     Global Instance AssociatedFunction_select_nth_unstable_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "select_nth_unstable_by" (select_nth_unstable_by T).
+      M.IsAssociatedFunction.C (Self T) "select_nth_unstable_by" (select_nth_unstable_by T).
     Admitted.
     Global Typeclasses Opaque select_nth_unstable_by.
     
@@ -9242,10 +9111,7 @@ Module slice.
     
     Global Instance AssociatedFunction_select_nth_unstable_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T)
-        "select_nth_unstable_by_key"
-        (select_nth_unstable_by_key T).
+      M.IsAssociatedFunction.C (Self T) "select_nth_unstable_by_key" (select_nth_unstable_by_key T).
     Admitted.
     Global Typeclasses Opaque select_nth_unstable_by_key.
     
@@ -9356,7 +9222,7 @@ Module slice.
     
     Global Instance AssociatedFunction_partition_dedup :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "partition_dedup" (partition_dedup T).
+      M.IsAssociatedFunction.C (Self T) "partition_dedup" (partition_dedup T).
     Admitted.
     Global Typeclasses Opaque partition_dedup.
     
@@ -9807,7 +9673,7 @@ Module slice.
     
     Global Instance AssociatedFunction_partition_dedup_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "partition_dedup_by" (partition_dedup_by T).
+      M.IsAssociatedFunction.C (Self T) "partition_dedup_by" (partition_dedup_by T).
     Admitted.
     Global Typeclasses Opaque partition_dedup_by.
     
@@ -9978,7 +9844,7 @@ Module slice.
     
     Global Instance AssociatedFunction_partition_dedup_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "partition_dedup_by_key" (partition_dedup_by_key T).
+      M.IsAssociatedFunction.C (Self T) "partition_dedup_by_key" (partition_dedup_by_key T).
     Admitted.
     Global Typeclasses Opaque partition_dedup_by_key.
     
@@ -10036,7 +9902,7 @@ Module slice.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
+                            [ mk_str (| "assertion failed: mid <= self.len()" |) ]
                           |)
                         |)
                       |)));
@@ -10100,7 +9966,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rotate_left :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rotate_left" (rotate_left T).
+      M.IsAssociatedFunction.C (Self T) "rotate_left" (rotate_left T).
     Admitted.
     Global Typeclasses Opaque rotate_left.
     
@@ -10158,7 +10024,7 @@ Module slice.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: k <= self.len()" |) ]
+                            [ mk_str (| "assertion failed: k <= self.len()" |) ]
                           |)
                         |)
                       |)));
@@ -10222,7 +10088,7 @@ Module slice.
     
     Global Instance AssociatedFunction_rotate_right :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "rotate_right" (rotate_right T).
+      M.IsAssociatedFunction.C (Self T) "rotate_right" (rotate_right T).
     Admitted.
     Global Typeclasses Opaque rotate_right.
     
@@ -10268,7 +10134,7 @@ Module slice.
     
     Global Instance AssociatedFunction_fill :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "fill" (fill T).
+      M.IsAssociatedFunction.C (Self T) "fill" (fill T).
     Admitted.
     Global Typeclasses Opaque fill.
     
@@ -10389,7 +10255,7 @@ Module slice.
     
     Global Instance AssociatedFunction_fill_with :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "fill_with" (fill_with T).
+      M.IsAssociatedFunction.C (Self T) "fill_with" (fill_with T).
     Admitted.
     Global Typeclasses Opaque fill_with.
     
@@ -10440,7 +10306,7 @@ Module slice.
     
     Global Instance AssociatedFunction_clone_from_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "clone_from_slice" (clone_from_slice T).
+      M.IsAssociatedFunction.C (Self T) "clone_from_slice" (clone_from_slice T).
     Admitted.
     Global Typeclasses Opaque clone_from_slice.
     
@@ -10606,7 +10472,7 @@ Module slice.
     
     Global Instance AssociatedFunction_copy_from_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "copy_from_slice" (copy_from_slice T).
+      M.IsAssociatedFunction.C (Self T) "copy_from_slice" (copy_from_slice T).
     Admitted.
     Global Typeclasses Opaque copy_from_slice.
     
@@ -10746,11 +10612,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "dest is out of bounds"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "dest is out of bounds" |) ]
                                                 |)
                                               |)
                                             |)
@@ -10824,7 +10686,7 @@ Module slice.
     
     Global Instance AssociatedFunction_copy_within :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "copy_within" (copy_within T).
+      M.IsAssociatedFunction.C (Self T) "copy_within" (copy_within T).
     Admitted.
     Global Typeclasses Opaque copy_within.
     
@@ -10917,9 +10779,8 @@ Module slice.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "destination and source slices have different lengths"
+                                              mk_str (|
+                                                "destination and source slices have different lengths"
                                               |)
                                             ]
                                         |)
@@ -10981,7 +10842,7 @@ Module slice.
     
     Global Instance AssociatedFunction_swap_with_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "swap_with_slice" (swap_with_slice T).
+      M.IsAssociatedFunction.C (Self T) "swap_with_slice" (swap_with_slice T).
     Admitted.
     Global Typeclasses Opaque swap_with_slice.
     
@@ -11035,7 +10896,9 @@ Module slice.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ gcd : Ty.path "usize" :=
-              M.copy (| M.get_constant "core::slice::align_to_offsets_discriminant" |) in
+              M.copy (|
+                get_constant (| "core::slice::align_to_offsets_discriminant", Ty.path "usize" |)
+              |) in
             let~ ts : Ty.path "usize" :=
               M.alloc (|
                 BinOp.Wrap.div (|
@@ -11100,7 +10963,7 @@ Module slice.
     
     Global Instance AssociatedFunction_align_to_offsets :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "align_to_offsets" (align_to_offsets T).
+      M.IsAssociatedFunction.C (Self T) "align_to_offsets" (align_to_offsets T).
     Admitted.
     Global Typeclasses Opaque align_to_offsets.
     
@@ -11161,11 +11024,17 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.read (|
-                                    M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
                                   |),
                                   ltac:(M.monadic
                                     (M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -11459,7 +11328,7 @@ Module slice.
     
     Global Instance AssociatedFunction_align_to :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "align_to" (align_to T).
+      M.IsAssociatedFunction.C (Self T) "align_to" (align_to T).
     Admitted.
     Global Typeclasses Opaque align_to.
     
@@ -11528,11 +11397,17 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.read (|
-                                    M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
                                   |),
                                   ltac:(M.monadic
                                     (M.read (|
-                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
+                                      get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -11829,7 +11704,7 @@ Module slice.
     
     Global Instance AssociatedFunction_align_to_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "align_to_mut" (align_to_mut T).
+      M.IsAssociatedFunction.C (Self T) "align_to_mut" (align_to_mut T).
     Admitted.
     Global Typeclasses Opaque align_to_mut.
     
@@ -11999,7 +11874,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_simd :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_simd" (as_simd T).
+      M.IsAssociatedFunction.C (Self T) "as_simd" (as_simd T).
     Admitted.
     Global Typeclasses Opaque as_simd.
     
@@ -12169,7 +12044,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_simd_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_simd_mut" (as_simd_mut T).
+      M.IsAssociatedFunction.C (Self T) "as_simd_mut" (as_simd_mut T).
     Admitted.
     Global Typeclasses Opaque as_simd_mut.
     
@@ -12232,7 +12107,12 @@ Module slice.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "core::slice::is_sorted::CHUNK_SIZE" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "core::slice::is_sorted::CHUNK_SIZE",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -12388,7 +12268,10 @@ Module slice.
                                           ]
                                         |),
                                         M.read (|
-                                          M.get_constant "core::slice::is_sorted::CHUNK_SIZE"
+                                          get_constant (|
+                                            "core::slice::is_sorted::CHUNK_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -12439,8 +12322,10 @@ Module slice.
                                                 BinOp.Wrap.add (|
                                                   M.read (| i |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "core::slice::is_sorted::CHUNK_SIZE"
+                                                    get_constant (|
+                                                      "core::slice::is_sorted::CHUNK_SIZE",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |)
                                                 |))
                                             ]
@@ -12645,7 +12530,10 @@ Module slice.
                                       M.read (| β |),
                                       BinOp.Wrap.sub (|
                                         M.read (|
-                                          M.get_constant "core::slice::is_sorted::CHUNK_SIZE"
+                                          get_constant (|
+                                            "core::slice::is_sorted::CHUNK_SIZE",
+                                            Ty.path "usize"
+                                          |)
                                         |),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
@@ -12806,7 +12694,7 @@ Module slice.
     
     Global Instance AssociatedFunction_is_sorted :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "is_sorted" (is_sorted T).
+      M.IsAssociatedFunction.C (Self T) "is_sorted" (is_sorted T).
     Admitted.
     Global Typeclasses Opaque is_sorted.
     
@@ -12946,7 +12834,7 @@ Module slice.
     
     Global Instance AssociatedFunction_is_sorted_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "is_sorted_by" (is_sorted_by T).
+      M.IsAssociatedFunction.C (Self T) "is_sorted_by" (is_sorted_by T).
     Admitted.
     Global Typeclasses Opaque is_sorted_by.
     
@@ -12996,7 +12884,7 @@ Module slice.
     
     Global Instance AssociatedFunction_is_sorted_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "is_sorted_by_key" (is_sorted_by_key T).
+      M.IsAssociatedFunction.C (Self T) "is_sorted_by_key" (is_sorted_by_key T).
     Admitted.
     Global Typeclasses Opaque is_sorted_by_key.
     
@@ -13142,7 +13030,7 @@ Module slice.
     
     Global Instance AssociatedFunction_partition_point :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "partition_point" (partition_point T).
+      M.IsAssociatedFunction.C (Self T) "partition_point" (partition_point T).
     Admitted.
     Global Typeclasses Opaque partition_point.
     
@@ -13445,7 +13333,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+      M.IsAssociatedFunction.C (Self T) "take" (take T).
     Admitted.
     Global Typeclasses Opaque take.
     
@@ -13780,7 +13668,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take_mut" (take_mut T).
+      M.IsAssociatedFunction.C (Self T) "take_mut" (take_mut T).
     Admitted.
     Global Typeclasses Opaque take_mut.
     
@@ -13956,7 +13844,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take_first :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take_first" (take_first T).
+      M.IsAssociatedFunction.C (Self T) "take_first" (take_first T).
     Admitted.
     Global Typeclasses Opaque take_first.
     
@@ -14163,7 +14051,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take_first_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take_first_mut" (take_first_mut T).
+      M.IsAssociatedFunction.C (Self T) "take_first_mut" (take_first_mut T).
     Admitted.
     Global Typeclasses Opaque take_first_mut.
     
@@ -14339,7 +14227,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take_last :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take_last" (take_last T).
+      M.IsAssociatedFunction.C (Self T) "take_last" (take_last T).
     Admitted.
     Global Typeclasses Opaque take_last.
     
@@ -14541,7 +14429,7 @@ Module slice.
     
     Global Instance AssociatedFunction_take_last_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take_last_mut" (take_last_mut T).
+      M.IsAssociatedFunction.C (Self T) "take_last_mut" (take_last_mut T).
     Admitted.
     Global Typeclasses Opaque take_last_mut.
     
@@ -14756,11 +14644,7 @@ Module slice.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
-                          [
-                            ("start", Value.Integer IntegerKind.Usize 0);
-                            ("end_",
-                              M.read (| M.get_constant "core::slice::get_many_unchecked_mut::N" |))
-                          ]
+                          [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", N) ]
                       ]
                     |)
                   |),
@@ -15081,7 +14965,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get_many_unchecked_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_many_unchecked_mut" (get_many_unchecked_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_many_unchecked_mut" (get_many_unchecked_mut T).
     Admitted.
     Global Typeclasses Opaque get_many_unchecked_mut.
     
@@ -15214,7 +15098,7 @@ Module slice.
     
     Global Instance AssociatedFunction_get_many_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_many_mut" (get_many_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_many_mut" (get_many_mut T).
     Admitted.
     Global Typeclasses Opaque get_many_mut.
     
@@ -15256,7 +15140,11 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -15280,12 +15168,7 @@ Module slice.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "elements are zero-sized"
-                                                  |)
-                                                ]
+                                              Value.Array [ mk_str (| "elements are zero-sized" |) ]
                                             |)
                                           |)
                                         |)
@@ -15436,7 +15319,7 @@ Module slice.
     
     Global Instance AssociatedFunction_elem_offset :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "elem_offset" (elem_offset T).
+      M.IsAssociatedFunction.C (Self T) "elem_offset" (elem_offset T).
     Admitted.
     Global Typeclasses Opaque elem_offset.
     
@@ -15484,7 +15367,11 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -15508,12 +15395,7 @@ Module slice.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "elements are zero-sized"
-                                                  |)
-                                                ]
+                                              Value.Array [ mk_str (| "elements are zero-sized" |) ]
                                             |)
                                           |)
                                         |)
@@ -15724,7 +15606,7 @@ Module slice.
     
     Global Instance AssociatedFunction_subslice_range :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "subslice_range" (subslice_range T).
+      M.IsAssociatedFunction.C (Self T) "subslice_range" (subslice_range T).
     Admitted.
     Global Typeclasses Opaque subslice_range.
   End Impl_slice_T.
@@ -15767,7 +15649,12 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                        (let γ :=
+                          M.use
+                            (get_constant (|
+                              "core::mem::SizedTypeProperties::IS_ZST",
+                              Ty.path "bool"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -15807,12 +15694,12 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| M.get_constant "core::slice::N" |)
+                                  N
                                 ]
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                                M.deref (| mk_str (| "slice len overflow" |) |)
                               |)
                             ]
                           |)
@@ -15842,7 +15729,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
-                              M.read (| M.get_constant "core::slice::N" |)
+                              N
                             ]
                           |)
                         |)))
@@ -15896,7 +15783,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_flattened :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "as_flattened" (as_flattened N T).
+      M.IsAssociatedFunction.C (Self N T) "as_flattened" (as_flattened N T).
     Admitted.
     Global Typeclasses Opaque as_flattened.
     
@@ -15938,7 +15825,11 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -15981,12 +15872,12 @@ Module slice.
                                           |)
                                         ]
                                       |);
-                                      M.read (| M.get_constant "core::slice::N" |)
+                                      N
                                     ]
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                                    M.deref (| mk_str (| "slice len overflow" |) |)
                                   |)
                                 ]
                               |)
@@ -16021,7 +15912,7 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| M.get_constant "core::slice::N" |)
+                                  N
                                 ]
                               |)
                             |)))
@@ -16090,7 +15981,7 @@ Module slice.
     
     Global Instance AssociatedFunction_as_flattened_mut :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "as_flattened_mut" (as_flattened_mut N T).
+      M.IsAssociatedFunction.C (Self N T) "as_flattened_mut" (as_flattened_mut N T).
     Admitted.
     Global Typeclasses Opaque as_flattened_mut.
   End Impl_slice_array_N_T.
@@ -16138,7 +16029,7 @@ Module slice.
       end.
     
     Global Instance AssociatedFunction_sort_floats :
-      M.IsAssociatedFunction.Trait Self "sort_floats" sort_floats.
+      M.IsAssociatedFunction.C Self "sort_floats" sort_floats.
     Admitted.
     Global Typeclasses Opaque sort_floats.
   End Impl_slice_f32.
@@ -16186,7 +16077,7 @@ Module slice.
       end.
     
     Global Instance AssociatedFunction_sort_floats :
-      M.IsAssociatedFunction.Trait Self "sort_floats" sort_floats.
+      M.IsAssociatedFunction.C Self "sort_floats" sort_floats.
     Admitted.
     Global Typeclasses Opaque sort_floats.
   End Impl_slice_f64.
@@ -16284,9 +16175,8 @@ Module slice.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "destination and source slices have different lengths"
+                                              mk_str (|
+                                                "destination and source slices have different lengths"
                                               |)
                                             ]
                                         |)
@@ -16994,7 +16884,7 @@ Module slice.
     end.
   
   Global Instance Instance_IsFunction_get_many_check_valid :
-    M.IsFunction.Trait "core::slice::get_many_check_valid" get_many_check_valid.
+    M.IsFunction.C "core::slice::get_many_check_valid" get_many_check_valid.
   Admitted.
   Global Typeclasses Opaque get_many_check_valid.
   
@@ -17209,10 +17099,7 @@ Module slice.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "GetManyMutError" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GetManyMutError" |) |) |)
                     ]
                   |)
                 |)
@@ -17258,9 +17145,7 @@ Module slice.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.read (|
-                    Value.String "an index is out of bounds or appeared multiple times in the array"
-                  |)
+                  mk_str (| "an index is out of bounds or appeared multiple times in the array" |)
                 |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)

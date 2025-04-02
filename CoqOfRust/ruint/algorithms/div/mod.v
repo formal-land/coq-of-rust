@@ -145,7 +145,7 @@ Module algorithms.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Divisor is zero" |) |)
+                          M.deref (| mk_str (| "Divisor is zero" |) |)
                         |)
                       ]
                     |)
@@ -238,11 +238,7 @@ Module algorithms.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: !divisor.is_empty()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: !divisor.is_empty()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -360,9 +356,8 @@ Module algorithms.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: divisor.last() != Some(&0)"
+                                            mk_str (|
+                                              "assertion failed: divisor.last() != Some(&0)"
                                             |)
                                           ]
                                         |)
@@ -595,11 +590,7 @@ Module algorithms.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: !numerator.is_empty()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: !numerator.is_empty()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -696,9 +687,8 @@ Module algorithms.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: *numerator.last().unwrap() != 0"
+                                            mk_str (|
+                                              "assertion failed: *numerator.last().unwrap() != 0"
                                             |)
                                           ]
                                         |)
@@ -945,9 +935,8 @@ Module algorithms.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: numerator.len() >= divisor.len()"
+                                            mk_str (|
+                                              "assertion failed: numerator.len() >= divisor.len()"
                                             |)
                                           ]
                                         |)
@@ -1268,7 +1257,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_div : M.IsFunction.Trait "ruint::algorithms::div::div" div.
+    Global Instance Instance_IsFunction_div : M.IsFunction.C "ruint::algorithms::div::div" div.
     Admitted.
     Global Typeclasses Opaque div.
   End div.

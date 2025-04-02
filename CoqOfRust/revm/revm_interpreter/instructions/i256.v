@@ -99,10 +99,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Minus"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Minus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Minus" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -113,10 +110,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Zero"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Zero" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -127,10 +121,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Plus"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Plus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Plus" |) |) |)
                           |)))
                     ]
                   |)
@@ -430,84 +421,87 @@ Module instructions.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_instructions_i256_Sign.
     
-    Definition value_MAX_POSITIVE_VALUE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_MAX_POSITIVE_VALUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              [],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "ruint::Uint")
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "ruint::Uint")
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                  [],
-                "from_limbs",
-                [],
-                []
-              |),
-              [
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.U64 18446744073709551615;
-                    Value.Integer IntegerKind.U64 18446744073709551615;
-                    Value.Integer IntegerKind.U64 18446744073709551615;
-                    Value.Integer IntegerKind.U64 9223372036854775807
-                  ]
-              ]
-            |)
-          |))).
+              "from_limbs",
+              [],
+              []
+            |),
+            [
+              Value.Array
+                [
+                  Value.Integer IntegerKind.U64 18446744073709551615;
+                  Value.Integer IntegerKind.U64 18446744073709551615;
+                  Value.Integer IntegerKind.U64 18446744073709551615;
+                  Value.Integer IntegerKind.U64 9223372036854775807
+                ]
+            ]
+          |)
+        |))).
     
-    Axiom Constant_value_MAX_POSITIVE_VALUE :
-      (M.get_constant "revm_interpreter::instructions::i256::MAX_POSITIVE_VALUE") =
+    Global Instance Instance_IsConstant_value_MAX_POSITIVE_VALUE :
+      M.IsFunction.C
+        "revm_interpreter::instructions::i256::MAX_POSITIVE_VALUE"
         value_MAX_POSITIVE_VALUE.
-    Global Hint Rewrite Constant_value_MAX_POSITIVE_VALUE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_POSITIVE_VALUE.
     
-    Definition value_MIN_NEGATIVE_VALUE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_MIN_NEGATIVE_VALUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              [],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "ruint::Uint")
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "ruint::Uint")
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                  [],
-                "from_limbs",
-                [],
-                []
-              |),
-              [
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 9223372036854775808
-                  ]
-              ]
-            |)
-          |))).
+              "from_limbs",
+              [],
+              []
+            |),
+            [
+              Value.Array
+                [
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 9223372036854775808
+                ]
+            ]
+          |)
+        |))).
     
-    Axiom Constant_value_MIN_NEGATIVE_VALUE :
-      (M.get_constant "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE") =
+    Global Instance Instance_IsConstant_value_MIN_NEGATIVE_VALUE :
+      M.IsFunction.C
+        "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
         value_MIN_NEGATIVE_VALUE.
-    Global Hint Rewrite Constant_value_MIN_NEGATIVE_VALUE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_MIN_NEGATIVE_VALUE.
     
-    Definition value_FLIPH_BITMASK_U64 : Value.t :=
-      M.run_constant
-        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
+    Definition value_FLIPH_BITMASK_U64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
     
-    Axiom Constant_value_FLIPH_BITMASK_U64 :
-      (M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64") =
+    Global Instance Instance_IsConstant_value_FLIPH_BITMASK_U64 :
+      M.IsFunction.C
+        "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64"
         value_FLIPH_BITMASK_U64.
-    Global Hint Rewrite Constant_value_FLIPH_BITMASK_U64 : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_FLIPH_BITMASK_U64.
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -551,7 +545,19 @@ Module instructions.
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |);
                               BinOp.Wrap.sub (|
-                                M.read (| M.get_constant "ruint::BITS'1" |),
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "BITS",
+                                    Ty.path "usize"
+                                  |)
+                                |),
                                 Value.Integer IntegerKind.Usize 1
                               |)
                             ]
@@ -600,7 +606,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_i256_sign :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_sign" i256_sign.
+      M.IsFunction.C "revm_interpreter::instructions::i256::i256_sign" i256_sign.
     Admitted.
     Global Typeclasses Opaque i256_sign.
     
@@ -684,7 +690,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_i256_sign_compl :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
+      M.IsFunction.C "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
     Admitted.
     Global Typeclasses Opaque i256_sign_compl.
     
@@ -737,7 +743,10 @@ Module instructions.
                   BinOp.bit_and
                     (M.read (| β |))
                     (M.read (|
-                      M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64"
+                      get_constant (|
+                        "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64",
+                        Ty.path "u64"
+                      |)
                     |))
                 |)
               |) in
@@ -747,7 +756,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_u256_remove_sign :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
+      M.IsFunction.C "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
     Admitted.
     Global Typeclasses Opaque u256_remove_sign.
     
@@ -782,7 +791,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_two_compl_mut :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
+      M.IsFunction.C "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
     Admitted.
     Global Typeclasses Opaque two_compl_mut.
     
@@ -816,7 +825,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_two_compl :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::two_compl" two_compl.
+      M.IsFunction.C "revm_interpreter::instructions::i256::two_compl" two_compl.
     Admitted.
     Global Typeclasses Opaque two_compl.
     
@@ -915,7 +924,7 @@ Module instructions.
       end.
 
     Global Instance Instance_IsFunction_i256_cmp :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
+      M.IsFunction.C "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
     Admitted.
     Global Typeclasses Opaque i256_cmp.
     
@@ -1012,7 +1021,29 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      "ZERO",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1075,8 +1106,16 @@ Module instructions.
                                       M.borrow (| Pointer.Kind.Ref, first |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant
-                                          "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
+                                        get_constant (|
+                                          "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1160,8 +1199,16 @@ Module instructions.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
+                                        get_constant (|
+                                          "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1364,7 +1411,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_i256_div :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_div" i256_div.
+      M.IsFunction.C "revm_interpreter::instructions::i256::i256_div" i256_div.
     Admitted.
     Global Typeclasses Opaque i256_div.
     
@@ -1456,7 +1503,29 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      "ZERO",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1517,7 +1586,29 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      "ZERO",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1637,7 +1728,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_i256_mod :
-      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_mod" i256_mod.
+      M.IsFunction.C "revm_interpreter::instructions::i256::i256_mod" i256_mod.
     Admitted.
     Global Typeclasses Opaque i256_mod.
   End i256.

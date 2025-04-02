@@ -29,7 +29,7 @@ Module raw_vec.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ M.read (| Value.String "capacity overflow" |) ] |)
+                      M.alloc (| Value.Array [ mk_str (| "capacity overflow" |) ] |)
                     |)
                   |)
                 |)
@@ -41,7 +41,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_capacity_overflow :
-    M.IsFunction.Trait "alloc::raw_vec::capacity_overflow" capacity_overflow.
+    M.IsFunction.C "alloc::raw_vec::capacity_overflow" capacity_overflow.
   Admitted.
   Global Typeclasses Opaque capacity_overflow.
   
@@ -81,15 +81,13 @@ Module raw_vec.
     
     (*     const ZERO: Cap = unsafe { Cap(0) }; *)
     (* Ty.path "alloc::raw_vec::Cap" *)
-    Definition value_ZERO : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "alloc::raw_vec::Cap" [ Value.Integer IntegerKind.Usize 0 ]
-          |))).
+    Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "alloc::raw_vec::Cap" [ Value.Integer IntegerKind.Usize 0 ]
+        |))).
     
-    Global Instance AssociatedConstant_value_ZERO :
-      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
     Admitted.
     Global Typeclasses Opaque value_ZERO.
     
@@ -110,9 +108,18 @@ Module raw_vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                    (let γ :=
+                      M.use
+                        (get_constant (|
+                          "core::mem::SizedTypeProperties::IS_ZST",
+                          Ty.path "bool"
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "alloc::raw_vec::ZERO"));
+                    get_associated_constant (|
+                      Ty.path "alloc::raw_vec::Cap",
+                      "ZERO",
+                      Ty.path "alloc::raw_vec::Cap"
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (| Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ] |)))
@@ -122,7 +129,7 @@ Module raw_vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_alloc_raw_vec_Cap.
@@ -181,7 +188,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -216,7 +223,12 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+                    M.read (|
+                      get_constant (|
+                        "core::mem::SizedTypeProperties::LAYOUT",
+                        Ty.path "core::alloc::layout::Layout"
+                      |)
+                    |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -226,7 +238,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "with_capacity" (with_capacity T).
+      M.IsAssociatedFunction.C (Self T) "with_capacity" (with_capacity T).
     Admitted.
     Global Typeclasses Opaque with_capacity.
     
@@ -270,7 +282,12 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     Value.StructTuple "alloc::alloc::Global" [];
-                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+                    M.read (|
+                      get_constant (|
+                        "core::mem::SizedTypeProperties::LAYOUT",
+                        Ty.path "core::alloc::layout::Layout"
+                      |)
+                    |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -280,7 +297,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "with_capacity_zeroed" (with_capacity_zeroed T).
+      M.IsAssociatedFunction.C (Self T) "with_capacity_zeroed" (with_capacity_zeroed T).
     Admitted.
     Global Typeclasses Opaque with_capacity_zeroed.
   End Impl_alloc_raw_vec_RawVec_T_alloc_alloc_Global.
@@ -367,7 +384,7 @@ Module raw_vec.
       end.
     
     Global Instance AssociatedFunction_with_capacity :
-      M.IsAssociatedFunction.Trait Self "with_capacity" with_capacity.
+      M.IsAssociatedFunction.C Self "with_capacity" with_capacity.
     Admitted.
     Global Typeclasses Opaque with_capacity.
   End Impl_alloc_raw_vec_RawVecInner_alloc_alloc_Global.
@@ -431,7 +448,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_min_non_zero_cap :
-    M.IsFunction.Trait "alloc::raw_vec::min_non_zero_cap" min_non_zero_cap.
+    M.IsFunction.C "alloc::raw_vec::min_non_zero_cap" min_non_zero_cap.
   Admitted.
   Global Typeclasses Opaque min_non_zero_cap.
   
@@ -440,27 +457,31 @@ Module raw_vec.
     
     (*     pub(crate) const MIN_NON_ZERO_CAP: usize = min_non_zero_cap(size_of::<T>()); *)
     (* Ty.path "usize" *)
-    Definition value_MIN_NON_ZERO_CAP (T A : Ty.t) : Value.t :=
+    Definition value_MIN_NON_ZERO_CAP
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
-              [
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_function (| "core::mem::size_of", [], [ T ] |),
-                  []
-                |)
-              ]
-            |)
-          |))).
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::size_of", [], [ T ] |),
+                []
+              |)
+            ]
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_MIN_NON_ZERO_CAP :
       forall (T A : Ty.t),
-      M.IsAssociatedConstant.Trait (Self T A) "value_MIN_NON_ZERO_CAP" (value_MIN_NON_ZERO_CAP T A).
+      M.IsAssociatedFunction.C (Self T A) "MIN_NON_ZERO_CAP" (value_MIN_NON_ZERO_CAP T A).
     Admitted.
     Global Typeclasses Opaque value_MIN_NON_ZERO_CAP.
     
@@ -503,7 +524,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+      M.IsAssociatedFunction.C (Self T A) "new_in" (new_in T A).
     Admitted.
     Global Typeclasses Opaque new_in.
     
@@ -542,7 +563,12 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+                    M.read (|
+                      get_constant (|
+                        "core::mem::SizedTypeProperties::LAYOUT",
+                        Ty.path "core::alloc::layout::Layout"
+                      |)
+                    |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -552,7 +578,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "with_capacity_in" (with_capacity_in T A).
+      M.IsAssociatedFunction.C (Self T A) "with_capacity_in" (with_capacity_in T A).
     Admitted.
     Global Typeclasses Opaque with_capacity_in.
     
@@ -604,7 +630,12 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+                    M.read (|
+                      get_constant (|
+                        "core::mem::SizedTypeProperties::LAYOUT",
+                        Ty.path "core::alloc::layout::Layout"
+                      |)
+                    |)
                   ]
                 |)
               |),
@@ -640,7 +671,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_with_capacity_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_with_capacity_in" (try_with_capacity_in T A).
+      M.IsAssociatedFunction.C (Self T A) "try_with_capacity_in" (try_with_capacity_in T A).
     Admitted.
     Global Typeclasses Opaque try_with_capacity_in.
     
@@ -679,7 +710,12 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+                    M.read (|
+                      get_constant (|
+                        "core::mem::SizedTypeProperties::LAYOUT",
+                        Ty.path "core::alloc::layout::Layout"
+                      |)
+                    |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -689,10 +725,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self T A)
-        "with_capacity_zeroed_in"
-        (with_capacity_zeroed_in T A).
+      M.IsAssociatedFunction.C (Self T A) "with_capacity_zeroed_in" (with_capacity_zeroed_in T A).
     Admitted.
     Global Typeclasses Opaque with_capacity_zeroed_in.
     
@@ -785,9 +818,8 @@ Module raw_vec.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`len` must be smaller than or equal to `self.capacity()`"
+                                                        mk_str (|
+                                                          "`len` must be smaller than or equal to `self.capacity()`"
                                                         |)
                                                       ]
                                                   |)
@@ -982,7 +1014,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_into_box :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "into_box" (into_box T A).
+      M.IsAssociatedFunction.C (Self T A) "into_box" (into_box T A).
     Admitted.
     Global Typeclasses Opaque into_box.
     
@@ -1058,7 +1090,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_from_raw_parts_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
     Admitted.
     Global Typeclasses Opaque from_raw_parts_in.
     
@@ -1131,7 +1163,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_from_nonnull_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "from_nonnull_in" (from_nonnull_in T A).
+      M.IsAssociatedFunction.C (Self T A) "from_nonnull_in" (from_nonnull_in T A).
     Admitted.
     Global Typeclasses Opaque from_nonnull_in.
     
@@ -1170,7 +1202,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "ptr" (ptr T A).
+      M.IsAssociatedFunction.C (Self T A) "ptr" (ptr T A).
     Admitted.
     Global Typeclasses Opaque ptr.
     
@@ -1209,7 +1241,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_non_null :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "non_null" (non_null T A).
+      M.IsAssociatedFunction.C (Self T A) "non_null" (non_null T A).
     Admitted.
     Global Typeclasses Opaque non_null.
     
@@ -1253,7 +1285,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_capacity :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "capacity" (capacity T A).
+      M.IsAssociatedFunction.C (Self T A) "capacity" (capacity T A).
     Admitted.
     Global Typeclasses Opaque capacity.
     
@@ -1297,7 +1329,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -1333,7 +1365,12 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1341,7 +1378,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_reserve :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "reserve" (reserve T A).
+      M.IsAssociatedFunction.C (Self T A) "reserve" (reserve T A).
     Admitted.
     Global Typeclasses Opaque reserve.
     
@@ -1373,7 +1410,12 @@ Module raw_vec.
                   "inner"
                 |)
               |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1381,7 +1423,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_grow_one :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "grow_one" (grow_one T A).
+      M.IsAssociatedFunction.C (Self T A) "grow_one" (grow_one T A).
     Admitted.
     Global Typeclasses Opaque grow_one.
     
@@ -1420,7 +1462,12 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1428,7 +1475,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_reserve :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_reserve" (try_reserve T A).
+      M.IsAssociatedFunction.C (Self T A) "try_reserve" (try_reserve T A).
     Admitted.
     Global Typeclasses Opaque try_reserve.
     
@@ -1469,7 +1516,12 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1477,7 +1529,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_reserve_exact :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "reserve_exact" (reserve_exact T A).
+      M.IsAssociatedFunction.C (Self T A) "reserve_exact" (reserve_exact T A).
     Admitted.
     Global Typeclasses Opaque reserve_exact.
     
@@ -1525,7 +1577,12 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1533,7 +1590,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_reserve_exact :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "try_reserve_exact" (try_reserve_exact T A).
+      M.IsAssociatedFunction.C (Self T A) "try_reserve_exact" (try_reserve_exact T A).
     Admitted.
     Global Typeclasses Opaque try_reserve_exact.
     
@@ -1572,7 +1629,12 @@ Module raw_vec.
                 |)
               |);
               M.read (| cap |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1580,7 +1642,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_shrink_to_fit :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T A) "shrink_to_fit" (shrink_to_fit T A).
+      M.IsAssociatedFunction.C (Self T A) "shrink_to_fit" (shrink_to_fit T A).
     Admitted.
     Global Typeclasses Opaque shrink_to_fit.
   End Impl_alloc_raw_vec_RawVec_T_A.
@@ -1617,7 +1679,12 @@ Module raw_vec.
                   "inner"
                 |)
               |);
-              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
+              M.read (|
+                get_constant (|
+                  "core::mem::SizedTypeProperties::LAYOUT",
+                  Ty.path "core::alloc::layout::Layout"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1671,7 +1738,14 @@ Module raw_vec.
                 "alloc::raw_vec::RawVecInner"
                 [
                   ("ptr", M.read (| ptr |));
-                  ("cap", M.read (| M.get_constant "alloc::raw_vec::ZERO" |));
+                  ("cap",
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.path "alloc::raw_vec::Cap",
+                        "ZERO",
+                        Ty.path "alloc::raw_vec::Cap"
+                      |)
+                    |));
                   ("alloc", M.read (| alloc |))
                 ]
             |)
@@ -1681,7 +1755,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_new_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "new_in" (new_in A).
+      M.IsAssociatedFunction.C (Self A) "new_in" (new_in A).
     Admitted.
     Global Typeclasses Opaque new_in.
     
@@ -1795,7 +1869,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "with_capacity_in" (with_capacity_in A).
+      M.IsAssociatedFunction.C (Self A) "with_capacity_in" (with_capacity_in A).
     Admitted.
     Global Typeclasses Opaque with_capacity_in.
     
@@ -1847,7 +1921,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_with_capacity_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "try_with_capacity_in" (try_with_capacity_in A).
+      M.IsAssociatedFunction.C (Self A) "try_with_capacity_in" (try_with_capacity_in A).
     Admitted.
     Global Typeclasses Opaque try_with_capacity_in.
     
@@ -1927,7 +2001,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_with_capacity_zeroed_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "with_capacity_zeroed_in" (with_capacity_zeroed_in A).
+      M.IsAssociatedFunction.C (Self A) "with_capacity_zeroed_in" (with_capacity_zeroed_in A).
     Admitted.
     Global Typeclasses Opaque with_capacity_zeroed_in.
     
@@ -2377,7 +2451,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_allocate_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "try_allocate_in" (try_allocate_in A).
+      M.IsAssociatedFunction.C (Self A) "try_allocate_in" (try_allocate_in A).
     Admitted.
     Global Typeclasses Opaque try_allocate_in.
     
@@ -2421,7 +2495,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_from_raw_parts_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "from_raw_parts_in" (from_raw_parts_in A).
+      M.IsAssociatedFunction.C (Self A) "from_raw_parts_in" (from_raw_parts_in A).
     Admitted.
     Global Typeclasses Opaque from_raw_parts_in.
     
@@ -2468,7 +2542,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_from_nonnull_in :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "from_nonnull_in" (from_nonnull_in A).
+      M.IsAssociatedFunction.C (Self A) "from_nonnull_in" (from_nonnull_in A).
     Admitted.
     Global Typeclasses Opaque from_nonnull_in.
     
@@ -2509,7 +2583,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_ptr :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "ptr" (ptr A).
+      M.IsAssociatedFunction.C (Self A) "ptr" (ptr A).
     Admitted.
     Global Typeclasses Opaque ptr.
     
@@ -2558,7 +2632,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_non_null :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "non_null" (non_null A).
+      M.IsAssociatedFunction.C (Self A) "non_null" (non_null A).
     Admitted.
     Global Typeclasses Opaque non_null.
     
@@ -2587,7 +2661,7 @@ Module raw_vec.
                           BinOp.eq (| M.read (| elem_size |), Value.Integer IntegerKind.Usize 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "core::num::MAX"));
+                    get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.SubPointer.get_struct_tuple_field (|
@@ -2607,7 +2681,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_capacity :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "capacity" (capacity A).
+      M.IsAssociatedFunction.C (Self A) "capacity" (capacity A).
     Admitted.
     Global Typeclasses Opaque capacity.
     
@@ -2640,7 +2714,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_allocator :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "allocator" (allocator A).
+      M.IsAssociatedFunction.C (Self A) "allocator" (allocator A).
     Admitted.
     Global Typeclasses Opaque allocator.
     
@@ -2833,7 +2907,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_current_memory :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "current_memory" (current_memory A).
+      M.IsAssociatedFunction.C (Self A) "current_memory" (current_memory A).
     Admitted.
     Global Typeclasses Opaque current_memory.
     
@@ -2924,7 +2998,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_reserve :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "reserve" (reserve A).
+      M.IsAssociatedFunction.C (Self A) "reserve" (reserve A).
     Admitted.
     Global Typeclasses Opaque reserve.
     
@@ -3001,7 +3075,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_grow_one :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "grow_one" (grow_one A).
+      M.IsAssociatedFunction.C (Self A) "grow_one" (grow_one A).
     Admitted.
     Global Typeclasses Opaque grow_one.
     
@@ -3225,7 +3299,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_reserve :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "try_reserve" (try_reserve A).
+      M.IsAssociatedFunction.C (Self A) "try_reserve" (try_reserve A).
     Admitted.
     Global Typeclasses Opaque try_reserve.
     
@@ -3294,7 +3368,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_reserve_exact :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "reserve_exact" (reserve_exact A).
+      M.IsAssociatedFunction.C (Self A) "reserve_exact" (reserve_exact A).
     Admitted.
     Global Typeclasses Opaque reserve_exact.
     
@@ -3523,7 +3597,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_try_reserve_exact :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "try_reserve_exact" (try_reserve_exact A).
+      M.IsAssociatedFunction.C (Self A) "try_reserve_exact" (try_reserve_exact A).
     Admitted.
     Global Typeclasses Opaque try_reserve_exact.
     
@@ -3590,7 +3664,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_shrink_to_fit :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "shrink_to_fit" (shrink_to_fit A).
+      M.IsAssociatedFunction.C (Self A) "shrink_to_fit" (shrink_to_fit A).
     Admitted.
     Global Typeclasses Opaque shrink_to_fit.
     
@@ -3645,7 +3719,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_needs_to_grow :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "needs_to_grow" (needs_to_grow A).
+      M.IsAssociatedFunction.C (Self A) "needs_to_grow" (needs_to_grow A).
     Admitted.
     Global Typeclasses Opaque needs_to_grow.
     
@@ -3727,7 +3801,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_set_ptr_and_cap :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "set_ptr_and_cap" (set_ptr_and_cap A).
+      M.IsAssociatedFunction.C (Self A) "set_ptr_and_cap" (set_ptr_and_cap A).
     Admitted.
     Global Typeclasses Opaque set_ptr_and_cap.
     
@@ -3818,11 +3892,7 @@ Module raw_vec.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: additional > 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: additional > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -4374,7 +4444,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_grow_amortized :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "grow_amortized" (grow_amortized A).
+      M.IsAssociatedFunction.C (Self A) "grow_amortized" (grow_amortized A).
     Admitted.
     Global Typeclasses Opaque grow_amortized.
     
@@ -4907,7 +4977,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_grow_exact :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "grow_exact" (grow_exact A).
+      M.IsAssociatedFunction.C (Self A) "grow_exact" (grow_exact A).
     Admitted.
     Global Typeclasses Opaque grow_exact.
     
@@ -4991,11 +5061,7 @@ Module raw_vec.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "Tried to shrink to a larger capacity"
-                                              |)
-                                            ]
+                                            [ mk_str (| "Tried to shrink to a larger capacity" |) ]
                                         |)
                                       |)
                                     |)
@@ -5034,7 +5100,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_shrink :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "shrink" (shrink A).
+      M.IsAssociatedFunction.C (Self A) "shrink" (shrink A).
     Admitted.
     Global Typeclasses Opaque shrink.
     
@@ -5260,7 +5326,13 @@ Module raw_vec.
                                           "alloc::raw_vec::RawVecInner",
                                           "cap"
                                         |),
-                                        M.read (| M.get_constant "alloc::raw_vec::ZERO" |)
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.path "alloc::raw_vec::Cap",
+                                            "ZERO",
+                                            Ty.path "alloc::raw_vec::Cap"
+                                          |)
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -5596,7 +5668,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_shrink_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "shrink_unchecked" (shrink_unchecked A).
+      M.IsAssociatedFunction.C (Self A) "shrink_unchecked" (shrink_unchecked A).
     Admitted.
     Global Typeclasses Opaque shrink_unchecked.
     
@@ -5698,7 +5770,7 @@ Module raw_vec.
     
     Global Instance AssociatedFunction_deallocate :
       forall (A : Ty.t),
-      M.IsAssociatedFunction.Trait (Self A) "deallocate" (deallocate A).
+      M.IsAssociatedFunction.C (Self A) "deallocate" (deallocate A).
     Admitted.
     Global Typeclasses Opaque deallocate.
   End Impl_alloc_raw_vec_RawVecInner_A.
@@ -6224,7 +6296,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_finish_grow :
-    M.IsFunction.Trait "alloc::raw_vec::finish_grow" finish_grow.
+    M.IsFunction.C "alloc::raw_vec::finish_grow" finish_grow.
   Admitted.
   Global Typeclasses Opaque finish_grow.
   
@@ -6294,7 +6366,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_handle_error :
-    M.IsFunction.Trait "alloc::raw_vec::handle_error" handle_error.
+    M.IsFunction.C "alloc::raw_vec::handle_error" handle_error.
   Admitted.
   Global Typeclasses Opaque handle_error.
   
@@ -6328,7 +6400,9 @@ Module raw_vec.
                       (M.alloc (|
                         LogicalOp.and (|
                           BinOp.lt (|
-                            M.read (| M.get_constant "core::num::BITS" |),
+                            M.read (|
+                              get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                            |),
                             Value.Integer IntegerKind.U32 64
                           |),
                           ltac:(M.monadic
@@ -6336,7 +6410,13 @@ Module raw_vec.
                               M.read (| alloc_size |),
                               M.cast
                                 (Ty.path "usize")
-                                (M.read (| M.get_constant "core::num::MAX" |))
+                                (M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "isize",
+                                    "MAX",
+                                    Ty.path "isize"
+                                  |)
+                                |))
                             |)))
                         |)
                       |)) in
@@ -6374,7 +6454,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_alloc_guard :
-    M.IsFunction.Trait "alloc::raw_vec::alloc_guard" alloc_guard.
+    M.IsFunction.C "alloc::raw_vec::alloc_guard" alloc_guard.
   Admitted.
   Global Typeclasses Opaque alloc_guard.
   
@@ -6527,7 +6607,7 @@ Module raw_vec.
     end.
   
   Global Instance Instance_IsFunction_layout_array :
-    M.IsFunction.Trait "alloc::raw_vec::layout_array" layout_array.
+    M.IsFunction.C "alloc::raw_vec::layout_array" layout_array.
   Admitted.
   Global Typeclasses Opaque layout_array.
 End raw_vec.

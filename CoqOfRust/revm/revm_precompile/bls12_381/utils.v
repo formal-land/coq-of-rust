@@ -3,110 +3,114 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module utils.
-    Definition value_NBITS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    Definition value_NBITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
-    Axiom Constant_value_NBITS :
-      (M.get_constant "revm_precompile::bls12_381::utils::NBITS") = value_NBITS.
-    Global Hint Rewrite Constant_value_NBITS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_NBITS :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::NBITS" value_NBITS.
+    Admitted.
+    Global Typeclasses Opaque value_NBITS.
     
-    Definition value_FP_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
+    Definition value_FP_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
     
-    Axiom Constant_value_FP_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::utils::FP_LENGTH") = value_FP_LENGTH.
-    Global Hint Rewrite Constant_value_FP_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FP_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::FP_LENGTH" value_FP_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_FP_LENGTH.
     
-    Definition value_PADDED_FP_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+    Definition value_PADDED_FP_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
     
-    Axiom Constant_value_PADDED_FP_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH") =
-        value_PADDED_FP_LENGTH.
-    Global Hint Rewrite Constant_value_PADDED_FP_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PADDED_FP_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH" value_PADDED_FP_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_PADDED_FP_LENGTH.
     
-    Definition value_PADDED_FP2_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
+    Definition value_PADDED_FP2_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
     
-    Axiom Constant_value_PADDED_FP2_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH") =
-        value_PADDED_FP2_LENGTH.
-    Global Hint Rewrite Constant_value_PADDED_FP2_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PADDED_FP2_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH" value_PADDED_FP2_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_PADDED_FP2_LENGTH.
     
-    Definition value_PADDING_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    Definition value_PADDING_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
-    Axiom Constant_value_PADDING_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH") = value_PADDING_LENGTH.
-    Global Hint Rewrite Constant_value_PADDING_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PADDING_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::PADDING_LENGTH" value_PADDING_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_PADDING_LENGTH.
     
-    Definition value_SCALAR_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    Definition value_SCALAR_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
-    Axiom Constant_value_SCALAR_LENGTH :
-      (M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH") = value_SCALAR_LENGTH.
-    Global Hint Rewrite Constant_value_SCALAR_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SCALAR_LENGTH :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::SCALAR_LENGTH" value_SCALAR_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_SCALAR_LENGTH.
     
-    Definition value_MODULUS_REPR : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.Array
-              [
-                Value.Integer IntegerKind.U8 26;
-                Value.Integer IntegerKind.U8 1;
-                Value.Integer IntegerKind.U8 17;
-                Value.Integer IntegerKind.U8 234;
-                Value.Integer IntegerKind.U8 57;
-                Value.Integer IntegerKind.U8 127;
-                Value.Integer IntegerKind.U8 230;
-                Value.Integer IntegerKind.U8 154;
-                Value.Integer IntegerKind.U8 75;
-                Value.Integer IntegerKind.U8 27;
-                Value.Integer IntegerKind.U8 167;
-                Value.Integer IntegerKind.U8 182;
-                Value.Integer IntegerKind.U8 67;
-                Value.Integer IntegerKind.U8 75;
-                Value.Integer IntegerKind.U8 172;
-                Value.Integer IntegerKind.U8 215;
-                Value.Integer IntegerKind.U8 100;
-                Value.Integer IntegerKind.U8 119;
-                Value.Integer IntegerKind.U8 75;
-                Value.Integer IntegerKind.U8 132;
-                Value.Integer IntegerKind.U8 243;
-                Value.Integer IntegerKind.U8 133;
-                Value.Integer IntegerKind.U8 18;
-                Value.Integer IntegerKind.U8 191;
-                Value.Integer IntegerKind.U8 103;
-                Value.Integer IntegerKind.U8 48;
-                Value.Integer IntegerKind.U8 210;
-                Value.Integer IntegerKind.U8 160;
-                Value.Integer IntegerKind.U8 246;
-                Value.Integer IntegerKind.U8 176;
-                Value.Integer IntegerKind.U8 246;
-                Value.Integer IntegerKind.U8 36;
-                Value.Integer IntegerKind.U8 30;
-                Value.Integer IntegerKind.U8 171;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 254;
-                Value.Integer IntegerKind.U8 177;
-                Value.Integer IntegerKind.U8 83;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 185;
-                Value.Integer IntegerKind.U8 254;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 255;
-                Value.Integer IntegerKind.U8 170;
-                Value.Integer IntegerKind.U8 171
-              ]
-          |))).
+    Definition value_MODULUS_REPR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.Array
+            [
+              Value.Integer IntegerKind.U8 26;
+              Value.Integer IntegerKind.U8 1;
+              Value.Integer IntegerKind.U8 17;
+              Value.Integer IntegerKind.U8 234;
+              Value.Integer IntegerKind.U8 57;
+              Value.Integer IntegerKind.U8 127;
+              Value.Integer IntegerKind.U8 230;
+              Value.Integer IntegerKind.U8 154;
+              Value.Integer IntegerKind.U8 75;
+              Value.Integer IntegerKind.U8 27;
+              Value.Integer IntegerKind.U8 167;
+              Value.Integer IntegerKind.U8 182;
+              Value.Integer IntegerKind.U8 67;
+              Value.Integer IntegerKind.U8 75;
+              Value.Integer IntegerKind.U8 172;
+              Value.Integer IntegerKind.U8 215;
+              Value.Integer IntegerKind.U8 100;
+              Value.Integer IntegerKind.U8 119;
+              Value.Integer IntegerKind.U8 75;
+              Value.Integer IntegerKind.U8 132;
+              Value.Integer IntegerKind.U8 243;
+              Value.Integer IntegerKind.U8 133;
+              Value.Integer IntegerKind.U8 18;
+              Value.Integer IntegerKind.U8 191;
+              Value.Integer IntegerKind.U8 103;
+              Value.Integer IntegerKind.U8 48;
+              Value.Integer IntegerKind.U8 210;
+              Value.Integer IntegerKind.U8 160;
+              Value.Integer IntegerKind.U8 246;
+              Value.Integer IntegerKind.U8 176;
+              Value.Integer IntegerKind.U8 246;
+              Value.Integer IntegerKind.U8 36;
+              Value.Integer IntegerKind.U8 30;
+              Value.Integer IntegerKind.U8 171;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 254;
+              Value.Integer IntegerKind.U8 177;
+              Value.Integer IntegerKind.U8 83;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 185;
+              Value.Integer IntegerKind.U8 254;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 255;
+              Value.Integer IntegerKind.U8 170;
+              Value.Integer IntegerKind.U8 171
+            ]
+        |))).
     
-    Axiom Constant_value_MODULUS_REPR :
-      (M.get_constant "revm_precompile::bls12_381::utils::MODULUS_REPR") = value_MODULUS_REPR.
-    Global Hint Rewrite Constant_value_MODULUS_REPR : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MODULUS_REPR :
+      M.IsFunction.C "revm_precompile::bls12_381::utils::MODULUS_REPR" value_MODULUS_REPR.
+    Admitted.
+    Global Typeclasses Opaque value_MODULUS_REPR.
     
     (*
     pub(super) fn fp_to_bytes(out: &mut [u8], input: *const blst_fp) {
@@ -155,8 +159,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -192,7 +198,10 @@ Module bls12_381.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| out |) |) |);
                         M.read (|
-                          M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH"
+                          get_constant (|
+                            "revm_precompile::bls12_381::utils::PADDING_LENGTH",
+                            Ty.path "usize"
+                          |)
                         |)
                       ]
                     |)
@@ -257,7 +266,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_fp_to_bytes :
-      M.IsFunction.Trait "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
+      M.IsFunction.C "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
     Admitted.
     Global Typeclasses Opaque fp_to_bytes.
     
@@ -313,8 +322,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -369,14 +380,10 @@ Module bls12_381.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Padded input should be "
+                                                                        mk_str (|
+                                                                          "Padded input should be "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " bytes, was "
-                                                                        |)
+                                                                        mk_str (| " bytes, was " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -434,8 +441,10 @@ Module bls12_381.
                                                                           |);
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
-                                                                            M.get_constant
-                                                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
+                                                                            get_constant (|
+                                                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                     |),
@@ -550,7 +559,10 @@ Module bls12_381.
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                         M.read (|
-                          M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH"
+                          get_constant (|
+                            "revm_precompile::bls12_381::utils::PADDING_LENGTH",
+                            Ty.path "usize"
+                          |)
                         |)
                       ]
                     |)
@@ -717,12 +729,9 @@ Module bls12_381.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |);
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    " top bytes of input are not zero"
+                                                                                mk_str (| "" |);
+                                                                                mk_str (|
+                                                                                  " top bytes of input are not zero"
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -756,8 +765,11 @@ Module bls12_381.
                                                                                       M.deref (|
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
-                                                                                          M.get_constant
-                                                                                            "revm_precompile::bls12_381::utils::PADDING_LENGTH"
+                                                                                          get_constant (|
+                                                                                            "revm_precompile::bls12_381::utils::PADDING_LENGTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     |)
@@ -878,7 +890,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_remove_padding :
-      M.IsFunction.Trait "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
+      M.IsFunction.C "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
     Admitted.
     Global Typeclasses Opaque remove_padding.
     
@@ -939,8 +951,10 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::utils::SCALAR_LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -995,14 +1009,10 @@ Module bls12_381.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Input should be "
+                                                                        mk_str (|
+                                                                          "Input should be "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " bytes, was "
-                                                                        |)
+                                                                        mk_str (| " bytes, was " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -1060,8 +1070,10 @@ Module bls12_381.
                                                                           |);
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
-                                                                            M.get_constant
-                                                                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
+                                                                            get_constant (|
+                                                                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                     |),
@@ -1198,9 +1210,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_extract_scalar_input :
-      M.IsFunction.Trait
-        "revm_precompile::bls12_381::utils::extract_scalar_input"
-        extract_scalar_input.
+      M.IsFunction.C "revm_precompile::bls12_381::utils::extract_scalar_input" extract_scalar_input.
     Admitted.
     Global Typeclasses Opaque extract_scalar_input.
     
@@ -1298,8 +1308,13 @@ Module bls12_381.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant
-                                        "revm_precompile::bls12_381::utils::MODULUS_REPR"
+                                      get_constant (|
+                                        "revm_precompile::bls12_381::utils::MODULUS_REPR",
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 48 ]
+                                          [ Ty.path "u8" ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1460,7 +1475,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_is_valid_be :
-      M.IsFunction.Trait "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
+      M.IsFunction.C "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
     Admitted.
     Global Typeclasses Opaque is_valid_be.
     
@@ -1540,9 +1555,7 @@ Module bls12_381.
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (| Value.String "non-canonical fp value" |)
-                                                |)
+                                                M.deref (| mk_str (| "non-canonical fp value" |) |)
                                               |)
                                             ]
                                           |)
@@ -1603,7 +1616,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_fp_from_bendian :
-      M.IsFunction.Trait "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
+      M.IsFunction.C "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
     Admitted.
     Global Typeclasses Opaque fp_from_bendian.
   End utils.

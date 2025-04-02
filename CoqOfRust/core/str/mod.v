@@ -41,7 +41,7 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_slice_error_fail :
-    M.IsFunction.Trait "core::str::slice_error_fail" slice_error_fail.
+    M.IsFunction.C "core::str::slice_error_fail" slice_error_fail.
   Admitted.
   Global Typeclasses Opaque slice_error_fail.
   
@@ -95,11 +95,7 @@ Module str.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "failed to slice string"
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "failed to slice string" |) ]
                                               |)
                                             |)
                                           |)
@@ -118,7 +114,7 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_slice_error_fail_ct :
-    M.IsFunction.Trait "core::str::slice_error_fail_ct" slice_error_fail_ct.
+    M.IsFunction.C "core::str::slice_error_fail_ct" slice_error_fail_ct.
   Admitted.
   Global Typeclasses Opaque slice_error_fail_ct.
   
@@ -173,7 +169,12 @@ Module str.
                 M.get_associated_function (| Ty.path "str", "floor_char_boundary", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
-                  M.read (| M.get_constant "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH" |)
+                  M.read (|
+                    get_constant (|
+                      "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH",
+                      Ty.path "usize"
+                    |)
+                  |)
                 ]
               |)
             |) in
@@ -224,11 +225,11 @@ Module str.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      Value.String "[...]"));
+                      M.alloc (| mk_str (| "[...]" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                       |)))
                 ]
               |)
@@ -332,9 +333,9 @@ Module str.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| Value.String "byte index " |);
-                                                M.read (| Value.String " is out of bounds of `" |);
-                                                M.read (| Value.String "`" |)
+                                                mk_str (| "byte index " |);
+                                                mk_str (| " is out of bounds of `" |);
+                                                mk_str (| "`" |)
                                               ]
                                           |)
                                         |)
@@ -454,10 +455,10 @@ Module str.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "begin <= end (" |);
-                                            M.read (| Value.String " <= " |);
-                                            M.read (| Value.String ") when slicing `" |);
-                                            M.read (| Value.String "`" |)
+                                            mk_str (| "begin <= end (" |);
+                                            mk_str (| " <= " |);
+                                            mk_str (| ") when slicing `" |);
+                                            mk_str (| "`" |)
                                           ]
                                       |)
                                     |)
@@ -701,11 +702,11 @@ Module str.
                           M.alloc (|
                             Value.Array
                               [
-                                M.read (| Value.String "byte index " |);
-                                M.read (| Value.String " is not a char boundary; it is inside " |);
-                                M.read (| Value.String " (bytes " |);
-                                M.read (| Value.String ") of `" |);
-                                M.read (| Value.String "`" |)
+                                mk_str (| "byte index " |);
+                                mk_str (| " is not a char boundary; it is inside " |);
+                                mk_str (| " (bytes " |);
+                                mk_str (| ") of `" |);
+                                mk_str (| "`" |)
                               ]
                           |)
                         |)
@@ -814,18 +815,18 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_slice_error_fail_rt :
-    M.IsFunction.Trait "core::str::slice_error_fail_rt" slice_error_fail_rt.
+    M.IsFunction.C "core::str::slice_error_fail_rt" slice_error_fail_rt.
   Admitted.
   Global Typeclasses Opaque slice_error_fail_rt.
   
   Module slice_error_fail_rt.
-    Definition value_MAX_DISPLAY_LENGTH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    Definition value_MAX_DISPLAY_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
-    Axiom Constant_value_MAX_DISPLAY_LENGTH :
-      (M.get_constant "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH") =
-        value_MAX_DISPLAY_LENGTH.
-    Global Hint Rewrite Constant_value_MAX_DISPLAY_LENGTH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MAX_DISPLAY_LENGTH :
+      M.IsFunction.C "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH" value_MAX_DISPLAY_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_DISPLAY_LENGTH.
   End slice_error_fail_rt.
   
   Module Impl_str.
@@ -865,7 +866,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -890,8 +891,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
     
@@ -1029,7 +1029,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_is_char_boundary :
-      M.IsAssociatedFunction.Trait Self "is_char_boundary" is_char_boundary.
+      M.IsAssociatedFunction.C Self "is_char_boundary" is_char_boundary.
     Admitted.
     Global Typeclasses Opaque is_char_boundary.
     
@@ -1251,7 +1251,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_floor_char_boundary :
-      M.IsAssociatedFunction.Trait Self "floor_char_boundary" floor_char_boundary.
+      M.IsAssociatedFunction.C Self "floor_char_boundary" floor_char_boundary.
     Admitted.
     Global Typeclasses Opaque floor_char_boundary.
     
@@ -1508,7 +1508,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_ceil_char_boundary :
-      M.IsAssociatedFunction.Trait Self "ceil_char_boundary" ceil_char_boundary.
+      M.IsAssociatedFunction.C Self "ceil_char_boundary" ceil_char_boundary.
     Admitted.
     Global Typeclasses Opaque ceil_char_boundary.
     
@@ -1538,8 +1538,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_bytes :
-      M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+    Global Instance AssociatedFunction_as_bytes : M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
     Admitted.
     Global Typeclasses Opaque as_bytes.
     
@@ -1595,7 +1594,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_as_bytes_mut :
-      M.IsAssociatedFunction.Trait Self "as_bytes_mut" as_bytes_mut.
+      M.IsAssociatedFunction.C Self "as_bytes_mut" as_bytes_mut.
     Admitted.
     Global Typeclasses Opaque as_bytes_mut.
     
@@ -1620,7 +1619,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+    Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.C Self "as_ptr" as_ptr.
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -1646,7 +1645,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_as_mut_ptr :
-      M.IsAssociatedFunction.Trait Self "as_mut_ptr" as_mut_ptr.
+      M.IsAssociatedFunction.C Self "as_mut_ptr" as_mut_ptr.
     Admitted.
     Global Typeclasses Opaque as_mut_ptr.
     
@@ -1692,7 +1691,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+    Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -1738,8 +1737,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_get_mut :
-      M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+    Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -1797,7 +1795,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_get_unchecked :
-      M.IsAssociatedFunction.Trait Self "get_unchecked" get_unchecked.
+      M.IsAssociatedFunction.C Self "get_unchecked" get_unchecked.
     Admitted.
     Global Typeclasses Opaque get_unchecked.
     
@@ -1868,7 +1866,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_get_unchecked_mut :
-      M.IsAssociatedFunction.Trait Self "get_unchecked_mut" get_unchecked_mut.
+      M.IsAssociatedFunction.C Self "get_unchecked_mut" get_unchecked_mut.
     Admitted.
     Global Typeclasses Opaque get_unchecked_mut.
     
@@ -1919,7 +1917,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_slice_unchecked :
-      M.IsAssociatedFunction.Trait Self "slice_unchecked" slice_unchecked.
+      M.IsAssociatedFunction.C Self "slice_unchecked" slice_unchecked.
     Admitted.
     Global Typeclasses Opaque slice_unchecked.
     
@@ -1983,7 +1981,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_slice_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "slice_mut_unchecked" slice_mut_unchecked.
+      M.IsAssociatedFunction.C Self "slice_mut_unchecked" slice_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque slice_mut_unchecked.
     
@@ -2061,8 +2059,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_split_at :
-      M.IsAssociatedFunction.Trait Self "split_at" split_at.
+    Global Instance AssociatedFunction_split_at : M.IsAssociatedFunction.C Self "split_at" split_at.
     Admitted.
     Global Typeclasses Opaque split_at.
     
@@ -2154,7 +2151,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_at_mut :
-      M.IsAssociatedFunction.Trait Self "split_at_mut" split_at_mut.
+      M.IsAssociatedFunction.C Self "split_at_mut" split_at_mut.
     Admitted.
     Global Typeclasses Opaque split_at_mut.
     
@@ -2242,7 +2239,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_at_checked :
-      M.IsAssociatedFunction.Trait Self "split_at_checked" split_at_checked.
+      M.IsAssociatedFunction.C Self "split_at_checked" split_at_checked.
     Admitted.
     Global Typeclasses Opaque split_at_checked.
     
@@ -2330,7 +2327,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_at_mut_checked :
-      M.IsAssociatedFunction.Trait Self "split_at_mut_checked" split_at_mut_checked.
+      M.IsAssociatedFunction.C Self "split_at_mut_checked" split_at_mut_checked.
     Admitted.
     Global Typeclasses Opaque split_at_mut_checked.
     
@@ -2448,7 +2445,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_at_unchecked :
-      M.IsAssociatedFunction.Trait Self "split_at_unchecked" split_at_unchecked.
+      M.IsAssociatedFunction.C Self "split_at_unchecked" split_at_unchecked.
     Admitted.
     Global Typeclasses Opaque split_at_unchecked.
     
@@ -2566,7 +2563,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_at_mut_unchecked :
-      M.IsAssociatedFunction.Trait Self "split_at_mut_unchecked" split_at_mut_unchecked.
+      M.IsAssociatedFunction.C Self "split_at_mut_unchecked" split_at_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque split_at_mut_unchecked.
     
@@ -2612,7 +2609,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_chars : M.IsAssociatedFunction.Trait Self "chars" chars.
+    Global Instance AssociatedFunction_chars : M.IsAssociatedFunction.C Self "chars" chars.
     Admitted.
     Global Typeclasses Opaque chars.
     
@@ -2641,7 +2638,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_char_indices :
-      M.IsAssociatedFunction.Trait Self "char_indices" char_indices.
+      M.IsAssociatedFunction.C Self "char_indices" char_indices.
     Admitted.
     Global Typeclasses Opaque char_indices.
     
@@ -2703,7 +2700,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.Trait Self "bytes" bytes.
+    Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.C Self "bytes" bytes.
     Admitted.
     Global Typeclasses Opaque bytes.
     
@@ -2769,7 +2766,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_whitespace :
-      M.IsAssociatedFunction.Trait Self "split_whitespace" split_whitespace.
+      M.IsAssociatedFunction.C Self "split_whitespace" split_whitespace.
     Admitted.
     Global Typeclasses Opaque split_whitespace.
     
@@ -2913,7 +2910,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_ascii_whitespace :
-      M.IsAssociatedFunction.Trait Self "split_ascii_whitespace" split_ascii_whitespace.
+      M.IsAssociatedFunction.C Self "split_ascii_whitespace" split_ascii_whitespace.
     Admitted.
     Global Typeclasses Opaque split_ascii_whitespace.
     
@@ -2968,7 +2965,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_lines : M.IsAssociatedFunction.Trait Self "lines" lines.
+    Global Instance AssociatedFunction_lines : M.IsAssociatedFunction.C Self "lines" lines.
     Admitted.
     Global Typeclasses Opaque lines.
     
@@ -2995,7 +2992,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_lines_any :
-      M.IsAssociatedFunction.Trait Self "lines_any" lines_any.
+      M.IsAssociatedFunction.C Self "lines_any" lines_any.
     Admitted.
     Global Typeclasses Opaque lines_any.
     
@@ -3024,7 +3021,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_encode_utf16 :
-      M.IsAssociatedFunction.Trait Self "encode_utf16" encode_utf16.
+      M.IsAssociatedFunction.C Self "encode_utf16" encode_utf16.
     Admitted.
     Global Typeclasses Opaque encode_utf16.
     
@@ -3055,8 +3052,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_contains :
-      M.IsAssociatedFunction.Trait Self "contains" contains.
+    Global Instance AssociatedFunction_contains : M.IsAssociatedFunction.C Self "contains" contains.
     Admitted.
     Global Typeclasses Opaque contains.
     
@@ -3088,7 +3084,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_starts_with :
-      M.IsAssociatedFunction.Trait Self "starts_with" starts_with.
+      M.IsAssociatedFunction.C Self "starts_with" starts_with.
     Admitted.
     Global Typeclasses Opaque starts_with.
     
@@ -3123,7 +3119,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_ends_with :
-      M.IsAssociatedFunction.Trait Self "ends_with" ends_with.
+      M.IsAssociatedFunction.C Self "ends_with" ends_with.
     Admitted.
     Global Typeclasses Opaque ends_with.
     
@@ -3221,7 +3217,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_find : M.IsAssociatedFunction.Trait Self "find" find.
+    Global Instance AssociatedFunction_find : M.IsAssociatedFunction.C Self "find" find.
     Admitted.
     Global Typeclasses Opaque find.
     
@@ -3322,7 +3318,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_rfind : M.IsAssociatedFunction.Trait Self "rfind" rfind.
+    Global Instance AssociatedFunction_rfind : M.IsAssociatedFunction.C Self "rfind" rfind.
     Admitted.
     Global Typeclasses Opaque rfind.
     
@@ -3380,7 +3376,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_split : M.IsAssociatedFunction.Trait Self "split" split.
+    Global Instance AssociatedFunction_split : M.IsAssociatedFunction.C Self "split" split.
     Admitted.
     Global Typeclasses Opaque split.
     
@@ -3439,7 +3435,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_inclusive :
-      M.IsAssociatedFunction.Trait Self "split_inclusive" split_inclusive.
+      M.IsAssociatedFunction.C Self "split_inclusive" split_inclusive.
     Admitted.
     Global Typeclasses Opaque split_inclusive.
     
@@ -3480,7 +3476,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_rsplit : M.IsAssociatedFunction.Trait Self "rsplit" rsplit.
+    Global Instance AssociatedFunction_rsplit : M.IsAssociatedFunction.C Self "rsplit" rsplit.
     Admitted.
     Global Typeclasses Opaque rsplit.
     
@@ -3521,7 +3517,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_terminator :
-      M.IsAssociatedFunction.Trait Self "split_terminator" split_terminator.
+      M.IsAssociatedFunction.C Self "split_terminator" split_terminator.
     Admitted.
     Global Typeclasses Opaque split_terminator.
     
@@ -3563,7 +3559,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_rsplit_terminator :
-      M.IsAssociatedFunction.Trait Self "rsplit_terminator" rsplit_terminator.
+      M.IsAssociatedFunction.C Self "rsplit_terminator" rsplit_terminator.
     Admitted.
     Global Typeclasses Opaque rsplit_terminator.
     
@@ -3608,7 +3604,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_splitn : M.IsAssociatedFunction.Trait Self "splitn" splitn.
+    Global Instance AssociatedFunction_splitn : M.IsAssociatedFunction.C Self "splitn" splitn.
     Admitted.
     Global Typeclasses Opaque splitn.
     
@@ -3651,8 +3647,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_rsplitn :
-      M.IsAssociatedFunction.Trait Self "rsplitn" rsplitn.
+    Global Instance AssociatedFunction_rsplitn : M.IsAssociatedFunction.C Self "rsplitn" rsplitn.
     Admitted.
     Global Typeclasses Opaque rsplitn.
     
@@ -3901,7 +3896,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_split_once :
-      M.IsAssociatedFunction.Trait Self "split_once" split_once.
+      M.IsAssociatedFunction.C Self "split_once" split_once.
     Admitted.
     Global Typeclasses Opaque split_once.
     
@@ -4153,7 +4148,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_rsplit_once :
-      M.IsAssociatedFunction.Trait Self "rsplit_once" rsplit_once.
+      M.IsAssociatedFunction.C Self "rsplit_once" rsplit_once.
     Admitted.
     Global Typeclasses Opaque rsplit_once.
     
@@ -4195,8 +4190,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_matches :
-      M.IsAssociatedFunction.Trait Self "matches" matches.
+    Global Instance AssociatedFunction_matches : M.IsAssociatedFunction.C Self "matches" matches.
     Admitted.
     Global Typeclasses Opaque matches.
     
@@ -4237,8 +4231,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_rmatches :
-      M.IsAssociatedFunction.Trait Self "rmatches" rmatches.
+    Global Instance AssociatedFunction_rmatches : M.IsAssociatedFunction.C Self "rmatches" rmatches.
     Admitted.
     Global Typeclasses Opaque rmatches.
     
@@ -4281,7 +4274,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_match_indices :
-      M.IsAssociatedFunction.Trait Self "match_indices" match_indices.
+      M.IsAssociatedFunction.C Self "match_indices" match_indices.
     Admitted.
     Global Typeclasses Opaque match_indices.
     
@@ -4323,7 +4316,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_rmatch_indices :
-      M.IsAssociatedFunction.Trait Self "rmatch_indices" rmatch_indices.
+      M.IsAssociatedFunction.C Self "rmatch_indices" rmatch_indices.
     Admitted.
     Global Typeclasses Opaque rmatch_indices.
     
@@ -4384,7 +4377,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_trim : M.IsAssociatedFunction.Trait Self "trim" trim.
+    Global Instance AssociatedFunction_trim : M.IsAssociatedFunction.C Self "trim" trim.
     Admitted.
     Global Typeclasses Opaque trim.
     
@@ -4446,7 +4439,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_start :
-      M.IsAssociatedFunction.Trait Self "trim_start" trim_start.
+      M.IsAssociatedFunction.C Self "trim_start" trim_start.
     Admitted.
     Global Typeclasses Opaque trim_start.
     
@@ -4507,8 +4500,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_trim_end :
-      M.IsAssociatedFunction.Trait Self "trim_end" trim_end.
+    Global Instance AssociatedFunction_trim_end : M.IsAssociatedFunction.C Self "trim_end" trim_end.
     Admitted.
     Global Typeclasses Opaque trim_end.
     
@@ -4536,7 +4528,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_left :
-      M.IsAssociatedFunction.Trait Self "trim_left" trim_left.
+      M.IsAssociatedFunction.C Self "trim_left" trim_left.
     Admitted.
     Global Typeclasses Opaque trim_left.
     
@@ -4564,7 +4556,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_right :
-      M.IsAssociatedFunction.Trait Self "trim_right" trim_right.
+      M.IsAssociatedFunction.C Self "trim_right" trim_right.
     Admitted.
     Global Typeclasses Opaque trim_right.
     
@@ -4736,7 +4728,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_matches :
-      M.IsAssociatedFunction.Trait Self "trim_matches" trim_matches.
+      M.IsAssociatedFunction.C Self "trim_matches" trim_matches.
     Admitted.
     Global Typeclasses Opaque trim_matches.
     
@@ -4866,7 +4858,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_start_matches :
-      M.IsAssociatedFunction.Trait Self "trim_start_matches" trim_start_matches.
+      M.IsAssociatedFunction.C Self "trim_start_matches" trim_start_matches.
     Admitted.
     Global Typeclasses Opaque trim_start_matches.
     
@@ -4902,7 +4894,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_strip_prefix :
-      M.IsAssociatedFunction.Trait Self "strip_prefix" strip_prefix.
+      M.IsAssociatedFunction.C Self "strip_prefix" strip_prefix.
     Admitted.
     Global Typeclasses Opaque strip_prefix.
     
@@ -4941,7 +4933,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_strip_suffix :
-      M.IsAssociatedFunction.Trait Self "strip_suffix" strip_suffix.
+      M.IsAssociatedFunction.C Self "strip_suffix" strip_suffix.
     Admitted.
     Global Typeclasses Opaque strip_suffix.
     
@@ -5059,7 +5051,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_end_matches :
-      M.IsAssociatedFunction.Trait Self "trim_end_matches" trim_end_matches.
+      M.IsAssociatedFunction.C Self "trim_end_matches" trim_end_matches.
     Admitted.
     Global Typeclasses Opaque trim_end_matches.
     
@@ -5089,7 +5081,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_left_matches :
-      M.IsAssociatedFunction.Trait Self "trim_left_matches" trim_left_matches.
+      M.IsAssociatedFunction.C Self "trim_left_matches" trim_left_matches.
     Admitted.
     Global Typeclasses Opaque trim_left_matches.
     
@@ -5122,7 +5114,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_right_matches :
-      M.IsAssociatedFunction.Trait Self "trim_right_matches" trim_right_matches.
+      M.IsAssociatedFunction.C Self "trim_right_matches" trim_right_matches.
     Admitted.
     Global Typeclasses Opaque trim_right_matches.
     
@@ -5147,7 +5139,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_parse : M.IsAssociatedFunction.Trait Self "parse" parse.
+    Global Instance AssociatedFunction_parse : M.IsAssociatedFunction.C Self "parse" parse.
     Admitted.
     Global Typeclasses Opaque parse.
     
@@ -5188,8 +5180,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_ascii :
-      M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+    Global Instance AssociatedFunction_is_ascii : M.IsAssociatedFunction.C Self "is_ascii" is_ascii.
     Admitted.
     Global Typeclasses Opaque is_ascii.
     
@@ -5236,8 +5227,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_ascii :
-      M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+    Global Instance AssociatedFunction_as_ascii : M.IsAssociatedFunction.C Self "as_ascii" as_ascii.
     Admitted.
     Global Typeclasses Opaque as_ascii.
     
@@ -5287,7 +5277,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_eq_ignore_ascii_case :
-      M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+      M.IsAssociatedFunction.C Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
     Admitted.
     Global Typeclasses Opaque eq_ignore_ascii_case.
     
@@ -5338,7 +5328,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_make_ascii_uppercase :
-      M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+      M.IsAssociatedFunction.C Self "make_ascii_uppercase" make_ascii_uppercase.
     Admitted.
     Global Typeclasses Opaque make_ascii_uppercase.
     
@@ -5389,7 +5379,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_make_ascii_lowercase :
-      M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+      M.IsAssociatedFunction.C Self "make_ascii_lowercase" make_ascii_lowercase.
     Admitted.
     Global Typeclasses Opaque make_ascii_lowercase.
     
@@ -5452,7 +5442,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_ascii_start :
-      M.IsAssociatedFunction.Trait Self "trim_ascii_start" trim_ascii_start.
+      M.IsAssociatedFunction.C Self "trim_ascii_start" trim_ascii_start.
     Admitted.
     Global Typeclasses Opaque trim_ascii_start.
     
@@ -5515,7 +5505,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_ascii_end :
-      M.IsAssociatedFunction.Trait Self "trim_ascii_end" trim_ascii_end.
+      M.IsAssociatedFunction.C Self "trim_ascii_end" trim_ascii_end.
     Admitted.
     Global Typeclasses Opaque trim_ascii_end.
     
@@ -5578,7 +5568,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_trim_ascii :
-      M.IsAssociatedFunction.Trait Self "trim_ascii" trim_ascii.
+      M.IsAssociatedFunction.C Self "trim_ascii" trim_ascii.
     Admitted.
     Global Typeclasses Opaque trim_ascii.
     
@@ -5765,8 +5755,13 @@ Module str.
                                                         [
                                                           M.read (| first |);
                                                           M.read (|
-                                                            M.get_constant
-                                                              "core::char::methods::ESCAPE_ALL"
+                                                            get_associated_constant (|
+                                                              Ty.path
+                                                                "core::char::methods::EscapeDebugExtArgs",
+                                                              "ESCAPE_ALL",
+                                                              Ty.path
+                                                                "core::char::methods::EscapeDebugExtArgs"
+                                                            |)
                                                           |)
                                                         ]
                                                       |)))
@@ -5815,7 +5810,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_escape_debug :
-      M.IsAssociatedFunction.Trait Self "escape_debug" escape_debug.
+      M.IsAssociatedFunction.C Self "escape_debug" escape_debug.
     Admitted.
     Global Typeclasses Opaque escape_debug.
     
@@ -5865,7 +5860,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_escape_default :
-      M.IsAssociatedFunction.Trait Self "escape_default" escape_default.
+      M.IsAssociatedFunction.C Self "escape_default" escape_default.
     Admitted.
     Global Typeclasses Opaque escape_default.
     
@@ -5915,7 +5910,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_escape_unicode :
-      M.IsAssociatedFunction.Trait Self "escape_unicode" escape_unicode.
+      M.IsAssociatedFunction.C Self "escape_unicode" escape_unicode.
     Admitted.
     Global Typeclasses Opaque escape_unicode.
     
@@ -5968,7 +5963,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_substr_range :
-      M.IsAssociatedFunction.Trait Self "substr_range" substr_range.
+      M.IsAssociatedFunction.C Self "substr_range" substr_range.
     Admitted.
     Global Typeclasses Opaque substr_range.
     
@@ -5986,7 +5981,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
   End Impl_str.
@@ -6037,8 +6032,7 @@ Module str.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic
-          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)))
+        ltac:(M.monadic (M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -28,7 +28,7 @@ Module future.
       end.
     
     Global Instance Instance_IsFunction_pending :
-      M.IsFunction.Trait "core::future::pending::pending" pending.
+      M.IsFunction.C "core::future::pending::pending" pending.
     Admitted.
     Global Typeclasses Opaque pending.
     
@@ -111,10 +111,7 @@ Module future.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Pending" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Pending" |) |) |)
                       ]
                     |)
                   |)

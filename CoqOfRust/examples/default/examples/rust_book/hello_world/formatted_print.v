@@ -89,7 +89,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "31 days
+                            M.alloc (| Value.Array [ mk_str (| "31 days
 " |) ] |)
                           |)
                         |)
@@ -145,13 +145,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "Alice, this is Bob. Bob, this is Alice
-"
-                                  |)
-                                ]
+                              Value.Array [ mk_str (| "Alice, this is Bob. Bob, this is Alice
+" |) ]
                             |)
                           |)
                         |)
@@ -208,12 +203,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "the quick brown fox jumps over the lazy dog
-"
-                                  |)
-                                ]
+                                [ mk_str (| "the quick brown fox jumps over the lazy dog
+" |) ]
                             |)
                           |)
                         |)
@@ -269,8 +260,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Base 10:               69420
+                              Value.Array [ mk_str (| "Base 10:               69420
 " |) ]
                             |)
                           |)
@@ -328,11 +318,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Base 2 (binary):       " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Base 2 (binary):       " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -399,11 +386,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Base 8 (octal):        " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Base 8 (octal):        " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -470,11 +454,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Base 16 (hexadecimal): " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Base 16 (hexadecimal): " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -541,11 +522,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Base 16 (hexadecimal): " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Base 16 (hexadecimal): " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -610,11 +588,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -720,11 +695,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -830,11 +802,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -961,8 +930,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "My name is Bond, James Bond
+                              Value.Array [ mk_str (| "My name is Bond, James Bond
 " |) ]
                             |)
                           |)
@@ -1020,11 +988,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -1124,7 +1089,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "formatted_print::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "formatted_print::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 

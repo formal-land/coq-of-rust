@@ -85,8 +85,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Rev" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Rev" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -141,7 +141,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+          M.IsAssociatedFunction.C (Self T) "new" (new T).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_rev_Rev_T.

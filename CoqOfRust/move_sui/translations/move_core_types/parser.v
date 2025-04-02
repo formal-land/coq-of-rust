@@ -683,10 +683,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -708,10 +705,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -733,10 +727,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -758,10 +749,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -784,10 +772,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -810,10 +795,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256Type" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256Type" |) |) |)
                         ]
                       |)
                     |)));
@@ -836,10 +818,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BoolType" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BoolType" |) |) |)
                         ]
                       |)
                     |)));
@@ -862,10 +841,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AddressType" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AddressType" |) |) |)
                         ]
                       |)
                     |)));
@@ -888,10 +864,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VectorType" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VectorType" |) |) |)
                         ]
                       |)
                     |)));
@@ -914,10 +887,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SignerType" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SignerType" |) |) |)
                         ]
                       |)
                     |)));
@@ -945,10 +915,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Whitespace" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Whitespace" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -980,10 +947,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Name" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Name" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1015,10 +979,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Address" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Address" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1050,10 +1011,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1085,10 +1043,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1120,10 +1075,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1155,10 +1107,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1190,10 +1139,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1225,10 +1171,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1260,10 +1203,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bytes" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1289,10 +1229,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "True" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "True" |) |) |)
                         ]
                       |)
                     |)));
@@ -1314,10 +1251,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "False" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "False" |) |) |)
                         ]
                       |)
                     |)));
@@ -1340,10 +1274,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ColonColon" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ColonColon" |) |) |)
                         ]
                       |)
                     |)));
@@ -1365,10 +1296,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Lt" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lt" |) |) |)
                         ]
                       |)
                     |)));
@@ -1390,10 +1318,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Gt" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Gt" |) |) |)
                         ]
                       |)
                     |)));
@@ -1415,10 +1340,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Comma" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Comma" |) |) |)
                         ]
                       |)
                     |)));
@@ -1440,10 +1362,7 @@ Module parser.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EOF" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EOF" |) |) |)
                         ]
                       |)
                     |)))
@@ -1498,7 +1417,7 @@ Module parser.
       end.
     
     Global Instance AssociatedFunction_is_whitespace :
-      M.IsAssociatedFunction.Trait Self "is_whitespace" is_whitespace.
+      M.IsAssociatedFunction.C Self "is_whitespace" is_whitespace.
     Admitted.
     Global Typeclasses Opaque is_whitespace.
   End Impl_move_core_types_parser_Token.
@@ -1558,12 +1477,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u8" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u8" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1582,12 +1496,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u16" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u16" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1606,12 +1515,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u32" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u32" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1630,12 +1534,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u64" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u64" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1654,12 +1553,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u128" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u128" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1678,12 +1572,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "u256" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u256" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1702,12 +1591,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "bool" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bool" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1732,7 +1616,7 @@ Module parser.
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "address" |) |)
+                                  M.deref (| mk_str (| "address" |) |)
                                 |)
                               ]
                             |)
@@ -1756,11 +1640,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "vector" |) |)
-                                |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vector" |) |) |)
                               ]
                             |)
                           |)));
@@ -1780,12 +1660,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "true" |) |)
-                                |)
-                              ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "true" |) |) |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1804,11 +1679,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "false" |) |)
-                                |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "false" |) |) |)
                               ]
                             |)
                           |)));
@@ -1831,11 +1702,7 @@ Module parser.
                                 [],
                                 []
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "signer" |) |)
-                                |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "signer" |) |) |)
                               ]
                             |)
                           |)));
@@ -2042,9 +1909,8 @@ Module parser.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Invalid token. Expected a name but got "
+                                                                                  mk_str (|
+                                                                                    "Invalid token. Expected a name but got "
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -2117,7 +1983,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_token_as_name :
-    M.IsFunction.Trait "move_core_types::parser::token_as_name" token_as_name.
+    M.IsFunction.C "move_core_types::parser::token_as_name" token_as_name.
   Admitted.
   Global Typeclasses Opaque token_as_name.
   
@@ -2158,61 +2024,61 @@ Module parser.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.String "u8" |) in
+                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u8" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U8Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.String "u16" |) in
+                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u16" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U16Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.String "u32" |) in
+                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u32" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U32Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.String "u64" |) in
+                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u64" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U64Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "u128" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u128" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U128Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "u256" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u256" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U256Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "bool" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "bool" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::BoolType" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "address" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "address" |) |) in
                   M.alloc (|
                     Value.StructTuple "move_core_types::parser::Token::AddressType" []
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "vector" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "vector" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::VectorType" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "true" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "true" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::True" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "false" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "false" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::False" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), Value.String "signer" |) in
+                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "signer" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::SignerType" [] |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2226,7 +2092,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_name_token :
-    M.IsFunction.Trait "move_core_types::parser::name_token" name_token.
+    M.IsFunction.C "move_core_types::parser::name_token" name_token.
   Admitted.
   Global Typeclasses Opaque name_token.
   
@@ -2555,7 +2421,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u8"
+                                                                        mk_str (| "u8" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2567,7 +2433,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u16"
+                                                                        mk_str (| "u16" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2579,7 +2445,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u32"
+                                                                        mk_str (| "u32" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2591,7 +2457,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u64"
+                                                                        mk_str (| "u64" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2603,7 +2469,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u128"
+                                                                        mk_str (| "u128" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2615,7 +2481,7 @@ Module parser.
                                                                     (let _ :=
                                                                       M.is_constant_or_break_match (|
                                                                         M.read (| γ |),
-                                                                        Value.String "u256"
+                                                                        mk_str (| "u256" |)
                                                                       |) in
                                                                     M.alloc (|
                                                                       Value.StructTuple
@@ -2668,9 +2534,8 @@ Module parser.
                                                                                                     M.alloc (|
                                                                                                       Value.Array
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "invalid suffix"
+                                                                                                          mk_str (|
+                                                                                                            "invalid suffix"
                                                                                                           |)
                                                                                                         ]
                                                                                                     |)
@@ -2756,7 +2621,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_next_number :
-    M.IsFunction.Trait "move_core_types::parser::next_number" next_number.
+    M.IsFunction.C "move_core_types::parser::next_number" next_number.
   Admitted.
   Global Typeclasses Opaque next_number.
   
@@ -3103,9 +2968,8 @@ Module parser.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "unrecognized token"
+                                                                                        mk_str (|
+                                                                                          "unrecognized token"
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -3702,9 +3566,8 @@ Module parser.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "unrecognized token"
+                                                                                        mk_str (|
+                                                                                          "unrecognized token"
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -4172,9 +4035,8 @@ Module parser.
                                                                                         M.alloc (|
                                                                                           Value.Array
                                                                                             [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "unrecognized token"
+                                                                                              mk_str (|
+                                                                                                "unrecognized token"
                                                                                               |)
                                                                                             ]
                                                                                         |)
@@ -4498,9 +4360,8 @@ Module parser.
                                                                                         M.alloc (|
                                                                                           Value.Array
                                                                                             [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "unrecognized token"
+                                                                                              mk_str (|
+                                                                                                "unrecognized token"
                                                                                               |)
                                                                                             ]
                                                                                         |)
@@ -5062,9 +4923,8 @@ Module parser.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "unrecognized token"
+                                                                                mk_str (|
+                                                                                  "unrecognized token"
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -5097,7 +4957,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_next_token :
-    M.IsFunction.Trait "move_core_types::parser::next_token" next_token.
+    M.IsFunction.C "move_core_types::parser::next_token" next_token.
   Admitted.
   Global Typeclasses Opaque next_token.
   
@@ -5413,7 +5273,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_tokenize :
-    M.IsFunction.Trait "move_core_types::parser::tokenize" tokenize.
+    M.IsFunction.C "move_core_types::parser::tokenize" tokenize.
   Admitted.
   Global Typeclasses Opaque tokenize.
   
@@ -5479,7 +5339,7 @@ Module parser.
     
     Global Instance AssociatedFunction_new :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+      M.IsAssociatedFunction.C (Self I) "new" (new I).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5584,9 +5444,8 @@ Module parser.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "out of tokens, this should not happen"
+                                                              mk_str (|
+                                                                "out of tokens, this should not happen"
                                                               |)
                                                             ]
                                                         |)
@@ -5614,7 +5473,7 @@ Module parser.
     
     Global Instance AssociatedFunction_next :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "next" (next I).
+      M.IsAssociatedFunction.C (Self I) "next" (next I).
     Admitted.
     Global Typeclasses Opaque next.
     
@@ -5656,7 +5515,7 @@ Module parser.
     
     Global Instance AssociatedFunction_peek :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+      M.IsAssociatedFunction.C (Self I) "peek" (peek I).
     Admitted.
     Global Typeclasses Opaque peek.
     
@@ -5868,13 +5727,10 @@ Module parser.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "expected token "
+                                                                        mk_str (|
+                                                                          "expected token "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String ", got "
-                                                                        |)
+                                                                        mk_str (| ", got " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -5970,7 +5826,7 @@ Module parser.
     
     Global Instance AssociatedFunction_consume :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "consume" (consume I).
+      M.IsAssociatedFunction.C (Self I) "consume" (consume I).
     Admitted.
     Global Typeclasses Opaque consume.
     
@@ -6657,7 +6513,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_comma_list :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_comma_list" (parse_comma_list I).
+      M.IsAssociatedFunction.C (Self I) "parse_comma_list" (parse_comma_list I).
     Admitted.
     Global Typeclasses Opaque parse_comma_list.
     
@@ -6865,13 +6721,11 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "unexpected token "
+                                                                          mk_str (|
+                                                                            "unexpected token "
                                                                           |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              ", expected string"
+                                                                          mk_str (|
+                                                                            ", expected string"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -6942,7 +6796,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_string :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_string" (parse_string I).
+      M.IsAssociatedFunction.C (Self I) "parse_string" (parse_string I).
     Admitted.
     Global Typeclasses Opaque parse_string.
     
@@ -9405,13 +9259,11 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "unexpected token "
+                                                                          mk_str (|
+                                                                            "unexpected token "
                                                                           |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              ", expected type tag"
+                                                                          mk_str (|
+                                                                            ", expected type tag"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -9482,7 +9334,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_type_tag :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait (Self I) "parse_type_tag" (parse_type_tag I).
+      M.IsAssociatedFunction.C (Self I) "parse_type_tag" (parse_type_tag I).
     Admitted.
     Global Typeclasses Opaque parse_type_tag.
     
@@ -9761,9 +9613,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -9966,9 +9816,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -10171,9 +10019,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -10376,9 +10222,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -10581,9 +10425,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -10786,9 +10628,7 @@ Module parser.
                                                                 Value.UnicodeChar 95;
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (| Value.String "" |)
-                                                                  |)
+                                                                  M.deref (| mk_str (| "" |) |)
                                                                 |)
                                                               ]
                                                             |)
@@ -11265,13 +11105,11 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "unexpected token "
+                                                                          mk_str (|
+                                                                            "unexpected token "
                                                                           |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              ", expected transaction argument"
+                                                                          mk_str (|
+                                                                            ", expected transaction argument"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -11342,10 +11180,7 @@ Module parser.
     
     Global Instance AssociatedFunction_parse_transaction_argument :
       forall (I : Ty.t),
-      M.IsAssociatedFunction.Trait
-        (Self I)
-        "parse_transaction_argument"
-        (parse_transaction_argument I).
+      M.IsAssociatedFunction.C (Self I) "parse_transaction_argument" (parse_transaction_argument I).
     Admitted.
     Global Typeclasses Opaque parse_transaction_argument.
   End Impl_move_core_types_parser_Parser_I.
@@ -12017,8 +11852,7 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_parse :
-    M.IsFunction.Trait "move_core_types::parser::parse" parse.
+  Global Instance Instance_IsFunction_parse : M.IsFunction.C "move_core_types::parser::parse" parse.
   Admitted.
   Global Typeclasses Opaque parse.
   
@@ -12302,7 +12136,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_string_list :
-    M.IsFunction.Trait "move_core_types::parser::parse_string_list" parse_string_list.
+    M.IsFunction.C "move_core_types::parser::parse_string_list" parse_string_list.
   Admitted.
   Global Typeclasses Opaque parse_string_list.
   
@@ -12601,7 +12435,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_type_tags :
-    M.IsFunction.Trait "move_core_types::parser::parse_type_tags" parse_type_tags.
+    M.IsFunction.C "move_core_types::parser::parse_type_tags" parse_type_tags.
   Admitted.
   Global Typeclasses Opaque parse_type_tags.
   
@@ -12742,7 +12576,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_type_tag :
-    M.IsFunction.Trait "move_core_types::parser::parse_type_tag" parse_type_tag.
+    M.IsFunction.C "move_core_types::parser::parse_type_tag" parse_type_tag.
   Admitted.
   Global Typeclasses Opaque parse_type_tag.
   
@@ -13053,7 +12887,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_transaction_arguments :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_core_types::parser::parse_transaction_arguments"
       parse_transaction_arguments.
   Admitted.
@@ -13203,9 +13037,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_transaction_argument :
-    M.IsFunction.Trait
-      "move_core_types::parser::parse_transaction_argument"
-      parse_transaction_argument.
+    M.IsFunction.C "move_core_types::parser::parse_transaction_argument" parse_transaction_argument.
   Admitted.
   Global Typeclasses Opaque parse_transaction_argument.
   
@@ -13492,14 +13324,10 @@ Module parser.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "invalid struct tag: "
+                                                                                  mk_str (|
+                                                                                    "invalid struct tag: "
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      ", "
-                                                                                  |)
+                                                                                  mk_str (| ", " |)
                                                                                 ]
                                                                             |)
                                                                           |)
@@ -13737,9 +13565,8 @@ Module parser.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "invalid struct tag: "
+                                                                    mk_str (|
+                                                                      "invalid struct tag: "
                                                                     |)
                                                                   ]
                                                               |)
@@ -13810,7 +13637,7 @@ Module parser.
     end.
   
   Global Instance Instance_IsFunction_parse_struct_tag :
-    M.IsFunction.Trait "move_core_types::parser::parse_struct_tag" parse_struct_tag.
+    M.IsFunction.C "move_core_types::parser::parse_struct_tag" parse_struct_tag.
   Admitted.
   Global Typeclasses Opaque parse_struct_tag.
 End parser.

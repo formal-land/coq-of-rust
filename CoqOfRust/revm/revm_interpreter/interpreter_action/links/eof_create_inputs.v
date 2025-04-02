@@ -1,16 +1,18 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
-Require Import revm.links.dependencies.
-Require revm.revm_bytecode.links.eof.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
+Require Import revm.revm_bytecode.links.eof.
 
 Module EOFCreateKind.
   Inductive t : Set :=
   | Tx
-    (initdata : alloy_primitives.links.bytes_.Bytes.t)
+    (initdata : Bytes.t)
   | Opcode
     (initcode : revm_bytecode.links.eof.Eof.t)
-    (input : alloy_primitives.links.bytes_.Bytes.t)
-    (created_address : alloy_primitives.bits.links.address.Address.t)
+    (input : Bytes.t)
+    (created_address : Address.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -33,10 +35,10 @@ End EOFCreateKind.
 
 Module EOFCreateInputs.
   Record t : Set := {
-    caller: alloy_primitives.bits.links.address.Address.t;
-    value: U256.t;
+    caller: Address.t;
+    value: aliases.U256.t;
     gas_limit: U64.t;
-    kind: revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateKind.t;
+    kind: EOFCreateKind.t;
   }.
 
   Global Instance IsLink : Link t := {

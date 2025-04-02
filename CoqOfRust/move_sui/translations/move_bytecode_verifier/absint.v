@@ -95,10 +95,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Changed"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Changed" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Changed" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -109,10 +106,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Unchanged"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Unchanged" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unchanged" |) |) |)
                         |)))
                   ]
                 |)
@@ -199,36 +193,49 @@ Module absint.
           Ty.path "alloc::alloc::Global"
         ]).
   
-  Definition value_ANALYZE_FUNCTION_BASE_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  Definition value_ANALYZE_FUNCTION_BASE_COST
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
-  Axiom Constant_value_ANALYZE_FUNCTION_BASE_COST :
-    (M.get_constant "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST") =
+  Global Instance Instance_IsConstant_value_ANALYZE_FUNCTION_BASE_COST :
+    M.IsFunction.C
+      "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST"
       value_ANALYZE_FUNCTION_BASE_COST.
-  Global Hint Rewrite Constant_value_ANALYZE_FUNCTION_BASE_COST : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_ANALYZE_FUNCTION_BASE_COST.
   
-  Definition value_EXECUTE_BLOCK_BASE_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  Definition value_EXECUTE_BLOCK_BASE_COST
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
-  Axiom Constant_value_EXECUTE_BLOCK_BASE_COST :
-    (M.get_constant "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST") =
+  Global Instance Instance_IsConstant_value_EXECUTE_BLOCK_BASE_COST :
+    M.IsFunction.C
+      "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST"
       value_EXECUTE_BLOCK_BASE_COST.
-  Global Hint Rewrite Constant_value_EXECUTE_BLOCK_BASE_COST : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_EXECUTE_BLOCK_BASE_COST.
   
-  Definition value_PER_BACKEDGE_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  Definition value_PER_BACKEDGE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
-  Axiom Constant_value_PER_BACKEDGE_COST :
-    (M.get_constant "move_bytecode_verifier::absint::PER_BACKEDGE_COST") = value_PER_BACKEDGE_COST.
-  Global Hint Rewrite Constant_value_PER_BACKEDGE_COST : constant_rewrites.
+  Global Instance Instance_IsConstant_value_PER_BACKEDGE_COST :
+    M.IsFunction.C "move_bytecode_verifier::absint::PER_BACKEDGE_COST" value_PER_BACKEDGE_COST.
+  Admitted.
+  Global Typeclasses Opaque value_PER_BACKEDGE_COST.
   
-  Definition value_PER_SUCCESSOR_COST : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  Definition value_PER_SUCCESSOR_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
-  Axiom Constant_value_PER_SUCCESSOR_COST :
-    (M.get_constant "move_bytecode_verifier::absint::PER_SUCCESSOR_COST") =
-      value_PER_SUCCESSOR_COST.
-  Global Hint Rewrite Constant_value_PER_SUCCESSOR_COST : constant_rewrites.
+  Global Instance Instance_IsConstant_value_PER_SUCCESSOR_COST :
+    M.IsFunction.C "move_bytecode_verifier::absint::PER_SUCCESSOR_COST" value_PER_SUCCESSOR_COST.
+  Admitted.
+  Global Typeclasses Opaque value_PER_SUCCESSOR_COST.
   
   (* Trait *)
   (* Empty module 'TransferFunctions' *)
@@ -300,8 +307,10 @@ Module absint.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
-                                M.get_constant
-                                  "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST"
+                                get_constant (|
+                                  "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST",
+                                  Ty.path "u128"
+                                |)
                               |)
                             ]
                           |)
@@ -1199,8 +1208,10 @@ Module absint.
                                                                         "move_bytecode_verifier_meter::Scope::Function"
                                                                         [];
                                                                       M.read (|
-                                                                        M.get_constant
-                                                                          "move_bytecode_verifier::absint::PER_SUCCESSOR_COST"
+                                                                        get_constant (|
+                                                                          "move_bytecode_verifier::absint::PER_SUCCESSOR_COST",
+                                                                          Ty.path "u128"
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1747,8 +1758,11 @@ Module absint.
                                                                                                       "move_bytecode_verifier_meter::Scope::Function"
                                                                                                       [];
                                                                                                     M.read (|
-                                                                                                      M.get_constant
-                                                                                                        "move_bytecode_verifier::absint::PER_BACKEDGE_COST"
+                                                                                                      get_constant (|
+                                                                                                        "move_bytecode_verifier::absint::PER_BACKEDGE_COST",
+                                                                                                        Ty.path
+                                                                                                          "u128"
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -2100,8 +2114,10 @@ Module absint.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
-                                M.get_constant
-                                  "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST"
+                                get_constant (|
+                                  "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST",
+                                  Ty.path "u128"
+                                |)
                               |)
                             ]
                           |)
@@ -2883,7 +2899,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2907,7 +2923,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_index : M.IsAssociatedFunction.Trait Self "index" index.
+    Global Instance AssociatedFunction_index : M.IsAssociatedFunction.C Self "index" index.
     Admitted.
     Global Typeclasses Opaque index.
     
@@ -2936,7 +2952,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.C Self "code" code.
     Admitted.
     Global Typeclasses Opaque code.
     
@@ -2966,7 +2982,7 @@ Module absint.
       end.
     
     Global Instance AssociatedFunction_parameters :
-      M.IsAssociatedFunction.Trait Self "parameters" parameters.
+      M.IsAssociatedFunction.C Self "parameters" parameters.
     Admitted.
     Global Typeclasses Opaque parameters.
     
@@ -2995,8 +3011,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_return_ :
-      M.IsAssociatedFunction.Trait Self "return_" return_.
+    Global Instance AssociatedFunction_return_ : M.IsAssociatedFunction.C Self "return_" return_.
     Admitted.
     Global Typeclasses Opaque return_.
     
@@ -3025,7 +3040,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_locals : M.IsAssociatedFunction.Trait Self "locals" locals.
+    Global Instance AssociatedFunction_locals : M.IsAssociatedFunction.C Self "locals" locals.
     Admitted.
     Global Typeclasses Opaque locals.
     
@@ -3055,7 +3070,7 @@ Module absint.
       end.
     
     Global Instance AssociatedFunction_type_parameters :
-      M.IsAssociatedFunction.Trait Self "type_parameters" type_parameters.
+      M.IsAssociatedFunction.C Self "type_parameters" type_parameters.
     Admitted.
     Global Typeclasses Opaque type_parameters.
     
@@ -3085,7 +3100,7 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_cfg : M.IsAssociatedFunction.Trait Self "cfg" cfg.
+    Global Instance AssociatedFunction_cfg : M.IsAssociatedFunction.C Self "cfg" cfg.
     Admitted.
     Global Typeclasses Opaque cfg.
   End Impl_move_bytecode_verifier_absint_FunctionContext.

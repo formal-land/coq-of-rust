@@ -540,7 +540,7 @@ Module control_flow.
     end.
   
   Global Instance Instance_IsFunction_verify_function :
-    M.IsFunction.Trait "move_bytecode_verifier::control_flow::verify_function" verify_function.
+    M.IsFunction.C "move_bytecode_verifier::control_flow::verify_function" verify_function.
   Admitted.
   Global Typeclasses Opaque verify_function.
   
@@ -779,9 +779,7 @@ Module control_flow.
     end.
   
   Global Instance Instance_IsFunction_verify_fallthrough :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::control_flow::verify_fallthrough"
-      verify_fallthrough.
+    M.IsFunction.C "move_bytecode_verifier::control_flow::verify_fallthrough" verify_fallthrough.
   Admitted.
   Global Typeclasses Opaque verify_fallthrough.
   
@@ -2306,9 +2304,7 @@ Module control_flow.
     end.
   
   Global Instance Instance_IsFunction_verify_reducibility :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::control_flow::verify_reducibility"
-      verify_reducibility.
+    M.IsFunction.C "move_bytecode_verifier::control_flow::verify_reducibility" verify_reducibility.
   Admitted.
   Global Typeclasses Opaque verify_reducibility.
 End control_flow.

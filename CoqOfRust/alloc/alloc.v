@@ -5,33 +5,34 @@ Module alloc.
   Parameter __rust_alloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction___rust_alloc :
-    M.IsFunction.Trait "alloc::alloc::__rust_alloc" __rust_alloc.
+    M.IsFunction.C "alloc::alloc::__rust_alloc" __rust_alloc.
   Admitted.
   
   Parameter __rust_dealloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction___rust_dealloc :
-    M.IsFunction.Trait "alloc::alloc::__rust_dealloc" __rust_dealloc.
+    M.IsFunction.C "alloc::alloc::__rust_dealloc" __rust_dealloc.
   Admitted.
   
   Parameter __rust_realloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction___rust_realloc :
-    M.IsFunction.Trait "alloc::alloc::__rust_realloc" __rust_realloc.
+    M.IsFunction.C "alloc::alloc::__rust_realloc" __rust_realloc.
   Admitted.
   
   Parameter __rust_alloc_zeroed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction___rust_alloc_zeroed :
-    M.IsFunction.Trait "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
+    M.IsFunction.C "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
   Admitted.
   
-  Parameter __rust_no_alloc_shim_is_unstable : Value.t.
+  Parameter __rust_no_alloc_shim_is_unstable : PolymorphicFunction.t.
   
-  Axiom Constant___rust_no_alloc_shim_is_unstable :
-    (M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable") =
+  Global Instance Instance_IsConstant___rust_no_alloc_shim_is_unstable :
+    M.IsFunction.C
+      "alloc::alloc::__rust_no_alloc_shim_is_unstable"
       __rust_no_alloc_shim_is_unstable.
-  Global Hint Rewrite Constant___rust_no_alloc_shim_is_unstable : constant_rewrites.
+  Admitted.
   
   (* StructTuple
     {
@@ -112,7 +113,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Global" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Global" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -157,7 +158,10 @@ Module alloc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable"
+                            get_constant (|
+                              "alloc::alloc::__rust_no_alloc_shim_is_unstable",
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
+                            |)
                           |)
                         |)
                       |)
@@ -198,7 +202,7 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_alloc : M.IsFunction.Trait "alloc::alloc::alloc" alloc.
+  Global Instance Instance_IsFunction_alloc : M.IsFunction.C "alloc::alloc::alloc" alloc.
   Admitted.
   Global Typeclasses Opaque alloc.
   
@@ -238,7 +242,7 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_dealloc : M.IsFunction.Trait "alloc::alloc::dealloc" dealloc.
+  Global Instance Instance_IsFunction_dealloc : M.IsFunction.C "alloc::alloc::dealloc" dealloc.
   Admitted.
   Global Typeclasses Opaque dealloc.
   
@@ -280,7 +284,7 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_realloc : M.IsFunction.Trait "alloc::alloc::realloc" realloc.
+  Global Instance Instance_IsFunction_realloc : M.IsFunction.C "alloc::alloc::realloc" realloc.
   Admitted.
   Global Typeclasses Opaque realloc.
   
@@ -314,7 +318,10 @@ Module alloc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable"
+                            get_constant (|
+                              "alloc::alloc::__rust_no_alloc_shim_is_unstable",
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
+                            |)
                           |)
                         |)
                       |)
@@ -356,7 +363,7 @@ Module alloc.
     end.
   
   Global Instance Instance_IsFunction_alloc_zeroed :
-    M.IsFunction.Trait "alloc::alloc::alloc_zeroed" alloc_zeroed.
+    M.IsFunction.C "alloc::alloc::alloc_zeroed" alloc_zeroed.
   Admitted.
   Global Typeclasses Opaque alloc_zeroed.
   
@@ -696,7 +703,7 @@ Module alloc.
       end.
     
     Global Instance AssociatedFunction_alloc_impl :
-      M.IsAssociatedFunction.Trait Self "alloc_impl" alloc_impl.
+      M.IsAssociatedFunction.C Self "alloc_impl" alloc_impl.
     Admitted.
     Global Typeclasses Opaque alloc_impl.
     
@@ -831,9 +838,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -1472,7 +1478,7 @@ Module alloc.
       end.
     
     Global Instance AssociatedFunction_grow_impl :
-      M.IsAssociatedFunction.Trait Self "grow_impl" grow_impl.
+      M.IsAssociatedFunction.C Self "grow_impl" grow_impl.
     Admitted.
     Global Typeclasses Opaque grow_impl.
   End Impl_alloc_alloc_Global.
@@ -1822,9 +1828,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -2556,14 +2561,14 @@ Module alloc.
     end.
   
   Global Instance Instance_IsFunction_exchange_malloc :
-    M.IsFunction.Trait "alloc::alloc::exchange_malloc" exchange_malloc.
+    M.IsFunction.C "alloc::alloc::exchange_malloc" exchange_malloc.
   Admitted.
   Global Typeclasses Opaque exchange_malloc.
   
   Parameter __rust_alloc_error_handler : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction___rust_alloc_error_handler :
-    M.IsFunction.Trait "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
+    M.IsFunction.C "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
   Admitted.
   
   (*
@@ -2615,7 +2620,7 @@ Module alloc.
     end.
   
   Global Instance Instance_IsFunction_handle_alloc_error :
-    M.IsFunction.Trait "alloc::alloc::handle_alloc_error" handle_alloc_error.
+    M.IsFunction.C "alloc::alloc::handle_alloc_error" handle_alloc_error.
   Admitted.
   Global Typeclasses Opaque handle_alloc_error.
   
@@ -2654,9 +2659,7 @@ Module alloc.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "allocation failed" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "allocation failed" |) ] |)
                               |)
                             |)
                           |)
@@ -2670,7 +2673,7 @@ Module alloc.
       end.
     
     Global Instance Instance_IsFunction_ct_error :
-      M.IsFunction.Trait "alloc::alloc::handle_alloc_error::ct_error" ct_error.
+      M.IsFunction.C "alloc::alloc::handle_alloc_error::ct_error" ct_error.
     Admitted.
     Global Typeclasses Opaque ct_error.
     
@@ -2716,7 +2719,7 @@ Module alloc.
       end.
     
     Global Instance Instance_IsFunction_rt_error :
-      M.IsFunction.Trait "alloc::alloc::handle_alloc_error::rt_error" rt_error.
+      M.IsFunction.C "alloc::alloc::handle_alloc_error::rt_error" rt_error.
     Admitted.
     Global Typeclasses Opaque rt_error.
   End handle_alloc_error.
@@ -2760,8 +2763,10 @@ Module alloc.
                             M.read (|
                               M.deref (|
                                 M.read (|
-                                  M.get_constant
-                                    "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
+                                  get_constant (|
+                                    "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic",
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
+                                  |)
                                 |)
                               |)
                             |),
@@ -2792,8 +2797,8 @@ Module alloc.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "memory allocation of " |);
-                                          M.read (| Value.String " bytes failed" |)
+                                          mk_str (| "memory allocation of " |);
+                                          mk_str (| " bytes failed" |)
                                         ]
                                     |)
                                   |)
@@ -2857,8 +2862,8 @@ Module alloc.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "memory allocation of " |);
-                                          M.read (| Value.String " bytes failed" |)
+                                          mk_str (| "memory allocation of " |);
+                                          mk_str (| " bytes failed" |)
                                         ]
                                     |)
                                   |)
@@ -2905,18 +2910,18 @@ Module alloc.
       end.
     
     Global Instance Instance_IsFunction___rdl_oom :
-      M.IsFunction.Trait "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
+      M.IsFunction.C "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
     Admitted.
     Global Typeclasses Opaque __rdl_oom.
     
     Module __rdl_oom.
-      Parameter __rust_alloc_error_handler_should_panic : Value.t.
+      Parameter __rust_alloc_error_handler_should_panic : PolymorphicFunction.t.
       
-      Axiom Constant___rust_alloc_error_handler_should_panic :
-        (M.get_constant
-            "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic") =
+      Global Instance Instance_IsConstant___rust_alloc_error_handler_should_panic :
+        M.IsFunction.C
+          "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
           __rust_alloc_error_handler_should_panic.
-      Global Hint Rewrite Constant___rust_alloc_error_handler_should_panic : constant_rewrites.
+      Admitted.
     End __rdl_oom.
   End __alloc_error_handler.
 End alloc.

@@ -14,7 +14,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "diverging_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "diverging_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -35,12 +35,12 @@ Module main.
             [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
-          [ M.read (| Value.String "This call never returns." |) ]
+          [ mk_str (| "This call never returns." |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "diverging_functions::main::foo" foo.
+  Global Instance Instance_IsFunction_foo : M.IsFunction.C "diverging_functions::main::foo" foo.
   Admitted.
   Global Typeclasses Opaque foo.
 End main.

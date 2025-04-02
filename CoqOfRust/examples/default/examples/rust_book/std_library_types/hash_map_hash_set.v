@@ -289,7 +289,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         Ty.path "never",
                         M.get_function (| "core::panicking::panic", [], [] |),
-                        [ M.read (| Value.String "assertion failed: a.insert(4)" |) ]
+                        [ mk_str (| "assertion failed: a.insert(4)" |) ]
                       |)
                     |)
                   |)));
@@ -339,7 +339,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         Ty.path "never",
                         M.get_function (| "core::panicking::panic", [], [] |),
-                        [ M.read (| Value.String "assertion failed: a.contains(&4)" |) ]
+                        [ mk_str (| "assertion failed: a.contains(&4)" |) ]
                       |)
                     |)
                   |)));
@@ -383,11 +383,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "A: " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "A: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -452,11 +449,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "B: " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "B: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -521,12 +515,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Union: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Union: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -665,12 +655,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Difference: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Difference: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -812,12 +798,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Intersection: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Intersection: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -960,11 +942,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Symmetric Difference: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Symmetric Difference: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1089,6 +1068,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hash_map_hash_set::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "hash_map_hash_set::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -26,5 +26,5 @@ Axiom IsDiscriminant_Temperature_Fahrenheit :
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match_guards::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "match_guards::main" main.
 Admitted.

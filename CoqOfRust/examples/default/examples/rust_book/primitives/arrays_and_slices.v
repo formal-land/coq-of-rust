@@ -36,11 +36,8 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "first element of the slice: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "first element of the slice: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -110,11 +107,8 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "the slice has " |);
-                                  M.read (| Value.String " elements
-" |)
-                                ]
+                                [ mk_str (| "the slice has " |); mk_str (| " elements
+" |) ]
                             |)
                           |)
                         |)
@@ -180,7 +174,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_analyze_slice :
-  M.IsFunction.Trait "arrays_and_slices::analyze_slice" analyze_slice.
+  M.IsFunction.C "arrays_and_slices::analyze_slice" analyze_slice.
 Admitted.
 Global Typeclasses Opaque analyze_slice.
 
@@ -278,11 +272,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "first element of the array: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "first element of the array: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -352,11 +343,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "second element of the array: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "second element of the array: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -426,11 +414,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "number of elements in array: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "number of elements in array: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -507,12 +492,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "array occupies " |);
-                                  M.read (| Value.String " bytes
-" |)
-                                ]
+                              Value.Array [ mk_str (| "array occupies " |); mk_str (| " bytes
+" |) ]
                             |)
                           |)
                         |)
@@ -600,8 +581,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "borrow the whole array as a slice
+                              Value.Array [ mk_str (| "borrow the whole array as a slice
 " |) ]
                             |)
                           |)
@@ -644,12 +624,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "borrow a section of the array as a slice
-"
-                                  |)
-                                ]
+                                [ mk_str (| "borrow a section of the array as a slice
+" |) ]
                             |)
                           |)
                         |)
@@ -1148,9 +1124,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (| Value.String "" |);
-                                                                M.read (| Value.String ": " |);
-                                                                M.read (| Value.String "
+                                                                mk_str (| "" |);
+                                                                mk_str (| ": " |);
+                                                                mk_str (| "
 " |)
                                                               ]
                                                           |)
@@ -1253,13 +1229,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String "Slow down! "
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String " is too far!
-"
-                                                                |)
+                                                                mk_str (| "Slow down! " |);
+                                                                mk_str (| " is too far!
+" |)
                                                               ]
                                                           |)
                                                         |)
@@ -1317,6 +1289,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "arrays_and_slices::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "arrays_and_slices::main" main.
 Admitted.
 Global Typeclasses Opaque main.

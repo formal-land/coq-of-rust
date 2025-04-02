@@ -113,11 +113,8 @@ Module char.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "DecodeUtf16" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DecodeUtf16" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -131,7 +128,7 @@ Module char.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "buf" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "buf" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -196,11 +193,8 @@ Module char.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "DecodeUtf16Error" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DecodeUtf16Error" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -407,7 +401,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_decode_utf16 :
-      M.IsFunction.Trait "core::char::decode::decode_utf16" decode_utf16.
+      M.IsFunction.C "core::char::decode::decode_utf16" decode_utf16.
     Admitted.
     Global Typeclasses Opaque decode_utf16.
     
@@ -1274,7 +1268,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_unpaired_surrogate :
-        M.IsAssociatedFunction.Trait Self "unpaired_surrogate" unpaired_surrogate.
+        M.IsAssociatedFunction.C Self "unpaired_surrogate" unpaired_surrogate.
       Admitted.
       Global Typeclasses Opaque unpaired_surrogate.
     End Impl_core_char_decode_DecodeUtf16Error.
@@ -1315,9 +1309,7 @@ Module char.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (|
-                            Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
-                          |)
+                          M.alloc (| Value.Array [ mk_str (| "unpaired surrogate found: " |) ] |)
                         |)
                       |)
                     |);
@@ -1387,10 +1379,7 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "unpaired surrogate found" |) |)
-            |)))
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "unpaired surrogate found" |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

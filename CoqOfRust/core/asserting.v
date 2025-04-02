@@ -69,7 +69,7 @@ Module asserting.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "N/A" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "N/A" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -205,10 +205,7 @@ Module asserting.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "N/A" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "N/A" |) |) |)
                         ]
                       |)
                     |)));
@@ -287,7 +284,7 @@ Module asserting.
     
     Global Instance AssociatedFunction_new :
       forall (M_ T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self M_ T) "new" (new M_ T).
+      M.IsAssociatedFunction.C (Self M_ T) "new" (new M_ T).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_asserting_Capture_M__T.

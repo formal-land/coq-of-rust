@@ -110,7 +110,7 @@ Module dependencies.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_module : M.IsAssociatedFunction.Trait Self "module" module.
+    Global Instance AssociatedFunction_module : M.IsAssociatedFunction.C Self "module" module.
     Admitted.
     Global Typeclasses Opaque module.
     
@@ -787,7 +787,10 @@ Module dependencies.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "move_binary_format::file_format_common::VERSION_5"
+                                  get_constant (|
+                                    "move_binary_format::file_format_common::VERSION_5",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -3235,8 +3238,10 @@ Module dependencies.
                                                                   dep_file_format_version
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "move_binary_format::file_format_common::VERSION_5"
+                                                                  get_constant (|
+                                                                    "move_binary_format::file_format_common::VERSION_5",
+                                                                    Ty.path "u32"
+                                                                  |)
                                                                 |)
                                                               |),
                                                               ltac:(M.monadic
@@ -3456,7 +3461,7 @@ Module dependencies.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_bytecode_verifier_dependencies_Context.
@@ -3568,7 +3573,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_module :
-    M.IsFunction.Trait "move_bytecode_verifier::dependencies::verify_module" verify_module.
+    M.IsFunction.C "move_bytecode_verifier::dependencies::verify_module" verify_module.
   Admitted.
   Global Typeclasses Opaque verify_module.
   
@@ -3966,9 +3971,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_module_impl :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::dependencies::verify_module_impl"
-      verify_module_impl.
+    M.IsFunction.C "move_bytecode_verifier::dependencies::verify_module_impl" verify_module_impl.
   Admitted.
   Global Typeclasses Opaque verify_module_impl.
   
@@ -4399,7 +4402,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_imported_modules :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::verify_imported_modules"
       verify_imported_modules.
   Admitted.
@@ -4994,9 +4997,8 @@ Module dependencies.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -5108,11 +5110,7 @@ Module dependencies.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -5632,7 +5630,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_imported_structs :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::verify_imported_structs"
       verify_imported_structs.
   Admitted.
@@ -6307,9 +6305,8 @@ Module dependencies.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -6421,11 +6418,7 @@ Module dependencies.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -8024,7 +8017,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_imported_functions :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::verify_imported_functions"
       verify_imported_functions.
   Admitted.
@@ -8063,7 +8056,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compatible_struct_abilities :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compatible_struct_abilities"
       compatible_struct_abilities.
   Admitted.
@@ -8314,7 +8307,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compatible_fun_type_parameters :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters"
       compatible_fun_type_parameters.
   Admitted.
@@ -8597,7 +8590,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compatible_struct_type_parameters :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compatible_struct_type_parameters"
       compatible_struct_type_parameters.
   Admitted.
@@ -8642,7 +8635,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compatible_type_parameter_constraints :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints"
       compatible_type_parameter_constraints.
   Admitted.
@@ -8690,7 +8683,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compatible_type_parameter_phantom_decl :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl"
       compatible_type_parameter_phantom_decl.
   Admitted.
@@ -9154,7 +9147,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compare_cross_module_signatures :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::compare_cross_module_signatures"
       compare_cross_module_signatures.
   Admitted.
@@ -10178,7 +10171,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compare_types :
-    M.IsFunction.Trait "move_bytecode_verifier::dependencies::compare_types" compare_types.
+    M.IsFunction.C "move_bytecode_verifier::dependencies::compare_types" compare_types.
   Admitted.
   Global Typeclasses Opaque compare_types.
   
@@ -10531,7 +10524,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_compare_structs :
-    M.IsFunction.Trait "move_bytecode_verifier::dependencies::compare_structs" compare_structs.
+    M.IsFunction.C "move_bytecode_verifier::dependencies::compare_structs" compare_structs.
   Admitted.
   Global Typeclasses Opaque compare_structs.
   
@@ -10689,8 +10682,10 @@ Module dependencies.
                                               ]
                                             |),
                                             M.read (|
-                                              M.get_constant
-                                                "move_binary_format::file_format_common::VERSION_5"
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::VERSION_5",
+                                                Ty.path "u32"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -10706,9 +10701,8 @@ Module dependencies.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: context.module.version() < VERSION_5"
+                                          mk_str (|
+                                            "assertion failed: context.module.version() < VERSION_5"
                                           |)
                                         ]
                                       |)
@@ -11198,7 +11192,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_all_script_visibility_usage :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::verify_all_script_visibility_usage"
       verify_all_script_visibility_usage.
   Admitted.
@@ -11636,9 +11630,8 @@ Module dependencies.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "script-visible functions can only be called from scripts or other script-visible functions"
+                                                                        mk_str (|
+                                                                          "script-visible functions can only be called from scripts or other script-visible functions"
                                                                         |)
                                                                       |)
                                                                     |)
@@ -11667,7 +11660,7 @@ Module dependencies.
     end.
   
   Global Instance Instance_IsFunction_verify_script_visibility_usage :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_bytecode_verifier::dependencies::verify_script_visibility_usage"
       verify_script_visibility_usage.
   Admitted.
