@@ -117,16 +117,16 @@
 ## System
 
 - [ ] `keccak256`
-- [ ] `address`
-- [ ] `caller`
-- [ ] `codesize`
-- [ ] `codecopy`
+- [x] `address`
+- [x] `caller`
+- [x] `codesize`
+- [x] `memory_resize`
+- [x] `codecopy`
 - [ ] `calldataload`
 - [x] `calldatasize`
 - [x] `callvalue`
-- [ ] `memory_resize`
-- [ ] `calldatacopy`
-- [ ] `returndatasize`
+- [x] `calldatacopy`
+- [x] `returndatasize`
 - [ ] `returndatacopy`
 - [ ] `returndataload`
 - [x] `gas`
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 75
-- Defined: 28
-- Percentage: 27.18%
+- Admitted: 68
+- Defined: 35
+- Percentage: 33.98%

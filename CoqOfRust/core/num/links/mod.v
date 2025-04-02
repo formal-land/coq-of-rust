@@ -6,6 +6,22 @@ Require Import core.num.mod.
 Module Impl_u64.
   Definition Self : Set := U64.t.
 
+  (* pub const MIN: Self *)
+  Instance run_min :
+    Run.Trait num.Impl_u64.value_MIN [] [] [] (Ref.t Pointer.Kind.Raw Self).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  (* pub const MAX: Self *)
+  Instance run_max :
+    Run.Trait num.Impl_u64.value_MAX [] [] [] (Ref.t Pointer.Kind.Raw Self).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
   (* pub const fn saturating_add(self, rhs: Self) -> Self *)
   Instance run_saturating_add (self rhs: Self) :
     Run.Trait num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] Self.

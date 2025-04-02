@@ -24,16 +24,16 @@ Module Impl_Address.
     Address.t.
 
   (* pub fn from_word(word: FixedBytes<32>) -> Self *)
-  Instance run_from_word (word : fixed.FixedBytes.t {| Integer.value := 32 |}) :
+  Instance run_from_word (word : FixedBytes.t {| Integer.value := 32 |}) :
     Run.Trait
       bits.address.Impl_alloy_primitives_bits_address_Address.from_word [] [] [ φ word ]
       Self.
   Admitted.
 
   (* pub fn into_word(&self) -> FixedBytes<32> *)
-  Instance run_into_word (self : Address.t) :
+  Instance run_into_word (self : Ref.t Pointer.Kind.Ref Self) :
     Run.Trait
       bits.address.Impl_alloy_primitives_bits_address_Address.into_word [] [] [ φ self ]
-      (fixed.FixedBytes.t {| Integer.value := 32 |}).
+      (FixedBytes.t {| Integer.value := 32 |}).
   Admitted.
 End Impl_Address.
