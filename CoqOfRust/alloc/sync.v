@@ -12394,7 +12394,9 @@ Module sync.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
                     |)))
               ]
             |)
@@ -16097,23 +16099,9 @@ Module sync.
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                   ] :=
               M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::ptr::non_null::NonNull")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::sync::ArcInner")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 1 ]
-                            [ Ty.path "u8" ]
-                        ]
-                    ],
-                  M.get_trait_method (|
-                    "core::convert::From",
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.call_closure (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
                       []
@@ -16128,10 +16116,10 @@ Module sync.
                               [ Ty.path "u8" ]
                           ]
                       ],
-                    [],
-                    [
+                    M.get_trait_method (|
+                      "core::convert::From",
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::ptr::non_null::NonNull")
                         []
                         [
                           Ty.apply
@@ -16143,33 +16131,49 @@ Module sync.
                                 [ Value.Integer IntegerKind.Usize 1 ]
                                 [ Ty.path "u8" ]
                             ]
-                        ]
-                    ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (|
-                          M.read (|
-                            get_constant (|
-                              "alloc::sync::STATIC_INNER_SLICE",
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                        ],
+                      [],
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::sync::ArcInner")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ]
+                              ]
+                          ]
+                      ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "alloc::sync::STATIC_INNER_SLICE",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                              |)
                             |)
-                          |)
-                        |),
-                        "alloc::sync::SliceArcInnerForStatic",
-                        "inner"
+                          |),
+                          "alloc::sync::SliceArcInnerForStatic",
+                          "inner"
+                        |)
                       |)
-                    |)
-                  ]
-                |)
+                    ]
+                  |))
               |) in
             let~ inner :
                 Ty.apply
@@ -16660,19 +16664,9 @@ Module sync.
                                     |)
                                   |) in
                                 M.return_ (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "alloc::sync::Arc")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
-                                          [ T ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.call_closure (|
                                       Ty.apply
                                         (Ty.path "alloc::sync::Arc")
                                         []
@@ -16683,36 +16677,31 @@ Module sync.
                                             [ T ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
-                                      [],
-                                      [],
-                                      "clone",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.apply
+                                          (Ty.path "alloc::sync::Arc")
+                                          []
+                                          [
                                             Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::sync::Arc")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 0 ]
-                                                      [ T ];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "clone",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                (Ty.path "&")
                                                 []
                                                 [
                                                   Ty.apply
@@ -16726,18 +16715,35 @@ Module sync.
                                                       Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::sync::Arc")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                                          [ T ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |))
                                 |)
                               |)
                             |)
@@ -16898,25 +16904,27 @@ Module sync.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.call_closure (|
-            Ty.apply
-              (Ty.path "alloc::sync::Arc")
-              []
-              [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-            M.get_trait_method (|
-              "core::convert::From",
+          (* Unsize *)
+          M.pointer_coercion
+            (M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::sync::Arc")
                 []
                 [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-              [],
-              [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-              "from",
-              [],
-              []
-            |),
-            [ M.read (| v |) ]
-          |)))
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.apply
+                  (Ty.path "alloc::sync::Arc")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                "from",
+                [],
+                []
+              |),
+              [ M.read (| v |) ]
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

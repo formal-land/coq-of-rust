@@ -3477,7 +3477,7 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| self |)))
+            (* Unsize *) M.pointer_coercion (M.read (| self |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -1333,28 +1333,31 @@ Module kzg_point_evaluation.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ Ty.path "u8" ]
-                                ],
-                              M.get_function (|
-                                "revm_precompile::kzg_point_evaluation::as_array",
-                                [ Value.Integer IntegerKind.Usize 32 ],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.get_function (|
+                                  "revm_precompile::kzg_point_evaluation::as_array",
+                                  [ Value.Integer IntegerKind.Usize 32 ],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
+                              |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   ]
@@ -1406,28 +1409,31 @@ Module kzg_point_evaluation.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 48 ]
-                                    [ Ty.path "u8" ]
-                                ],
-                              M.get_function (|
-                                "revm_precompile::kzg_point_evaluation::as_array",
-                                [ Value.Integer IntegerKind.Usize 48 ],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 48 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.get_function (|
+                                  "revm_precompile::kzg_point_evaluation::as_array",
+                                  [ Value.Integer IntegerKind.Usize 48 ],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
+                              |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   ]

@@ -874,7 +874,7 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                    [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |)) ]
                   |)
                 |) in
               let~ base : T :=
@@ -1247,7 +1247,7 @@ Module fmt.
                       [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                     |),
                     [
-                      M.borrow (| Pointer.Kind.Ref, buf |);
+                      (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
                       Value.StructRecord
                         "core::ops::range::RangeFrom"
                         [ ("start", M.read (| curr |)) ]
@@ -6911,10 +6911,12 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                          |))
                       ]
                     |)
                   |) in
@@ -6929,34 +6931,36 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::fmt::num::DEC_DIGITS_LUT",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 200 ]
-                                              [ Ty.path "u8" ]
-                                          ]
-                                      ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "core::fmt::num::DEC_DIGITS_LUT",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 200 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -7452,7 +7456,10 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                      ]
                                     |);
                                     M.read (| curr |)
                                   ]
@@ -7735,10 +7742,12 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                          |))
                       ]
                     |)
                   |) in
@@ -7753,34 +7762,36 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::fmt::num::DEC_DIGITS_LUT",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 200 ]
-                                              [ Ty.path "u8" ]
-                                          ]
-                                      ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "core::fmt::num::DEC_DIGITS_LUT",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 200 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -8278,7 +8289,10 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                      ]
                                     |);
                                     M.read (| curr |)
                                   ]
@@ -8561,10 +8575,12 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                          |))
                       ]
                     |)
                   |) in
@@ -8579,34 +8595,36 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::fmt::num::DEC_DIGITS_LUT",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 200 ]
-                                              [ Ty.path "u8" ]
-                                          ]
-                                      ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "core::fmt::num::DEC_DIGITS_LUT",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 200 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -9104,7 +9122,10 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                      ]
                                     |);
                                     M.read (| curr |)
                                   ]
@@ -9387,10 +9408,12 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                          |))
                       ]
                     |)
                   |) in
@@ -9405,34 +9428,36 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::fmt::num::DEC_DIGITS_LUT",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 200 ]
-                                              [ Ty.path "u8" ]
-                                          ]
-                                      ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "core::fmt::num::DEC_DIGITS_LUT",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 200 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -9930,7 +9955,10 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                      ]
                                     |);
                                     M.read (| curr |)
                                   ]
@@ -10218,10 +10246,12 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                          |))
                       ]
                     |)
                   |) in
@@ -10236,34 +10266,36 @@ Module fmt.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::fmt::num::DEC_DIGITS_LUT",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 200 ]
-                                              [ Ty.path "u8" ]
-                                          ]
-                                      ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "core::fmt::num::DEC_DIGITS_LUT",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 200 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
@@ -10761,7 +10793,10 @@ Module fmt.
                                         [],
                                         []
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                      ]
                                     |);
                                     M.read (| curr |)
                                   ]
@@ -11584,7 +11619,8 @@ Module fmt.
                               [],
                               []
                             |),
-                            [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                            [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                            ]
                           |)
                         |) in
                       let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -11601,10 +11637,12 @@ Module fmt.
                               []
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                              |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                                |))
                             ]
                           |)
                         |) in
@@ -11619,34 +11657,36 @@ Module fmt.
                               []
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.read (|
-                                    M.deref (|
-                                      M.read (|
-                                        get_constant (|
-                                          "core::fmt::num::DEC_DIGITS_LUT",
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 200 ]
-                                                    [ Ty.path "u8" ]
-                                                ]
-                                            ]
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.deref (|
+                                        M.read (|
+                                          get_constant (|
+                                            "core::fmt::num::DEC_DIGITS_LUT",
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 200 ]
+                                                      [ Ty.path "u8" ]
+                                                  ]
+                                              ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |) in
@@ -12009,7 +12049,10 @@ Module fmt.
                                       [],
                                       []
                                     |),
-                                    [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                    [
+                                      (* Unsize *)
+                                      M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                    ]
                                   |);
                                   M.read (| M.use curr |)
                                 ]
@@ -12089,10 +12132,12 @@ Module fmt.
                               []
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
-                              |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
+                                |))
                             ]
                           |)
                         |) in
@@ -12380,7 +12425,12 @@ Module fmt.
                               ("sign",
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));
                               ("parts",
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |))
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| parts |) |)
+                                  |)))
                             ]
                         |) in
                       M.alloc (|
@@ -15700,7 +15750,7 @@ Module fmt.
                             [],
                             []
                           |),
-                          [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                          [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |)) ]
                         |)
                       |) in
                     let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -15717,10 +15767,12 @@ Module fmt.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15735,34 +15787,36 @@ Module fmt.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (|
-                                  M.deref (|
-                                    M.read (|
-                                      get_constant (|
-                                        "core::fmt::num::DEC_DIGITS_LUT",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 200 ]
-                                                  [ Ty.path "u8" ]
-                                              ]
-                                          ]
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "core::fmt::num::DEC_DIGITS_LUT",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 200 ]
+                                                    [ Ty.path "u8" ]
+                                                ]
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16118,7 +16172,10 @@ Module fmt.
                                     [],
                                     []
                                   |),
-                                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                  [
+                                    (* Unsize *)
+                                    M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                  ]
                                 |);
                                 M.read (| M.use curr |)
                               ]
@@ -16198,10 +16255,12 @@ Module fmt.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, exp_buf |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16488,7 +16547,9 @@ Module fmt.
                             ("sign",
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));
                             ("parts",
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |))
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |)))
                           ]
                       |) in
                     M.alloc (|
@@ -17124,7 +17185,11 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |) ]
+                  [
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |))
+                  ]
                 |)
               |) in
             let~ lut_ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
@@ -17138,34 +17203,36 @@ Module fmt.
                     []
                   |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.read (|
-                          M.deref (|
-                            M.read (|
-                              get_constant (|
-                                "core::fmt::num::DEC_DIGITS_LUT",
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 200 ]
-                                          [ Ty.path "u8" ]
-                                      ]
-                                  ]
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                get_constant (|
+                                  "core::fmt::num::DEC_DIGITS_LUT",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 200 ]
+                                            [ Ty.path "u8" ]
+                                        ]
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |) in
@@ -18814,7 +18881,7 @@ Module fmt.
                     [],
                     []
                   |),
-                  [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                  [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |)) ]
                 |)
               |) in
             M.match_operator (|
@@ -18895,7 +18962,10 @@ Module fmt.
                                           [],
                                           []
                                         |),
-                                        [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |))
+                                        ]
                                       |);
                                       Value.Integer IntegerKind.Usize 19
                                     ]
@@ -18933,12 +19003,14 @@ Module fmt.
                                                 []
                                               |),
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
-                                                  |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                    |)
+                                                  |))
                                               ]
                                             |);
                                             M.read (| target |)
@@ -19044,7 +19116,11 @@ Module fmt.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.borrow (| Pointer.Kind.Ref, buf |))
+                                                        ]
                                                       |);
                                                       Value.Integer IntegerKind.Usize 38
                                                     ]
@@ -19066,12 +19142,14 @@ Module fmt.
                                                       []
                                                     |),
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.MutRef, buf |)
-                                                        |)
-                                                      |)
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                          |)
+                                                        |))
                                                     ]
                                                   |)
                                                 |) in
@@ -19208,12 +19286,14 @@ Module fmt.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
-                                                |)
-                                              |)
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
+                                                |))
                                             ]
                                           |);
                                           M.read (| curr |)
@@ -19239,7 +19319,11 @@ Module fmt.
                                             [],
                                             []
                                           |),
-                                          [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.borrow (| Pointer.Kind.Ref, buf |))
+                                          ]
                                         |);
                                         M.read (| curr |)
                                       ]

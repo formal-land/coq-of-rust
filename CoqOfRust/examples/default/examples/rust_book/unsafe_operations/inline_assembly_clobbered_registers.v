@@ -76,10 +76,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ],
                   M.get_function (| "core::str::converts::from_utf8", [], [] |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, name_buf |) |)
-                    |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, name_buf |) |)
+                      |))
                   ]
                 |)
               ]

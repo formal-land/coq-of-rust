@@ -322,35 +322,37 @@ Module stack_usage_verifier.
                                                         M.deref (| M.read (| config |) |)
                                                       |);
                                                       M.read (| block_id |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                                ],
+                                                              M.get_associated_function (|
                                                                 Ty.path
-                                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph"
-                                                              ],
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_bytecode_verifier::absint::FunctionContext",
-                                                              "cfg",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| function_context |)
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "cfg",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
                                                                 |)
-                                                              |)
-                                                            ]
+                                                              ]
+                                                            |)
                                                           |)
-                                                        |)
-                                                      |)
+                                                        |))
                                                     ]
                                                   |)
                                                 ]

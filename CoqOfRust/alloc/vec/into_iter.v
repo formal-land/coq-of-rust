@@ -80,30 +80,39 @@ Module vec.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  M.get_associated_function (|
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      (Ty.path "&")
                                       []
-                                      [ T; A ],
-                                    "as_slice",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [ T; A ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -2168,7 +2177,11 @@ Module vec.
                                                 [],
                                                 []
                                               |),
-                                              [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (| Pointer.Kind.MutRef, raw_ary |))
+                                              ]
                                             |));
                                           M.read (| len |)
                                         ]
@@ -2279,7 +2292,10 @@ Module vec.
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, raw_ary |))
+                              ]
                             |));
                           N
                         ]

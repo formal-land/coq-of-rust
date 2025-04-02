@@ -74,24 +74,26 @@ Module opcode.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OpCode" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::opcode::OpCode",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::opcode::OpCode",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -511,79 +513,87 @@ Module opcode.
                               []
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ mk_str (| "UNKNOWN(0x" |); mk_str (| ")" |) ]
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ mk_str (| "UNKNOWN(0x" |); mk_str (| ")" |) ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
                                               Ty.path "core::fmt::rt::Argument",
-                                              "new_upper_hex",
-                                              [],
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, n |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_upper_hex",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, n |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Placeholder",
-                                            M.get_associated_function (|
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
                                               Ty.path "core::fmt::rt::Placeholder",
-                                              "new",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              Value.Integer IntegerKind.Usize 0;
-                                              Value.UnicodeChar 32;
-                                              Value.StructTuple
-                                                "core::fmt::rt::Alignment::Unknown"
-                                                [];
-                                              Value.Integer IntegerKind.U32 8;
-                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                              Value.StructTuple
-                                                "core::fmt::rt::Count::Is"
-                                                [ Value.Integer IntegerKind.Usize 2 ]
-                                            ]
-                                          |)
-                                        ]
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Placeholder",
+                                                "new",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                Value.Integer IntegerKind.Usize 0;
+                                                Value.UnicodeChar 32;
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Alignment::Unknown"
+                                                  [];
+                                                Value.Integer IntegerKind.U32 8;
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  [];
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Is"
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                              ]
+                                            |)
+                                          ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |);
+                                |));
                               M.call_closure (|
                                 Ty.path "core::fmt::rt::UnsafeArg",
                                 M.get_associated_function (|
@@ -3139,37 +3149,39 @@ Module opcode.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (| mk_str (| "name" |) |)
                                                               |);
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "str" ],
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "revm_bytecode::opcode::OpCodeInfo",
-                                                                          "name",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.read (| self |)
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ],
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "revm_bytecode::opcode::OpCodeInfo",
+                                                                            "name",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |)
                                                                             |)
-                                                                          |)
-                                                                        ]
+                                                                          ]
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
-                                                                |)
-                                                              |)
+                                                                |))
                                                             ]
                                                           |)
                                                         |)
@@ -3178,32 +3190,36 @@ Module opcode.
                                                         Pointer.Kind.Ref,
                                                         M.deref (| mk_str (| "inputs" |) |)
                                                       |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path "u8",
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "revm_bytecode::opcode::OpCodeInfo",
-                                                                  "inputs",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| self |) |)
-                                                                  |)
-                                                                ]
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  Ty.path "u8",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "revm_bytecode::opcode::OpCodeInfo",
+                                                                    "inputs",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               |)
                                                             |)
                                                           |)
-                                                        |)
-                                                      |)
+                                                        |))
                                                     ]
                                                   |)
                                                 |)
@@ -3212,32 +3228,34 @@ Module opcode.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| mk_str (| "outputs" |) |)
                                               |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "u8",
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "revm_bytecode::opcode::OpCodeInfo",
-                                                          "outputs",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| self |) |)
-                                                          |)
-                                                        ]
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.path "u8",
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "revm_bytecode::opcode::OpCodeInfo",
+                                                            "outputs",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)
+                                                |))
                                             ]
                                           |)
                                         |)
@@ -3246,31 +3264,33 @@ Module opcode.
                                         Pointer.Kind.Ref,
                                         M.deref (| mk_str (| "not_eof" |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                                  "is_disabled_in_eof",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
-                                                ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                                    "is_disabled_in_eof",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |)
@@ -3279,56 +3299,61 @@ Module opcode.
                                 Pointer.Kind.Ref,
                                 M.deref (| mk_str (| "terminating" |) |)
                               |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                          "is_terminating",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
-                                        ]
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                            "is_terminating",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |)
                       |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "immediate_size" |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.path "u8",
-                                M.get_associated_function (|
-                                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                  "immediate_size",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  M.get_associated_function (|
+                                    Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                    "immediate_size",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |)
@@ -4225,71 +4250,78 @@ Module opcode.
             [
               ("key", Value.Integer IntegerKind.U64 15467950696543387533);
               ("disps",
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            Value.Tuple
-                              [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]
-                          ]
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Tuple
+                                [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]
+                            ]
+                        |)
                       |)
                     |)
-                  |)
-                |));
+                  |)));
               ("entries",
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            Value.Tuple
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STOP" |) |) |);
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "revm_bytecode::opcode::OpCode",
-                                    "STOP",
-                                    Ty.path "revm_bytecode::opcode::OpCode"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| mk_str (| "STOP" |) |)
+                                  |);
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "revm_bytecode::opcode::OpCode",
+                                      "STOP",
+                                      Ty.path "revm_bytecode::opcode::OpCode"
+                                    |)
                                   |)
-                                |)
-                              ];
-                            Value.Tuple
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |);
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "revm_bytecode::opcode::OpCode",
-                                    "ADD",
-                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                ];
+                              Value.Tuple
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |);
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "revm_bytecode::opcode::OpCode",
+                                      "ADD",
+                                      Ty.path "revm_bytecode::opcode::OpCode"
+                                    |)
                                   |)
-                                |)
-                              ];
-                            Value.Tuple
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| mk_str (| "BALANCE" |) |)
-                                |);
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "revm_bytecode::opcode::OpCode",
-                                    "BALANCE",
-                                    Ty.path "revm_bytecode::opcode::OpCode"
+                                ];
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| mk_str (| "BALANCE" |) |)
+                                  |);
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "revm_bytecode::opcode::OpCode",
+                                      "BALANCE",
+                                      Ty.path "revm_bytecode::opcode::OpCode"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          ]
+                                ]
+                            ]
+                        |)
                       |)
                     |)
-                  |)
-                |))
+                  |)))
             ]
         |)
       |))).

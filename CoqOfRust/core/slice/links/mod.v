@@ -2,8 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.slice.mod.
 Require Import core.slice.links.index.
+Require Import core.slice.links.iter.
 Require core.links.option.
-Import Run.
 
 Module Impl_Slice.
   Definition Self (T : Set) `{Link T} : Set := list T.
@@ -46,5 +46,13 @@ Module Impl_Slice.
       (self : Ref.t Pointer.Kind.Ref (Self T)) :
     Run.Trait (slice.Impl_slice_T.len (Φ T)) [] [] [φ self]
       Usize.t.
+  Admitted.
+
+  (* pub fn iter_mut(&mut self) -> IterMut<'_, T> *)
+  Instance run_iter_mut
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.MutRef (Self T)) :
+    Run.Trait (slice.Impl_slice_T.iter_mut (Φ T)) [] [] [φ self]
+      (IterMut.t T).
   Admitted.
 End Impl_Slice.

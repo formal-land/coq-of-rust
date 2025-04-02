@@ -6139,12 +6139,14 @@ Module str.
                         Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
                         M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
-                            |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
+                              |)
+                            |))
                         ]
                       |)
                     |)

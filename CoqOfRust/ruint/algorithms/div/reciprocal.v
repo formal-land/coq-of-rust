@@ -478,25 +478,27 @@ Module algorithms.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      get_constant (|
-                                        "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 256 ]
-                                              [ Ty.path "u16" ]
-                                          ]
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 256 ]
+                                                [ Ty.path "u16" ]
+                                            ]
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |);
+                                  |));
                                 M.cast
                                   (Ty.path "usize")
                                   (M.call_closure (|

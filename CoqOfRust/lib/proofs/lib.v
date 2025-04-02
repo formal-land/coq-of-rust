@@ -76,7 +76,7 @@ Module Integer.
   Qed.
 End Integer.
 
-Module BinOp.
+(* Module BinOp.
   Module Error.
     Lemma add_is_valid (kind : IntegerKind.t) (z1 z2 z : Z)
       (H_z1 : Integer.Valid.t kind z1)
@@ -98,7 +98,7 @@ Module BinOp.
       apply Integer.normalize_wrap_is_valid.
     Qed.
   End Error.
-End BinOp.
+End BinOp. *)
 
 Module List.
   Lemma Forall_nth_error {A : Set} (P : A -> Prop) (l : list A) (n : nat)

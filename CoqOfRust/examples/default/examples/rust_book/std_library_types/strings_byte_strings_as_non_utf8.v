@@ -299,7 +299,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "core::str::error::Utf8Error"
                           ],
                         M.get_function (| "core::str::converts::from_utf8", [], [] |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| raw_bytestring |) |) |)
+                        [
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| raw_bytestring |) |)
+                            |))
                         ]
                       |)
                     |) in
@@ -408,7 +414,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "core::str::error::Utf8Error"
                   ],
                 M.get_function (| "core::str::converts::from_utf8", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| shift_jis |) |) |) ]
+                [
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| shift_jis |) |) |))
+                ]
               |)
             |),
             [

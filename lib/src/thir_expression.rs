@@ -614,10 +614,6 @@ pub(crate) fn compile_expr<'a>(
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
 
-            if let rustc_middle::ty::adjustment::PointerCoercion::Unsize = cast {
-                return source.alloc();
-            }
-
             Rc::new(Expr::Comment(
                 format!("{cast:?}"),
                 Rc::new(Expr::Call {

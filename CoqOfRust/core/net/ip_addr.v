@@ -7918,7 +7918,13 @@ Module net.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, segments |)
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              segments
+                                                            |))
                                                         ]
                                                       |)
                                                     ]
@@ -8661,12 +8667,14 @@ Module net.
                                                   Pointer.Kind.MutRef,
                                                   M.deref (| M.read (| f |) |)
                                                 |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, segments |)
-                                                  |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, segments |)
+                                                    |)
+                                                  |))
                                               ]
                                             |)
                                           |)))

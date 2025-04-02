@@ -1134,10 +1134,12 @@ Module Impl_payment_channel_PaymentChannel.
                   []
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, pub_key |) |)
-                  |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, pub_key |) |)
+                    |));
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (| M.borrow (| Pointer.Kind.MutRef, signature_account_id |) |)

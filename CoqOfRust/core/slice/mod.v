@@ -9607,15 +9607,17 @@ Module slice.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (| Value.Array [] |)
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (| Value.Array [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                 |)
                               |)
@@ -11348,24 +11350,28 @@ Module slice.
                                   Value.Tuple
                                     [
                                       M.read (| self |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (| Value.Array [] |)
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (| Value.Array [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (| Value.Array [] |)
+                                        |));
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (| Value.Array [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                 |)
                               |)
@@ -11445,18 +11451,22 @@ Module slice.
                           Value.Tuple
                             [
                               M.read (| self |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
-                                |)
-                              |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                                  |)
+                                |))
                             ]
                         |)));
                     fun γ =>
@@ -11738,24 +11748,28 @@ Module slice.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| self |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (| Value.Array [] |)
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (| Value.Array [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (| Value.Array [] |)
+                                        |));
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (| Value.Array [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                 |)
                               |)
@@ -11835,18 +11849,22 @@ Module slice.
                           Value.Tuple
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
-                                |)
-                              |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |)
+                                  |)
+                                |))
                             ]
                         |)));
                     fun γ =>
@@ -15089,7 +15107,9 @@ Module slice.
                                                       [ Ty.path "usize" ]
                                                     |),
                                                     [
-                                                      M.borrow (| Pointer.Kind.Ref, indices |);
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (| Pointer.Kind.Ref, indices |));
                                                       M.read (| i |)
                                                     ]
                                                   |)
@@ -16835,10 +16855,12 @@ Module slice.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
-          |)))
+          (* Unsize *)
+          (M.pointer_coercion
+            (M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -16869,10 +16891,12 @@ Module slice.
           (M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              M.borrow (|
-                Pointer.Kind.MutRef,
-                M.deref (| M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |) |)
-              |)
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, M.alloc (| Value.Array [] |) |) |)
+                |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -16946,7 +16970,8 @@ Module slice.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)))
+          (* Unsize *)
+          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -17030,7 +17055,14 @@ Module slice.
                               [],
                               []
                             |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| indices |) |) |) ]
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| indices |) |)
+                                |))
+                            ]
                           |)
                         ]
                       |)

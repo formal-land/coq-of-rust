@@ -51,7 +51,10 @@ Module num.
                                     [],
                                     []
                                   |),
-                                  [ M.borrow (| Pointer.Kind.Ref, result |) ]
+                                  [
+                                    (* Unsize *)
+                                    M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, result |))
+                                  ]
                                 |)
                               ]
                             |)

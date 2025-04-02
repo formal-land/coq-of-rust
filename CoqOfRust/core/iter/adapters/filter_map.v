@@ -171,19 +171,21 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::filter_map::FilterMap",
-                                  "iter"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::filter_map::FilterMap",
+                                    "iter"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -597,10 +599,12 @@ Module iter.
                       "core::iter::adapters::filter_map::next_chunk::Guard"
                       [
                         ("array",
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                          |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                            |)));
                         ("initialized", Value.Integer IntegerKind.Usize 0)
                       ]
                   |) in

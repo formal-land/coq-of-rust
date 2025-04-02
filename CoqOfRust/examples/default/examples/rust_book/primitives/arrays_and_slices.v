@@ -451,7 +451,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   []
                                                 |),
-                                                [ M.borrow (| Pointer.Kind.Ref, xs |) ]
+                                                [
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (| Pointer.Kind.Ref, xs |))
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -598,7 +602,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "arrays_and_slices::analyze_slice", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, xs |) |) |) ]
+              [
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, xs |) |)
+                  |))
+              ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -1022,7 +1033,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, xs |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, xs |))
+                              ]
                             |);
                             Value.Integer IntegerKind.Usize 1
                           ]
@@ -1089,7 +1103,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [],
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, xs |); M.read (| i |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, xs |));
+                                        M.read (| i |)
+                                      ]
                                     |)
                                   |),
                                   [

@@ -788,14 +788,16 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::slice::sort::stable::AlignedStorage",
-                                              "storage"
-                                            |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::slice::sort::stable::AlignedStorage",
+                                                "storage"
+                                              |)
+                                            |))
                                         ]
                                       |)
                                     ]

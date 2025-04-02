@@ -1327,7 +1327,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [ M.borrow (| Pointer.Kind.Ref, array |) ]
+                    [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, array |)) ]
                   |)
                 ]
               |)

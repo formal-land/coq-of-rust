@@ -111,10 +111,12 @@ Module bits.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Hex" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |))
                           ]
                         |)
                       |)));
@@ -228,7 +230,11 @@ Module bits.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |) ]
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |))
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1422,7 +1428,14 @@ Module bits.
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| buf |) |)
+                                  |))
+                              ]
                             |)
                           |)
                         |)
@@ -2509,7 +2522,9 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| salt |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| salt |) |) |))
                     ]
                   |)
                 |) in
@@ -2557,7 +2572,9 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init_code_hash |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init_code_hash |) |) |))
                     ]
                   |)
                 |) in
@@ -3192,22 +3209,14 @@ Module bits.
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 42 ]
-                                [ Ty.path "u8" ]
-                            ],
-                          M.get_associated_function (|
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                              (Ty.path "&")
                               []
                               [
                                 Ty.apply
@@ -3215,23 +3224,33 @@ Module bits.
                                   [ Value.Integer IntegerKind.Usize 42 ]
                                   [ Ty.path "u8" ]
                               ],
-                            "assume_init_ref",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloy_primitives::bits::address::AddressChecksumBuffer",
-                                0
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 42 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              "assume_init_ref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloy_primitives::bits::address::AddressChecksumBuffer",
+                                  0
+                                |)
                               |)
-                            |)
-                          ]
+                            ]
+                          |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |)
@@ -3270,22 +3289,14 @@ Module bits.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 42 ]
-                                        [ Ty.path "u8" ]
-                                    ],
-                                  M.get_associated_function (|
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      (Ty.path "&mut")
                                       []
                                       [
                                         Ty.apply
@@ -3293,23 +3304,33 @@ Module bits.
                                           [ Value.Integer IntegerKind.Usize 42 ]
                                           [ Ty.path "u8" ]
                                       ],
-                                    "assume_init_mut",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloy_primitives::bits::address::AddressChecksumBuffer",
-                                        0
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 42 ]
+                                            [ Ty.path "u8" ]
+                                        ],
+                                      "assume_init_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloy_primitives::bits::address::AddressChecksumBuffer",
+                                          0
+                                        |)
                                       |)
-                                    |)
-                                  ]
+                                    ]
+                                  |)
                                 |)
-                              |)
-                            |)
+                              |))
                           ]
                         |)
                       |)

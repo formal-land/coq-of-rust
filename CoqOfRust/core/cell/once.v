@@ -1407,7 +1407,9 @@ Module cell.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, d |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |))
                             ]
                           |)
                         |)));
@@ -1431,38 +1433,40 @@ Module cell.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, d |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::Arguments",
-                                            M.get_associated_function (|
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
                                               Ty.path "core::fmt::Arguments",
-                                              "new_const",
-                                              [ Value.Integer IntegerKind.Usize 1 ],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ mk_str (| "<uninit>" |) ]
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_const",
+                                                [ Value.Integer IntegerKind.Usize 1 ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array [ mk_str (| "<uninit>" |) ]
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |)
-                                  |)
+                                    |))
                                 ]
                               |)
                             |)

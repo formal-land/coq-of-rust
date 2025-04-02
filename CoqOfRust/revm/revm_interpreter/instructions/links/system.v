@@ -42,6 +42,7 @@ Proof.
   InterpreterTypes.destruct_run.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
   run_symbolic.
 Admitted.
 

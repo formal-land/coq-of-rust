@@ -783,7 +783,10 @@ Module hash.
                                     [],
                                     []
                                   |),
-                                  [ M.borrow (| Pointer.Kind.Ref, output |) ]
+                                  [
+                                    (* Unsize *)
+                                    M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, output |))
+                                  ]
                                 |)
                               ]
                             |)

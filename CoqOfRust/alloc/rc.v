@@ -9954,7 +9954,9 @@ Module rc.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
                     |)))
               ]
             |)
@@ -11952,25 +11954,27 @@ Module rc.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.call_closure (|
-            Ty.apply
-              (Ty.path "alloc::rc::Rc")
-              []
-              [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-            M.get_trait_method (|
-              "core::convert::From",
+          (* Unsize *)
+          M.pointer_coercion
+            (M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
                 []
                 [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-              [],
-              [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-              "from",
-              [],
-              []
-            |),
-            [ M.read (| v |) ]
-          |)))
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                "from",
+                [],
+                []
+              |),
+              [ M.read (| v |) ]
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -16086,52 +16090,58 @@ Module rc.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UniqueRc" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ptr" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::rc::UniqueRc",
-                      "ptr"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::rc::UniqueRc",
+                        "ptr"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "phantom" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::rc::UniqueRc",
-                      "phantom"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::rc::UniqueRc",
+                        "phantom"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alloc" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::rc::UniqueRc",
-                          "alloc"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::rc::UniqueRc",
+                            "alloc"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

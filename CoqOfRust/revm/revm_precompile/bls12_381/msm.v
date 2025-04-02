@@ -225,25 +225,27 @@ Module bls12_381.
                                 []
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 128 ]
-                                              [ Ty.path "u16" ]
-                                          ]
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 128 ]
+                                                [ Ty.path "u16" ]
+                                            ]
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |);
                             Value.Integer IntegerKind.Usize 1

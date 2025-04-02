@@ -190,19 +190,21 @@ Module collections.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::vec_deque::into_iter::IntoIter",
-                                  "inner"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::vec_deque::into_iter::IntoIter",
+                                    "inner"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -1327,7 +1329,10 @@ Module collections.
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.MutRef, raw_arr |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, raw_arr |))
+                              ]
                             |)
                           ]
                         |)

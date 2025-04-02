@@ -379,37 +379,39 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 20 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                            M.get_trait_method (|
-                              "core::borrow::Borrow",
-                              A,
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 20 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                              "borrow",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, address |) ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 20 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              M.get_trait_method (|
+                                "core::borrow::Borrow",
+                                A,
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 20 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                                "borrow",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, address |) ]
+                            |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |) in
@@ -458,37 +460,39 @@ Module bits.
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                            M.get_trait_method (|
-                              "core::borrow::Borrow",
-                              S,
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                              "borrow",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, selector |) ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              M.get_trait_method (|
+                                "core::borrow::Borrow",
+                                S,
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                                "borrow",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, selector |) ]
+                            |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |) in
@@ -554,69 +558,71 @@ Module bits.
                                 []
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 24 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                          [ Value.Integer IntegerKind.Usize 24 ]
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 24 ]
+                                              [ Ty.path "u8" ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 24 ]
+                                            [],
                                           [],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer IntegerKind.Usize 24 ]
+                                                      []
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path
+                                                    "alloy_primitives::bits::function::Function",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloy_primitives::bits::fixed::FixedBytes")
-                                                    [ Value.Integer IntegerKind.Usize 24 ]
-                                                    []
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.path
-                                                  "alloy_primitives::bits::function::Function",
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
                                             |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           ]
@@ -671,69 +677,72 @@ Module bits.
                                     []
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 24 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer IntegerKind.Usize 24 ]
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 24 ]
+                                                  [ Ty.path "u8" ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer IntegerKind.Usize 24 ]
+                                                [],
                                               [],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::bits::fixed::FixedBytes")
+                                                          [ Value.Integer IntegerKind.Usize 24 ]
+                                                          []
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path
+                                                        "alloy_primitives::bits::function::Function",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer IntegerKind.Usize 24 ]
-                                                        []
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path
-                                                      "alloy_primitives::bits::function::Function",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| self |) |)
-                                                    |)
-                                                  ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
+                                            ]
+                                          |)
                                         |)
-                                      |)
-                                    |)
+                                      |))
                                   ]
                                 |);
                                 Value.Integer IntegerKind.Usize 20

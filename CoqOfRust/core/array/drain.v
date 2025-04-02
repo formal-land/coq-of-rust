@@ -58,30 +58,32 @@ Module array.
                         []
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  (Ty.path "&mut")
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                [],
-                                [],
-                                "deref_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, array |) ]
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, array |) ]
+                              |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   ]

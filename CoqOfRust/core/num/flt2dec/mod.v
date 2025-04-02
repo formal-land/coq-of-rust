@@ -692,10 +692,12 @@ Module num.
                               Value.StructTuple
                                 "core::num::fmt::Part::Copy"
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                  |)
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                    |))
                                 ]
                             ]
                           |)
@@ -1215,10 +1217,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -1742,10 +1746,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -2312,10 +2318,12 @@ Module num.
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| UnsupportedLiteral |) |)
-                                    |)
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| UnsupportedLiteral |) |)
+                                      |))
                                   ]
                               ]
                             |)
@@ -2579,18 +2587,22 @@ Module num.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                  |))
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                  |))
                                               |)))
                                         ]
                                       |)
@@ -2679,18 +2691,22 @@ Module num.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                  |))
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                |)
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                  |))
                                               |)))
                                         ]
                                       |)
@@ -3377,10 +3393,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -3519,10 +3537,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -3684,10 +3704,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -3860,10 +3882,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -4400,10 +4424,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -4542,10 +4568,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -4734,12 +4762,14 @@ Module num.
                                                   Value.StructTuple
                                                     "core::num::fmt::Part::Copy"
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| UnsupportedLiteral |)
-                                                        |)
-                                                      |)
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (| UnsupportedLiteral |)
+                                                          |)
+                                                        |))
                                                     ]
                                                 ]
                                               |)
@@ -4788,26 +4818,30 @@ Module num.
                                                                     Value.Bool true
                                                                   |) in
                                                                 M.alloc (|
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  |)
+                                                                    |))
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  |)
+                                                                    |))
                                                                 |)))
                                                           ]
                                                         |)
@@ -5473,10 +5507,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -5615,10 +5651,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -5780,10 +5818,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -5875,22 +5915,26 @@ Module num.
                                                                 Value.Bool true
                                                               |) in
                                                             M.alloc (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| UnsupportedLiteral |)
-                                                                |)
-                                                              |)
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  |)
+                                                                |))
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| UnsupportedLiteral |)
-                                                                |)
-                                                              |)
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  |)
+                                                                |))
                                                             |)))
                                                       ]
                                                     |)
@@ -6061,22 +6105,26 @@ Module num.
                                                                 Value.Bool true
                                                               |) in
                                                             M.alloc (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| UnsupportedLiteral |)
-                                                                |)
-                                                              |)
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  |)
+                                                                |))
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| UnsupportedLiteral |)
-                                                                |)
-                                                              |)
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  |)
+                                                                |))
                                                             |)))
                                                       ]
                                                     |)
@@ -6763,10 +6811,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -6905,10 +6955,12 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| UnsupportedLiteral |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| UnsupportedLiteral |) |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -7070,10 +7122,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -7246,10 +7300,12 @@ Module num.
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |))
                                                 ]
                                             ]
                                           |)
@@ -7876,14 +7932,16 @@ Module num.
                                                               Value.StructTuple
                                                                 "core::num::fmt::Part::Copy"
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  |)
+                                                                    |))
                                                                 ]
                                                             ]
                                                           |)
@@ -8074,14 +8132,16 @@ Module num.
                                                               Value.StructTuple
                                                                 "core::num::fmt::Part::Copy"
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  |)
+                                                                    |))
                                                                 ]
                                                             ]
                                                           |)

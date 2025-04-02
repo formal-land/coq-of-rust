@@ -78,14 +78,16 @@ Module bytes.
                           []
                         |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "ruint::Uint",
-                              "limbs"
-                            |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "ruint::Uint",
+                                "limbs"
+                              |)
+                            |))
                         ]
                       |)
                     ]
@@ -164,14 +166,16 @@ Module bytes.
                                   []
                                 |),
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "ruint::Uint",
-                                      "limbs"
-                                    |)
-                                  |)
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "ruint::Uint",
+                                        "limbs"
+                                      |)
+                                    |))
                                 ]
                               |)
                             ]
@@ -741,7 +745,7 @@ Module bytes.
                     [],
                     []
                   |),
-                  [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
+                  [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, bytes |)) ]
                 |)
               |) in
             let~ half_len : Ty.path "usize" :=
@@ -1130,10 +1134,12 @@ Module bytes.
                   []
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
-                  |)
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                    |))
                 ]
               |)
             |)
@@ -1958,10 +1964,12 @@ Module bytes.
                   []
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
-                  |)
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                    |))
                 ]
               |)
             |)

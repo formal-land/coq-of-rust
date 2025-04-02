@@ -11090,22 +11090,24 @@ Module vec.
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                M.get_associated_function (|
+              (* Unsize *)
+              M.pointer_coercion
+                (M.call_closure (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     []
                     [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ M.read (| s |) ]
-              |)
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| s |) ]
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

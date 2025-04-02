@@ -54,7 +54,11 @@ Module array.
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

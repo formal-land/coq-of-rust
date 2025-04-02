@@ -20212,30 +20212,32 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, arr |) ]
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                []
+                                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, arr |) ]
+                                          |)
                                         |)
-                                      |)
-                                    |)
+                                      |))
                                   ]
                                 |);
                                 M.call_closure (|

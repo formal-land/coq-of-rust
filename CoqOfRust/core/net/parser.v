@@ -3356,7 +3356,14 @@ Module net.
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.borrow (| Pointer.Kind.MutRef, groups |) ]
+                                                      [
+                                                        (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            groups
+                                                          |))
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -3903,10 +3910,14 @@ Module net.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| p |) |)
                                             |);
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, head |) |)
-                                            |)
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, head |)
+                                                |)
+                                              |))
                                           ]
                                         |)
                                       |),
@@ -7525,24 +7536,26 @@ Module net.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AddrParseError" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::net::parser::AddrParseError",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::net::parser::AddrParseError",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

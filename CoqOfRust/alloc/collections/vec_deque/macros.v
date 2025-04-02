@@ -831,10 +831,12 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| other |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| other |) |)
+                                            |))
                                         ]
                                       |)
                                     ]
@@ -1086,12 +1088,14 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (| M.deref (| M.read (| other |) |) |)
-                                            |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (| M.deref (| M.read (| other |) |) |)
+                                              |)
+                                            |))
                                         ]
                                       |)
                                     ]
@@ -1346,12 +1350,14 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (| M.deref (| M.read (| other |) |) |)
-                                            |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (| M.deref (| M.read (| other |) |) |)
+                                              |)
+                                            |))
                                         ]
                                       |)
                                     ]

@@ -79,10 +79,12 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidDigit" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -114,10 +116,12 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidRadix" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -149,10 +153,12 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BaseConvertError" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)))
@@ -525,7 +531,11 @@ Module string.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |) ]
+                        [
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))

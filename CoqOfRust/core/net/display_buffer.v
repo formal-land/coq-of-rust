@@ -281,14 +281,16 @@ Module net.
                               ]
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::net::display_buffer::DisplayBuffer",
-                                  "buf"
-                                |)
-                              |);
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::net::display_buffer::DisplayBuffer",
+                                    "buf"
+                                  |)
+                                |));
                               Value.StructRecord
                                 "core::ops::range::Range"
                                 [

@@ -163,10 +163,12 @@ Module array.
                   [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"; R; F ]
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                  |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                    |));
                   M.read (| cb |)
                 ]
               |)
@@ -433,24 +435,26 @@ Module array.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromSliceError" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::TryFromSliceError",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::TryFromSliceError",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -758,7 +762,8 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)))
+          (* Unsize *)
+          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -794,7 +799,11 @@ Module array.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.MutRef,
-            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+            M.deref (|
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1287,7 +1296,10 @@ Module array.
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1338,7 +1350,11 @@ Module array.
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [], [] |),
-            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1419,7 +1435,9 @@ Module array.
                       M.read (|
                         M.use
                           (M.alloc (|
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
                           |))
                       |)
                     |)
@@ -1501,7 +1519,12 @@ Module array.
                           M.read (|
                             M.use
                               (M.alloc (|
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |))
                               |))
                           |)
                         |)
@@ -2212,8 +2235,12 @@ Module array.
                     []
                   |),
                   [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |))
                   ]
                 |)
               |) in
@@ -2290,7 +2317,11 @@ Module array.
                       [],
                       []
                     |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array |) |) |) ]
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array |) |) |))
+                    ]
                   |)
                 ]
               |)
@@ -6087,7 +6118,8 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)))
+          (* Unsize *)
+          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6116,7 +6148,11 @@ Module array.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.MutRef,
-            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+            M.deref (|
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7751,10 +7787,12 @@ Module array.
                   [ T; impl_Iterator_Item___T_ ]
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                  |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                    |));
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| iter |) |) |)
                 ]
               |)

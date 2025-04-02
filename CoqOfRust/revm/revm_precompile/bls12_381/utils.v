@@ -1307,10 +1307,12 @@ Module bls12_381.
                                     []
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| input |) |)
-                                    |)
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| input |) |)
+                                      |))
                                   ]
                                 |);
                                 M.call_closure (|
@@ -1322,16 +1324,18 @@ Module bls12_381.
                                     []
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      get_constant (|
-                                        "revm_precompile::bls12_381::utils::MODULUS_REPR",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 48 ]
-                                          [ Ty.path "u8" ]
-                                      |)
-                                    |)
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_constant (|
+                                          "revm_precompile::bls12_381::utils::MODULUS_REPR",
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 48 ]
+                                            [ Ty.path "u8" ]
+                                        |)
+                                      |))
                                   ]
                                 |)
                               ]
@@ -1619,7 +1623,11 @@ Module bls12_381.
                               [],
                               []
                             |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |))
+                            ]
                           |)
                         ]
                       |)

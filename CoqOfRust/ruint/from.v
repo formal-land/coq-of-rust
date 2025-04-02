@@ -258,11 +258,15 @@ Module from.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ValueTooLarge" |) |)
                           |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -301,11 +305,15 @@ Module from.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ValueNegative" |) |)
                           |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -334,10 +342,12 @@ Module from.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotANumber" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)))
@@ -1375,12 +1385,18 @@ Module from.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_2 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_2 |) |)
+                            |))
                         ]
                       |)
                     |)))
@@ -2791,24 +2807,26 @@ Module from.
               []
             |),
             [
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
-                      "as_limbs",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
+                        "as_limbs",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                    |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2850,24 +2868,26 @@ Module from.
               []
             |),
             [
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
-                      "as_limbs",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
+                        "as_limbs",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                    |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2977,24 +2997,26 @@ Module from.
                     []
                   |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
-                            "as_limbs",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "array") [ LIMBS_SRC ] [ Ty.path "u64" ] ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS_SRC; LIMBS_SRC ] [],
+                              "as_limbs",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                          |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |),
@@ -3152,24 +3174,26 @@ Module from.
                     []
                   |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            "as_limbs",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "as_limbs",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |),

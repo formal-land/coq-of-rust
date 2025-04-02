@@ -119,46 +119,50 @@ Module fmt.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let buf := M.copy (| γ |) in
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                        M.get_associated_function (|
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.call_closure (|
                                           Ty.apply
-                                            (Ty.path "core::option::Option")
+                                            (Ty.path "&mut")
                                             []
                                             [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                          "insert",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| slot |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::fmt::builders::PadAdapter"
-                                            [
-                                              ("buf",
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| buf |) |)
-                                                |));
-                                              ("state",
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| state |) |)
-                                                |))
-                                            ]
-                                        ]
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::fmt::builders::PadAdapter" ],
+                                            "insert",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| slot |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::fmt::builders::PadAdapter"
+                                              [
+                                                ("buf",
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| buf |) |)
+                                                    |)));
+                                                ("state",
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| state |) |)
+                                                  |))
+                                              ]
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)))
+                                    |))))
                             ]
                           |)))
                       | _ => M.impossible "wrong number of arguments"
@@ -6661,12 +6665,14 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, entry |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, entry |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in
@@ -7735,12 +7741,14 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, entry |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, entry |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in
@@ -8525,12 +8533,16 @@ Module fmt.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
                       ]
                     |)
                   |)
@@ -11058,18 +11070,22 @@ Module fmt.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| self |) |)
                                                     |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, k |)
-                                                      |)
-                                                    |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, v |)
-                                                      |)
-                                                    |)
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, k |)
+                                                        |)
+                                                      |));
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, v |)
+                                                        |)
+                                                      |))
                                                   ]
                                                 |)
                                               |) in

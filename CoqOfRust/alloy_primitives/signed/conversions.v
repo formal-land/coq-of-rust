@@ -1260,35 +1260,37 @@ Module signed.
                           []
                         |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 2 ]
-                                      [ Ty.path "u64" ]
-                                  ],
-                                M.get_associated_function (|
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "ruint::Uint")
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Value.Integer IntegerKind.Usize 128;
-                                      Value.Integer IntegerKind.Usize 2
-                                    ]
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "u64" ]
+                                    ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 128;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ]
+                                      [],
+                                    "as_limbs",
                                     [],
-                                  "as_limbs",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, stc |) ]
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, stc |) ]
+                                |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |),

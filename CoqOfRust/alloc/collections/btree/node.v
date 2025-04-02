@@ -4348,14 +4348,16 @@ Module collections.
                                   ]
                                 |),
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| leaf |) |),
-                                      "alloc::collections::btree::node::LeafNode",
-                                      "keys"
-                                    |)
-                                  |);
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| leaf |) |),
+                                        "alloc::collections::btree::node::LeafNode",
+                                        "keys"
+                                      |)
+                                    |));
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [
@@ -5596,7 +5598,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
                       ] :=
-                  M.alloc (| M.read (| keys |) |) in
+                  M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| keys |)) |) in
                 let~ vals :
                     Ty.apply
                       (Ty.path "*mut")
@@ -5607,7 +5609,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
                       ] :=
-                  M.alloc (| M.read (| vals |) |) in
+                  M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| vals |)) |) in
                 let~ key : Ty.apply (Ty.path "&") [] [ K ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -13503,14 +13505,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| parent_ptr |) |),
-                                    "alloc::collections::btree::node::InternalNode",
-                                    "edges"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| parent_ptr |) |),
+                                      "alloc::collections::btree::node::InternalNode",
+                                      "edges"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -13865,14 +13869,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -13922,14 +13928,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -14284,14 +14292,16 @@ Module collections.
                                           [ Ty.path "usize" ]
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| leaf |) |),
-                                              "alloc::collections::btree::node::LeafNode",
-                                              "vals"
-                                            |)
-                                          |);
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| leaf |) |),
+                                                "alloc::collections::btree::node::LeafNode",
+                                                "vals"
+                                              |)
+                                            |));
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               self,
@@ -14509,14 +14519,16 @@ Module collections.
                                     [ Ty.path "usize" ]
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| leaf |) |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "keys"
-                                      |)
-                                    |);
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| leaf |) |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "keys"
+                                        |)
+                                      |));
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         self,
@@ -14575,14 +14587,16 @@ Module collections.
                                     [ Ty.path "usize" ]
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| leaf |) |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "vals"
-                                      |)
-                                    |);
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| leaf |) |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "vals"
+                                        |)
+                                      |));
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         self,
@@ -14800,14 +14814,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.deref (| M.read (| self |) |),
@@ -14857,14 +14873,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.deref (| M.read (| self |) |),
@@ -15929,14 +15947,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -15986,14 +16006,16 @@ Module collections.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
-                                  |)
-                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
+                                  |));
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -16201,14 +16223,16 @@ Module collections.
                         [ Ty.path "usize" ]
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| leaf |) |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "keys"
-                          |)
-                        |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| leaf |) |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |)
+                          |));
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             self,
@@ -16240,14 +16264,16 @@ Module collections.
                         [ Ty.path "usize" ]
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| leaf |) |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "vals"
-                          |)
-                        |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| leaf |) |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |)
+                          |));
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             self,

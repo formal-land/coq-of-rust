@@ -1925,7 +1925,9 @@ Module utils.
                           0
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |))
                     ]
                   |)
                 |) in

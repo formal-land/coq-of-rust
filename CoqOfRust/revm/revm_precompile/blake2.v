@@ -1461,7 +1461,10 @@ Module blake2.
                                   [],
                                   []
                                 |),
-                                [ M.borrow (| Pointer.Kind.Ref, h |) ]
+                                [
+                                  (* Unsize *)
+                                  M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, h |))
+                                ]
                               |)
                             ]
                           |)
@@ -1605,33 +1608,35 @@ Module blake2.
                                                     |)
                                                   |)
                                                 |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "array")
-                                                            [ Value.Integer IntegerKind.Usize 8 ]
-                                                            [ Ty.path "u8" ],
-                                                          M.get_associated_function (|
-                                                            Ty.path "u64",
-                                                            "to_le_bytes",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.deref (| M.read (| h |) |)
-                                                            |)
-                                                          ]
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 8 ]
+                                                              [ Ty.path "u8" ],
+                                                            M.get_associated_function (|
+                                                              Ty.path "u64",
+                                                              "to_le_bytes",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.deref (| M.read (| h |) |)
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |)
-                                                |)
+                                                  |))
                                               ]
                                             |)
                                           |) in
@@ -2272,7 +2277,13 @@ Module blake2.
                                       [],
                                       []
                                     |),
-                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| h |) |) |)
+                                    [
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| h |) |)
+                                        |))
                                     ]
                                   |))
                               ]
@@ -2280,7 +2291,9 @@ Module blake2.
                         |)
                       |)
                     |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| h |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| h |) |) |))
                   ]
                 |)
               |) in
@@ -2334,7 +2347,13 @@ Module blake2.
                                       [],
                                       []
                                     |),
-                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| h |) |) |)
+                                    [
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| h |) |)
+                                        |))
                                     ]
                                   |))
                               ]
@@ -2342,21 +2361,23 @@ Module blake2.
                         |)
                       |)
                     |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          get_constant (|
-                            "revm_precompile::blake2::algo::IV",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 8 ]
-                              [ Ty.path "u64" ]
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            get_constant (|
+                              "revm_precompile::blake2::algo::IV",
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u64" ]
+                            |)
                           |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |) in
@@ -2543,10 +2564,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 0;
                                               Value.Integer IntegerKind.Usize 4;
                                               Value.Integer IntegerKind.Usize 8;
@@ -2586,10 +2611,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 1;
                                               Value.Integer IntegerKind.Usize 5;
                                               Value.Integer IntegerKind.Usize 9;
@@ -2629,10 +2658,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 2;
                                               Value.Integer IntegerKind.Usize 6;
                                               Value.Integer IntegerKind.Usize 10;
@@ -2672,10 +2705,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 3;
                                               Value.Integer IntegerKind.Usize 7;
                                               Value.Integer IntegerKind.Usize 11;
@@ -2715,10 +2752,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 0;
                                               Value.Integer IntegerKind.Usize 5;
                                               Value.Integer IntegerKind.Usize 10;
@@ -2758,10 +2799,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 1;
                                               Value.Integer IntegerKind.Usize 6;
                                               Value.Integer IntegerKind.Usize 11;
@@ -2801,10 +2846,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 2;
                                               Value.Integer IntegerKind.Usize 7;
                                               Value.Integer IntegerKind.Usize 8;
@@ -2844,10 +2893,14 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.borrow (| Pointer.Kind.MutRef, v |) |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, v |)
+                                                  |)
+                                                |));
                                               Value.Integer IntegerKind.Usize 3;
                                               Value.Integer IntegerKind.Usize 4;
                                               Value.Integer IntegerKind.Usize 9;

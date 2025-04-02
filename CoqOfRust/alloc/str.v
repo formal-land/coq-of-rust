@@ -8163,7 +8163,13 @@ Module str.
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, is_ascii |)
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              is_ascii
+                                                            |))
                                                         ]
                                                       |);
                                                       M.closure

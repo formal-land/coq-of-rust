@@ -8595,146 +8595,152 @@ Module char.
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  mk_str (| "encode_utf8: need " |);
-                                  mk_str (| " bytes to encode U+" |);
-                                  mk_str (| " but buffer has just " |)
-                                ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    mk_str (| "encode_utf8: need " |);
+                                    mk_str (| " bytes to encode U+" |);
+                                    mk_str (| " but buffer has just " |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_upper_hex",
-                                      [],
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_upper_hex",
+                                        [],
+                                        [ Ty.path "u32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 0;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 4 ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 8;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ Value.Integer IntegerKind.Usize 4 ]
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 2;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 0;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
+                        |));
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|
@@ -8874,146 +8880,152 @@ Module char.
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  mk_str (| "encode_utf16: need " |);
-                                  mk_str (| " bytes to encode U+" |);
-                                  mk_str (| " but buffer has just " |)
-                                ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    mk_str (| "encode_utf16: need " |);
+                                    mk_str (| " bytes to encode U+" |);
+                                    mk_str (| " but buffer has just " |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_upper_hex",
-                                      [],
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_upper_hex",
+                                        [],
+                                        [ Ty.path "u32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 0;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 4 ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 8;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ Value.Integer IntegerKind.Usize 4 ]
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 2;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 0;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
+                        |));
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|

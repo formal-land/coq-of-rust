@@ -1230,7 +1230,11 @@ Module vec.
                             [],
                             []
                           |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                          ]
                         |)
                       |)
                     |);

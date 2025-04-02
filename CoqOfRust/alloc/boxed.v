@@ -1681,17 +1681,19 @@ Module boxed.
                           []
                         |),
                         [
-                          M.cast
-                            (Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ T ]
-                              ])
-                            (M.read (| raw |));
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.cast
+                              (Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ T ]
+                                ])
+                              (M.read (| raw |)));
                           M.read (| alloc |)
                         ]
                       |)
@@ -4653,22 +4655,24 @@ Module boxed.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
               M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::ptr::unique::Unique")
-                    []
-                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
-                  M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.call_closure (|
                     Ty.apply
                       (Ty.path "core::ptr::unique::Unique")
                       []
                       [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
-                    "dangling",
-                    [],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::unique::Unique")
+                        []
+                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
+                      "dangling",
+                      [],
+                      []
+                    |),
                     []
-                  |),
-                  []
-                |)
+                  |))
               |) in
             M.alloc (|
               Value.StructTuple
@@ -4716,17 +4720,9 @@ Module boxed.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::ptr::unique::Unique")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 0 ]
-                            [ Ty.path "u8" ]
-                        ],
-                      M.get_associated_function (|
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.call_closure (|
                         Ty.apply
                           (Ty.path "core::ptr::unique::Unique")
                           []
@@ -4736,12 +4732,22 @@ Module boxed.
                               [ Value.Integer IntegerKind.Usize 0 ]
                               [ Ty.path "u8" ]
                           ],
-                        "dangling",
-                        [],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::ptr::unique::Unique")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "u8" ]
+                            ],
+                          "dangling",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   M.call_closure (|

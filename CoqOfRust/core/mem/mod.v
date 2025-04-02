@@ -973,19 +973,21 @@ Module mem.
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::mem::Discriminant",
-                              0
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::mem::Discriminant",
+                                0
+                              |)
                             |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |)

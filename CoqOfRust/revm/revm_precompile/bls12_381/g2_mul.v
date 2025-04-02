@@ -962,14 +962,16 @@ Module bls12_381.
                             []
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                input_scalar0,
-                                "blst::blst_scalar",
-                                "b"
-                              |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  input_scalar0,
+                                  "blst::blst_scalar",
+                                  "b"
+                                |)
+                              |))
                           ]
                         |);
                         M.read (|

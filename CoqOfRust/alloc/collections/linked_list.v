@@ -205,27 +205,17 @@ Module collections.
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path
-                                                  "alloc::collections::linked_list::LinkedList")
-                                                []
-                                                [ T; Ty.path "alloc::alloc::Global" ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              (Ty.path "&")
                                               []
                                               [
                                                 Ty.apply
@@ -234,29 +224,29 @@ Module collections.
                                                   []
                                                   [ T; Ty.path "alloc::alloc::Global" ]
                                               ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                []
+                                                [
                                                   Ty.apply
                                                     (Ty.path
-                                                      "core::mem::manually_drop::ManuallyDrop")
+                                                      "alloc::collections::linked_list::LinkedList")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::linked_list::LinkedList")
-                                                        []
-                                                        [ T; Ty.path "alloc::alloc::Global" ]
-                                                    ],
-                                                  M.get_associated_function (|
+                                                    [ T; Ty.path "alloc::alloc::Global" ]
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::manually_drop::ManuallyDrop")
@@ -268,74 +258,88 @@ Module collections.
                                                           []
                                                           [ T; Ty.path "alloc::alloc::Global" ]
                                                       ],
-                                                    "new",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    Value.StructRecord
-                                                      "alloc::collections::linked_list::LinkedList"
-                                                      [
-                                                        ("head",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::Iter",
-                                                              "head"
-                                                            |)
-                                                          |));
-                                                        ("tail",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::Iter",
-                                                              "tail"
-                                                            |)
-                                                          |));
-                                                        ("len",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::Iter",
-                                                              "len"
-                                                            |)
-                                                          |));
-                                                        ("alloc",
-                                                          Value.StructTuple
-                                                            "alloc::alloc::Global"
-                                                            []);
-                                                        ("marker",
-                                                          Value.StructTuple
-                                                            "core::marker::PhantomData"
-                                                            [])
-                                                      ]
-                                                  ]
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::manually_drop::ManuallyDrop")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::LinkedList")
+                                                            []
+                                                            [ T; Ty.path "alloc::alloc::Global" ]
+                                                        ],
+                                                      "new",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      Value.StructRecord
+                                                        "alloc::collections::linked_list::LinkedList"
+                                                        [
+                                                          ("head",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::Iter",
+                                                                "head"
+                                                              |)
+                                                            |));
+                                                          ("tail",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::Iter",
+                                                                "tail"
+                                                              |)
+                                                            |));
+                                                          ("len",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::Iter",
+                                                                "len"
+                                                              |)
+                                                            |));
+                                                          ("alloc",
+                                                            Value.StructTuple
+                                                              "alloc::alloc::Global"
+                                                              []);
+                                                          ("marker",
+                                                            Value.StructTuple
+                                                              "core::marker::PhantomData"
+                                                              [])
+                                                        ]
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::linked_list::Iter",
-                                "len"
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::linked_list::Iter",
+                                  "len"
+                                |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -513,27 +517,17 @@ Module collections.
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path
-                                                  "alloc::collections::linked_list::LinkedList")
-                                                []
-                                                [ T; Ty.path "alloc::alloc::Global" ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              (Ty.path "&")
                                               []
                                               [
                                                 Ty.apply
@@ -542,29 +536,29 @@ Module collections.
                                                   []
                                                   [ T; Ty.path "alloc::alloc::Global" ]
                                               ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                []
+                                                [
                                                   Ty.apply
                                                     (Ty.path
-                                                      "core::mem::manually_drop::ManuallyDrop")
+                                                      "alloc::collections::linked_list::LinkedList")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::linked_list::LinkedList")
-                                                        []
-                                                        [ T; Ty.path "alloc::alloc::Global" ]
-                                                    ],
-                                                  M.get_associated_function (|
+                                                    [ T; Ty.path "alloc::alloc::Global" ]
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::manually_drop::ManuallyDrop")
@@ -576,74 +570,88 @@ Module collections.
                                                           []
                                                           [ T; Ty.path "alloc::alloc::Global" ]
                                                       ],
-                                                    "new",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    Value.StructRecord
-                                                      "alloc::collections::linked_list::LinkedList"
-                                                      [
-                                                        ("head",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::IterMut",
-                                                              "head"
-                                                            |)
-                                                          |));
-                                                        ("tail",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::IterMut",
-                                                              "tail"
-                                                            |)
-                                                          |));
-                                                        ("len",
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::collections::linked_list::IterMut",
-                                                              "len"
-                                                            |)
-                                                          |));
-                                                        ("alloc",
-                                                          Value.StructTuple
-                                                            "alloc::alloc::Global"
-                                                            []);
-                                                        ("marker",
-                                                          Value.StructTuple
-                                                            "core::marker::PhantomData"
-                                                            [])
-                                                      ]
-                                                  ]
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::manually_drop::ManuallyDrop")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::LinkedList")
+                                                            []
+                                                            [ T; Ty.path "alloc::alloc::Global" ]
+                                                        ],
+                                                      "new",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      Value.StructRecord
+                                                        "alloc::collections::linked_list::LinkedList"
+                                                        [
+                                                          ("head",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::IterMut",
+                                                                "head"
+                                                              |)
+                                                            |));
+                                                          ("tail",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::IterMut",
+                                                                "tail"
+                                                              |)
+                                                            |));
+                                                          ("len",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::collections::linked_list::IterMut",
+                                                                "len"
+                                                              |)
+                                                            |));
+                                                          ("alloc",
+                                                            Value.StructTuple
+                                                              "alloc::alloc::Global"
+                                                              []);
+                                                          ("marker",
+                                                            Value.StructTuple
+                                                              "core::marker::PhantomData"
+                                                              [])
+                                                        ]
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::linked_list::IterMut",
-                                "len"
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::linked_list::IterMut",
+                                  "len"
+                                |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -790,19 +798,21 @@ Module collections.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::linked_list::IntoIter",
-                                "list"
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::linked_list::IntoIter",
+                                  "list"
+                                |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -9116,47 +9126,58 @@ Module collections.
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::collections::linked_list::Cursor",
-                                        "list"
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::linked_list::Cursor",
+                                          "list"
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_associated_function (|
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::linked_list::Cursor")
+                                      (Ty.path "core::option::Option")
                                       []
-                                      [ T; A ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
+                                      [ Ty.path "usize" ],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Cursor")
+                                        []
+                                        [ T; A ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -9281,47 +9302,58 @@ Module collections.
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::collections::linked_list::CursorMut",
-                                        "list"
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::linked_list::CursorMut",
+                                          "list"
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_associated_function (|
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::linked_list::CursorMut")
+                                      (Ty.path "core::option::Option")
                                       []
-                                      [ T; A ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
+                                      [ Ty.path "usize" ],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::CursorMut")
+                                        []
+                                        [ T; A ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)
@@ -15693,19 +15725,21 @@ Module collections.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::linked_list::ExtractIf",
-                                "list"
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::linked_list::ExtractIf",
+                                  "list"
+                                |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)

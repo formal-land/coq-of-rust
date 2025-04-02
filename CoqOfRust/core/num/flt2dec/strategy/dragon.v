@@ -535,30 +535,32 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| x |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO16",
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW5TO16",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |) in
@@ -613,30 +615,32 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| x |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO32",
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 3 ]
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW5TO32",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |) in
@@ -691,30 +695,32 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| x |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO64",
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 5 ]
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW5TO64",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 5 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |) in
@@ -769,30 +775,32 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| x |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO128",
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 10 ]
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW5TO128",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 10 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |) in
@@ -847,30 +855,32 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| x |) |)
                                       |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO256",
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 19 ]
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW5TO256",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 19 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     ]
                                   |)
                                 |) in
@@ -944,25 +954,27 @@ Module num.
                                 []
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 10 ]
-                                              [ Ty.path "u32" ]
-                                          ]
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "core::num::flt2dec::strategy::dragon::POW10",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 10 ]
+                                                [ Ty.path "u32" ]
+                                            ]
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |);
                             Value.Integer IntegerKind.Usize 1

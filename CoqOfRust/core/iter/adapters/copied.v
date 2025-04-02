@@ -87,24 +87,26 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Copied" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "it" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::copied::Copied",
-                              "it"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::copied::Copied",
+                                "it"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1665,7 +1667,11 @@ Module iter.
                                                   [],
                                                   []
                                                 |),
-                                                [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
+                                                [
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (| Pointer.Kind.MutRef, raw_array |))
+                                                ]
                                               |));
                                             M.read (| len |)
                                           ]
@@ -1812,7 +1818,10 @@ Module iter.
                                   [],
                                   []
                                 |),
-                                [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
+                                [
+                                  (* Unsize *)
+                                  M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, raw_array |))
+                                ]
                               |));
                             N
                           ]

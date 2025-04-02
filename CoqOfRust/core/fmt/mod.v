@@ -473,20 +473,22 @@ Module fmt.
                     M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                     [
                       M.read (| c |);
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.alloc (|
-                              repeat (|
-                                Value.Integer IntegerKind.U8 0,
-                                Value.Integer IntegerKind.Usize 4
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |)
@@ -675,7 +677,10 @@ Module fmt.
               ("align", Value.StructTuple "core::fmt::rt::Alignment::Unknown" []);
               ("width", Value.StructTuple "core::option::Option::None" []);
               ("precision", Value.StructTuple "core::option::Option::None" []);
-              ("buf", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |))
+              ("buf",
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |)))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -712,49 +717,53 @@ Module fmt.
             "core::fmt::Formatter"
             [
               ("buf",
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
-                      M.get_trait_method (|
-                        "core::ops::function::FnOnce",
-                        F,
-                        [],
-                        [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                            ]
-                        ],
-                        "call_once",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| wrap |);
-                        Value.Tuple
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [],
                           [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::fmt::Formatter",
-                                    "buf"
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
+                              ]
+                          ],
+                          "call_once",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (| wrap |);
+                          Value.Tuple
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::fmt::Formatter",
+                                        "buf"
+                                      |)
+                                    |)
                                   |)
-                                |)
-                              |)
-                            |)
-                          ]
-                      ]
+                                |))
+                            ]
+                        ]
+                      |)
                     |)
-                  |)
-                |));
+                  |)));
               ("flags",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -5486,20 +5495,22 @@ Module fmt.
                                                                 []
                                                               |),
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.MutRef,
-                                                                  M.deref (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.deref (|
-                                                                          M.read (| self |)
-                                                                        |),
-                                                                        "core::fmt::Formatter",
-                                                                        "buf"
+                                                                (* Unsize *)
+                                                                M.pointer_coercion
+                                                                  (M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "core::fmt::Formatter",
+                                                                          "buf"
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |)
-                                                                |);
+                                                                  |));
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
@@ -5690,20 +5701,22 @@ Module fmt.
                                                                 []
                                                               |),
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.MutRef,
-                                                                  M.deref (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.deref (|
-                                                                          M.read (| self |)
-                                                                        |),
-                                                                        "core::fmt::Formatter",
-                                                                        "buf"
+                                                                (* Unsize *)
+                                                                M.pointer_coercion
+                                                                  (M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "core::fmt::Formatter",
+                                                                          "buf"
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |)
-                                                                |);
+                                                                  |));
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| buf |) |)
@@ -5942,18 +5955,20 @@ Module fmt.
                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (| "core::fmt::write", [], [] |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::fmt::Formatter",
-                                  "buf"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::fmt::Formatter",
+                                    "buf"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |);
+                            |));
                           M.read (| fmt |)
                         ]
                       |)
@@ -6481,7 +6496,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -6563,7 +6580,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -6580,7 +6599,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -6667,7 +6688,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -6684,7 +6707,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -6701,7 +6726,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -6793,7 +6820,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -6810,7 +6839,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -6827,7 +6858,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -6844,7 +6877,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name4 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |))
                   ]
                 |)
               |) in
@@ -6944,7 +6979,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -6961,7 +6998,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -6978,7 +7017,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -6995,7 +7036,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name4 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |))
                   ]
                 |)
               |) in
@@ -7012,7 +7055,9 @@ Module fmt.
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name5 |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |))
                   ]
                 |)
               |) in
@@ -7420,10 +7465,12 @@ Module fmt.
                                                   M.read (| M.deref (| M.read (| name |) |) |)
                                                 |)
                                               |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| value |) |)
-                                              |)
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| value |) |)
+                                                |))
                                             ]
                                           |)
                                         |) in
@@ -7527,7 +7574,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -7604,7 +7653,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -7620,7 +7671,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -7700,7 +7753,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -7716,7 +7771,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -7732,7 +7789,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -7815,7 +7874,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -7831,7 +7892,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -7847,7 +7910,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -7863,7 +7928,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |))
                   ]
                 |)
               |) in
@@ -7949,7 +8016,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |))
                   ]
                 |)
               |) in
@@ -7965,7 +8034,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |))
                   ]
                 |)
               |) in
@@ -7981,7 +8052,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |))
                   ]
                 |)
               |) in
@@ -7997,7 +8070,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |))
                   ]
                 |)
               |) in
@@ -8013,7 +8088,9 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, builder |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |))
                   ]
                 |)
               |) in
@@ -8200,10 +8277,12 @@ Module fmt.
                                             |),
                                             [
                                               M.borrow (| Pointer.Kind.MutRef, builder |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| value |) |)
-                                              |)
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| value |) |)
+                                                |))
                                             ]
                                           |)
                                         |) in
@@ -8415,13 +8494,18 @@ Module fmt.
               Value.StructRecord
                 "core::fmt::Arguments"
                 [
-                  ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
+                  ("pieces",
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |)));
                   ("fmt", Value.StructTuple "core::option::Option::None" []);
                   ("args",
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
-                    |))
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
+                      |)))
                 ]
             |)
           |)))
@@ -8455,9 +8539,15 @@ Module fmt.
               Value.StructRecord
                 "core::fmt::Arguments"
                 [
-                  ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
+                  ("pieces",
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |)));
                   ("fmt", Value.StructTuple "core::option::Option::None" []);
-                  ("args", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |))
+                  ("args",
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |)))
                 ]
             |)
           |)))
@@ -9105,18 +9195,20 @@ Module fmt.
               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_function (| "core::fmt::write", [], [] |),
             [
-              M.borrow (|
-                Pointer.Kind.MutRef,
-                M.deref (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| fmt |) |),
-                      "core::fmt::Formatter",
-                      "buf"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| fmt |) |),
+                        "core::fmt::Formatter",
+                        "buf"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.read (| M.deref (| M.read (| self |) |) |)
             ]
           |)))
@@ -9223,7 +9315,11 @@ Module fmt.
                   M.call_closure (|
                     Ty.path "core::fmt::Formatter",
                     M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [], [] |),
-                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |) ]
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |))
+                    ]
                   |)
                 |) in
               let~ idx : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
@@ -11485,18 +11581,20 @@ Module fmt.
                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (| "core::fmt::write", [], [] |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::fmt::Formatter",
-                                  "buf"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::fmt::Formatter",
+                                    "buf"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |);
+                            |));
                           M.read (| args |)
                         ]
                       |)
@@ -14032,20 +14130,22 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| M.deref (| M.read (| self |) |) |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.alloc (|
-                                          repeat (|
-                                            Value.Integer IntegerKind.U8 0,
-                                            Value.Integer IntegerKind.Usize 4
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.alloc (|
+                                            repeat (|
+                                              Value.Integer IntegerKind.U8 0,
+                                              Value.Integer IntegerKind.Usize 4
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |)
-                                  |)
+                                    |))
                                 ]
                               |)
                             |)
@@ -14754,10 +14854,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_E |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_E |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14780,10 +14882,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14806,10 +14910,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14832,10 +14938,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14858,10 +14966,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14884,10 +14994,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14910,10 +15022,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14936,10 +15050,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14962,10 +15078,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -14988,10 +15106,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15014,10 +15134,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15040,10 +15162,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15169,10 +15293,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15195,10 +15321,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15221,10 +15349,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15247,10 +15377,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15273,10 +15405,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15299,10 +15433,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15325,10 +15461,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15351,10 +15489,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15377,10 +15517,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15403,10 +15545,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15429,10 +15573,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15556,10 +15702,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15582,10 +15730,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15608,10 +15758,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15634,10 +15786,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15660,10 +15814,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15686,10 +15842,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15712,10 +15870,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15738,10 +15898,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15764,10 +15926,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15790,10 +15954,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15914,10 +16080,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15940,10 +16108,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15966,10 +16136,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -15992,10 +16164,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16018,10 +16192,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16044,10 +16220,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16070,10 +16248,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16096,10 +16276,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16122,10 +16304,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16244,10 +16428,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16270,10 +16456,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16296,10 +16484,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16322,10 +16512,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16348,10 +16540,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16374,10 +16568,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16400,10 +16596,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16426,10 +16624,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16546,10 +16746,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16572,10 +16774,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16598,10 +16802,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16624,10 +16830,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16650,10 +16858,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16676,10 +16886,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16702,10 +16914,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16815,10 +17029,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16841,10 +17057,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16867,10 +17085,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16893,10 +17113,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16919,10 +17141,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -16945,10 +17169,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17056,10 +17282,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17082,10 +17310,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17108,10 +17338,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17134,10 +17366,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17160,10 +17394,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17269,10 +17505,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17295,10 +17533,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17321,10 +17561,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17347,10 +17589,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17454,10 +17698,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17480,10 +17726,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17506,10 +17754,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17611,10 +17861,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17637,10 +17889,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -17740,10 +17994,12 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, builder |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                              |))
                           ]
                         |)
                       |) in
@@ -18056,26 +18312,29 @@ Module fmt.
                         |)
                       |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              M.call_closure (|
-                                T,
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  T,
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |)
@@ -18178,10 +18437,12 @@ Module fmt.
                           [
                             M.borrow (| Pointer.Kind.MutRef, d |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, borrow |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, borrow |) |)
+                              |))
                           ]
                         |)
                       |)));
@@ -18211,38 +18472,40 @@ Module fmt.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, d |);
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
                                             Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            [ Value.Integer IntegerKind.Usize 1 ],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ mk_str (| "<borrowed>" |) ]
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_const",
+                                              [ Value.Integer IntegerKind.Usize 1 ],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array [ mk_str (| "<borrowed>" |) ]
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |)
                           |)

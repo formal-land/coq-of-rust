@@ -314,19 +314,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -337,22 +328,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Value.Integer IntegerKind.I32 1;
-                            Value.Integer IntegerKind.I32 2;
-                            Value.Integer IntegerKind.I32 3
-                          ]
-                      |)
-                    ]
-                  |)
-                |)
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in
@@ -374,19 +376,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 2 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -397,18 +390,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
-                          [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 5 ]
-                      |)
-                    ]
-                  |)
-                |)
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 5 ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in

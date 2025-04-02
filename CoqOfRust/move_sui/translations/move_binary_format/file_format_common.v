@@ -3065,24 +3065,26 @@ Module file_format_common.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BinaryData" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_binary" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_binary_format::file_format_common::BinaryData",
-                          "_binary"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::file_format_common::BinaryData",
+                            "_binary"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4368,24 +4370,26 @@ Module file_format_common.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 2 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
-                      [ M.read (| value |) ]
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
+                        [ M.read (| value |) ]
+                      |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4417,24 +4421,26 @@ Module file_format_common.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 4 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
-                      [ M.read (| value |) ]
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
+                        [ M.read (| value |) ]
+                      |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4466,24 +4472,26 @@ Module file_format_common.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 8 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
-                      [ M.read (| value |) ]
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 8 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
+                        [ M.read (| value |) ]
+                      |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4515,24 +4523,26 @@ Module file_format_common.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
-                      [ M.read (| value |) ]
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 16 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
+                        [ M.read (| value |) ]
+                      |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4567,29 +4577,31 @@ Module file_format_common.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 32 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (|
-                        Ty.path "move_core_types::u256::U256",
-                        "to_le_bytes",
-                        [],
-                        []
-                      |),
-                      [ M.read (| value |) ]
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.path "move_core_types::u256::U256",
+                          "to_le_bytes",
+                          [],
+                          []
+                        |),
+                        [ M.read (| value |) ]
+                      |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4676,10 +4688,12 @@ Module file_format_common.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                              |))
                           ]
                         |)
                       ]
@@ -4837,10 +4851,12 @@ Module file_format_common.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                              |))
                           ]
                         |)
                       ]

@@ -502,24 +502,28 @@ Module div.
                   Ty.tuple [],
                   M.get_function (| "ruint::algorithms::div::div", [], [] |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |)
+                          |)
                         |)
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (| rhs, "ruint::Uint", "limbs" |)
+                      |));
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (| rhs, "ruint::Uint", "limbs" |)
+                          |)
                         |)
-                      |)
-                    |)
+                      |))
                   ]
                 |)
               |) in

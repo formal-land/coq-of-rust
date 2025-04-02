@@ -6842,25 +6842,25 @@ Module cell.
         M.read (|
           M.match_operator (|
             None,
-            M.alloc (| M.read (| a |) |),
+            M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| a |)) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
                     None,
-                    M.alloc (| M.read (| b |) |),
+                    M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| b |)) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
                             None,
-                            M.alloc (| M.read (| c |) |),
+                            M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| c |)) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     None,
-                                    M.alloc (| M.read (| d |) |),
+                                    M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| d |)) |),
                                     [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                   |)))
                             ]

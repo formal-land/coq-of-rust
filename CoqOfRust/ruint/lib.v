@@ -1163,7 +1163,8 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                   []
                                 |),
                                 [
-                                  M.borrow (| Pointer.Kind.MutRef, limbs |);
+                                  (* Unsize *)
+                                  M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, limbs |));
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |)
                                 ]
                               |)

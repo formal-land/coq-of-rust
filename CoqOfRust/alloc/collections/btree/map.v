@@ -17423,47 +17423,49 @@ Module collections.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&") [] [ K ];
-                                            Ty.apply (Ty.path "&") [] [ V ]
-                                          ]
-                                      ],
-                                    M.get_associated_function (|
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::ExtractIfInner")
+                                        (Ty.path "core::option::Option")
                                         []
-                                        [ K; V ],
-                                      "peek",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::collections::btree::map::ExtractIf",
-                                          "inner"
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [] [ K ];
+                                              Ty.apply (Ty.path "&") [] [ V ]
+                                            ]
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::ExtractIfInner")
+                                          []
+                                          [ K; V ],
+                                        "peek",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::btree::map::ExtractIf",
+                                            "inner"
+                                          |)
                                         |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -22747,7 +22749,8 @@ Module collections.
                             ]
                           |),
                           [
-                            M.borrow (| Pointer.Kind.MutRef, arr |);
+                            (* Unsize *)
+                            M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, arr |));
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
