@@ -122,7 +122,7 @@ Module array.
                     [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                 ] :=
             M.alloc (|
-              repeat (|
+              lib.repeat (|
                 M.read (|
                   get_constant (|
                     "core::array::try_from_fn_discriminant",

@@ -259,7 +259,7 @@ Module Iterator.
       Set :=
     TraitMethod.C (trait Self) "next" (fun method =>
       forall (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [] [] [φ self] Item
+      Run.Trait method [] [] [φ self] (option Item)
     ).
 
   Definition Run_next_chunk
