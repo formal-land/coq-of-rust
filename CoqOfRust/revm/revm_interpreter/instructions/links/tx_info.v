@@ -1,9 +1,23 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.convert.links.mod.
+Require Import core.convert.links.num.
 Require Import core.links.cmp.
+Require Import core.links.result.
+Require Import core.num.links.mod.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.tx_info.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_specification.links.hardfork.
+
+Import Impl_Gas.
+Import Impl_Result_T_E.
+Import Impl_SpecId.
+Import lib.Impl_Uint.
+Import Impl_u64.
+Import Impl_usize.
 
 (*
 pub fn gasprice<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -22,7 +36,7 @@ Instance run_gasprice
     unit.
 Proof.
   constructor.
-  run_symbolic.
+  (* run_symbolic. *)
 Admitted.
 
 (*
@@ -42,7 +56,7 @@ Instance run_origin
     unit.
 Proof.
   constructor.
-  run_symbolic.
+  (* run_symbolic. *)
 Admitted.
 
 (*
@@ -62,5 +76,10 @@ Instance run_blob_hash
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
 Admitted.

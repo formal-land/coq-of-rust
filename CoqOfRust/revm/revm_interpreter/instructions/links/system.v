@@ -22,7 +22,6 @@ Require Import revm.revm_specification.links.hardfork.
 Require Import ruint.links.from.
 
 Import Impl_Address.
-
 Import Impl_FixedBytes.
 Import Impl_Gas.
 Import Impl_Result_T_E.

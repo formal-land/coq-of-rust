@@ -66,4 +66,16 @@ Module Impl_Uint.
     constructor.
     run_symbolic.
   Admitted.
+
+  (* pub unsafe fn as_limbs_mut(&mut self) -> &mut [u64; LIMBS] *)
+  Instance run_as_limbs_mut
+    (BITS LIMBS : Usize.t)
+    (self : Ref.t Pointer.Kind.MutRef (Uint.t BITS LIMBS)) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.as_limbs_mut (φ BITS) (φ LIMBS)) [] [] [ φ self ]
+      (Ref.t Pointer.Kind.MutRef (array.t U64.t LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_Uint.

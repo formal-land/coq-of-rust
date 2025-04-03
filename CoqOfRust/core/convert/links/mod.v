@@ -137,3 +137,25 @@ Module TryFrom.
     try_from : Run_try_from Self T Error;
   }.
 End TryFrom.
+
+(*
+pub trait TryInto<T>: Sized {
+    type Error;
+
+    fn try_into(self) -> Result<T, Self::Error>;
+}
+*)
+Module TryInto.
+  Definition trait (Self T : Set) `{Link Self} `{Link T} : TraitMethod.Header.t :=
+    ("core::convert::TryInto", [], [Φ T], Φ Self).
+
+  Definition Run_try_into (Self T Error : Set) `{Link Self} `{Link T} `{Link Error} : Set :=
+    TraitMethod.C (trait Self T) "try_into" (fun method =>
+      forall (self : Self),
+        Run.Trait method [] [] [ φ self ] (Result.t T Error)
+    ).
+
+  Class Run (Self : Set) (T : Set) (Error : Set) `{Link Self} `{Link T} `{Link Error} : Set := {
+    try_into : Run_try_into Self T Error;
+  }.
+End TryInto.

@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.intrinsics.links.mod.
+Require Import core.links.array.
 Require Import core.num.mod.
 
 Module Impl_u64.
@@ -39,6 +40,14 @@ Module Impl_u64.
   Instance run_overflowing_sub (self rhs: Self) :
     Run.Trait num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] (Self * bool).
   Proof.
+  Admitted.
+
+  (* pub const fn from_be_bytes(bytes: [u8; 8]) -> Self *)
+  Instance run_from_be_bytes (bytes: array.t U8.t {| Integer.value := 8 |}) :
+    Run.Trait num.Impl_u64.from_be_bytes [] [] [ φ bytes ] Self.
+  Proof.
+    constructor.
+    run_symbolic.
   Admitted.
 End Impl_u64.
 
