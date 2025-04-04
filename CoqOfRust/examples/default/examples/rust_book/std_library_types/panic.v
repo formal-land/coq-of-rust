@@ -27,9 +27,13 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 (let γ :=
                   M.use
                     (M.alloc (|
-                      BinOp.eq (| M.read (| divisor |), Value.Integer IntegerKind.I32 0 |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
+                      |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
@@ -45,7 +49,13 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (| BinOp.Wrap.div (| M.read (| dividend |), M.read (| divisor |) |) |)))
+                (M.alloc (|
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.div,
+                    [ M.read (| dividend |); M.read (| divisor |) ]
+                  |)
+                |)))
           ]
         |)
       |)))

@@ -782,6 +782,9 @@ Module InterpreterTypes.
       reflexivity
     |];
     match goal with
-    | H : Run _ _ |- _ => destruct H
+    | H : Run _ _ |- _ =>
+      (* We make a duplicate for future calls *)
+      pose H;
+      destruct H
     end.
 End InterpreterTypes.

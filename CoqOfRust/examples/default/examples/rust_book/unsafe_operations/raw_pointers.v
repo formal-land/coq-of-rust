@@ -35,13 +35,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.use
                       (M.alloc (|
                         UnOp.not (|
-                          BinOp.eq (|
-                            M.read (| M.deref (| M.read (| raw_p |) |) |),
-                            Value.Integer IntegerKind.U32 10
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.read (| M.deref (| M.read (| raw_p |) |) |);
+                              Value.Integer IntegerKind.U32 10
+                            ]
                           |)
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|

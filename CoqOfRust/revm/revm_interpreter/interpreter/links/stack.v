@@ -3,17 +3,22 @@ Require Import CoqOfRust.links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import core.fmt.links.mod.
+Require Import core.fmt.links.rt.
+Require Import core.iter.traits.links.collect.
 Require Import core.links.array.
 Require Import core.links.hint.
 Require Import core.links.option.
 Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.slice.links.index.
+Require Import core.slice.links.iter.
 Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.interpreter.stack.
 Require Import revm.revm_interpreter.links.instruction_result.
 Require Import ruint.links.lib.
 
+Import Impl_Arguments.
 Import Impl_Option.
 Import Impl_Slice.
 Import Impl_SliceIndex_for_Usize.
@@ -184,6 +189,7 @@ Module Impl_Stack.
       (array.t aliases.U256.t N).
   Proof.
     constructor.
+    destruct (Impl_IntoIterator_for_Iterator_I.run (IterMut.t aliases.U256.t) aliases.U256.t).
     run_symbolic.
   Admitted.
 
@@ -205,7 +211,7 @@ Module Impl_Stack.
   Proof.
     constructor.
     run_symbolic.
-  Admitted.
+  Defined.
 
   (* pub fn peek(&self, no_from_top: usize) -> Result<U256, InstructionResult> *)
   Instance run_peek (self : Ref.t Pointer.Kind.Ref Self) (no_from_top : Usize.t) :

@@ -31,9 +31,13 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [ M.read (| rhs |); Value.Integer IntegerKind.U32 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                       |)));
@@ -41,9 +45,17 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
                 ]
               |) in
             M.alloc (|
-              BinOp.eq (|
-                BinOp.Wrap.rem (| M.read (| lhs |), M.read (| rhs |) |),
-                Value.Integer IntegerKind.U32 0
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.rem,
+                    [ M.read (| lhs |); M.read (| rhs |) ]
+                  |);
+                  Value.Integer IntegerKind.U32 0
+                ]
               |)
             |)
           |)))
@@ -90,7 +102,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
                       |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   let~ _ : Ty.tuple [] :=
                     M.alloc (|
@@ -141,8 +153,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
@@ -194,7 +205,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in

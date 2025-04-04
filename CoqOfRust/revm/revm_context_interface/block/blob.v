@@ -87,38 +87,42 @@ Module block.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BlobExcessGasAndPrice" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "excess_blob_gas" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                        "excess_blob_gas"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                          "excess_blob_gas"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "blob_gasprice" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                            "blob_gasprice"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                              "blob_gasprice"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -158,38 +162,46 @@ Module block.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                    "excess_blob_gas"
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                    "excess_blob_gas"
-                  |)
-                |)
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                      "blob_gasprice"
+                      "excess_blob_gas"
                     |)
-                  |),
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| other |) |),
                       "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                      "blob_gasprice"
+                      "excess_blob_gas"
                     |)
                   |)
+                ]
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                        "blob_gasprice"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                        "blob_gasprice"
+                      |)
+                    |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -396,9 +408,10 @@ Module block.
             Ty.path "u64",
             M.get_associated_function (| Ty.path "u64", "saturating_sub", [], [] |),
             [
-              BinOp.Wrap.add (|
-                M.read (| parent_excess_blob_gas |),
-                M.read (| parent_blob_gas_used |)
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.add,
+                [ M.read (| parent_excess_blob_gas |); M.read (| parent_blob_gas_used |) ]
               |);
               M.read (|
                 get_constant (|
@@ -510,16 +523,17 @@ Module block.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (| M.deref (| M.read (| left_val |) |) |);
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -606,7 +620,13 @@ Module block.
             let~ i : Ty.path "u128" := M.alloc (| Value.Integer IntegerKind.U128 1 |) in
             let~ output : Ty.path "u128" := M.alloc (| Value.Integer IntegerKind.U128 0 |) in
             let~ numerator_accum : Ty.path "u128" :=
-              M.alloc (| BinOp.Wrap.mul (| M.read (| factor |), M.read (| denominator |) |) |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.mul,
+                  [ M.read (| factor |); M.read (| denominator |) ]
+                |)
+              |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
                 Ty.tuple [],
@@ -620,31 +640,45 @@ Module block.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (|
-                                  M.read (| numerator_accum |),
-                                  Value.Integer IntegerKind.U128 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| numerator_accum |); Value.Integer IntegerKind.U128 0 ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β := output in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), M.read (| numerator_accum |) |)
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); M.read (| numerator_accum |) ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 numerator_accum,
-                                BinOp.Wrap.div (|
-                                  BinOp.Wrap.mul (|
-                                    M.read (| numerator_accum |),
-                                    M.read (| numerator |)
-                                  |),
-                                  BinOp.Wrap.mul (| M.read (| denominator |), M.read (| i |) |)
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  BinOp.Wrap.div,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "u128",
+                                      BinOp.Wrap.mul,
+                                      [ M.read (| numerator_accum |); M.read (| numerator |) ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "u128",
+                                      BinOp.Wrap.mul,
+                                      [ M.read (| denominator |); M.read (| i |) ]
+                                    |)
+                                  ]
                                 |)
                               |)
                             |) in
@@ -653,9 +687,10 @@ Module block.
                               let β := i in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.U128 1
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U128 1 ]
                                 |)
                               |)
                             |) in
@@ -674,7 +709,13 @@ Module block.
                     ]
                   |)))
               |) in
-            M.alloc (| BinOp.Wrap.div (| M.read (| output |), M.read (| denominator |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.div,
+                [ M.read (| output |); M.read (| denominator |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

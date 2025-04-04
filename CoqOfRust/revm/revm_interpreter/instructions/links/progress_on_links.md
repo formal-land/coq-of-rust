@@ -107,26 +107,26 @@
 
 - [x] `pop`
 - [x] `push0`
-- [ ] `push`
-- [ ] `dup`
-- [ ] `swap`
+- [x] `push`
+- [x] `dup`
+- [x] `swap`
 - [x] `dupn`
 - [x] `swapn`
-- [ ] `exchange`
+- [x] `exchange`
 
 ## System
 
 - [ ] `keccak256`
-- [ ] `address`
-- [ ] `caller`
-- [ ] `codesize`
-- [ ] `codecopy`
+- [x] `address`
+- [x] `caller`
+- [x] `codesize`
+- [x] `memory_resize`
+- [x] `codecopy`
 - [ ] `calldataload`
 - [x] `calldatasize`
 - [x] `callvalue`
-- [ ] `memory_resize`
-- [ ] `calldatacopy`
-- [ ] `returndatasize`
+- [x] `calldatacopy`
+- [x] `returndatasize`
 - [ ] `returndatacopy`
 - [ ] `returndataload`
 - [x] `gas`
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 79
-- Defined: 24
-- Percentage: 23.30%
+- Admitted: 68
+- Defined: 35
+- Percentage: 33.98%

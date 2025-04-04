@@ -2653,23 +2653,25 @@ Module bits.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
                     M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::address::Address",
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |),
+                      "alloy_primitives::bits::fixed::FixedBytes",
                       0
-                    |),
-                    "alloy_primitives::bits::fixed::FixedBytes",
-                    0
+                    |)
                   |)
                 |)
-              |)
-            |)))
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2698,23 +2700,25 @@ Module bits.
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
                         M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::bits::address::Address",
+                            0
+                          |),
+                          "alloy_primitives::bits::fixed::FixedBytes",
                           0
-                        |),
-                        "alloy_primitives::bits::fixed::FixedBytes",
-                        0
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8557,23 +8561,25 @@ Module bits.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
                     M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |),
+                      "alloy_primitives::bits::fixed::FixedBytes",
                       0
-                    |),
-                    "alloy_primitives::bits::fixed::FixedBytes",
-                    0
+                    |)
                   |)
                 |)
-              |)
-            |)))
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8602,23 +8608,25 @@ Module bits.
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
                         M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::bits::bloom::Bloom",
+                            0
+                          |),
+                          "alloy_primitives::bits::fixed::FixedBytes",
                           0
-                        |),
-                        "alloy_primitives::bits::fixed::FixedBytes",
-                        0
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16859,23 +16867,25 @@ Module bits.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
                     M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |),
+                      "alloy_primitives::bits::fixed::FixedBytes",
                       0
-                    |),
-                    "alloy_primitives::bits::fixed::FixedBytes",
-                    0
+                    |)
                   |)
                 |)
-              |)
-            |)))
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16904,23 +16914,25 @@ Module bits.
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
                         M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::bits::function::Function",
+                            0
+                          |),
+                          "alloy_primitives::bits::fixed::FixedBytes",
                           0
-                        |),
-                        "alloy_primitives::bits::fixed::FixedBytes",
-                        0
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

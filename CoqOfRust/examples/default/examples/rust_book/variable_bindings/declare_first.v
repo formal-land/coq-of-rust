@@ -36,7 +36,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
           let~ _ : Ty.tuple [] :=
             M.alloc (|
-              M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |)
+              M.write (|
+                a_binding,
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.mul,
+                  [ M.read (| x |); M.read (| x |) ]
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ _ : Ty.tuple [] :=

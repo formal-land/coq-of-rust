@@ -26,7 +26,7 @@ Instance run_max_by {T F : Set} `{Link T} `{Link F}
 Proof.
   constructor.
   destruct Run_FnOnce_for_F.
-  run_symbolic; destruct_all Ordering.t; run_symbolic.
+  run_symbolic.
 Defined.
 
 (*

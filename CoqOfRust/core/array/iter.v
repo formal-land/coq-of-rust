@@ -356,14 +356,16 @@ Module array.
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |)
-                      |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |)
+                        |));
                       M.call_closure (|
                         Ty.path "core::ops::index_range::IndexRange",
                         M.get_trait_method (|
@@ -482,14 +484,16 @@ Module array.
                               [ Ty.path "core::ops::index_range::IndexRange" ]
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::array::iter::IntoIter",
-                                  "data"
-                                |)
-                              |);
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::array::iter::IntoIter",
+                                    "data"
+                                  |)
+                                |));
                               M.call_closure (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 M.get_trait_method (|
@@ -669,14 +673,16 @@ Module array.
                                               [ Ty.path "usize" ]
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::array::iter::IntoIter",
-                                                  "data"
-                                                |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::array::iter::IntoIter",
+                                                    "data"
+                                                  |)
+                                                |));
                                               M.read (| idx |)
                                             ]
                                           |)
@@ -902,10 +908,14 @@ Module array.
                                                                   [ Ty.path "usize" ]
                                                                 |),
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| data |) |)
-                                                                  |);
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| data |)
+                                                                      |)
+                                                                    |));
                                                                   M.read (| idx |)
                                                                 ]
                                                               |)
@@ -1050,18 +1060,22 @@ Module array.
                 |) in
               let~ remaining : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| n |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.path "core::ops::index_range::IndexRange",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1096,14 +1110,16 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |)
-                        |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::array::iter::IntoIter",
+                              "data"
+                            |)
+                          |));
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -1283,14 +1299,16 @@ Module array.
                                 []
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::array::iter::IntoIter",
-                                    "data"
-                                  |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::array::iter::IntoIter",
+                                      "data"
+                                    |)
+                                  |))
                               ]
                             |);
                             M.call_closure (|
@@ -1462,14 +1480,16 @@ Module array.
                                               [ Ty.path "usize" ]
                                             |),
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::array::iter::IntoIter",
-                                                  "data"
-                                                |)
-                                              |);
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::array::iter::IntoIter",
+                                                    "data"
+                                                  |)
+                                                |));
                                               M.read (| idx |)
                                             ]
                                           |)
@@ -1649,10 +1669,14 @@ Module array.
                                                                   [ Ty.path "usize" ]
                                                                 |),
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| data |) |)
-                                                                  |);
+                                                                  (* Unsize *)
+                                                                  M.pointer_coercion
+                                                                    (M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| data |)
+                                                                      |)
+                                                                    |));
                                                                   M.read (| idx |)
                                                                 ]
                                                               |)
@@ -1731,18 +1755,22 @@ Module array.
                 |) in
               let~ remaining : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| n |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.path "core::ops::index_range::IndexRange",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1777,14 +1805,16 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |)
-                        |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::array::iter::IntoIter",
+                              "data"
+                            |)
+                          |));
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -2422,28 +2452,32 @@ Module array.
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Wrap.add (|
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::ops::index_range::IndexRange",
-                                                        "end",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            new,
-                                                            "core::array::iter::IntoIter",
-                                                            "alive"
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::ops::index_range::IndexRange",
+                                                          "end",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              new,
+                                                              "core::array::iter::IntoIter",
+                                                              "alive"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                                        ]
+                                                      |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -2540,27 +2574,36 @@ Module array.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                                    "as_slice",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |)

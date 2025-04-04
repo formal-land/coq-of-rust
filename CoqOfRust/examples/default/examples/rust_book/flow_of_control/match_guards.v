@@ -64,8 +64,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
-                  M.alloc (| BinOp.gt (| M.read (| t |), Value.Integer IntegerKind.I32 30 |) |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.gt,
+                      [ M.read (| t |); Value.Integer IntegerKind.I32 30 ]
+                    |)
+                  |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -211,8 +217,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
-                  M.alloc (| BinOp.gt (| M.read (| t |), Value.Integer IntegerKind.I32 86 |) |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.gt,
+                      [ M.read (| t |); Value.Integer IntegerKind.I32 86 ]
+                    |)
+                  |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|

@@ -253,41 +253,45 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ne (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ A ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ B ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| other |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ A ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ B ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                             |)));
@@ -430,7 +434,7 @@ Module slice.
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -504,41 +508,45 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ne (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ A ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ B ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| other |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ A ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ B ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                             |)));
@@ -558,39 +566,44 @@ Module slice.
                       |)
                     |) in
                   M.alloc (|
-                    BinOp.eq (|
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
-                        [
-                          M.cast
-                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*const") [] [ A ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ A ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |));
-                          M.cast
-                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*const") [] [ B ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ B ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                            |));
-                          M.read (| size |)
-                        ]
-                      |),
-                      Value.Integer IntegerKind.I32 0
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
+                        M.call_closure (|
+                          Ty.path "i32",
+                          M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
+                          [
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
+                              (M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ A ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ A ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
+                              (M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ B ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ B ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |));
+                            M.read (| size |)
+                          ]
+                        |);
+                        Value.Integer IntegerKind.I32 0
+                      ]
                     |)
                   |)
                 |)))
@@ -1703,31 +1716,35 @@ Module slice.
             M.read (|
               let~ diff : Ty.path "isize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.cast
-                      (Ty.path "isize")
-                      (M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ A ],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |) ]
-                      |)),
-                    M.cast
-                      (Ty.path "isize")
-                      (M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ A ],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "isize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.cast
+                        (Ty.path "isize")
+                        (M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ A ],
+                            "len",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |) ]
+                        |));
+                      M.cast
+                        (Ty.path "isize")
+                        (M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ A ],
+                            "len",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |) ]
+                        |))
+                    ]
                   |)
                 |) in
               let~ len : Ty.path "usize" :=
@@ -1741,41 +1758,45 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ A ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| left |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ A ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| right |) |)
-                                      |)
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ A ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| left |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ A ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| right |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
@@ -1873,10 +1894,13 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (| M.read (| order |), Value.Integer IntegerKind.Isize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| order |); Value.Integer IntegerKind.Isize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (| M.write (| order, M.read (| diff |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -2459,26 +2483,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -2491,7 +2526,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2583,9 +2618,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -2891,26 +2930,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -2923,7 +2973,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3015,9 +3065,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -3323,26 +3377,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -3355,7 +3420,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3447,9 +3512,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -3755,26 +3824,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -3787,7 +3867,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3879,9 +3959,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -4187,26 +4271,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -4219,7 +4314,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -4311,9 +4406,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -4619,26 +4718,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -4651,7 +4761,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -4743,9 +4853,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -5051,26 +5165,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -5083,7 +5208,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -5175,9 +5300,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -5483,26 +5612,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -5515,7 +5655,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -5607,9 +5747,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -5925,26 +6069,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -5957,7 +6112,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -6051,9 +6206,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -6369,26 +6528,37 @@ Module slice.
                                                                                             M.copy (|
                                                                                               γ
                                                                                             |) in
-                                                                                          BinOp.bit_or
-                                                                                            (M.read (|
-                                                                                              acc
-                                                                                            |))
-                                                                                            (BinOp.eq (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.Wrap.bit_or,
+                                                                                            [
                                                                                               M.read (|
-                                                                                                M.deref (|
+                                                                                                acc
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.eq,
+                                                                                                [
                                                                                                   M.read (|
-                                                                                                    x
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                M.deref (|
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        x
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
                                                                                                   M.read (|
-                                                                                                    self
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        self
+                                                                                                      |)
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
+                                                                                                ]
                                                                                               |)
-                                                                                            |))))
+                                                                                            ]
+                                                                                          |)))
                                                                                     ]
                                                                                   |)))
                                                                             ]
@@ -6401,7 +6571,7 @@ Module slice.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -6495,9 +6665,13 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let x := M.copy (| γ |) in
-                                            BinOp.eq (|
-                                              M.read (| M.deref (| M.read (| x |) |) |),
-                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (| M.deref (| M.read (| x |) |) |);
+                                                M.read (| M.deref (| M.read (| self |) |) |)
+                                              ]
                                             |)))
                                       ]
                                     |)))

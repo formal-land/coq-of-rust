@@ -156,33 +156,37 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [ A; B; C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
-      BinOp.Wrap.sub (|
-        M.call_closure (|
-          Ty.path "i32",
-          M.get_trait_method (|
-            "generics_associated_types_problem::Contains",
-            C,
-            [],
-            [ A; B ],
-            "last",
-            [],
-            []
-          |),
-          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
-        |),
-        M.call_closure (|
-          Ty.path "i32",
-          M.get_trait_method (|
-            "generics_associated_types_problem::Contains",
-            C,
-            [],
-            [ A; B ],
-            "first",
-            [],
-            []
-          |),
-          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
-        |)
+      M.call_closure (|
+        Ty.path "i32",
+        BinOp.Wrap.sub,
+        [
+          M.call_closure (|
+            Ty.path "i32",
+            M.get_trait_method (|
+              "generics_associated_types_problem::Contains",
+              C,
+              [],
+              [ A; B ],
+              "last",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
+          |);
+          M.call_closure (|
+            Ty.path "i32",
+            M.get_trait_method (|
+              "generics_associated_types_problem::Contains",
+              C,
+              [],
+              [ A; B ],
+              "first",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
+          |)
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -100,80 +100,90 @@ Module num.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Decoded" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "mant" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::num::flt2dec::decoder::Decoded",
-                          "mant"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::flt2dec::decoder::Decoded",
+                            "mant"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "minus" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::num::flt2dec::decoder::Decoded",
-                          "minus"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::flt2dec::decoder::Decoded",
+                            "minus"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "plus" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::num::flt2dec::decoder::Decoded",
-                          "plus"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::flt2dec::decoder::Decoded",
+                            "plus"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "exp" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::num::flt2dec::decoder::Decoded",
-                          "exp"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::flt2dec::decoder::Decoded",
+                            "exp"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inclusive" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::flt2dec::decoder::Decoded",
-                              "inclusive"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::flt2dec::decoder::Decoded",
+                                "inclusive"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -214,92 +224,112 @@ Module num.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     LogicalOp.and (|
-                      BinOp.eq (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::num::flt2dec::decoder::Decoded",
-                            "mant"
-                          |)
-                        |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| other |) |),
-                            "core::num::flt2dec::decoder::Decoded",
-                            "mant"
-                          |)
-                        |)
-                      |),
-                      ltac:(M.monadic
-                        (BinOp.eq (|
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
                               "core::num::flt2dec::decoder::Decoded",
-                              "minus"
+                              "mant"
                             |)
-                          |),
+                          |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| other |) |),
                               "core::num::flt2dec::decoder::Decoded",
-                              "minus"
+                              "mant"
                             |)
                           |)
+                        ]
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::flt2dec::decoder::Decoded",
+                                "minus"
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "core::num::flt2dec::decoder::Decoded",
+                                "minus"
+                              |)
+                            |)
+                          ]
                         |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.eq (|
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::flt2dec::decoder::Decoded",
+                              "plus"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::num::flt2dec::decoder::Decoded",
+                              "plus"
+                            |)
+                          |)
+                        ]
+                      |)))
+                  |),
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "core::num::flt2dec::decoder::Decoded",
-                            "plus"
+                            "exp"
                           |)
-                        |),
+                        |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| other |) |),
                             "core::num::flt2dec::decoder::Decoded",
-                            "plus"
+                            "exp"
                           |)
                         |)
-                      |)))
-                  |),
-                  ltac:(M.monadic
-                    (BinOp.eq (|
+                      ]
+                    |)))
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
                           "core::num::flt2dec::decoder::Decoded",
-                          "exp"
+                          "inclusive"
                         |)
-                      |),
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::num::flt2dec::decoder::Decoded",
-                          "exp"
+                          "inclusive"
                         |)
                       |)
-                    |)))
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::num::flt2dec::decoder::Decoded",
-                        "inclusive"
-                      |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "core::num::flt2dec::decoder::Decoded",
-                        "inclusive"
-                      |)
-                    |)
+                    ]
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -561,10 +591,12 @@ Module num.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Finite" |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |)
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                                |))
                             ]
                           |)
                         |)))
@@ -632,7 +664,11 @@ Module num.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                    |),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -869,9 +905,17 @@ Module num.
                       let sign := M.copy (| γ0_2 |) in
                       let~ even : Ty.path "bool" :=
                         M.alloc (|
-                          BinOp.eq (|
-                            BinOp.bit_and (M.read (| mant |)) (Value.Integer IntegerKind.U64 1),
-                            Value.Integer IntegerKind.U64 0
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "u64",
+                                BinOp.Wrap.bit_and,
+                                [ M.read (| mant |); Value.Integer IntegerKind.U64 1 ]
+                              |);
+                              Value.Integer IntegerKind.U64 0
+                            ]
                           |)
                         |) in
                       let~ decoded : Ty.path "core::num::flt2dec::decoder::FullDecoded" :=
@@ -984,15 +1028,19 @@ Module num.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.eq (|
-                                                  M.read (| mant |),
-                                                  M.read (|
-                                                    M.SubPointer.get_tuple_field (| minnorm, 0 |)
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (| mant |);
+                                                    M.read (|
+                                                      M.SubPointer.get_tuple_field (| minnorm, 0 |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -1004,16 +1052,24 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Wrap.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer IntegerKind.I32 2
+                                                      M.call_closure (|
+                                                        Ty.path "u64",
+                                                        BinOp.Wrap.shl,
+                                                        [
+                                                          M.read (| mant |);
+                                                          Value.Integer IntegerKind.I32 2
+                                                        ]
                                                       |));
                                                     ("minus", Value.Integer IntegerKind.U64 1);
                                                     ("plus", Value.Integer IntegerKind.U64 2);
                                                     ("exp",
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| exp |),
-                                                        Value.Integer IntegerKind.I16 2
+                                                      M.call_closure (|
+                                                        Ty.path "i16",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| exp |);
+                                                          Value.Integer IntegerKind.I16 2
+                                                        ]
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
@@ -1029,16 +1085,24 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Wrap.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer IntegerKind.I32 1
+                                                      M.call_closure (|
+                                                        Ty.path "u64",
+                                                        BinOp.Wrap.shl,
+                                                        [
+                                                          M.read (| mant |);
+                                                          Value.Integer IntegerKind.I32 1
+                                                        ]
                                                       |));
                                                     ("minus", Value.Integer IntegerKind.U64 1);
                                                     ("plus", Value.Integer IntegerKind.U64 1);
                                                     ("exp",
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| exp |),
-                                                        Value.Integer IntegerKind.I16 1
+                                                      M.call_closure (|
+                                                        Ty.path "i16",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| exp |);
+                                                          Value.Integer IntegerKind.I16 1
+                                                        ]
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
@@ -1052,7 +1116,11 @@ Module num.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.lt (| M.read (| sign |), Value.Integer IntegerKind.I8 0 |);
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [ M.read (| sign |); Value.Integer IntegerKind.I8 0 ]
+                            |);
                             M.read (| decoded |)
                           ]
                       |)))

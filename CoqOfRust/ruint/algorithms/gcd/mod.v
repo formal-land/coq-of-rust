@@ -61,7 +61,7 @@ Module algorithms.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -125,7 +125,7 @@ Module algorithms.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -135,7 +135,7 @@ Module algorithms.
                                   ltac:(M.monadic
                                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -177,7 +177,7 @@ Module algorithms.
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -248,7 +248,7 @@ Module algorithms.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -421,10 +421,14 @@ Module algorithms.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -486,7 +490,7 @@ Module algorithms.
                         ltac:(M.monadic
                           (let γ := M.use swapped in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
@@ -593,10 +597,7 @@ Module algorithms.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -606,7 +607,7 @@ Module algorithms.
                                       ltac:(M.monadic
                                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -648,7 +649,7 @@ Module algorithms.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -722,7 +723,7 @@ Module algorithms.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1011,17 +1012,22 @@ Module algorithms.
                                           let β := even in
                                           M.write (|
                                             β,
-                                            BinOp.bit_xor
-                                              (M.read (| β |))
-                                              (UnOp.not (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    m,
-                                                    "ruint::algorithms::gcd::matrix::Matrix",
-                                                    4
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.Wrap.bit_xor,
+                                              [
+                                                M.read (| β |);
+                                                UnOp.not (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      m,
+                                                      "ruint::algorithms::gcd::matrix::Matrix",
+                                                      4
+                                                    |)
                                                   |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -1052,7 +1058,7 @@ Module algorithms.
                         ltac:(M.monadic
                           (let γ := M.use even in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -1124,7 +1130,7 @@ Module algorithms.
                         ltac:(M.monadic
                           (let γ := M.use swapped in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
@@ -1233,7 +1239,11 @@ Module algorithms.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       Ty.path "bool",
@@ -1261,7 +1271,7 @@ Module algorithms.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1303,7 +1313,7 @@ Module algorithms.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
@@ -1359,7 +1369,7 @@ Module algorithms.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1430,10 +1440,7 @@ Module algorithms.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -1443,7 +1450,7 @@ Module algorithms.
                                       ltac:(M.monadic
                                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1485,7 +1492,7 @@ Module algorithms.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1559,7 +1566,7 @@ Module algorithms.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1763,17 +1770,22 @@ Module algorithms.
                                           let β := even in
                                           M.write (|
                                             β,
-                                            BinOp.bit_xor
-                                              (M.read (| β |))
-                                              (UnOp.not (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    m,
-                                                    "ruint::algorithms::gcd::matrix::Matrix",
-                                                    4
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.Wrap.bit_xor,
+                                              [
+                                                M.read (| β |);
+                                                UnOp.not (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      m,
+                                                      "ruint::algorithms::gcd::matrix::Matrix",
+                                                      4
+                                                    |)
                                                   |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -1839,8 +1851,7 @@ Module algorithms.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
@@ -1854,7 +1865,7 @@ Module algorithms.
                                       ltac:(M.monadic
                                         (let γ := M.use even in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in

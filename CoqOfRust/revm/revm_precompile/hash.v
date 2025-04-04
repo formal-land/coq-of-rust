@@ -112,8 +112,14 @@ Module hash.
                 ltac:(M.monadic
                   (let γ :=
                     M.use
-                      (M.alloc (| BinOp.gt (| M.read (| cost |), M.read (| gas_limit |) |) |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      (M.alloc (|
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [ M.read (| cost |); M.read (| gas_limit |) ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -487,9 +493,13 @@ Module hash.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -773,7 +783,10 @@ Module hash.
                                     [],
                                     []
                                   |),
-                                  [ M.borrow (| Pointer.Kind.Ref, output |) ]
+                                  [
+                                    (* Unsize *)
+                                    M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, output |))
+                                  ]
                                 |)
                               ]
                             |)

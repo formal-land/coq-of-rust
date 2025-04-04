@@ -891,7 +891,13 @@ Module ascii.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1130,9 +1136,13 @@ Module ascii.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (| M.read (| b |), Value.Integer IntegerKind.U8 127 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [ M.read (| b |); Value.Integer IntegerKind.U8 127 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1219,9 +1229,13 @@ Module ascii.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (| M.read (| d |), Value.Integer IntegerKind.U8 10 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [ M.read (| d |); Value.Integer IntegerKind.U8 10 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1290,8 +1304,7 @@ Module ascii.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1949,8 +1962,7 @@ Module ascii.
                               ]
                             |)
                           |) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ byte : Ty.path "u8" :=
                           M.alloc (|
                             M.call_closure (|
@@ -1986,9 +1998,10 @@ Module ascii.
                                   []
                                 |),
                                 [
-                                  BinOp.Wrap.shr (|
-                                    M.read (| byte |),
-                                    Value.Integer IntegerKind.I32 4
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.shr,
+                                    [ M.read (| byte |); Value.Integer IntegerKind.I32 4 ]
                                   |)
                                 ]
                               |)
@@ -2016,9 +2029,11 @@ Module ascii.
                                   []
                                 |),
                                 [
-                                  BinOp.bit_and
-                                    (M.read (| byte |))
-                                    (Value.Integer IntegerKind.U8 15)
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.bit_and,
+                                    [ M.read (| byte |); Value.Integer IntegerKind.U8 15 ]
+                                  |)
                                 ]
                               |)
                             |)

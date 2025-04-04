@@ -100,16 +100,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.eq (|
-                                                BinOp.Wrap.rem (|
-                                                  M.read (| n |),
-                                                  Value.Integer IntegerKind.I32 15
-                                                |),
-                                                Value.Integer IntegerKind.I32 0
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.eq,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "i32",
+                                                    BinOp.Wrap.rem,
+                                                    [
+                                                      M.read (| n |);
+                                                      Value.Integer IntegerKind.I32 15
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.I32 0
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -164,16 +172,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.eq (|
-                                                        BinOp.Wrap.rem (|
-                                                          M.read (| n |),
-                                                          Value.Integer IntegerKind.I32 3
-                                                        |),
-                                                        Value.Integer IntegerKind.I32 0
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "i32",
+                                                            BinOp.Wrap.rem,
+                                                            [
+                                                              M.read (| n |);
+                                                              Value.Integer IntegerKind.I32 3
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.I32 0
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -228,16 +244,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.eq (|
-                                                                BinOp.Wrap.rem (|
-                                                                  M.read (| n |),
-                                                                  Value.Integer IntegerKind.I32 5
-                                                                |),
-                                                                Value.Integer IntegerKind.I32 0
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "i32",
+                                                                    BinOp.Wrap.rem,
+                                                                    [
+                                                                      M.read (| n |);
+                                                                      Value.Integer
+                                                                        IntegerKind.I32
+                                                                        5
+                                                                    ]
+                                                                  |);
+                                                                  Value.Integer IntegerKind.I32 0
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in

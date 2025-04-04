@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
+Require Import core.links.panicking.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_interpreter.instructions.stack.
@@ -31,12 +32,7 @@ Instance run_pop
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
@@ -59,18 +55,12 @@ Instance run_push0
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
 Defined.
-
 
 (*
 pub fn push<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -90,20 +80,13 @@ Instance run_push
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Jumps_for_Bytecode.
   destruct run_Immediates_for_Bytecode.
   run_symbolic.
-  (* Constant N *)
-Admitted.
-
+Defined.
 
 (*
 pub fn dup<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -123,17 +106,11 @@ Instance run_dup
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
-  (* Constant N *)
-Admitted.
+Defined.
 
 (*
 pub fn swap<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -153,17 +130,11 @@ Instance run_swap
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
-  (* Constant N *)
-Admitted.
+Defined.
 
 (*
 pub fn dupn<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -182,12 +153,7 @@ Instance run_dupn
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -213,12 +179,7 @@ Instance run_swapn
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -244,17 +205,11 @@ Instance run_exchange
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
-  destruct run_InterpreterTypes_for_WIRE.
+  InterpreterTypes.destruct_run.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_Jumps_for_Bytecode.
   destruct run_Immediates_for_Bytecode.
   run_symbolic.
-  (* Bin ops shr and bit_and *)
-Admitted.
+Defined.

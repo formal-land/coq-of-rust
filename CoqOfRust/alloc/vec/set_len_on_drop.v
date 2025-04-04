@@ -61,7 +61,14 @@ Module vec.
                       "alloc::vec::set_len_on_drop::SetLenOnDrop",
                       "local_len"
                     |) in
-                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| increment |) |) |)
+                  M.write (|
+                    β,
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); M.read (| increment |) ]
+                    |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

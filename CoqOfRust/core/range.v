@@ -1888,15 +1888,19 @@ Module range.
                   |)
                 |));
               ("end_",
-                BinOp.Wrap.add (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "core::range::RangeInclusive",
-                      "end"
-                    |)
-                  |),
-                  Value.Integer IntegerKind.Usize 1
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::range::RangeInclusive",
+                        "end"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.Usize 1
+                  ]
                 |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2161,7 +2165,7 @@ Module range.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|

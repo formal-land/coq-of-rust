@@ -90,10 +90,12 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parse" |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
                       ]
                     |)
                   |)))
@@ -295,7 +297,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |) ]
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                      ]
                   |)))
             ]
           |)
@@ -653,7 +659,13 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| parsed |) |) ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.mul,
+                    [ Value.Integer IntegerKind.I32 2; M.read (| parsed |) ]
+                  |)
+                ]
             |)
           |)))
       |)))
@@ -985,19 +997,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -1008,22 +1011,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            mk_str (| "42" |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
-                          ]
-                      |)
-                    ]
-                  |)
-                |)
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              mk_str (| "42" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in
@@ -1068,19 +1082,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -1091,22 +1096,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            mk_str (| "tofu" |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
-                          ]
-                      |)
-                    ]
-                  |)
-                |)
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              mk_str (| "tofu" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in

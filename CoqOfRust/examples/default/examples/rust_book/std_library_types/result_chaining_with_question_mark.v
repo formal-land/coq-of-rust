@@ -153,9 +153,13 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.eq (| M.read (| y |), M.read (| UnsupportedLiteral |) |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [ M.read (| y |); M.read (| UnsupportedLiteral |) ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -170,7 +174,13 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ BinOp.Wrap.div (| M.read (| x |), M.read (| y |) |) ]
+                      [
+                        M.call_closure (|
+                          Ty.path "f64",
+                          BinOp.Wrap.div,
+                          [ M.read (| x |); M.read (| y |) ]
+                        |)
+                      ]
                   |)))
             ]
           |)
@@ -212,9 +222,13 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.lt (| M.read (| x |), M.read (| UnsupportedLiteral |) |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.lt,
+                          [ M.read (| x |); M.read (| UnsupportedLiteral |) ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -277,9 +291,13 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.le (| M.read (| x |), M.read (| UnsupportedLiteral |) |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.le,
+                          [ M.read (| x |); M.read (| UnsupportedLiteral |) ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"

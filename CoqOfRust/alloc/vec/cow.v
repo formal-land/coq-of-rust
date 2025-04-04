@@ -65,7 +65,9 @@ Module vec.
                     M.read (|
                       M.use
                         (M.alloc (|
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |))
                         |))
                     |)
                   |)

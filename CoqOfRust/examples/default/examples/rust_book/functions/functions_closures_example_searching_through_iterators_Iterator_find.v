@@ -53,19 +53,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -76,22 +67,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Value.Integer IntegerKind.I32 1;
-                            Value.Integer IntegerKind.I32 2;
-                            Value.Integer IntegerKind.I32 3
-                          ]
-                      |)
-                    ]
-                  |)
-                |)
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in
@@ -113,19 +115,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -136,22 +129,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Value.Integer IntegerKind.I32 4;
-                            Value.Integer IntegerKind.I32 5;
-                            Value.Integer IntegerKind.I32 6
-                          ]
-                      |)
-                    ]
-                  |)
-                |)
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 4;
+                              Value.Integer IntegerKind.I32 5;
+                              Value.Integer IntegerKind.I32 6
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
               ]
             |)
           |) in
@@ -339,11 +343,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     (let γ := M.read (| γ |) in
                                                                     let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -482,11 +490,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                   ltac:(M.monadic
                                                                     (let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -640,7 +652,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, array1 |) ]
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              array1
+                                                            |))
+                                                        ]
                                                       |)
                                                     |)
                                                   |);
@@ -675,11 +694,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     (let γ := M.read (| γ |) in
                                                                     let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -856,13 +879,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                   ltac:(M.monadic
                                                                     (let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (|
-                                                                        M.deref (| M.read (| x |) |)
-                                                                      |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |)
+                                                                        |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))

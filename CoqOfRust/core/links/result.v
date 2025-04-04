@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
-
+Require Import core.result.
 Module Result.
   Inductive t {T E : Set} : Set :=
   | Ok : T -> t
@@ -26,3 +26,21 @@ Module Result.
   Defined.
   Smpl Add apply of_ty : of_ty.
 End Result.
+
+Module Impl_Result_T_E.
+  Definition Self (T E : Set) : Set :=
+    Result.t T E.
+
+  (* pub fn unwrap_or(self, default: T) -> T *)
+  Instance run_unwrap_or
+    (T E : Set) `{Link T} `{Link E}
+    (self : Self T E)
+    (default : T) :
+    Run.Trait
+      (result.Impl_core_result_Result_T_E.unwrap_or (Φ T) (Φ E)) [] [] [ φ self; φ default ]
+      T.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+End Impl_Result_T_E.

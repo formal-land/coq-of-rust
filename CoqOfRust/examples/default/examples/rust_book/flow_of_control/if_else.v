@@ -46,9 +46,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.I32 0 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.lt,
+                          [ M.read (| n |); Value.Integer IntegerKind.I32 0 ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ _ : Ty.tuple [] :=
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
@@ -125,10 +129,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (| M.read (| n |), Value.Integer IntegerKind.I32 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| n |); Value.Integer IntegerKind.I32 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
@@ -283,12 +291,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.I32 10 |),
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [ M.read (| n |); Value.Integer IntegerKind.I32 10 ]
+                            |),
                             ltac:(M.monadic
-                              (BinOp.gt (| M.read (| n |), Value.Integer IntegerKind.I32 (-10) |)))
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| n |); Value.Integer IntegerKind.I32 (-10) ]
+                              |)))
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
@@ -329,7 +345,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |) in
                       M.alloc (| Value.Tuple [] |) in
                     M.alloc (|
-                      BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 10, M.read (| n |) |)
+                      M.call_closure (|
+                        Ty.path "i32",
+                        BinOp.Wrap.mul,
+                        [ Value.Integer IntegerKind.I32 10; M.read (| n |) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -373,7 +393,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |) in
                       M.alloc (| Value.Tuple [] |) in
                     M.alloc (|
-                      BinOp.Wrap.div (| M.read (| n |), Value.Integer IntegerKind.I32 2 |)
+                      M.call_closure (|
+                        Ty.path "i32",
+                        BinOp.Wrap.div,
+                        [ M.read (| n |); Value.Integer IntegerKind.I32 2 ]
+                      |)
                     |)))
               ]
             |)

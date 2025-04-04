@@ -1363,32 +1363,45 @@ Module utils.
                     []
                   |),
                   [
-                    BinOp.Wrap.add (|
-                      BinOp.Wrap.add (|
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [
                         M.call_closure (|
                           Ty.path "usize",
-                          M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                          BinOp.Wrap.add,
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "alloy_primitives::utils::EIP191_PREFIX",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      get_constant (|
+                                        "alloy_primitives::utils::EIP191_PREFIX",
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                      |)
+                                    |)
                                   |)
                                 |)
-                              |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| len_string |) |)
+                                |)
+                              ]
                             |)
                           ]
-                        |),
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| len_string |) |) |) ]
-                        |)
-                      |),
-                      M.read (| len |)
+                        |);
+                        M.read (| len |)
+                      ]
                     |)
                   ]
                 |)
@@ -1912,7 +1925,9 @@ Module utils.
                           0
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |))
                     ]
                   |)
                 |) in

@@ -924,10 +924,13 @@ Module Impl_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (| M.read (| from_balance |), M.read (| value |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| from_balance |); M.read (| value |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -965,7 +968,11 @@ Module Impl_erc20_Erc20.
                         |)
                       |);
                       M.read (| M.deref (| M.read (| from |) |) |);
-                      BinOp.Wrap.sub (| M.read (| from_balance |), M.read (| value |) |)
+                      M.call_closure (|
+                        Ty.path "u128",
+                        BinOp.Wrap.sub,
+                        [ M.read (| from_balance |); M.read (| value |) ]
+                      |)
                     ]
                   |)
                 |) in
@@ -1008,7 +1015,11 @@ Module Impl_erc20_Erc20.
                         |)
                       |);
                       M.read (| M.deref (| M.read (| to |) |) |);
-                      BinOp.Wrap.add (| M.read (| to_balance |), M.read (| value |) |)
+                      M.call_closure (|
+                        Ty.path "u128",
+                        BinOp.Wrap.add,
+                        [ M.read (| to_balance |); M.read (| value |) ]
+                      |)
                     ]
                   |)
                 |) in
@@ -1298,10 +1309,13 @@ Module Impl_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (| M.read (| allowance |), M.read (| value |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| allowance |); M.read (| value |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1454,7 +1468,11 @@ Module Impl_erc20_Erc20.
                         |)
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
-                      BinOp.Wrap.sub (| M.read (| allowance |), M.read (| value |) |)
+                      M.call_closure (|
+                        Ty.path "u128",
+                        BinOp.Wrap.sub,
+                        [ M.read (| allowance |); M.read (| value |) ]
+                      |)
                     ]
                   |)
                 |) in

@@ -56,7 +56,13 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       γ,
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
                     |) in
-                  M.alloc (| BinOp.Wrap.add (| M.read (| x |), M.read (| y |) |) |)));
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "i32",
+                      BinOp.Wrap.add,
+                      [ M.read (| x |); M.read (| y |) ]
+                    |)
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
@@ -65,7 +71,13 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       γ,
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
                     |) in
-                  M.alloc (| BinOp.Wrap.sub (| M.read (| x |), M.read (| y |) |) |)))
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "i32",
+                      BinOp.Wrap.sub,
+                      [ M.read (| x |); M.read (| y |) ]
+                    |)
+                  |)))
             ]
           |)
         |)))

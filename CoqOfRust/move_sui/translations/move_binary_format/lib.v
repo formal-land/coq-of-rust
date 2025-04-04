@@ -599,7 +599,13 @@ Module Impl_core_cmp_PartialEq_move_binary_format_IndexKind_for_move_binary_form
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -719,37 +725,39 @@ Module Impl_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (M.borrow (|
-          Pointer.Kind.Ref,
-          M.deref (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.alloc (|
-                Value.Array
-                  [
-                    Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
-                    Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
-                    Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
-                    Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
-                    Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
-                    Value.StructTuple "move_binary_format::IndexKind::Signature" [];
-                    Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
-                    Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                    Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
-                    Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
-                    Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
-                    Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
-                  ]
+        (* Unsize *)
+        (M.pointer_coercion
+          (M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  Value.Array
+                    [
+                      Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
+                      Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
+                      Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
+                      Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
+                      Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
+                      Value.StructTuple "move_binary_format::IndexKind::Signature" [];
+                      Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
+                      Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+                      Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
+                      Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
+                      Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
+                      Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
+                    ]
+                |)
               |)
             |)
-          |)
-        |)))
+          |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1317,7 +1325,13 @@ Module Impl_core_cmp_PartialEq_move_binary_format_SignatureTokenKind_for_move_bi
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

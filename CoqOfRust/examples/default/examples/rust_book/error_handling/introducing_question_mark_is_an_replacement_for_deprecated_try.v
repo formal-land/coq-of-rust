@@ -151,7 +151,13 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Wrap.mul (| M.read (| first_number |), M.read (| second_number |) |) ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.mul,
+                    [ M.read (| first_number |); M.read (| second_number |) ]
+                  |)
+                ]
             |)
           |)))
       |)))

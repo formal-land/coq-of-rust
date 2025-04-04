@@ -20,7 +20,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
         let~ _ : Ty.path "i32" := x in
         let~ _ : Ty.path "i32" :=
-          M.alloc (| BinOp.Wrap.add (| M.read (| x |), Value.Integer IntegerKind.I32 1 |) |) in
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.add,
+              [ M.read (| x |); Value.Integer IntegerKind.I32 1 ]
+            |)
+          |) in
         let~ _ : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
