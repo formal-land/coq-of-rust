@@ -9,6 +9,7 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
+Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import ruint.links.lib.
 
 Import num.links.mod.Impl_usize.
@@ -42,13 +43,9 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  (* NOTE: Current goal head being like:
-  {{let- v1
-  := (let- v1
-      := (let- v1
-          := BinOp.ne (Integer.IsLink.(φ) value4)
-               (Value.Integer IntegerKind.U64 0)
-          in ...
+  (* TODO:
+  - Fill in correct link to link with 
+    `revm_interpreter::interpreter_types::MemoryTrait::resize`
   *)
   run_symbolic.
 Admitted.
