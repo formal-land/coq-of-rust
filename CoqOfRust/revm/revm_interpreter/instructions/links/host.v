@@ -5,6 +5,7 @@ Require Import revm.revm_interpreter.instructions.host.
 Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_context_interface.links.host.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -15,7 +16,9 @@ pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_balance
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (run_Host_for_H : Host.Run H H_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -25,12 +28,17 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    do 3 erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
   destruct Impl_IntoAddress_for_U256.run.
+  (* TODO: fill in correct link to link with
+  `revm_context_interface::host::Host::balance`
+  *)
   run_symbolic.
 Admitted.
 
