@@ -115,6 +115,11 @@ Module Host.
       |}.
   End Types.
 
+  (* 
+  TODO(progress): 
+  - Update the definition of `run`s for all below
+  *)
+
   Definition Run_cfg (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
   {cfg @
     IsTraitMethod.t "revm_context_interface::cfg::CfgGetter" [] [] (Φ Self) "cfg" cfg *
