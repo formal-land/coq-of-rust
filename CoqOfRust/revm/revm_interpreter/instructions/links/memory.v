@@ -11,10 +11,12 @@ Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import ruint.links.lib.
+Require Import ruint.links.bytes.
 
 Import num.links.mod.Impl_usize.
 Import Impl_Gas.
 Import links.lib.Impl_Uint.
+Import links.bytes.Impl_Uint.
 
 (* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -43,6 +45,7 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_MemoryTrait_for_Memory.
   (* TODO:
   - Fill in correct link to link with 
     `revm_interpreter::interpreter_types::MemoryTrait::resize`
