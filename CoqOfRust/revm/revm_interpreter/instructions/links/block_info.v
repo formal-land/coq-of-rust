@@ -1,17 +1,21 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import revm.revm_interpreter.instructions.block_info.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.block.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
-Require Import revm.revm_interpreter.instructions.block_info.
+Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import ruint.links.from.
 Require Import core.convert.links.mod.
 Require Import core.links.option.
+
+(* NOTE: Test on importing dependency *)
+(* Require Import alloy_primitives.bits.links.fixed. *)
 
 Import Impl_SpecId.
 Import Impl_Gas.
@@ -88,10 +92,10 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run. *)
-  (* TODO: resolve axiomatization for:
-  - Impl_Address::into_word(?)
-  - FixedBytes::into()
+  (* TODO: fill in missing dependency for
+  - core::convert::Into::into
+  Strange that even imported the related dependency 
+  we still cannot resolve the goal
   *)
   run_symbolic.
 Admitted.
@@ -202,8 +206,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run. *)
-  (* TODO: 
+  (* TODO: (FOCUS)
   - revm_interpreter::instructions::utility::IntoU256::into_u256
   *)
   run_symbolic.

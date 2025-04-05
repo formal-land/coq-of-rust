@@ -7,7 +7,7 @@ Require Import revm.revm_context_interface.links.cfg.
 Require Import revm.revm_context_interface.links.block.
 Require Import revm.revm_context_interface.links.journaled_state.
 
-(* TODO: Add source code *)
+(* TODO: Implement `Log`'s link correctly in `alloy_primitives *)
 Module Log.
   Parameter t : Set.
 
@@ -115,123 +115,133 @@ Module Host.
       |}.
   End Types.
 
-  Definition Run_cfg (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
-  {cfg @
-    IsTraitMethod.t "revm_context_interface::cfg::CfgGetter" [] [] (Φ Self) "cfg" cfg *
-    forall (self : Ref.t Pointer.Kind.Ref Self),
-      {{ cfg [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref types.(Types.Cfg) }}
-  }.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("revm_context_interface::host::Host", [], [], Φ Self).
 
+  (* fn load_account_delegated(&mut self, address: Address) -> Option<AccountLoad>; *)
   Definition Run_load_account_delegated (Self : Set) `{Link Self} : Set :=
-    {load_account_delegated @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "load_account_delegated" load_account_delegated *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t),
-        {{ load_account_delegated [] [] [ φ self; φ address ] 🔽 option AccountLoad.t }}
-    }.
+    TraitMethod.C (trait Self) "load_account_delegated" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (address : Address.t),
+        Run.Trait method [] [] [ φ self; φ address ] (option AccountLoad.t)
+    ).
 
+  (* fn block_hash(&mut self, number: u64) -> Option<B256>; *)
   Definition Run_block_hash (Self : Set) `{Link Self} : Set :=
-    {block_hash @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "block_hash" block_hash *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (number : U64.t),
-        {{ block_hash [] [] [ φ self; φ number ] 🔽 option aliases.B256.t }}
-    }.
+    TraitMethod.C (trait Self) "block_hash" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (number : U64.t),
+        Run.Trait method [] [] [ φ self; φ number ] (option aliases.B256.t)
+    ).
 
+  (* fn balance(&mut self, address: Address) -> Option<StateLoad<U256>>; *)
   Definition Run_balance (Self : Set) `{Link Self} : Set :=
-    {balance @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "balance" balance *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t),
-        {{ balance [] [] [ φ self; φ address ] 🔽 option (StateLoad.t aliases.U256.t) }}
-    }.
+    TraitMethod.C (trait Self) "balance" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (address : Address.t),
+        Run.Trait method [] [] [ φ self; φ address ] (option (StateLoad.t aliases.U256.t))
+    ).
 
+  (* fn code(&mut self, address: Address) -> Option<Eip7702CodeLoad<Bytes>>; *)
   Definition Run_code (Self : Set) `{Link Self} : Set :=
-    {code @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "code" code *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t),
-        {{ code [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t Bytes.t) }}
-    }.
+    TraitMethod.C (trait Self) "code" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (address : Address.t),
+        Run.Trait method [] [] [ φ self; φ address ] (option (Eip7702CodeLoad.t Bytes.t))
+    ).
 
+  (* fn code_hash(&mut self, address: Address) -> Option<Eip7702CodeLoad<B256>>; *)
   Definition Run_code_hash (Self : Set) `{Link Self} : Set :=
-    {code_hash @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "code_hash" code_hash *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t),
-        {{ code_hash [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t aliases.B256.t) }}
-    }.
+    TraitMethod.C (trait Self) "code_hash" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (address : Address.t),
+        Run.Trait method [] [] [ φ self; φ address ] (option (Eip7702CodeLoad.t aliases.B256.t))
+    ).
 
+  (* fn sload(&mut self, address: Address, index: U256) -> Option<StateLoad<U256>>; *)
   Definition Run_sload (Self : Set) `{Link Self} : Set :=
-    {sload @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "sload" sload *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t)
-          (index : aliases.U256.t),
-        {{ sload [] [] [ φ self; φ address; φ index ] 🔽 option (StateLoad.t aliases.U256.t) }}
-    }.
+    TraitMethod.C (trait Self) "sload" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (address : Address.t)
+             (index : aliases.U256.t),
+        Run.Trait method [] [] [ φ self; φ address; φ index ] (option (StateLoad.t aliases.U256.t))
+    ).
 
+  (* 
+  fn sstore(
+      &mut self,
+      address: Address,
+      index: U256,
+      value: U256,
+  ) -> Option<StateLoad<SStoreResult>>;
+  *)
   Definition Run_sstore (Self : Set) `{Link Self} : Set :=
-    {sstore @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "sstore" sstore *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t)
-          (index : aliases.U256.t)
-          (value : aliases.U256.t),
-        {{ sstore [] [] [ φ self; φ address; φ index; φ value ] 🔽 option (StateLoad.t SStoreResult.t) }}
-    }.
+    TraitMethod.C (trait Self) "sstore" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (address : Address.t)
+             (index : aliases.U256.t)
+             (value : aliases.U256.t),
+        Run.Trait method [] [] [ φ self; φ address; φ index; φ value ] (option (StateLoad.t SStoreResult.t))
+    ).
 
+  (* fn tload(&mut self, address: Address, index: U256) -> U256; *)
   Definition Run_tload (Self : Set) `{Link Self} : Set :=
-    {tload @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "tload" tload *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t)
-          (index : aliases.U256.t),
-        {{ tload [] [] [ φ self; φ address; φ index ] 🔽 aliases.U256.t }}
-    }.
+    TraitMethod.C (trait Self) "tload" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (address : Address.t)
+             (index : aliases.U256.t),
+        Run.Trait method [] [] [ φ self; φ address; φ index ] aliases.U256.t
+    ).
 
+  (* fn tstore(&mut self, address: Address, index: U256, value: U256); *)
   Definition Run_tstore (Self : Set) `{Link Self} : Set :=
-    {tstore @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "tstore" tstore *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t)
-          (index : aliases.U256.t)
-          (value : aliases.U256.t),
-        {{ tstore [] [] [ φ self; φ address; φ index; φ value ] 🔽 unit }}
-    }.
+    TraitMethod.C (trait Self) "tstore" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (address : Address.t)
+             (index : aliases.U256.t)
+             (value : aliases.U256.t),
+        Run.Trait method [] [] [ φ self; φ address; φ index; φ value ] unit
+    ).
 
+  (* fn log(&mut self, log: Log); *)
   Definition Run_log (Self : Set) `{Link Self} : Set :=
-    {log @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "log" log *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (log' : Log.t),
-        {{ log [] [] [ φ self; φ log' ] 🔽 unit }}
-    }.
+    TraitMethod.C (trait Self) "log" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (log' : Log.t),
+        Run.Trait method [] [] [ φ self; φ log' ] unit
+    ).
 
+  (* 
+  fn selfdestruct(
+    &mut self,
+    address: Address,
+    target: Address,
+  ) -> Option<StateLoad<SelfDestructResult>>;
+  *)
   Definition Run_selfdestruct (Self : Set) `{Link Self} : Set :=
-    {selfdestruct @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "selfdestruct" selfdestruct *
-      forall
-          (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : Address.t)
-          (target : Address.t),
-        {{ selfdestruct [] [] [ φ self; φ address; φ target ] 🔽 option (StateLoad.t SelfDestructResult.t) }}
-    }.
+    TraitMethod.C (trait Self) "selfdestruct" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self)
+             (address : Address.t)
+             (target : Address.t),
+        Run.Trait method [] [] [ φ self; φ address; φ target ] (option (StateLoad.t SelfDestructResult.t))
+    ).
 
-  Record Run (Self : Set) `{Link Self}
+  (* Record Run (Self : Set) `{Link Self}
     (types : Types.t) `{Types.AreLinks types} :
     Set :=
   {
+    run_BlockGetter : BlockGetter.Run Self (Types.to_BlockGetter_types types);
+    run_CfgGetter : CfgGetter.Run Self (Types.to_CfgGetter_types types);
+    load_account_delegated : Run_load_account_delegated Self;
+    block_hash : Run_block_hash Self;
+    balance : Run_balance Self;
+    code : Run_code Self;
+    code_hash : Run_code_hash Self;
+    sload : Run_sload Self;
+    sstore : Run_sstore Self;
+    tload : Run_tload Self;
+    tstore : Run_tstore Self;
+    log : Run_log Self;
+    selfdestruct : Run_selfdestruct Self;
+  }. *)
+  Class Run (Self : Set) `{Link Self} 
+    (types : Types.t) `{Types.AreLinks types} 
+    : Set := {
     run_BlockGetter : BlockGetter.Run Self (Types.to_BlockGetter_types types);
     run_CfgGetter : CfgGetter.Run Self (Types.to_CfgGetter_types types);
     load_account_delegated : Run_load_account_delegated Self;

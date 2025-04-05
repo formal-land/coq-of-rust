@@ -17,4 +17,13 @@ Module Impl_Uint.
       (bytes.Impl_ruint_Uint_BITS_LIMBS.to_be_bytes (φ BITS) (φ LIMBS)) [ φ BYTES ] [] [ φ x ]
       (array.t U8.t BYTES).
   Admitted.
+
+  (* pub const fn try_from_be_slice(bytes: &[u8]) -> Option<Self> *)
+  Instance run_try_from_be_slice
+      (BITS LIMBS : Usize.t)
+      (bytes : Ref.t Pointer.Kind.Ref (list U8.t)) :
+    Run.Trait
+      (bytes.Impl_ruint_Uint_BITS_LIMBS.try_from_be_slice (φ BITS) (φ LIMBS)) [] [] [ φ bytes ]
+      (option (Self BITS LIMBS)).
+  Admitted.
 End Impl_Uint.
