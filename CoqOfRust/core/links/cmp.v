@@ -7,6 +7,34 @@ Require Import core.ops.links.function.
 Require Export core.links.cmpOrdering.
 
 (*
+pub trait PartialEq<Rhs: ?Sized = Self> {
+    fn eq(&self, other: &Rhs) -> bool;
+    fn ne(&self, other: &Rhs) -> bool;
+}
+*)
+Module PartialEq.
+  Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
+    ("core::cmp::PartialEq", [], [ Φ Rhs ], Φ Self).
+    
+  Definition Run_eq (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    TraitMethod.C (trait Self Rhs) "eq" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
+    
+  Definition Run_ne (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    TraitMethod.C (trait Self Rhs) "ne" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
+
+  Class Run (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set := {
+    eq : Run_eq Self Rhs;
+    ne : Run_ne Self Rhs;
+  }.
+End PartialEq.
+
+(*
     pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
         match compare(&v1, &v2) {
             Ordering::Less | Ordering::Equal => v2,

@@ -1,9 +1,35 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.bits.links.fixed.
+Require Import core.convert.links.mod.
+Require Import core.convert.links.num.
 Require Import core.links.cmp.
+Require Import core.links.option.
+Require Import core.links.result.
+Require Import core.num.links.mod.
+Require Import core.slice.links.index.
+Require Import core.slice.links.mod.
+Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_context_interface.links.transaction.
+Require Import revm.revm_context_interface.transaction.links.transaction_type.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.tx_info.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.from.
+
+Import Impl_Gas.
+Import Impl_Option.
+Import Impl_Result_T_E.
+Import Impl_Slice.
+Import Impl_SliceIndex_for_Usize.
+Import Impl_SpecId.
+Import from.Impl_Uint.
+Import lib.Impl_Uint.
+Import Impl_u64.
+Import Impl_usize.
 
 (*
 pub fn gasprice<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -15,6 +41,8 @@ Instance run_gasprice
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (H_types : Host.Types.t) `{Host.Types.AreLinks H_types}
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -22,8 +50,16 @@ Instance run_gasprice
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter_for_Self.
+  destruct run_Block_for_Block.
+  destruct run_TransactionGetter_for_Self.
+  destruct run_Transaction_for_Transaction.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn origin<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -42,6 +78,10 @@ Instance run_origin
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   run_symbolic.
 Admitted.
 
@@ -55,6 +95,8 @@ Instance run_blob_hash
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (H_types : Host.Types.t) `{Host.Types.AreLinks H_types}
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -62,5 +104,17 @@ Instance run_blob_hash
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_Host_for_H.
+  destruct run_TransactionGetter_for_Self.
+  destruct Impl_TryFrom_u64_for_usize.run.
+  destruct Impl_PartialEq_for_TransactionType.run.
+  destruct (Impl_Transaction_for_Ref_Transaction.run _ _ run_Transaction_for_Transaction).
+  destruct run_Transaction_for_Transaction.
+  destruct run_Into_for_TransactionType.
+  destruct run_Eip4844Tx_for_Eip4844.
   run_symbolic.
 Admitted.
