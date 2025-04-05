@@ -3,7 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.links.aliases.
 Require Import core.links.option.
-
+Require Import revm.revm_context_interface.block.links.blob.
 (* 
 #[auto_impl(&, &mut, Box, Arc)]
 pub trait Block {
@@ -29,53 +29,64 @@ Module Block.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("revm_context_interface::block::Block", [], [], Φ Self).
 
-  (* fn number(&self) -> u64; *)
   Definition Run_number (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "number" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
-  (* fn beneficiary(&self) -> Address; *)
   Definition Run_beneficiary (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "beneficiary" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] Address.t
     ).
 
-  (* fn timestamp(&self) -> u64; *)
   Definition Run_timestamp (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "timestamp" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
-  (* fn gas_limit(&self) -> u64; *)
   Definition Run_gas_limit (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "gas_limit" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
-  (* fn basefee(&self) -> u64; *)
   Definition Run_basefee (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "basefee" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
-  (* fn difficulty(&self) -> U256; *)
   Definition Run_difficulty (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "difficulty" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] aliases.U256.t
     ).
 
-  (* fn blob_gasprice(&self) -> Option<u128> *)
+  Definition Run_prevrandao (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "prevrandao" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] (option aliases.B256.t)
+    ).
+
+  Definition Run_blob_excess_gas_and_price (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "blob_excess_gas_and_price" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] (option BlobExcessGasAndPrice.t)
+    ).
+
   Definition Run_blob_gasprice (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "blob_gasprice" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] (option U128.t)
+    ).
+
+  Definition Run_blob_excess_gas (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "blob_excess_gas" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] (option U64.t)
     ).
 
   Class Run (Self : Set) `{Link Self} : Set := {
@@ -85,11 +96,14 @@ Module Block.
     gas_limit : Run_gas_limit Self;
     basefee : Run_basefee Self;
     difficulty : Run_difficulty Self;
+    prevrandao : Run_prevrandao Self;
+    blob_excess_gas_and_price : Run_blob_excess_gas_and_price Self;
     blob_gasprice : Run_blob_gasprice Self;
+    blob_excess_gas : Run_blob_excess_gas Self;
   }.
 End Block. 
 
-(* 
+(*
 #[auto_impl(&, &mut, Box, Arc)]
 pub trait BlockGetter {
     type Block: Block;

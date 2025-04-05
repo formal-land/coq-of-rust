@@ -17,7 +17,7 @@ Module Impl_Slice.
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
-      (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
+      {run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output)}
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
     Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index]
