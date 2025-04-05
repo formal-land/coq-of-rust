@@ -10,7 +10,6 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
-Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import ruint.links.lib.
 Require Import ruint.links.bytes.
 
@@ -55,6 +54,8 @@ Proof.
   run_symbolic.
 Admitted.
 
+Locate set.
+
 (* pub fn mstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     _host: &mut H,
@@ -82,7 +83,7 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
   (* 
-  TODO: wtf is this goal?..
+  TODO: resolve the link issue for `set`, seemly coming from `MemoryTrait.set`...
   Trait set.(TraitMethod.method) [] []
     [Ref.IsLink.(φ)
       (Ref.cast_to Pointer.Kind.MutRef sub_ref3);
@@ -121,10 +122,9 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
   run_symbolic.
-  (* 
-  TODO:
-  - ref some associated function to ruint::Uint::byte
-  - 
+  (* NOTE:
+  - After correctly defined `ruint::Uint::byte`'s link, the goal seems to be
+    asking for its proof of being an associated function...?
   *)
 Admitted.
 
@@ -154,9 +154,8 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* TODO:
-  - IsAssociatedFunction.C ruint::Uint::from
-  missing a definition? going to check it...
+  (* NOTE:
+  - For `IsAssociatedFunction.C ruint::Uint::from`, seems to be the same issue above?
   *)
   run_symbolic.
 Admitted.
