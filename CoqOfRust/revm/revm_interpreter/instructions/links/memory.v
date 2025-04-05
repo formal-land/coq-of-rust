@@ -29,7 +29,6 @@ Instance run_mload
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-  (* (run_Host_for_H : Host.Run H H_types) *)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -40,7 +39,6 @@ Proof.
   cbn.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -82,9 +80,16 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_MemoryTrait_for_Memory.
   (* 
-  TODO:
-  - get_constant core::num::MAX?
+  TODO: wtf is this goal?..
+  Trait set.(TraitMethod.method) [] []
+    [Ref.IsLink.(φ)
+      (Ref.cast_to Pointer.Kind.MutRef sub_ref3);
+    Integer.IsLink.(φ) value1;
+    Ref.IsLink.(φ)
+      (Ref.cast_to Pointer.Kind.Ref
+          (Ref.immediate Pointer.Kind.Raw output4))] unit
   *)
   run_symbolic.
 Admitted.
@@ -114,10 +119,12 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_MemoryTrait_for_Memory.
   run_symbolic.
   (* 
   TODO:
-  - ...
+  - ref some associated function to ruint::Uint::byte
+  - 
   *)
 Admitted.
 
@@ -146,6 +153,11 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_MemoryTrait_for_Memory.
+  (* TODO:
+  - IsAssociatedFunction.C ruint::Uint::from
+  missing a definition? going to check it...
+  *)
   run_symbolic.
 Admitted.
 
