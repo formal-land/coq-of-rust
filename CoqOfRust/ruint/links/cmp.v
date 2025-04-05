@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.links.cmp.
 Require Import ruint.links.lib.
 Require Import ruint.cmp.
 
@@ -17,3 +18,13 @@ Module Impl_Uint.
       bool.
   Admitted.
 End Impl_Uint.
+Export Impl_Uint.
+
+(* impl<const BITS: usize, const LIMBS: usize> PartialOrd for Uint<BITS, LIMBS> *)
+Module Impl_PartialOrd_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) : PartialOrd.Run (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_PartialOrd_for_Uint.

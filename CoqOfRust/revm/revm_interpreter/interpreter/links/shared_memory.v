@@ -7,8 +7,6 @@ Require Import core.links.option.
 Require Import core.num.links.mod.
 Require Import revm_interpreter.interpreter.shared_memory.
 
-Import Impl_usize.
-
 (*
   pub struct SharedMemory {
       buffer: Vec<u8>,

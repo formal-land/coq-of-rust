@@ -1,8 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-
-Import simulations.M.Notations.
-
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.control_flow_graph.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.

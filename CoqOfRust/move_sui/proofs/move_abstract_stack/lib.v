@@ -5,8 +5,6 @@ Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 
-Import simulations.M.Notations.
-
 Module AbstractStack.
   Module Stack.
     Module Valid.

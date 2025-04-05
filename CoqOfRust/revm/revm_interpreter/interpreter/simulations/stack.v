@@ -1,7 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
-Import simulations.M.Notations.
 Require Import core.links.array.
 Require Import revm_interpreter.interpreter.links.stack.
 

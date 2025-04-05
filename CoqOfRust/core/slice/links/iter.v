@@ -67,6 +67,7 @@ Module Impl_ChunksExact.
       (Ref.t Pointer.Kind.Ref (list T)).
   Admitted.
 End Impl_ChunksExact.
+Export Impl_ChunksExact.
 
 (* impl<'a, T> Iterator for ChunksExact<'a, T> *)
 Module Impl_Iterator_for_ChunksExact.
@@ -124,6 +125,7 @@ Module Impl_RChunksExact.
       (Ref.t Pointer.Kind.Ref (list T)).
   Admitted.
 End Impl_RChunksExact.
+Export Impl_RChunksExact.
 
 (* impl<'a, T> Iterator for RChunksExact<'a, T> *)
 Module Impl_Iterator_for_RChunksExact.

@@ -133,3 +133,4 @@ Module Impl_Option.
       T.
   Admitted.
 End Impl_Option.
+Export Impl_Option.

@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
@@ -9,8 +8,6 @@ Require Import CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Require Import CoqOfRust.move_sui.simulations.move_bytecode_verifier.constants.
 Require Import CoqOfRust.move_sui.simulations.move_bytecode_verifier.type_safety.
 Require Import CoqOfRust.move_sui.simulations.move_core_types.vm_status.
-
-Import simulations.M.Notations.
 
 (** ** Additional helper functions *)
 

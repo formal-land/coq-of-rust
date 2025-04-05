@@ -93,3 +93,4 @@ Module Impl_Slice.
       (RChunksExact.t T).
   Admitted.
 End Impl_Slice.
+Export Impl_Slice.

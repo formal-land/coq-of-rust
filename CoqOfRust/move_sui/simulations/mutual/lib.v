@@ -2,8 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.core.simulations.eq.
 
-Import simulations.M.Notations.
-
 (* Note: here we use naive definitions. We should use a standard library for these
    instead.
    We re-use the signatures of the corresponding data structures in OCaml.

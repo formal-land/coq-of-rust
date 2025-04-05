@@ -1,11 +1,5 @@
-Require Import Coq.Strings.String.
 Require Import CoqOfRust.M.
 Require Import simulations.M.
-
-Import List.ListNotations.
-
-Local Open Scope list.
-Local Open Scope type.
 
 Module IntegerKind.
   Lemma eqb_refl (kind : IntegerKind.t) : IntegerKind.eqb kind kind = true.
