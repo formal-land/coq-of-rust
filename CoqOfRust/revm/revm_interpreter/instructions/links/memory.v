@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
 Require Import core.num.links.mod.
+Require Import core.convert.links.mod.
 Require Import revm.revm_interpreter.instructions.memory.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
@@ -14,6 +15,7 @@ Require Import ruint.links.lib.
 Require Import ruint.links.bytes.
 
 Import num.links.mod.Impl_usize.
+(* Import convert.links.mod.Impl_AsRef_for_Slice. *)
 Import Impl_Gas.
 Import links.lib.Impl_Uint.
 Import links.bytes.Impl_Uint.
@@ -46,9 +48,11 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* TODO:
-  - Fill in correct link to link with 
-    `revm_interpreter::interpreter_types::MemoryTrait::resize`
+  (* NOTE: Stuck on
+  {{CoqOfRust.M.LowM.CallPrimitive
+    (Primitive.GetTraitMethod "core::convert::AsRef"
+       (Ty.apply (Ty.path "slice") [] [Ty.path "u8"]) []
+       [Ty.apply (Ty.path "slice") [] [Ty.path "u8"]] "as_ref" [] [])
   *)
   run_symbolic.
 Admitted.
