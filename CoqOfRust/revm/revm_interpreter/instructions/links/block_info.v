@@ -80,12 +80,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  (* NOTE: used for resolving dependency issue for `core::convert::Into::into` *)
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
-  (* TODO: fill in missing dependency for
-  - core::convert::Into::into
-  Strange that even imported the related dependency 
-  we still cannot resolve the goal
-  *)
   run_symbolic.
 Defined.
 
@@ -177,12 +173,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  (* NOTE: used for finding correct instance for `utility::IntoU256::into_u256` *)
   destruct Impl_IntoU256_for_B256.run.
-  (* TODO: (FOCUS)
-  revm_interpreter::instructions::utility::IntoU256::into_u256
-  `destruct revm_interpreter.instructions.links.utility.IntoU256.Run_into_u256`
-  will make coqtop complaining `unable to find an instance for `Self``
-  *)
   run_symbolic.
 Defined.
 
