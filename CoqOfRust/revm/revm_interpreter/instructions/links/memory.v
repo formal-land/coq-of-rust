@@ -54,8 +54,6 @@ Proof.
   run_symbolic.
 Admitted.
 
-Locate set.
-
 (* pub fn mstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     _host: &mut H,

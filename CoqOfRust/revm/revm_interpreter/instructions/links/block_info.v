@@ -14,9 +14,6 @@ Require Import ruint.links.from.
 Require Import core.convert.links.mod.
 Require Import core.links.option.
 
-(* NOTE: Test on importing dependency *)
-(* Require Import alloy_primitives.bits.links.fixed. *)
-
 Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
@@ -207,7 +204,9 @@ Proof.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
   (* TODO: (FOCUS)
-  - revm_interpreter::instructions::utility::IntoU256::into_u256
+  revm_interpreter::instructions::utility::IntoU256::into_u256
+  `destruct revm_interpreter.instructions.links.utility.IntoU256.Run_into_u256`
+  will make coqtop complaining `unable to find an instance for `Self``
   *)
   run_symbolic.
 Admitted.

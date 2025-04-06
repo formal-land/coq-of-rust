@@ -29,7 +29,6 @@ Proof.
   cbn.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -38,6 +37,8 @@ Proof.
   destruct Impl_IntoAddress_for_U256.run.
   (* TODO: fill in correct link to link with
   `revm_context_interface::host::Host::balance`
+  When `destruct revm_context_interface.links.host.Host.Run_balance`,
+  Coqtop reports that it's unable to find an instance for `Self`
   *)
   run_symbolic.
 Admitted.
