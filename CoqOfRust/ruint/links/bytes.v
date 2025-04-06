@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.links.option.
 Require Import ruint.links.lib.
 Require Import ruint.bytes.
 
