@@ -17,7 +17,7 @@ Module Impl_Slice.
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
-      (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
+      {run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output)}
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
     Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index]
@@ -48,11 +48,48 @@ Module Impl_Slice.
       Usize.t.
   Admitted.
 
+  (* pub const fn is_empty(&self) -> bool *)
+  Instance run_is_empty
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T)) :
+    Run.Trait (slice.Impl_slice_T.is_empty (Φ T)) [] [] [φ self]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
   (* pub fn iter_mut(&mut self) -> IterMut<'_, T> *)
   Instance run_iter_mut
       (T : Set) `{Link T}
       (self : Ref.t Pointer.Kind.MutRef (Self T)) :
     Run.Trait (slice.Impl_slice_T.iter_mut (Φ T)) [] [] [φ self]
       (IterMut.t T).
+  Admitted.
+
+  (* pub const fn as_mut_ptr(&mut self) -> *mut T *)
+  Instance run_as_mut_ptr
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.MutRef (Self T)) :
+    Run.Trait (slice.Impl_slice_T.as_mut_ptr (Φ T)) [] [] [φ self]
+      (Ref.t Pointer.Kind.MutPointer T).
+  Admitted.
+
+  (* pub fn chunks_exact(&self, chunk_size: usize) -> ChunksExact<'_, T> *)
+  Instance run_chunks_exact
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T))
+      (chunk_size : Usize.t) :
+    Run.Trait (slice.Impl_slice_T.chunks_exact (Φ T)) [] [] [φ self; φ chunk_size]
+      (ChunksExact.t T).
+  Admitted.
+
+  (* pub fn rchunks_exact(&self, chunk_size: usize) -> RChunksExact<'_, T> *)
+  Instance run_rchunks_exact
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T))
+      (chunk_size : Usize.t) :
+    Run.Trait (slice.Impl_slice_T.rchunks_exact (Φ T)) [] [] [φ self; φ chunk_size]
+      (RChunksExact.t T).
   Admitted.
 End Impl_Slice.

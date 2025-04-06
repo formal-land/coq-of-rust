@@ -93,6 +93,14 @@ Module Impl_Option.
       (Result.t T E).
   Admitted.
 
+  (* pub const fn unwrap(self) -> T *)
+  Instance run_unwrap {T : Set} `{Link T}
+      (self : Self T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap (Φ T)) [] [] [ φ self ]
+      T.
+  Admitted.
+
   (* pub const unsafe fn unwrap_unchecked(self) -> T *)
   Instance run_unwrap_unchecked {T : Set} `{Link T}
       (self : Self T) :
@@ -106,6 +114,22 @@ Module Impl_Option.
       (self : Self T) :
     Run.Trait
       (option.Impl_core_option_Option_T.unwrap_or_default (Φ T)) [] [] [ φ self ]
+      T.
+  Admitted.
+
+  (* pub fn unwrap_or(self, default: T) -> T *)
+  Instance run_unwrap_or {T : Set} `{Link T}
+      (self : Self T) (default : T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap_or (Φ T)) [] [] [ φ self; φ default ]
+      T.
+  Admitted.
+
+  (* pub const fn expect(self, msg: &str) -> T *)
+  Instance run_expect {T : Set} `{Link T}
+      (self : Self T) (msg : Ref.t Pointer.Kind.Ref string) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.expect (Φ T)) [] [] [ φ self; φ msg ]
       T.
   Admitted.
 End Impl_Option.

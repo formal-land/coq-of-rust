@@ -19,10 +19,10 @@
 ## Block_info
 
 - [x] `chainid`
-- [ ] `coinbase`
+- [x] `coinbase`
 - [x] `timestamp`
 - [x] `block_number`
-- [ ] `difficulty`
+- [x] `difficulty`
 - [x] `gaslimit`
 - [x] `basefee`
 - [x] `blob_basefee`
@@ -45,22 +45,22 @@
 
 ## Control
 
-- [ ] `rjump`
-- [ ] `rjumpi`
-- [ ] `rjumpv`
-- [ ] `jump`
-- [ ] `jumpi`
-- [ ] `jump_inner`
-- [ ] `jumpdest_or_nop`
-- [ ] `callf`
-- [ ] `retf`
-- [ ] `jumpf`
-- [ ] `pc`
+- [x] `rjump`
+- [x] `rjumpi`
+- [x] `rjumpv`
+- [x] `jump_inner`
+- [x] `jump`
+- [x] `jumpi`
+- [x] `jumpdest_or_nop`
+- [x] `callf`
+- [x] `retf`
+- [x] `jumpf`
+- [x] `pc`
 - [ ] `return_inner`
-- [ ] `ret`
-- [ ] `revert`
+- [x] `ret`
+- [x] `revert`
 - [x] `stop`
-- [ ] `invalid`
+- [x] `invalid`
 - [x] `unknown`
 
 ## Data
@@ -133,7 +133,7 @@
 
 ## Tx_info
 
-- [ ] `gasprice`
+- [x] `gasprice`
 - [ ] `origin`
 - [ ] `blob_hash`
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 68
-- Defined: 35
-- Percentage: 33.98%
+- Admitted: 51
+- Defined: 52
+- Percentage: 50.49%

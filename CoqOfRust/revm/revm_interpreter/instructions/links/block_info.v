@@ -1,6 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import revm.revm_interpreter.instructions.block_info.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bits.links.fixed.
+Require Import core.convert.links.mod.
+Require Import core.links.option.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.block.
 Require Import revm.revm_interpreter.gas.links.constants.
@@ -11,13 +15,12 @@ Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import ruint.links.from.
-Require Import core.convert.links.mod.
-Require Import core.links.option.
 
-Import Impl_SpecId.
+Import Impl_Address.
 Import Impl_Gas.
 Import from.Impl_Uint.
 Import Impl_Option.
+Import Impl_SpecId.
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -42,18 +45,12 @@ Instance run_chainid
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
-  destruct run_CfgGetter.
+  destruct run_CfgGetter_for_Self.
   destruct run_Cfg_for_Cfg.
   run_symbolic.
 Defined.
@@ -75,27 +72,22 @@ Instance run_coinbase
   Run.Trait
     instructions.block_info.coinbase [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   (* TODO: fill in missing dependency for
   - core::convert::Into::into
   Strange that even imported the related dependency 
   we still cannot resolve the goal
   *)
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn timestamp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -117,19 +109,13 @@ Instance run_timestamp
   Run.Trait
     instructions.block_info.timestamp [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
   run_symbolic.
 Defined.
@@ -154,24 +140,18 @@ Instance run_block_number
   Run.Trait
     instructions.block_info.block_number [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
   run_symbolic.
 Defined.
 
-(* 
+(*
 pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
@@ -188,30 +168,25 @@ Instance run_difficulty
   Run.Trait
     instructions.block_info.difficulty [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  destruct Impl_IntoU256_for_B256.run.
   (* TODO: (FOCUS)
   revm_interpreter::instructions::utility::IntoU256::into_u256
   `destruct revm_interpreter.instructions.links.utility.IntoU256.Run_into_u256`
   will make coqtop complaining `unable to find an instance for `Self``
   *)
   run_symbolic.
-Admitted.
+Defined.
 
-(* 
+(*
 pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
@@ -228,24 +203,18 @@ Instance run_gaslimit
   Run.Trait
     instructions.block_info.gaslimit [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
   run_symbolic.
 Defined.
 
-(* 
+(*
 pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
@@ -262,25 +231,19 @@ Instance run_basefee
   Run.Trait
     instructions.block_info.basefee [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
   run_symbolic.
 Defined.
 
-(* 
+(*
 pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
@@ -297,20 +260,14 @@ Instance run_blob_basefee
   Run.Trait
     instructions.block_info.blob_basefee [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-Proof. 
+Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_Host_for_H.
-  destruct run_BlockGetter.
+  destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
   run_symbolic.
 Defined.

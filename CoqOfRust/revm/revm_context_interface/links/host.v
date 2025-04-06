@@ -3,17 +3,11 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import alloy_primitives.log.links.mod.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import revm.revm_context_interface.links.block.
 Require Import revm.revm_context_interface.links.journaled_state.
-
-(* TODO: Implement `Log`'s link correctly in `alloy_primitives *)
-Module Log.
-  Parameter t : Set.
-
-  Global Instance IsLink : Link t.
-  Admitted.
-End Log.
+Require Import revm.revm_context_interface.links.transaction.
 
 (*
 pub struct SStoreResult {
@@ -70,23 +64,30 @@ pub trait Host: TransactionGetter + BlockGetter + CfgGetter {
 Module Host.
   Module Types.
     Record t : Type := {
+      Transaction : Set;
+      TransactionTypes : Transaction.Types.t;
       Cfg : Set; (* For CfgGetter *)
       Spec : Set; (* For CfgGetter *)
       Block : Set; (* For BlockGetter *)
     }.
 
     Class AreLinks (types : t) : Set := {
+      H_Transaction : Link types.(Transaction);
+      H_TransactionTypes : Transaction.Types.AreLinks types.(TransactionTypes);
       H_Cfg : Link types.(Cfg);
       H_Spec : Link types.(Spec);
       H_Block : Link types.(Block);
     }.
 
+    Global Instance IsLinkTransaction (types : t) (H : AreLinks types) : Link types.(Transaction) :=
+      H.(H_Transaction _).
+    Global Instance AreLinksTransactionTypes (types : t) (H : AreLinks types) :
+      Transaction.Types.AreLinks types.(TransactionTypes) :=
+      H.(H_TransactionTypes _).
     Global Instance IsLinkCfg (types : t) (H : AreLinks types) : Link types.(Cfg) :=
       H.(H_Cfg _).
-
     Global Instance IsLinkSpec (types : t) (H : AreLinks types) : Link types.(Spec) :=
       H.(H_Spec _).
-
     Global Instance IsLinkBlock (types : t) (H : AreLinks types) : Link types.(Block) :=
       H.(H_Block _).
 
@@ -221,29 +222,13 @@ Module Host.
         Run.Trait method [] [] [ φ self; φ address; φ target ] (option (StateLoad.t SelfDestructResult.t))
     ).
 
-  (* Record Run (Self : Set) `{Link Self}
-    (types : Types.t) `{Types.AreLinks types} :
-    Set :=
-  {
-    run_BlockGetter : BlockGetter.Run Self (Types.to_BlockGetter_types types);
-    run_CfgGetter : CfgGetter.Run Self (Types.to_CfgGetter_types types);
-    load_account_delegated : Run_load_account_delegated Self;
-    block_hash : Run_block_hash Self;
-    balance : Run_balance Self;
-    code : Run_code Self;
-    code_hash : Run_code_hash Self;
-    sload : Run_sload Self;
-    sstore : Run_sstore Self;
-    tload : Run_tload Self;
-    tstore : Run_tstore Self;
-    log : Run_log Self;
-    selfdestruct : Run_selfdestruct Self;
-  }. *)
   Class Run (Self : Set) `{Link Self} 
     (types : Types.t) `{Types.AreLinks types} 
     : Set := {
-    run_BlockGetter : BlockGetter.Run Self (Types.to_BlockGetter_types types);
-    run_CfgGetter : CfgGetter.Run Self (Types.to_CfgGetter_types types);
+    run_TransactionGetter_for_Self :
+      TransactionGetter.Run Self types.(Types.Transaction) types.(Types.TransactionTypes);
+    run_BlockGetter_for_Self : BlockGetter.Run Self (Types.to_BlockGetter_types types);
+    run_CfgGetter_for_Self : CfgGetter.Run Self (Types.to_CfgGetter_types types);
     load_account_delegated : Run_load_account_delegated Self;
     block_hash : Run_block_hash Self;
     balance : Run_balance Self;
@@ -256,4 +241,20 @@ Module Host.
     log : Run_log Self;
     selfdestruct : Run_selfdestruct Self;
   }.
+
+  Ltac destruct_run :=
+    cbn;
+    eapply Run.Rewrite; [
+      progress repeat erewrite IsTraitAssociatedType_eq
+        by match goal with
+        | H : Run _ _ |- _ => apply H
+        end;
+      reflexivity
+    |];
+    match goal with
+    | H : Run _ _ |- _ =>
+      (* We make a duplicate for future calls *)
+      pose H;
+      destruct H
+    end.
 End Host.
