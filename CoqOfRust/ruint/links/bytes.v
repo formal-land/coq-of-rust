@@ -28,3 +28,4 @@ Module Impl_Uint.
       (option (Self BITS LIMBS)).
   Admitted.
 End Impl_Uint.
+Export Impl_Uint.

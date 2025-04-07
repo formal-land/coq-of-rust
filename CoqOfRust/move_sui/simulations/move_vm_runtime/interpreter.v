@@ -2,9 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
-
-Import simulations.M.Notations.
-
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.

@@ -79,3 +79,4 @@ Module Impl_Uint.
     run_symbolic.
   Admitted.
 End Impl_Uint.
+Export Impl_Uint.

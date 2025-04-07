@@ -35,3 +35,4 @@ Module Impl_Argument.
     run_symbolic.
   Defined.
 End Impl_Argument.
+Export Impl_Argument.

@@ -9,8 +9,6 @@ Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.gas.calc.
 Require Import revm_specification.links.hardfork.
 
-Import Impl_u64.
-
 (* pub fn sstore_refund(spec_id: SpecId, vals: &SStoreResult) -> i64 *)
 Instance run_sstore_refund
     (spec_id : SpecId.t)

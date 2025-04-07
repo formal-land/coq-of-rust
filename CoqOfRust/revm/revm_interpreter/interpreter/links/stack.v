@@ -18,14 +18,6 @@ Require Import revm.revm_interpreter.interpreter.stack.
 Require Import revm.revm_interpreter.links.instruction_result.
 Require Import ruint.links.lib.
 
-Import Impl_Arguments.
-Import Impl_Option.
-Import Impl_Slice.
-Import Impl_SliceIndex_for_Usize.
-Import Impl_Uint.
-Import Impl_Vec_T.
-Import Impl_Vec_T_A.
-
 (*
   pub struct Stack {
       data: Vec<U256>,

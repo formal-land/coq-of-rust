@@ -89,6 +89,7 @@ Module Impl_Vec_T.
       (Self T).
   Admitted.
 End Impl_Vec_T.
+Export Impl_Vec_T.
 
 Module Impl_Vec_T_A.
   Definition Self (T A : Set) `{Link T} `{Link A} : Set :=
@@ -123,6 +124,7 @@ Module Impl_Vec_T_A.
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.push (Φ T) (Φ A)) [] [] [φ self; φ value] unit.
   Admitted.
 End Impl_Vec_T_A.
+Export Impl_Vec_T_A.
 
 Module Impl_Index_for_Vec_T_A.
   Definition Self := Vec.t.
@@ -131,3 +133,4 @@ Module Impl_Index_for_Vec_T_A.
     index.Index.Run (Self T A) I Output.
   Admitted.
 End Impl_Index_for_Vec_T_A.
+Export Impl_Index_for_Vec_T_A.

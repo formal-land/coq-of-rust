@@ -3,9 +3,6 @@ Require Import CoqOfRust.simulations.M.
 Require CoqOfRust.core.simulations.assert.
 Require Import CoqOfRust.move_sui.simulations.mutual.lib.
 
-Import simulations.M.Notations.
-Import assert.Notations.
-
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
 

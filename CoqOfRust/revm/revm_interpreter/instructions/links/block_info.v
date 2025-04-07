@@ -16,12 +16,6 @@ Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import ruint.links.from.
 
-Import Impl_Address.
-Import Impl_Gas.
-Import from.Impl_Uint.
-Import Impl_Option.
-Import Impl_SpecId.
-
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,

@@ -8,9 +8,6 @@ Require CoqOfRust.examples.default.examples.ink_contracts.proofs.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.erc721.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc721.
 
-Import simulations.M.Notations.
-Import Run.
-
 (** ** Definition of state and allocation. *)
 
 Module State.

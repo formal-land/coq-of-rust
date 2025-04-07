@@ -11,10 +11,6 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
 Require Import ruint.links.lib.
 
-Import Impl_Gas.
-Import Impl_SpecId.
-Import Impl_Uint.
-
 (*
 pub fn pop<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
