@@ -1,7 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.option.
-Import Run.
 
 (*
   pub unsafe trait SliceIndex<T: ?Sized>: private_slice_index::Sealed {
@@ -109,3 +108,4 @@ Module Impl_SliceIndex_for_Usize.
     SliceIndex.Run Usize.t (T := list T) (Output := T).
   Admitted.
 End Impl_SliceIndex_for_Usize.
+Export Impl_SliceIndex_for_Usize.

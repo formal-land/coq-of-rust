@@ -44,3 +44,4 @@ Module Impl_Result_T_E.
     run_symbolic.
   Admitted.
 End Impl_Result_T_E.
+Export Impl_Result_T_E.

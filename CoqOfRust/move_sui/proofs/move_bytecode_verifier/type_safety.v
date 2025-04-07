@@ -10,8 +10,6 @@ Require Import move_sui.proofs.move_abstract_stack.lib.
 Require Import move_sui.proofs.move_binary_format.file_format.
 Require Import move_sui.proofs.move_vm_types.values.values_impl.
 
-Import simulations.M.Notations.
-
 Module TypeSafetyChecker.
   Module Valid.
     Record t (x : TypeSafetyChecker.t) : Prop := {

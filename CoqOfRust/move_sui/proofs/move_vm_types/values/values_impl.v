@@ -5,8 +5,6 @@ Require Import CoqOfRust.lib.proofs.lib.
 Require Import move_sui.simulations.move_binary_format.file_format.
 Require Import move_sui.simulations.move_vm_types.values.values_impl.
 
-Import simulations.M.Notations.
-
 Module ContainerSkeleton.
   Module IsWithoutLocals.
     Inductive t {ValueImpl : Set} (P : ValueImpl -> Prop) : ContainerSkeleton.t ValueImpl -> Prop :=

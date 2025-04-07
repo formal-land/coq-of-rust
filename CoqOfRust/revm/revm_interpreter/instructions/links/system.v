@@ -20,17 +20,7 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_primitives.links.lib.
 Require Import revm.revm_specification.links.hardfork.
 Require Import ruint.links.from.
-
-Import Impl_Address.
-Import Impl_FixedBytes.
-Import Impl_Gas.
-Import Impl_Result_T_E.
-Import Impl_Slice.
-Import Impl_SpecId.
-Import from.Impl_Uint.
-Import lib.Impl_Uint.
-Import Impl_u64.
-Import Impl_usize.
+Require Import ruint.links.lib.
 
 (*
 pub fn keccak256<WIRE: InterpreterTypes, H: Host + ?Sized>(

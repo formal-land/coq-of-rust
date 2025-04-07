@@ -209,7 +209,7 @@ End Impl_Ord_for_u64.
 *)
 Module PartialOrd.
   Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
-    ("core::cmp::PartialOrd", [], [], Φ Self).
+    ("core::cmp::PartialOrd", [], [ Φ Rhs ], Φ Self).
 
   Definition Run_partial_cmp (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
     TraitMethod.C (trait Self Rhs) "partial_cmp" (fun method =>

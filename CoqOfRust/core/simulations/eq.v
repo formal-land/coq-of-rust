@@ -17,6 +17,7 @@ End Eq.
 Module Notations.
   Notation "x =? y" := (Eq.eqb x y) (at level 70).
 End Notations.
+Export Notations.
 
 Global Instance ZIsEq : Eq.Trait Z := {
   Eq.eqb := Z.eqb

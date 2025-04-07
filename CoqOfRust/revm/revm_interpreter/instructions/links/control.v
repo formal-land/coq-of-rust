@@ -18,17 +18,6 @@ Require Import ruint.links.cmp.
 Require Import ruint.links.from.
 Require Import ruint.links.lib.
 
-Import Impl_Gas.
-Import Impl_Option.
-Import Impl_Result_T_E.
-Import Impl_SpecId.
-Import cmp.Impl_Uint.
-Import from.Impl_Uint.
-Import lib.Impl_Uint.
-Import Impl_u64.
-Import Impl_isize.
-Import Impl_usize.
-
 (*
 pub fn rjump<WIRE: InterpreterTypes, H: ?Sized>(
     interpreter: &mut Interpreter<WIRE>,

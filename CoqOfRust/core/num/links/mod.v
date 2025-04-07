@@ -50,6 +50,7 @@ Module Impl_u64.
     run_symbolic.
   Admitted.
 End Impl_u64.
+Export Impl_u64.
 
 Module Impl_usize.
   Definition Self : Set := Usize.t.
@@ -89,6 +90,7 @@ Module Impl_usize.
   Proof.
   Admitted.
 End Impl_usize.
+Export Impl_usize.
 
 Module Impl_isize.
   Import Impl_usize.
@@ -130,3 +132,4 @@ Module Impl_isize.
   Proof.
   Admitted.
 End Impl_isize.
+Export Impl_isize.

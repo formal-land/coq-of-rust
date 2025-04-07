@@ -11,9 +11,6 @@ Require CoqOfRust.examples.default.examples.ink_contracts.proofs.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.erc20.
 Require Import CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
-Import simulations.M.Notations.
-Import Run.
-
 Definition sum_of_money (storage : erc20.Erc20.t) : Z :=
   simulations.lib.Mapping.sum id storage.(erc20.Erc20.balances).
 

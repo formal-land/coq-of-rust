@@ -14,15 +14,6 @@ Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.instructions.utility.
 Require Import ruint.links.bytes.
 
-Import Impl_Arguments.
-Import Impl_ChunksExact.
-Import Impl_pointer_mut_T.
-Import Impl_RChunksExact.
-Import Impl_Slice.
-Import bytes.Impl_Uint.
-Import lib.Impl_Uint.
-Import Impl_u64.
-
 (* pub fn cast_slice_to_u256(slice: &[u8], dest: &mut U256) *)
 Instance run_cast_slice_to_u256
   (slice : Ref.t Pointer.Kind.Ref (list U8.t))

@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import simulations.M.
-Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.eq.
 
 Definition contains {A : Set} `{Eq.Trait A} (self : list A) (x : A) : bool :=

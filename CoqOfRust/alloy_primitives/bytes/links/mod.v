@@ -77,3 +77,4 @@ Module Impl_Bytes.
     run_symbolic.
   Admitted.
 End Impl_Bytes.
+Export Impl_Bytes.

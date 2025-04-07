@@ -1,9 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 
-Import simulations.M.Notations.
-
-(* 
+(*
 pub enum StatusCode {
     // The status of a transaction as determined by the prologue.
     // Validation Errors: 0-999

@@ -37,3 +37,4 @@ Module Impl_Address.
       (FixedBytes.t {| Integer.value := 32 |}).
   Admitted.
 End Impl_Address.
+Export Impl_Address.

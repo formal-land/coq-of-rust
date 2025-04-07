@@ -52,3 +52,4 @@ Module Impl_From_FixedBytes_32_for_U256.
     From.from := run_from;
   }.
 End Impl_From_FixedBytes_32_for_U256.
+Export Impl_From_FixedBytes_32_for_U256.

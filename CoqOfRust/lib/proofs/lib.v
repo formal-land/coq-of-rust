@@ -1,8 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.proofs.M.
-Require CoqOfRust.simulations.M.
-
-Import simulations.M.Notations.
+Require Import CoqOfRust.simulations.M.
 
 (*** Destruct the matched value in an expression [e]. *)
 Ltac destruct_match_in e :=

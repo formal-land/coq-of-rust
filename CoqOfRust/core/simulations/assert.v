@@ -1,10 +1,7 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.simulations.M.
-Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.bool.
-Import simulations.bool.Notations.
 Require Import CoqOfRust.core.simulations.eq.
-Import simulations.eq.Notations.
 
 Module Assert.
   Module Stateful.
@@ -45,3 +42,4 @@ Module Notations.
   Notation "assertS?ofS?" := Assert.Stateful.assert.
   Notation "assert_eqS?ofS?" := Assert.Stateful.assert_eq.
 End Notations.
+Export Notations.

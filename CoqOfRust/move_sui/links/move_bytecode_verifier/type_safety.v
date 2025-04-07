@@ -2,8 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import move_sui.translations.move_bytecode_verifier.type_safety.
 
-Import Run.
-
 (*
 struct TypeSafetyChecker<'a> {
     module: &'a CompiledModule,

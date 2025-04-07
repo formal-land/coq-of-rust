@@ -598,3 +598,4 @@ Module Impl_Gas.
     run_symbolic.
   Defined.
 End Impl_Gas.
+Export Impl_Gas.

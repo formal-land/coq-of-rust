@@ -243,3 +243,4 @@ Module Impl_pointer_mut_T.
     run_symbolic.
   Admitted.
 End Impl_pointer_mut_T.
+Export Impl_pointer_mut_T.

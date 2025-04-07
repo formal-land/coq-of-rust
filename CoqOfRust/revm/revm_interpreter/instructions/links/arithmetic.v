@@ -1,27 +1,23 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.links.cmp.
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import ruint.links.add.
+Require Import ruint.links.bits.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
+Require Import ruint.links.from.
+Require Import ruint.links.lib.
 Require Import ruint.links.mul.
 Require Import ruint.links.modular.
 Require Import ruint.links.pow.
-Require Import core.links.cmp.
-
-Import Impl_Gas.
-Import add.Impl_Uint.
-Import cmp.Impl_Uint.
-Import div.Impl_Uint.
-Import mul.Impl_Uint.
-Import modular.Impl_Uint.
-Import pow.Impl_Uint.
 
 (*
 pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -41,11 +37,6 @@ Instance run_add
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -73,11 +64,6 @@ Instance run_mul
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -101,11 +87,6 @@ Instance run_sub
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -129,11 +110,6 @@ Instance run_div
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -157,11 +133,6 @@ Instance run_sdiv
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -185,11 +156,6 @@ Instance run_rem
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -213,11 +179,6 @@ Instance run_smod
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -241,11 +202,6 @@ Instance run_addmod
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -269,11 +225,6 @@ Instance run_mulmod
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -297,21 +248,12 @@ Instance run_exp
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  (* TODO:
-  - calc.gas.calc.exp_cost
-  *)
   run_symbolic.
-Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn signextend<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -330,17 +272,9 @@ Instance run_signextend
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO:
-  - core::cmp::PartialOrd::lt
-  *)
+  destruct (Impl_PartialOrd_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Admitted.

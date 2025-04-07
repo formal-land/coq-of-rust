@@ -18,3 +18,4 @@ Module Impl_Uint.
       (array.t U8.t BYTES).
   Admitted.
 End Impl_Uint.
+Export Impl_Uint.
