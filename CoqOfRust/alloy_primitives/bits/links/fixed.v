@@ -34,7 +34,7 @@ Module Impl_From_FixedBytes_32_for_U256.
   Definition Self : Set :=
     aliases.U256.t.
 
-  Definition run_from : From.Run_from aliases.U256.t (FixedBytes.t {| Integer.value := 32 |}).
+  Definition run_from : From.Run_from Self (FixedBytes.t {| Integer.value := 32 |}).
   Proof.
     eexists.
     { eapply IsTraitMethod.Defined.
@@ -47,9 +47,18 @@ Module Impl_From_FixedBytes_32_for_U256.
     }
   Admitted.
 
-  Instance run : From.Run aliases.U256.t (FixedBytes.t {| Integer.value := 32 |}) :=
+  Instance run : From.Run Self (FixedBytes.t {| Integer.value := 32 |}) :=
   {
     From.from := run_from;
   }.
 End Impl_From_FixedBytes_32_for_U256.
 Export Impl_From_FixedBytes_32_for_U256.
+
+Module Impl_From_U256_for_FixedBytes_32.
+  Definition Self : Set :=
+    FixedBytes.t {| Integer.value := 32 |}.
+
+  Instance run : From.Run Self aliases.U256.t.
+  Admitted.
+End Impl_From_U256_for_FixedBytes_32.
+Export Impl_From_U256_for_FixedBytes_32.

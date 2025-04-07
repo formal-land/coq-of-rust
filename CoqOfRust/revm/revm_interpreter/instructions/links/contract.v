@@ -1,11 +1,23 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloc.links.boxed.
 Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.bytes.links.mod.
+Require Import core.convert.links.mod.
+Require Import core.links.result.
+Require Import core.num.links.mod.
+Require Import core.ops.links.range.
 Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_interpreter.interpreter_action.links.call_inputs.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_interpreter.instructions.contract.links.call_helpers.
 Require Import revm.revm_interpreter.instructions.contract.
+Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.from.
+Require Import ruint.links.lib.
 
 (*
 pub fn eofcreate<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -266,7 +278,6 @@ Proof.
   run_symbolic.
 Admitted.
 
-
 (*
 pub fn static_call<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -286,5 +297,13 @@ Instance run_static_call
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_Host_for_H.
+  destruct Impl_From_U256_for_FixedBytes_32.run.
+  destruct (TryFrom_Uint_for_u64.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   run_symbolic.
 Admitted.

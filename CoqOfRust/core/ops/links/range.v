@@ -24,6 +24,17 @@ Module Range.
         ("end", φ x.(end_))
       ];
   }.
+
+  Definition of_ty (Idx_ty : Ty.t) :
+    OfTy.t Idx_ty ->
+    OfTy.t (Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx_ty ]).
+  Proof.
+    intros [Idx].
+    eapply OfTy.Make with (A := t Idx).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add eapply of_ty : of_ty.
 End Range.
 
 (*
