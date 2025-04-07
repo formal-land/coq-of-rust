@@ -1,8 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
+Require Import core.convert.links.mod.
 Require Import core.links.result.
 Require Import core.option.
-Require core.ops.links.function.
+Require Import core.ops.links.function.
+Require Import core.ops.links.try_trait.
 
 Module Option.
   Global Instance IsLink (A : Set) `{Link A} : Link (option A) := {
@@ -134,3 +136,27 @@ Module Impl_Option.
   Admitted.
 End Impl_Option.
 Export Impl_Option.
+
+(* impl<T> ops::Try for Option<T> *)
+Module Impl_Try_for_Option.
+  Definition Self (T : Set) : Set :=
+    option T.
+
+  (*
+  type Output = T;
+  type Residual = Option<convert::Infallible>;
+  *)
+  Definition Types (T : Set) : Try.Types.t := {|
+    Try.Types.Output := T;
+    Try.Types.Residual := option Infallible.t;
+  |}.
+
+  Instance AreLinks (T : Set) `{Link T} : Try.Types.AreLinks (Types T).
+  Proof.
+    constructor; typeclasses eauto.
+  Defined.
+
+  Instance run (T : Set) `{Link T} : Try.Run (Self T) (Types T).
+  Admitted.
+End Impl_Try_for_Option.
+Export Impl_Try_for_Option.

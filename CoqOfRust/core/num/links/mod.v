@@ -31,6 +31,14 @@ Module Impl_u64.
     run_symbolic.
   Defined.
 
+  (* pub const fn saturating_sub(self, rhs: Self) -> Self *)
+  Instance run_saturating_sub (self rhs: Self) :
+    Run.Trait num.Impl_u64.saturating_sub [] [] [ φ self; φ rhs ] Self.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
   Instance run_saturating_mul (self rhs: Self) :
     Run.Trait num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] Self.
   Proof.

@@ -43,5 +43,18 @@ Module Impl_Result_T_E.
     constructor.
     run_symbolic.
   Admitted.
+
+  (*
+  pub fn expect(self, msg: &str) -> T
+  where
+      E: Debug,
+  *)
+  Instance run_expect
+    (T E : Set) `{Link T} `{Link E}
+    (self : Self T E)
+    (msg : Ref.t Pointer.Kind.Ref string) :
+    Run.Trait
+      (result.Impl_core_result_Result_T_E.expect (Φ T) (Φ E)) [] [] [ φ self; φ msg ] T.
+  Admitted.
 End Impl_Result_T_E.
 Export Impl_Result_T_E.
