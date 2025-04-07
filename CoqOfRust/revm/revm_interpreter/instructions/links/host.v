@@ -52,7 +52,9 @@ pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_selfbalance
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -60,6 +62,15 @@ Instance run_selfbalance
     unit.
 Proof.
   constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
   run_symbolic.
 Admitted.
 
