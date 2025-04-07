@@ -3,6 +3,46 @@ Require Import CoqOfRust.links.M.
 Require Import core.iter.traits.links.iterator.
 Require Import core.slice.iter.
 
+(*
+pub struct Iter<'a, T>
+where
+    T: 'a,
+*)
+Module Iter.
+  Parameter t : forall (T : Set), Set.
+
+  Parameter to_value : forall {T : Set}, t T -> Value.t.
+
+  Global Instance IsLink (T : Set) `{Link T} : Link (t T) := {
+    Φ := Ty.apply (Ty.path "core::slice::iter::Iter") [] [Φ T];
+    φ := to_value;
+  }.
+
+  Definition of_ty T_ty :
+    OfTy.t T_ty ->
+    OfTy.t (Ty.apply (Ty.path "core::slice::iter::Iter") [] [T_ty]).
+  Proof.
+    intros [T].
+    eapply OfTy.Make with (A := t T).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+End Iter.
+
+(* impl<'a, T> Iterator for Iter<'a, T> *)
+Module Impl_Iterator_for_Iter.
+  Definition Self (T : Set) `{Link T} : Set :=
+    Iter.t T.
+
+  (* type Item = &'a T; *)
+  Definition Item (T : Set) `{Link T} : Set :=
+    Ref.t Pointer.Kind.Ref T.
+
+  Instance run (T : Set) `{Link T} : Iterator.Run (Self T) (Item T).
+  Admitted.
+End Impl_Iterator_for_Iter.
+
 (* pub struct IterMut<'a, T: 'a> { /* private fields */ } *)
 Module IterMut.
   Parameter t : forall (T : Set), Set.

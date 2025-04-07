@@ -62,9 +62,6 @@ pub trait Host: TransactionGetter + BlockGetter + CfgGetter {
 }
 *)
 Module Host.
-  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("revm_context_interface::host::Host", [], [], Φ Self).
-
   Module Types.
     Record t : Type := {
       Transaction : Set;
