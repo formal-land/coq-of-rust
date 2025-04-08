@@ -77,7 +77,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  (* TODO: figure out a correct instance for `Self` *)
+  (* TODO: figure out a correct instance for `Self`, maybe refer to source code *)
   (* destruct links.interpreter_types.InputsTrait.Run_target_address. *)
   run_symbolic.
 Admitted.
@@ -99,6 +99,18 @@ Instance run_extcodesize
     aliases.U256.t.
 Proof.
   constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  (* destruct run_Host_for_H. *)
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: "revm_interpreter::instructions::utility::IntoAddress" *)
   run_symbolic.
 Admitted.
 
