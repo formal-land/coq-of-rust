@@ -17,7 +17,7 @@ Module Impl_Slice.
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
-      {run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output)}
+      {run_SliceIndex_for_I : SliceIndex.Run I (Self T) Output}
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
     Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index]
@@ -33,7 +33,7 @@ Module Impl_Slice.
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
-      (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
+      {run_SliceIndex_for_I : SliceIndex.Run I (Self T) Output}
       (self : Ref.t Pointer.Kind.MutRef (Self T)) 
       (index : I) :
     Run.Trait (slice.Impl_slice_T.get_unchecked_mut (Φ T)) [] [Φ I] [φ self; φ index]
@@ -91,6 +91,19 @@ Module Impl_Slice.
       (chunk_size : Usize.t) :
     Run.Trait (slice.Impl_slice_T.rchunks_exact (Φ T)) [] [] [φ self; φ chunk_size]
       (RChunksExact.t T).
+  Admitted.
+
+  (*
+  pub const fn copy_from_slice(&mut self, src: &[T])
+  where
+      T: Copy,
+  *)
+  Instance run_copy_from_slice
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.MutRef (Self T))
+      (src : Ref.t Pointer.Kind.Ref (Self T)) :
+    Run.Trait (slice.Impl_slice_T.copy_from_slice (Φ T)) [] [] [φ self; φ src]
+      unit.
   Admitted.
 End Impl_Slice.
 Export Impl_Slice.

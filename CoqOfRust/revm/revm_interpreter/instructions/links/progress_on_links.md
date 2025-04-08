@@ -65,10 +65,10 @@
 
 ## Data
 
-- [ ] `data_load`
-- [ ] `data_loadn`
-- [ ] `data_size`
-- [ ] `data_copy`
+- [x] `data_load`
+- [x] `data_loadn`
+- [x] `data_size`
+- [x] `data_copy`
 
 ## Host
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 50
-- Defined: 53
-- Percentage: 51.46%
+- Admitted: 46
+- Defined: 57
+- Percentage: 55.34%

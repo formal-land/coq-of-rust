@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.option.
+Require Import core.ops.links.index.
+Require Import core.ops.links.range.
 
 (*
   pub unsafe trait SliceIndex<T: ?Sized>: private_slice_index::Sealed {
@@ -84,8 +86,8 @@ Module SliceIndex.
 
   Class Run
       (Self : Set) `{Link Self}
-      {T : Set} `{Link T}
-      {Output : Set} `{Link Output} :
+      (T : Set) `{Link T}
+      (Output : Set) `{Link Output} :
     Set := {
       Output_IsAssociated :
         IsTraitAssociatedType
@@ -105,7 +107,41 @@ End SliceIndex.
 Module Impl_SliceIndex_for_Usize.
   Instance run
     (T : Set) `{Link T} :
-    SliceIndex.Run Usize.t (T := list T) (Output := T).
+    SliceIndex.Run Usize.t (list T) T.
   Admitted.
 End Impl_SliceIndex_for_Usize.
 Export Impl_SliceIndex_for_Usize.
+
+(*
+impl<T, I> ops::IndexMut<I> for [T]
+where
+    I: SliceIndex<[T]>,
+*)
+Module Impl_IndexMut_for_Slice.
+  Definition Self (T I : Set) : Set :=
+    list T.
+
+  Instance run
+    (T I : Set) `{Link T} `{Link I}
+    {Index_Output : Set} `{Link Index_Output}
+    (run_SliceIndex_for_I : SliceIndex.Run I (list T) Index_Output) :
+    IndexMut.Run (Self T I) I Index_Output.
+  Admitted.
+End Impl_IndexMut_for_Slice.
+Export Impl_IndexMut_for_Slice.
+
+(* unsafe impl<T> SliceIndex<[T]> for ops::RangeTo<usize> *)
+Module Impl_SliceIndex_for_RangeTo.
+  Definition Self (T : Set) : Set :=
+    RangeTo.t Usize.t.
+
+  (* type Output = [T]; *)
+  Definition Output (T : Set) : Set :=
+    list T.
+
+  Instance run
+    (T : Set) `{Link T} :
+    SliceIndex.Run (Self T) (list T) (Output T).
+  Admitted.
+End Impl_SliceIndex_for_RangeTo.
+Export Impl_SliceIndex_for_RangeTo.
