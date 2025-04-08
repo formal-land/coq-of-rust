@@ -277,24 +277,10 @@ End BinOp.
 (** The evaluation of logical operators is lazy on the second parameter. *)
 Module LogicalOp.
   Definition and (lhs : Value.t) (rhs : M) : M :=
-    match lhs with
-    | Value.Bool b =>
-      if b then
-        rhs
-      else
-        M.pure (Value.Bool false)
-    | _ => M.impossible "expected a boolean"
-    end.
+    M.call_logical_op LogicalOp.And lhs rhs.
 
   Definition or (lhs : Value.t) (rhs : M) : M :=
-    match lhs with
-    | Value.Bool b =>
-      if b then
-        M.pure (Value.Bool true)
-      else
-        rhs
-    | _ => M.impossible "expected a boolean"
-    end.
+    M.call_logical_op LogicalOp.Or lhs rhs.
 End LogicalOp.
 
 Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=

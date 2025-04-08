@@ -7,6 +7,7 @@ Require Import revm.revm_interpreter.instructions.i256.
 Require Import ruint.links.add.
 Require Import ruint.links.bits.
 Require Import ruint.links.cmp.
+Require Import ruint.links.from.
 Require Import ruint.links.lib.
 Require Import ruint.links.macros.
 
@@ -194,8 +195,9 @@ Proof.
   constructor.
   destruct Impl_PartialEq_for_Sign.run.
   destruct (Impl_PartialEq_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_Div_for_Uint_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   run_symbolic.
-Admitted.
+Defined.
 
 (* pub fn i256_mod(mut first: U256, mut second: U256) -> U256 *)
 Instance run_i256_mod (first second : aliases.U256.t) :
