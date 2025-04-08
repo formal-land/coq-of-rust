@@ -6,6 +6,9 @@ Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_specification.links.hardfork.
+Require Import revm.revm_interpreter.links.gas.
+Require Import revm.revm_interpreter.gas.links.constants.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -49,6 +52,7 @@ pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
     _host: &mut H,
 )
 *)
+
 Instance run_selfbalance
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -71,6 +75,10 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: figure out a correct instance for `Self` *)
+  (* destruct links.interpreter_types.InputsTrait.Run_target_address. *)
   run_symbolic.
 Admitted.
 
