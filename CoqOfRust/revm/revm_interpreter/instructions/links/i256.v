@@ -95,7 +95,18 @@ Instance run_MAX_POSITIVE_VALUE :
 Proof.
   constructor.
   run_symbolic.
-Admitted.
+  with_strategy transparent [φ] apply (
+    run_from_limbs
+      {| Integer.value := 256 |}
+      {| Integer.value := 4 |}
+      {| array.value := [
+        {| Integer.value := _ |};
+        {| Integer.value := _ |};
+        {| Integer.value := _ |};
+        {| Integer.value := _ |}
+      ] |}
+  ).
+Defined.
 
 (* pub const MIN_NEGATIVE_VALUE: U256 *)
 Instance run_MIN_NEGATIVE_VALUE :
@@ -104,7 +115,18 @@ Instance run_MIN_NEGATIVE_VALUE :
 Proof.
   constructor.
   run_symbolic.
-Admitted.
+  with_strategy transparent [φ] apply (
+    run_from_limbs
+      {| Integer.value := 256 |}
+      {| Integer.value := 4 |}
+      {| array.value := [
+        {| Integer.value := _ |};
+        {| Integer.value := _ |};
+        {| Integer.value := _ |};
+        {| Integer.value := _ |}
+      ] |}
+  ).
+Defined.
 
 (* const FLIPH_BITMASK_U64: u64 *)
 Instance run_FLIPH_BITMASK_U64 :

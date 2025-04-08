@@ -87,8 +87,8 @@
 
 ## I256
 
-- [ ] `MAX_POSITIVE_VALUE`
-- [ ] `MIN_NEGATIVE_VALUE`
+- [x] `MAX_POSITIVE_VALUE`
+- [x] `MIN_NEGATIVE_VALUE`
 - [x] `FLIPH_BITMASK_U64`
 - [x] `i256_sign`
 - [x] `two_compl`
@@ -148,6 +148,6 @@
 ## Summary
 
 - Total: 107
-- Admitted: 42
-- Defined: 65
-- Percentage: 60.75%
+- Admitted: 40
+- Defined: 67
+- Percentage: 62.62%
