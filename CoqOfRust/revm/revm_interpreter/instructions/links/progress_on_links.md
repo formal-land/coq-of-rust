@@ -87,13 +87,17 @@
 
 ## I256
 
-- [ ] `i256_sign`
-- [ ] `i256_sign_compl`
-- [ ] `u256_remove_sign`
-- [ ] `two_compl_mut`
-- [ ] `i256_cmp`
+- [ ] `MAX_POSITIVE_VALUE`
+- [ ] `MIN_NEGATIVE_VALUE`
+- [x] `FLIPH_BITMASK_U64`
+- [x] `i256_sign`
+- [x] `two_compl`
+- [x] `two_compl_mut`
+- [x] `i256_sign_compl`
+- [x] `u256_remove_sign`
+- [x] `i256_cmp`
 - [ ] `i256_div`
-- [ ] `i256_mod`
+- [x] `i256_mod`
 
 ## Memory
 
@@ -143,7 +147,7 @@
 
 ## Summary
 
-- Total: 103
-- Admitted: 46
-- Defined: 57
-- Percentage: 55.34%
+- Total: 107
+- Admitted: 42
+- Defined: 65
+- Percentage: 60.75%
