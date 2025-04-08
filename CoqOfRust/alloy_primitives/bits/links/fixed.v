@@ -30,6 +30,7 @@ Module Impl_FixedBytes.
     run_symbolic.
   Admitted.
 End Impl_FixedBytes.
+Export Impl_FixedBytes.
 
 Module Impl_From_FixedBytes_32_for_U256.
   Definition Self : Set :=
