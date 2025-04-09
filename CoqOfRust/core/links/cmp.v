@@ -267,3 +267,9 @@ Module PartialOrd.
     ge : Run_ge Self Rhs;
   }.
 End PartialOrd.
+
+Module Impl_PartialEq_for_Ordering.
+  Instance run : PartialEq.Run Ordering.t Ordering.t.
+  Admitted.
+End Impl_PartialEq_for_Ordering.
+Export Impl_PartialEq_for_Ordering.
