@@ -273,7 +273,9 @@ pub fn sstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_sstore
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -289,9 +291,11 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
   (* TODO:
+  - "revm_interpreter::interpreter_types::InputsTrait"::target_address
   *)
   run_symbolic.
 Admitted.
@@ -305,7 +309,9 @@ pub fn tstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_tstore
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}  
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -313,6 +319,20 @@ Instance run_tstore
     unit.
 Proof.
   constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - "revm_interpreter::interpreter_types::InputsTrait"::target_address
+  *)
   run_symbolic.
 Admitted.
 
@@ -333,6 +353,20 @@ Instance run_tload
     aliases.U256.t.
 Proof.
   constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: 2 goals like this?!
+  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_
+  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_0
+  *)
   run_symbolic.
 Admitted.
 
@@ -342,6 +376,7 @@ pub fn log<const N: usize, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
+(* TODO: fill in parameter `N` : usize *)
 Instance run_log
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -353,7 +388,20 @@ Instance run_log
     unit.
 Proof.
   constructor.
-  run_symbolic.
+  cbn.
+  eapply Run.Rewrite. {
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE. *)
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: 
+  - {{impossible "wrong number of arguments" 🔽 unit}}
+  *)
+  (* run_symbolic. *)
 Admitted.
 
 (*
@@ -373,5 +421,18 @@ Instance run_selfdestruct
     unit.
 Proof.
   constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: 
+  - "revm_interpreter::instructions::utility::IntoAddress"::into_address
+  *)
   run_symbolic.
 Admitted.
