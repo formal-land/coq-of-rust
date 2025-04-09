@@ -17,17 +17,6 @@ Instance run_saturating_add (integer_kind : IntegerKind.t) (x y : Integer.t inte
 Proof.
 Admitted.
 
-Instance run_sub_with_overflow
-  (x y : Integer.t IntegerKind.U64) :
-  Run.Trait
-    intrinsics.intrinsics.sub_with_overflow
-    []
-    [ Φ (Integer.t IntegerKind.U64) ]
-    [ φ x; φ y ]
-    (Integer.t IntegerKind.U64 * bool).
-Proof.
-Admitted.
-
 Instance run_discriminant_value (ref : Ref.t Pointer.Kind.Ref Ordering.t) :
   Run.Trait intrinsics.discriminant_value [] [Φ Ordering.t] [φ ref]
              (Integer.t IntegerKind.I8).

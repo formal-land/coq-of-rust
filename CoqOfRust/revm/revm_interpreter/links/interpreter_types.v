@@ -14,9 +14,6 @@ Require Import revm.revm_interpreter.links.interpreter_action.
 Require Import revm.revm_interpreter.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
 
-Import alloy_primitives.bits.links.address.
-Import alloy_primitives.links.bytes_.
-
 (*
 pub trait StackTrait {
     fn len(&self) -> usize;
@@ -774,4 +771,20 @@ Module InterpreterTypes.
         "RuntimeFlag" (Φ types.(Types.RuntimeFlag));
     run_RuntimeFlag_for_RuntimeFlag : RuntimeFlag.Run types.(Types.RuntimeFlag);
   }.
+
+  Ltac destruct_run :=
+    cbn;
+    eapply Run.Rewrite; [
+      progress repeat erewrite IsTraitAssociatedType_eq
+        by match goal with
+        | H : Run _ _ |- _ => apply H
+        end;
+      reflexivity
+    |];
+    match goal with
+    | H : Run _ _ |- _ =>
+      (* We make a duplicate for future calls *)
+      pose H;
+      destruct H
+    end.
 End InterpreterTypes.
