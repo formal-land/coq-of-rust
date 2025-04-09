@@ -96,7 +96,7 @@
 - [x] `i256_sign_compl`
 - [x] `u256_remove_sign`
 - [x] `i256_cmp`
-- [ ] `i256_div`
+- [x] `i256_div`
 - [x] `i256_mod`
 
 ## Memory
@@ -148,6 +148,6 @@
 ## Summary
 
 - Total: 107
-- Admitted: 40
-- Defined: 67
-- Percentage: 62.62%
+- Admitted: 39
+- Defined: 68
+- Percentage: 63.55%

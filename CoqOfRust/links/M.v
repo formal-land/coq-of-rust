@@ -877,6 +877,13 @@ Module Run.
       {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
+  | CallLogicalOp
+      (op : LogicalOp.t) (lhs : bool) (rhs : M) (k : Value.t + Exception.t -> M) :
+    {{ rhs 🔽 R, bool }} ->
+    (forall (value_inter : Output.t R bool),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.CallLogicalOp op (Value.Bool lhs) rhs k 🔽 R, Output }}
   | Let
       (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
@@ -1061,6 +1068,40 @@ Proof.
     | H : forall _ : SuccessOrPanic.t Output', _ |- _ => apply (H output')
     end.
   }
+  { (* CallLogicalOp *)
+    match goal with
+    | H : forall _ : Output.t _ bool, _ |- _ => rename H into H_k
+    end.
+    destruct op.
+    { (* And *)
+      refine (if lhs then _ else _).
+      { (* True *)
+        eapply LowM.Let. {
+          exact (evaluate _ _ _ _ _ run).
+        }
+        intros output'; eapply evaluate.
+        exact (H_k output').
+      }
+      { (* False *)
+        eapply evaluate.
+        exact (H_k (Output.Success false)).
+      }
+    }
+    { (* Or *)
+      refine (if lhs then _ else _).
+      { (* True *)
+        eapply evaluate.
+        exact (H_k (Output.Success true)).
+      }
+      { (* False *)
+        eapply LowM.Let. {
+          exact (evaluate _ _ _ _ _ run).
+        }
+        intros output'; eapply evaluate.
+        exact (H_k output').
+      }
+    }
+  }
   { (* Let *)
     eapply LowM.Let. {
       exact (evaluate _ _ _ _ _ run).
@@ -1224,6 +1265,9 @@ Ltac run_symbolic_closure_auto :=
     cbn; intros []
   ].
 
+Ltac run_symbolic_logical_op :=
+  apply Run.CallLogicalOp; [| intros []].
+
 Smpl Create run_sub_pointer.
 
 Ltac run_sub_pointer :=
@@ -1335,6 +1379,7 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_associated_function ||
     run_symbolic_get_trait_method ||
     run_symbolic_closure_auto ||
+    run_symbolic_logical_op ||
     run_symbolic_let ||
     run_sub_pointer ||
     run_symbolic_loop ||
