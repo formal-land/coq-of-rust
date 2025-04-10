@@ -7,5 +7,4 @@ Instance run_unreachable_unchecked :
   Run.Trait hint.unreachable_unchecked [] [] [] Empty_set.
 Proof.
   constructor.
-  run_symbolic.
 Admitted.

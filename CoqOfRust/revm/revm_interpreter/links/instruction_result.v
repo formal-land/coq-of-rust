@@ -711,7 +711,7 @@ Module Impl_InstructionResult.
   Proof.
     (* This is the only one that is fast in this file, for some reasons! *)
     constructor.
-    destruct self; run_symbolic.
+    run_symbolic.
   Defined.
 
   (* pub const fn is_revert(self) -> bool *)
