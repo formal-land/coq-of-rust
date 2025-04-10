@@ -7,24 +7,77 @@ Require Import core.links.option.
 Require Import core.links.result.
 Require Import core.num.links.nonzero.
 
-(*
-pub trait Iterator {
-    type Item;
+(* pub trait Iterator *)
+Module Iterator.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::iter::traits::iterator::Iterator", [], [], Φ Self).
 
-    // Required method
-    fn next(&mut self) -> Option<Self::Item>;
+  (* fn next(&mut self) -> Option<Self::Item>; *)
+  Definition Run_next
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "next" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      Run.Trait method [] [] [φ self] (option Item)
+    ).
 
-    // Provided methods
-    fn next_chunk<const N: usize>(
-        &mut self,
-    ) -> Result<[Self::Item; N], IntoIter<Self::Item, N>>
-       where Self: Sized { ... }
-    fn size_hint(&self) -> (usize, Option<usize>) { ... }
-    fn count(self) -> usize
-       where Self: Sized { ... }
-    fn last(self) -> Option<Self::Item>
-       where Self: Sized { ... }
-    fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> { ... }
+  (*
+  fn next_chunk<const N: usize>(
+      &mut self,
+  ) -> Result<[Self::Item; N], IntoIter<Self::Item, N>>
+  *)
+  Definition Run_next_chunk
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "next_chunk" (fun method =>
+      forall
+        (N : Usize.t)
+        (self : Ref.t Pointer.Kind.MutRef Self),
+      Run.Trait method [] [] [φ self] (Result.t (array.t Item N) (IntoIter.t Item N))
+    ).
+
+  (* fn size_hint(&self) -> (usize, Option<usize>) { ... } *)
+  Definition Run_size_hint
+      (Self : Set) `{Link Self} :
+      Set :=
+    TraitMethod.C (trait Self) "size_hint" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [φ self] (Usize.t * option Usize.t)
+    ).
+
+  (* fn count(self) -> usize *)
+  Definition Run_count
+      (Self : Set) `{Link Self} :
+      Set :=
+    TraitMethod.C (trait Self) "count" (fun method =>
+      forall (self : Self),
+      Run.Trait method [] [] [φ self] Usize.t
+    ).
+
+  (* fn last(self) -> Option<Self::Item> *)
+  Definition Run_last
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "last" (fun method =>
+      forall (self : Self),
+      Run.Trait method [] [] [φ self] (option Item)
+    ).
+
+  (* fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> *)
+  Definition Run_advance_by
+      (Self : Set) `{Link Self} :
+      Set :=
+    TraitMethod.C (trait Self) "advance_by" (fun method =>
+      forall
+         (self : Ref.t Pointer.Kind.MutRef Self)
+         (n : Usize.t),
+      Run.Trait method [] [] [φ self; φ n] (Result.t unit (NonZero.t Usize.t))
+    ).
+
+  (*
     fn nth(&mut self, n: usize) -> Option<Self::Item> { ... }
     fn step_by(self, step: usize) -> StepBy<Self> ⓘ
        where Self: Sized { ... }
@@ -132,9 +185,15 @@ pub trait Iterator {
     fn all<F>(&mut self, f: F) -> bool
        where Self: Sized,
              F: FnMut(Self::Item) -> bool { ... }
-    fn any<F>(&mut self, f: F) -> bool
-       where Self: Sized,
-             F: FnMut(Self::Item) -> bool { ... }
+  *)
+
+  (*
+  fn any<F>(&mut self, f: F) -> bool
+      where Self: Sized,
+            F: FnMut(Self::Item) -> bool { ... }
+  *)
+
+  (*
     fn find<P>(&mut self, predicate: P) -> Option<Self::Item>
        where Self: Sized,
              P: FnMut(&Self::Item) -> bool { ... }
@@ -247,73 +306,13 @@ pub trait Iterator {
        where Self: Sized,
              F: FnMut(Self::Item) -> K,
              K: PartialOrd { ... }
-}
-*)
-Module Iterator.
-  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("core::iter::traits::iterator::Iterator", [], [], Φ Self).
-
-  Definition Run_next
-      (Self : Set) `{Link Self}
-      (Item : Set) `{Link Item} :
-      Set :=
-    TraitMethod.C (trait Self) "next" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [] [] [φ self] (option Item)
-    ).
-
-  Definition Run_next_chunk
-      (Self : Set) `{Link Self}
-      (Item : Set) `{Link Item} :
-      Set :=
-    TraitMethod.C (trait Self) "next_chunk" (fun method =>
-      forall
-        (N : Usize.t)
-        (self : Ref.t Pointer.Kind.MutRef Self),
-      Run.Trait method [] [] [φ self] (Result.t (array.t Item N) (IntoIter.t Item N))
-    ).
-
-  Definition Run_size_hint
-      (Self : Set) `{Link Self} :
-      Set :=
-    TraitMethod.C (trait Self) "size_hint" (fun method =>
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-      Run.Trait method [] [] [φ self] (Usize.t * option Usize.t)
-    ).
-
-  Definition Run_count
-      (Self : Set) `{Link Self} :
-      Set :=
-    TraitMethod.C (trait Self) "count" (fun method =>
-      forall (self : Self),
-      Run.Trait method [] [] [φ self] Usize.t
-    ).
-
-  Definition Run_last
-      (Self : Set) `{Link Self}
-      (Item : Set) `{Link Item} :
-      Set :=
-    TraitMethod.C (trait Self) "last" (fun method =>
-      forall (self : Self),
-      Run.Trait method [] [] [φ self] (option Item)
-    ).
-
-  Definition Run_advance_by
-      (Self : Set) `{Link Self} :
-      Set :=
-    TraitMethod.C (trait Self) "advance_by" (fun method =>
-      forall
-         (self : Ref.t Pointer.Kind.MutRef Self)
-         (n : Usize.t),
-      Run.Trait method [] [] [φ self; φ n] (Result.t unit (NonZero.t Usize.t))
-    ).
-
-  (* TODO: add other methods *)
+  *)
 
   Class Run
       (Self : Set) `{Link Self}
       (Item : Set) `{Link Item} :
       Set := {
+   (* type Item; *)
     Item_IsAssociated :
       IsTraitAssociatedType
         "core::iter::traits::iterator::Iterator" [] [] (Φ Self)

@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
-Require Import links.M.
+Require Import core.ops.range.
 
 (*
   pub struct Range<Idx> {
@@ -24,7 +25,31 @@ Module Range.
         ("end", φ x.(end_))
       ];
   }.
+
+  Definition of_ty (Idx_ty : Ty.t) :
+    OfTy.t Idx_ty ->
+    OfTy.t (Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx_ty ]).
+  Proof.
+    intros [Idx].
+    eapply OfTy.Make with (A := t Idx).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add eapply of_ty : of_ty.
 End Range.
+
+Module Impl_Range.
+  Definition Self (Idx : Set) : Set :=
+    Range.t Idx.
+
+  (* pub fn is_empty(&self) -> bool *)
+  Instance run_is_empty {Idx : Set} `{Link Idx} (self : Ref.t Pointer.Kind.Ref (Self Idx)) :
+    Run.Trait
+      (ops.range.Impl_core_ops_range_Range_Idx.is_empty (Φ Idx)) [] [] [ φ self ]
+      bool.
+  Admitted.
+End Impl_Range.
+Export Impl_Range.
 
 (*
   pub enum Bound<T> {
@@ -114,3 +139,53 @@ Module RangeBounds.
     is_empty : Run_is_empty Self T;
   }.
 End RangeBounds.
+Export RangeBounds.
+
+(*
+pub struct RangeTo<Idx> {
+    pub end: Idx,
+}
+*)
+Module RangeTo.
+  Record t {Idx : Set} : Set := {
+    end_ : Idx;
+  }.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink (Idx : Set) `{Link Idx} : Link (t Idx) := {
+    Φ := Ty.apply (Ty.path "core::ops::range::RangeTo") [] [Φ Idx];
+    φ x := Value.StructRecord "core::ops::range::RangeTo" [("end_", φ x.(end_))];
+  }.
+
+  Definition of_ty (Idx_ty : Ty.t) :
+    OfTy.t Idx_ty ->
+    OfTy.t (Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx_ty ]).
+  Proof.
+    intros [Idx].
+    eapply OfTy.Make with (A := t Idx).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add eapply of_ty : of_ty.
+
+  Lemma of_value_with {Idx : Set} `{Link Idx} (end_ : Idx) end_' :
+    end_' = φ end_ ->
+    Value.StructRecord "core::ops::range::RangeTo" [("end_", end_')] =
+    φ (Build_t _ end_).
+  Proof.
+    now intros; subst.
+  Qed.
+  Smpl Add eapply of_value_with : of_value.
+
+  Definition of_value end_' :
+    OfValue.t end_' ->
+    OfValue.t (Value.StructRecord "core::ops::range::RangeTo" [("end_", end_')]).
+  Proof.
+    intros [Idx ? end_].
+    eapply OfValue.Make with (A := t Idx) (value := Build_t Idx end_).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add eapply of_value : of_value.
+End RangeTo.
+Export RangeTo.

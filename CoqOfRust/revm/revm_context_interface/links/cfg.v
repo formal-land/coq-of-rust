@@ -4,18 +4,12 @@ Require Import alloy_primitives.links.aliases.
 Require Import core.convert.links.mod.
 Require Import revm.revm_specification.links.hardfork.
 (*
-  /// Create scheme.
-  #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-  pub enum CreateScheme {
-      /// Legacy create scheme of `CREATE`.
-      Create,
-      /// Create scheme of `CREATE2`.
-      Create2 {
-          /// Salt.
-          salt: U256,
-      },
-  }
+pub enum CreateScheme {
+    Create,
+    Create2 {
+        salt: U256,
+    },
+}
 *)
 
 Module CreateScheme.
@@ -24,13 +18,46 @@ Module CreateScheme.
   | Create2 : aliases.U256.t -> t.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_primitives::env::CreateScheme";
+    Φ := Ty.path "revm_context_interface::cfg::CreateScheme";
     φ x :=
       match x with
-      | Create => Value.StructTuple "revm_primitives::env::CreateScheme::Create" []
-      | Create2 x => Value.StructTuple "revm_primitives::env::CreateScheme::Create2" [φ x]
+      | Create => Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" []
+      | Create2 x =>
+        Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+          ("salt", φ x)
+        ]
       end;
   }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::cfg::CreateScheme").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with_Create :
+    Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" [] = φ Create.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_Create : of_value.
+
+  Lemma of_value_with_Create2 (x : aliases.U256.t) x' :
+    x' = φ x ->
+    Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+      ("salt", x')
+    ] = φ (Create2 x).
+  Proof. now intros; subst. Qed.
+  Smpl Add eapply of_value_with_Create2 : of_value.
+
+  Definition of_value_Create :
+    OfValue.t (Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" []).
+  Proof. eapply OfValue.Make; apply of_value_with_Create. Defined.
+  Smpl Add apply of_value_Create : of_value.
+
+  Definition of_value_Create2 (x : aliases.U256.t) x' :
+    x' = φ x ->
+    OfValue.t (Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+      ("salt", x')
+    ]).
+  Proof. intros; eapply OfValue.Make with (A := t); apply of_value_with_Create2; eassumption. Defined.
+  Smpl Add eapply of_value_Create2 : of_value.
 End CreateScheme.
 
 (* 

@@ -159,3 +159,20 @@ Module TryInto.
     try_into : Run_try_into Self T Error;
   }.
 End TryInto.
+
+(* pub enum Infallible {} *)
+Module Infallible.
+  Inductive t : Set :=.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "core::convert::Infallible";
+    φ x := match x with end;
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "core::convert::Infallible").
+  Proof.
+    eapply OfTy.Make.
+    subst; reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+End Infallible.

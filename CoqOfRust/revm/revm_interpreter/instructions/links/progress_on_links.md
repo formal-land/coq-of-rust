@@ -65,10 +65,10 @@
 
 ## Data
 
-- [ ] `data_load`
-- [ ] `data_loadn`
-- [ ] `data_size`
-- [ ] `data_copy`
+- [x] `data_load`
+- [x] `data_loadn`
+- [x] `data_size`
+- [x] `data_copy`
 
 ## Host
 
@@ -87,13 +87,17 @@
 
 ## I256
 
-- [ ] `i256_sign`
-- [ ] `i256_sign_compl`
-- [ ] `u256_remove_sign`
-- [ ] `two_compl_mut`
-- [ ] `i256_cmp`
-- [ ] `i256_div`
-- [ ] `i256_mod`
+- [x] `MAX_POSITIVE_VALUE`
+- [x] `MIN_NEGATIVE_VALUE`
+- [x] `FLIPH_BITMASK_U64`
+- [x] `i256_sign`
+- [x] `two_compl`
+- [x] `two_compl_mut`
+- [x] `i256_sign_compl`
+- [x] `u256_remove_sign`
+- [x] `i256_cmp`
+- [x] `i256_div`
+- [x] `i256_mod`
 
 ## Memory
 
@@ -143,7 +147,7 @@
 
 ## Summary
 
-- Total: 103
-- Admitted: 50
-- Defined: 53
-- Percentage: 51.46%
+- Total: 107
+- Admitted: 39
+- Defined: 68
+- Percentage: 63.55%

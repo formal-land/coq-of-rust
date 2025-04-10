@@ -5,6 +5,7 @@ Require Export alloy_primitives.bits.links.fixed_FixedBytes.
 Require Import alloy_primitives.bits.fixed.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
+Require Import core.links.borrow.
 
 Module Impl_FixedBytes.
   Definition Self (N: Usize.t) : Set :=
@@ -29,12 +30,13 @@ Module Impl_FixedBytes.
     run_symbolic.
   Admitted.
 End Impl_FixedBytes.
+Export Impl_FixedBytes.
 
 Module Impl_From_FixedBytes_32_for_U256.
   Definition Self : Set :=
     aliases.U256.t.
 
-  Definition run_from : From.Run_from aliases.U256.t (FixedBytes.t {| Integer.value := 32 |}).
+  Definition run_from : From.Run_from Self (FixedBytes.t {| Integer.value := 32 |}).
   Proof.
     eexists.
     { eapply IsTraitMethod.Defined.
@@ -47,9 +49,28 @@ Module Impl_From_FixedBytes_32_for_U256.
     }
   Admitted.
 
-  Instance run : From.Run aliases.U256.t (FixedBytes.t {| Integer.value := 32 |}) :=
+  Instance run : From.Run Self (FixedBytes.t {| Integer.value := 32 |}) :=
   {
     From.from := run_from;
   }.
 End Impl_From_FixedBytes_32_for_U256.
 Export Impl_From_FixedBytes_32_for_U256.
+
+Module Impl_From_U256_for_FixedBytes_32.
+  Definition Self : Set :=
+    FixedBytes.t {| Integer.value := 32 |}.
+
+  Instance run : From.Run Self aliases.U256.t.
+  Admitted.
+End Impl_From_U256_for_FixedBytes_32.
+Export Impl_From_U256_for_FixedBytes_32.
+
+(* impl<const N: usize> Borrow<[u8; N]> for FixedBytes<N> *)
+Module Impl_Borrow_Array_u8_N_for_FixedBytes_N.
+  Definition Self (N: Usize.t) : Set :=
+    FixedBytes.t N.
+
+  Instance run (N: Usize.t) : Borrow.Run (Self N) (array.t U8.t N).
+  Admitted.
+End Impl_Borrow_Array_u8_N_for_FixedBytes_N.
+Export Impl_Borrow_Array_u8_N_for_FixedBytes_N.

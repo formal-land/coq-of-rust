@@ -1,8 +1,12 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloc.links.alloc.
+Require Import alloc.vec.links.mod.
 Require Import alloy_primitives.bytes.mod.
+Require Import core.convert.links.mod.
 Require Import core.links.clone.
 Require Import core.links.default.
+Require Import core.ops.links.deref.
 
 (* pub struct Bytes(pub bytes::Bytes); *)
 Module Bytes.
@@ -65,6 +69,17 @@ Module Impl_Default_for_Bytes.
     Default.default := run_default;
   }.
 End Impl_Default_for_Bytes.
+Export Impl_Default_for_Bytes.
+
+(* impl Deref for Bytes *)
+Module Impl_Deref_for_Bytes.
+  Definition Self : Set :=
+    Bytes.t.
+
+  Instance run : Deref.Run Self Self.
+  Admitted.
+End Impl_Deref_for_Bytes.
+Export Impl_Deref_for_Bytes.
 
 Module Impl_Bytes.
   Definition Self : Set :=
@@ -78,3 +93,12 @@ Module Impl_Bytes.
   Admitted.
 End Impl_Bytes.
 Export Impl_Bytes.
+
+(* impl From<Vec<u8>> for Bytes *)
+Module Impl_From_Vec_u8_for_Bytes.
+  Definition Self : Set :=
+    Bytes.t.
+
+  Instance run : From.Run Self (Vec.t U8.t Global.t).
+  Admitted.
+End Impl_From_Vec_u8_for_Bytes.

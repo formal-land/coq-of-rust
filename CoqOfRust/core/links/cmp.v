@@ -106,6 +106,12 @@ Module Ord.
     clamp : Run_clamp Self;
   }.
 
+  Instance run_min {Self : Set} `{Link Self} (self other : Self)
+    (H_cmp : Run_cmp Self) :
+  Run.Trait (cmp.cmp.Ord.min (Φ Self)) [] [] [ φ self; φ other ] Self.
+  Proof.
+  Admitted.
+
   Instance run_max {Self : Set} `{Link Self} (self other : Self)
       (run_cmp : Run_cmp Self) :
     Run.Trait (cmp.cmp.Ord.max (Φ Self)) [] [] [ φ self; φ other ] Self.
@@ -120,18 +126,29 @@ Module Ord.
     ).
   Defined.
 
-  Instance run_min {Self : Set} `{Link Self} (self other : Self)
-      (H_cmp : Run_cmp Self) :
-    Run.Trait (cmp.cmp.Ord.min (Φ Self)) [] [] [ φ self; φ other ] Self.
-  Proof.
-  Admitted.
-
   Instance run_clamp {Self : Set} `{Link Self} (self min max : Self)
       (H_cmp : Run_cmp Self) :
     Run.Trait (cmp.cmp.Ord.clamp (Φ Self)) [] [] [ φ self; φ min; φ max ] Self.
   Proof.
   Admitted.
 End Ord.
+
+Instance run_min {T : Set} `{Link T} `{Ord.Run T} (v1 v2 : T) :
+  Run.Trait cmp.min [] [ Φ T ] [ φ v1; φ v2 ] T.
+Proof.
+  constructor.
+  destruct_all (Ord.Run T).
+  run_symbolic.
+Defined.
+
+(* pub fn max<T: Ord>(v1: T, v2: T) -> T *)
+Instance run_max {T : Set} `{Link T} `{Ord.Run T} (v1 v2 : T) :
+  Run.Trait cmp.max [] [ Φ T ] [ φ v1; φ v2 ] T.
+Proof.
+  constructor.
+  destruct_all (Ord.Run T).
+  run_symbolic.
+Defined.
 
 Module Impl_Ord_for_u64.
   Definition Self : Set := U64.t.
@@ -197,6 +214,7 @@ Module Impl_Ord_for_u64.
     Ord.clamp := run_clamp;
   }.
 End Impl_Ord_for_u64.
+Export Impl_Ord_for_u64.
 
 (*
   pub trait PartialOrd<Rhs: ?Sized = Self>: PartialEq<Rhs> {
