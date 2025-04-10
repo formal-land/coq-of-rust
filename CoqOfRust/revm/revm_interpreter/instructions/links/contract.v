@@ -6,6 +6,7 @@ Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.utils.links.mod.
+Require Import bytes.links.bytes.
 Require Import core.convert.links.mod.
 Require Import core.fmt.links.mod.
 Require Import core.links.borrow.
@@ -64,9 +65,12 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct Impl_Clone_for_Bytes.run.
   destruct Impl_Default_for_Bytes.run.
-  destruct Impl_Deref_for_Bytes.run.
+  destruct links.mod.Impl_Deref_for_Bytes.run.
   destruct (Impl_Into_for_From_T.run Impl_From_Vec_u8_for_Bytes.run).
   run_symbolic.
+  (* "synthetic" values appearing in the translation *)
+  admit.
+  all: fail.
 Admitted.
 
 (*
@@ -82,15 +86,21 @@ Instance run_return_contract
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
-    instructions.contract.return_contract [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    instructions.contract.return_contract [] [ Φ H; Φ WIRE ] [ φ interpreter; φ _host ]
     unit.
 Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
   destruct run_Immediates_for_Bytecode.
+  destruct run_EofContainer_for_Bytecode.
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  run_symbolic.
+  destruct Impl_Clone_for_Bytes.run.
+  destruct links.mod.Impl_Deref_for_Bytes.run.
+  destruct bytes.Impl_Deref_for_Bytes.run.
+  do 100 try run_symbolic_one_step_immediate.
+  (* Too slow. Maybe a non-linear part in the proof. *)
 Admitted.
 
 (*

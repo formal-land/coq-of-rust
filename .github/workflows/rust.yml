@@ -163,6 +163,16 @@ jobs:
             rsync -rcv src/ ../../../../CoqOfRust/alloy_primitives/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../../../..
           endGroup
+          startGroup "Translate bytes"
+            cd third-party/bytes
+            cp ../../rust-toolchain ./
+            grep -q workspace Cargo.toml || echo '[workspace]' >> Cargo.toml
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv src/ ../../CoqOfRust/bytes/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../..
+          endGroup
           startGroup "Translate Move Sui"
             cd third-party/move-sui
             cp ../../rust-toolchain ./

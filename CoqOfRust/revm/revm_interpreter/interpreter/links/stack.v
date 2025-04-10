@@ -203,6 +203,8 @@ Module Impl_Stack.
   Proof.
     constructor.
     run_symbolic.
+    Unshelve.
+    all: exact Empty_set || typeclasses eauto.
   Defined.
 
   (* pub fn peek(&self, no_from_top: usize) -> Result<U256, InstructionResult> *)

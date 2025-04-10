@@ -45,6 +45,7 @@ Proof.
   destruct run_MemoryTrait_for_Memory.
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   destruct (Impl_AsRef_for_Slice.run U8.t).
+  (* "synthetic" type appearing *)
   run_symbolic.
 Admitted.
 
