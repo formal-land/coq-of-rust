@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.result.
+
 Module Result.
   Inductive t {T E : Set} : Set :=
   | Ok : T -> t
