@@ -26,6 +26,7 @@ Module Impl_Uint.
     Run.Trait
       (bytes.Impl_ruint_Uint_BITS_LIMBS.try_from_be_slice (φ BITS) (φ LIMBS)) [] [] [ φ bytes ]
       (option (Self BITS LIMBS)).
+  Admitted.
       
   (* pub const fn from_be_bytes<const BYTES: usize>(bytes: [u8; BYTES]) -> Self *)
   Instance run_from_be_bytes
