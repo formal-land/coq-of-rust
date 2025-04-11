@@ -20,6 +20,13 @@ Arguments Φ _ {_}.
 
 Global Opaque φ.
 
+Module WrappedLink.
+  Record t : Type := {
+    A : Set;
+    H : Link A;
+  }.
+End WrappedLink.
+
 Smpl Create of_ty.
 
 Module OfTy.
@@ -877,6 +884,17 @@ Module Run.
       {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
+  | CallClosureWrapped
+      (ty : Ty.t) (f : list Value.t -> M) (args : list Value.t) (k : Value.t + Exception.t -> M)
+      (wrapped_link : WrappedLink.t) :
+    let Output' : Set := wrapped_link.(WrappedLink.A) in
+    let _ := wrapped_link.(WrappedLink.H) in
+    let closure := Value.Closure (existS (_, _) f) in
+    {{ f args 🔽 Output', Output' }} ->
+    (forall (value_inter : SuccessOrPanic.t Output'),
+      {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
   | CallLogicalOp
       (op : LogicalOp.t) (lhs : bool) (rhs : M) (k : Value.t + Exception.t -> M) :
     {{ rhs 🔽 R, bool }} ->
@@ -888,6 +906,16 @@ Module Run.
       (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
     let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    {{ e 🔽 R, Output' }} ->
+    (forall (value_inter : Output.t R Output'),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.Let ty e k 🔽 R, Output }}
+  | LetWrapped
+      (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
+      (wrapped_link : WrappedLink.t) :
+    let Output' : Set := wrapped_link.(WrappedLink.A) in
+    let _ := wrapped_link.(WrappedLink.H) in
     {{ e 🔽 R, Output' }} ->
     (forall (value_inter : Output.t R Output'),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
@@ -1068,6 +1096,15 @@ Proof.
     | H : forall _ : SuccessOrPanic.t Output', _ |- _ => apply (H output')
     end.
   }
+  { (* CallClosureWrapped *)
+    eapply LowM.Call. {
+      exact (evaluate _ _ _ _ _ run).
+    }
+    intros output'; eapply evaluate.
+    match goal with
+    | H : forall _ : SuccessOrPanic.t Output', _ |- _ => apply (H output')
+    end.
+  }
   { (* CallLogicalOp *)
     match goal with
     | H : forall _ : Output.t _ bool, _ |- _ => rename H into H_k
@@ -1103,6 +1140,15 @@ Proof.
     }
   }
   { (* Let *)
+    eapply LowM.Let. {
+      exact (evaluate _ _ _ _ _ run).
+    }
+    intros output'; eapply evaluate.
+    match goal with
+    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    end.
+  }
+  { (* LetWrapped *)
     eapply LowM.Let. {
       exact (evaluate _ _ _ _ _ run).
     }
@@ -1244,8 +1290,8 @@ Ltac run_symbolic_closure :=
   ].
 
 Ltac run_symbolic_closure_auto :=
-  unshelve eapply Run.CallClosure; [
-    now repeat smpl of_ty |
+  unshelve eapply Run.CallClosureWrapped; [
+    econstructor; shelve |
     try prepare_call;
     (
       (
@@ -1354,15 +1400,14 @@ Ltac rewrite_cast_integer :=
     |]
   end.
 
-Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
-
 Ltac run_symbolic_loop :=
   unshelve eapply Run.Loop; [
     smpl of_ty |
     |
     cbn; intros []
   ].
+
+Smpl Create run_symbolic.
 
 Ltac run_symbolic_one_step_immediate :=
   match goal with
@@ -1380,31 +1425,41 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_trait_method ||
     run_symbolic_closure_auto ||
     run_symbolic_logical_op ||
-    run_symbolic_let ||
     run_sub_pointer ||
     run_symbolic_loop ||
-    fold @LowM.let_
+    fold @LowM.let_ ||
+    smpl run_symbolic
   end.
 
-Smpl Create run_symbolic.
-
-(** We should use this tactic instead of the ones above, as this one calls all the others. *)
-Ltac run_symbolic :=
-  progress (repeat (
-    run_symbolic_one_step_immediate ||
-    smpl run_symbolic ||
-    match goal with
-    | |- context[match Output.Exception.to_exception ?exception with _ => _ end] =>
-      destruct exception; run_symbolic
-    end ||
-    match goal with
-    | |- {{ ?expression 🔽 _, _ }} =>
-      match expression with
-      | context [match ?expression with _ => _ end] =>
-        destruct expression; run_symbolic
-      end
+Ltac run_symbolic_inner :=
+  (run_symbolic_one_step_immediate; run_symbolic_inner) ||
+  (unshelve eapply Run.LetWrapped; [
+    econstructor; shelve |
+    run_symbolic_inner |
+    cbn; intros [];
+    run_symbolic_inner
+  ]) ||
+  match goal with
+  | |- context[match Output.Exception.to_exception ?exception with _ => _ end] =>
+    destruct exception; run_symbolic_inner
+  end ||
+  match goal with
+  | |- {{ ?expression 🔽 _, _ }} =>
+    match expression with
+    | context [match ?expression with _ => _ end] =>
+      destruct expression; run_symbolic_inner
     end
-  )).
+  end ||
+  (* We do our best to make progress, but can stop at any point to debug. *)
+  idtac.
+
+Ltac run_symbolic :=
+  (unshelve (progress run_symbolic_inner));
+  (* There might be remaining types for branches that are never reached. *)
+  try (
+    exact Empty_set ||
+    typeclasses eauto
+  ).
 
 Axiom is_discriminant_tuple_eq :
   forall

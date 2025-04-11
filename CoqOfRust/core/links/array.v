@@ -60,7 +60,7 @@ Proof.
 Qed.
 Smpl Add eapply of_value_with_4 : of_value.
 
-Definition of_value_4 
+Definition of_value_4
   (value1' : Value.t)
   (H_value1' : OfValue.t value1')
   (value2' : Value.t) (value2 : OfValue.get_Set H_value1')
@@ -76,7 +76,7 @@ Proof.
   eapply OfValue.Make with (A := t A {| Integer.value := 4 |}).
   apply of_value_with_4; eassumption.
 Defined.
-Smpl Add eapply of_value_4 : of_value.
+Smpl Add unshelve eapply of_value_4; try smpl of_value : of_value.
 
 (** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
     appears and to switch it with the [φ] on its parameters. *)

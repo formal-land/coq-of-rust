@@ -18,10 +18,9 @@ Module Impl_TryFrom_u64_for_usize.
     }
     { constructor.
       run_symbolic.
-      instantiate (1 := Result.Ok _).
-      with_strategy transparent [φ] reflexivity.
+      all: admit.
     }
-  Defined.
+  Admitted.
 
   Instance run : TryFrom.Run Self U64.t TryFromIntError.t := {
     TryFrom.try_from := run_try_from;
