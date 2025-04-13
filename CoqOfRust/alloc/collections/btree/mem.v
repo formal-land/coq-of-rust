@@ -31,7 +31,11 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ])),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -93,11 +97,15 @@ Module collections.
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
             M.read (|
-              let~ guard : Ty.path "alloc::collections::btree::mem::replace::PanicGuard" :=
+              let~ guard :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ] :=
                 M.alloc (|
                   Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
                 |) in
-              let~ value : T :=
+              let~ value : Ty.apply (Ty.path "*") [] [ T ] :=
                 M.alloc (|
                   M.call_closure (|
                     T,
@@ -129,8 +137,8 @@ Module collections.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let new_value := M.copy (| γ0_0 |) in
                       let ret := M.copy (| γ0_1 |) in
-                      let~ _ : Ty.tuple [] :=
-                        let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -145,7 +153,7 @@ Module collections.
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],

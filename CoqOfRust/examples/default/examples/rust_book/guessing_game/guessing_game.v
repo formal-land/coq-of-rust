@@ -63,8 +63,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -95,7 +95,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ secret_number : Ty.path "u32" :=
+        let~ secret_number : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "u32",
@@ -106,8 +106,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.loop (|
           Ty.tuple [],
           ltac:(M.monadic
-            (let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
+            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -140,7 +140,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ guess : Ty.path "alloc::string::String" :=
+            let~ guess : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "alloc::string::String",
@@ -148,7 +148,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |)
               |) in
-            let~ _ : Ty.path "usize" :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "usize",
@@ -197,10 +197,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ guess : Ty.path "u32" :=
+            let~ guess : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "u32"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -264,8 +264,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -327,7 +327,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |) in
               M.alloc (| Value.Tuple [] |) in
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -345,7 +345,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -379,7 +379,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -416,8 +416,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let~ _ : Ty.tuple [] :=
-                            let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],

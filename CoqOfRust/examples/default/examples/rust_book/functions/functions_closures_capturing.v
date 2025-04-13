@@ -74,7 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ color : Ty.path "alloc::string::String" :=
+        let~ color : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -90,7 +90,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ mk_str (| "green" |) ]
             |)
           |) in
-        let~ print : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ print : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -99,13 +99,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                        Some
+                          (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -181,7 +182,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -197,9 +198,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
-        let~ _reborrow : Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] :=
+        let~ _reborrow :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ] :=
           M.alloc (| M.borrow (| Pointer.Kind.Ref, color |) |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -215,9 +220,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
-        let~ _color_moved : Ty.path "alloc::string::String" := M.copy (| color |) in
-        let~ count : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
-        let~ inc : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ _color_moved : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
+          M.copy (| color |) in
+        let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 0 |) in
+        let~ inc : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -226,13 +233,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                        Some
+                          (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     let β := count in
                                     M.write (|
@@ -244,8 +252,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       |)
                                     |)
                                   |) in
-                                let~ _ : Ty.tuple [] :=
-                                  let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -323,7 +331,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -339,7 +347,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -355,13 +363,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
-        let~ _count_reborrowed : Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ] :=
+        let~ _count_reborrowed :
+            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ] ] :=
           M.alloc (| M.borrow (| Pointer.Kind.MutRef, count |) |) in
         let~ movable :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -380,7 +394,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 3 ]
             |)
           |) in
-        let~ consume : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ consume : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -389,14 +403,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                        Some
+                          (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ : Ty.tuple [] :=
-                                  let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -477,7 +492,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -501,7 +516,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

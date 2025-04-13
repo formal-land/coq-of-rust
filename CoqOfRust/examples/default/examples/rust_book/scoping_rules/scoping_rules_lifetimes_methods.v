@@ -23,7 +23,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_tuple_field (|
@@ -60,8 +60,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -154,13 +154,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ owner : Ty.path "scoping_rules_lifetimes_methods::Owner" :=
+        let~ owner :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_methods::Owner" ] :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_methods::Owner"
               [ Value.Integer IntegerKind.I32 18 ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -173,7 +174,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, owner |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

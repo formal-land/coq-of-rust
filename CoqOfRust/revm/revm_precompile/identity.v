@@ -55,10 +55,17 @@ Module identity.
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ gas_used : Ty.path "u64" :=
+              let~ gas_used : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",
@@ -106,9 +113,9 @@ Module identity.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

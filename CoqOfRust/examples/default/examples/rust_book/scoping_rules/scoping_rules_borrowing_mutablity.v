@@ -84,8 +84,8 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -206,7 +206,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               M.SubPointer.get_struct_record_field (|
@@ -217,8 +217,8 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
               Value.Integer IntegerKind.U32 2014
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -359,7 +359,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ immutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
+        let~ immutabook :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_borrowing_mutablity::Book" ] :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
@@ -369,9 +370,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("year", Value.Integer IntegerKind.U32 1979)
               ]
           |) in
-        let~ mutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
+        let~ mutabook :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_borrowing_mutablity::Book" ] :=
           M.copy (| immutabook |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -384,7 +386,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -397,7 +399,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

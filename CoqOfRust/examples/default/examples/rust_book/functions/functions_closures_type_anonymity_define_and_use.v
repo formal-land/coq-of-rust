@@ -15,7 +15,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -57,8 +57,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
-        let~ print : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ print : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -67,13 +68,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                        Some
+                          (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -146,7 +148,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

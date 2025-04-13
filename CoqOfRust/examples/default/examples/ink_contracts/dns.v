@@ -656,14 +656,19 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
         (M.read (|
           let~ name_to_address :
               Ty.apply
-                (Ty.path "dns::Mapping")
+                (Ty.path "*")
                 []
                 [
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
+                    (Ty.path "dns::Mapping")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ]
                 ] :=
             M.alloc (|
               M.call_closure (|
@@ -695,7 +700,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 []
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+          let~ _ :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -745,14 +754,19 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
             |) in
           let~ name_to_owner :
               Ty.apply
-                (Ty.path "dns::Mapping")
+                (Ty.path "*")
                 []
                 [
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
+                    (Ty.path "dns::Mapping")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ]
                 ] :=
             M.alloc (|
               M.call_closure (|
@@ -784,7 +798,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 []
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+          let~ _ :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -904,7 +922,7 @@ Module Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -916,7 +934,7 @@ Module Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -1077,10 +1095,11 @@ Module Impl_dns_DomainNameService.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "dns::AccountId",
@@ -1104,9 +1123,9 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1162,7 +1181,11 @@ Module Impl_dns_DomainNameService.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1195,7 +1218,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1331,10 +1354,11 @@ Module Impl_dns_DomainNameService.
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
         let new_address := M.alloc (| new_address |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "dns::AccountId",
@@ -1358,7 +1382,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ owner : Ty.path "dns::AccountId" :=
+              let~ owner : Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "dns::AccountId",
@@ -1374,9 +1398,9 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1417,7 +1441,10 @@ Module Impl_dns_DomainNameService.
                   ]
                 |) in
               let~ old_address :
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
@@ -1452,7 +1479,11 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1485,7 +1516,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1560,10 +1591,11 @@ Module Impl_dns_DomainNameService.
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
         let to := M.alloc (| to |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "dns::AccountId",
@@ -1587,7 +1619,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ owner : Ty.path "dns::AccountId" :=
+              let~ owner : Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "dns::AccountId",
@@ -1603,9 +1635,9 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1646,7 +1678,10 @@ Module Impl_dns_DomainNameService.
                   ]
                 |) in
               let~ old_owner :
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
@@ -1681,7 +1716,11 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1714,7 +1753,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

@@ -23,9 +23,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ vec :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -87,7 +92,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let~ index_of_first_even_number :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -153,9 +161,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some
-                              (Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
-                                (Ty.path "bool")),
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
+                                    (Ty.path "bool")
+                                ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -181,9 +194,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -206,7 +219,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -252,7 +265,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -306,7 +323,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |) in
         let~ index_of_first_negative_number :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -354,7 +374,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool")),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -372,9 +396,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -393,7 +417,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -439,7 +463,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

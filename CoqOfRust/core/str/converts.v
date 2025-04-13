@@ -24,11 +24,16 @@ Module str.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                    Ty.path "core::str::error::Utf8Error"
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                        Ty.path "core::str::error::Utf8Error"
+                      ]
                   ]),
               M.alloc (|
                 M.call_closure (|
@@ -105,11 +110,16 @@ Module str.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                    Ty.path "core::str::error::Utf8Error"
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                        Ty.path "core::str::error::Utf8Error"
+                      ]
                   ]),
               M.alloc (|
                 M.call_closure (|

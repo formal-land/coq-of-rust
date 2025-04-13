@@ -111,7 +111,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ c : Ty.path "char" := M.alloc (| Value.UnicodeChar 81 |) in
+        let~ c : Ty.apply (Ty.path "*") [] [ Ty.path "char" ] :=
+          M.alloc (| Value.UnicodeChar 81 |) in
         M.match_operator (|
           None,
           c,
@@ -119,10 +120,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let ref_c1 := M.alloc (| γ |) in
-                let~ ref_c2 : Ty.apply (Ty.path "&") [] [ Ty.path "char" ] :=
+                let~ ref_c2 :
+                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ] :=
                   M.alloc (| M.borrow (| Pointer.Kind.Ref, c |) |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -203,7 +205,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
+                let~ point :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "scoping_rules_borrowing_the_ref_pattern::Point"
@@ -212,7 +218,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ("y", Value.Integer IntegerKind.I32 0)
                       ]
                   |) in
-                let~ _copy_of_x : Ty.path "i32" :=
+                let~ _copy_of_x : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                   M.copy (|
                     M.match_operator (|
                       None,
@@ -237,9 +243,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ mutable_point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
+                let~ mutable_point :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" ] :=
                   M.copy (| point |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
                     None,
                     mutable_point,
@@ -259,7 +269,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               "y"
                             |) in
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| mut_ref_to_y |) |),
@@ -269,8 +279,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -370,8 +380,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -472,13 +482,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 let~ mutable_tuple :
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "*")
+                      []
                       [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
-                        Ty.path "u32"
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
+                            Ty.path "u32"
+                          ]
                       ] :=
                   M.alloc (|
                     Value.Tuple
@@ -502,7 +517,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Integer IntegerKind.U32 3
                       ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
                     None,
                     mutable_tuple,
@@ -512,7 +527,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| last |) |),
@@ -522,8 +537,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],

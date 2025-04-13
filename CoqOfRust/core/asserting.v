@@ -113,7 +113,7 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -179,9 +179,14 @@ Module asserting.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::asserting::Capture",

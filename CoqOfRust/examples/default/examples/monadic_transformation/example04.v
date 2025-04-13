@@ -11,7 +11,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
+        let~ x : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
             M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 1 |) |)
           |) in

@@ -38,7 +38,7 @@ Module main.
       ltac:(M.monadic
         (let f := M.alloc (| f |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

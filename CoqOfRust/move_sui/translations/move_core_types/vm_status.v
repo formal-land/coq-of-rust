@@ -201,7 +201,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_core_types::vm_status::StatusType"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::vm_status::StatusType" ]),
               self,
               [
                 fun γ =>
@@ -310,7 +310,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -322,7 +322,7 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -401,7 +401,7 @@ Module vm_status.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -504,7 +504,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -1926,7 +1926,7 @@ Module vm_status.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -4851,7 +4851,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "u64" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -4920,7 +4920,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u64" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -4932,7 +4932,7 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u64" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -4975,7 +4975,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u64" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -4987,7 +4987,7 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u64" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -5047,7 +5047,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u64" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -5059,7 +5059,7 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u64" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -5125,11 +5125,16 @@ Module vm_status.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::vm_status::StatusCode";
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "move_core_types::vm_status::StatusCode";
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                      ]
                   ]),
               value,
               [
@@ -8472,10 +8477,10 @@ Module vm_status.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "move_core_types::vm_status::StatusType") (|
             ltac:(M.monadic
               (M.read (|
-                let~ major_status_number : Ty.path "u64" :=
+                let~ major_status_number : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -8491,9 +8496,9 @@ Module vm_status.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -8555,9 +8560,9 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -8619,9 +8624,9 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -8683,9 +8688,9 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -8747,9 +8752,9 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

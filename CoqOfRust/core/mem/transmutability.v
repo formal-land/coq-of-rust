@@ -19,9 +19,14 @@ Module mem.
             M.read (|
               let~ transmute :
                   Ty.apply
-                    (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
+                    (Ty.path "*")
                     []
-                    [ Src; Self ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
+                        []
+                        [ Src; Self ]
+                    ] :=
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
@@ -39,7 +44,11 @@ Module mem.
                         |))
                     ]
                 |) in
-              let~ dst : Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ] :=
+              let~ dst :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ] ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     transmute,

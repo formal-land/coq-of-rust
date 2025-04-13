@@ -25,10 +25,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ shadowed_binding : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+        let~ shadowed_binding : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -92,10 +93,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ shadowed_binding : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          let~ shadowed_binding :
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
             M.alloc (| mk_str (| "abc" |) |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -160,8 +162,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -224,9 +226,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ shadowed_binding : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ shadowed_binding : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 2 |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

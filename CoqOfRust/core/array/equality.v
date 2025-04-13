@@ -119,11 +119,16 @@ Module array.
             M.read (|
               let~ b :
                   Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
-                      Ty.path "core::array::TryFromSliceError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                          Ty.path "core::array::TryFromSliceError"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -147,7 +152,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 b,
                 [
                   fun γ =>
@@ -217,11 +222,16 @@ Module array.
             M.read (|
               let~ b :
                   Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
-                      Ty.path "core::array::TryFromSliceError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                          Ty.path "core::array::TryFromSliceError"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -245,7 +255,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 b,
                 [
                   fun γ =>
@@ -329,11 +339,16 @@ Module array.
             M.read (|
               let~ b :
                   Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
-                      Ty.path "core::array::TryFromSliceError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                          Ty.path "core::array::TryFromSliceError"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -357,7 +372,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 b,
                 [
                   fun γ =>
@@ -427,11 +442,16 @@ Module array.
             M.read (|
               let~ b :
                   Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
-                      Ty.path "core::array::TryFromSliceError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                          Ty.path "core::array::TryFromSliceError"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -455,7 +475,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 b,
                 [
                   fun γ =>

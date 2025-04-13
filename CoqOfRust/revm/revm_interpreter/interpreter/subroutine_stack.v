@@ -308,7 +308,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1010,7 +1010,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -1115,12 +1115,12 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let program_counter := M.alloc (| program_counter |) in
             let new_idx := M.alloc (| new_idx |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1170,7 +1170,7 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -1212,7 +1212,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -1306,22 +1306,27 @@ Module interpreter.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some
-                              (Ty.function
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
                                 [
-                                  Ty.tuple
+                                  Ty.function
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+                                      Ty.tuple
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+                                        ]
                                     ]
-                                ]
-                                (Ty.path "usize")),
+                                    (Ty.path "usize")
+                                ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let i := M.copy (| γ |) in
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.write (|
                                           M.SubPointer.get_struct_record_field (|
@@ -1365,7 +1370,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|

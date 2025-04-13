@@ -42,9 +42,14 @@ Module iter.
           (let iter := M.alloc (| iter |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ residual : Ty.apply (Ty.path "core::option::Option") [] [ R ] :=
+            let~ residual :
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ R ] ] :=
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-            let~ shunt : Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] :=
+            let~ shunt :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] ] :=
               M.alloc (|
                 Value.StructRecord
                   "core::iter::adapters::GenericShunt"
@@ -57,7 +62,7 @@ Module iter.
                       |))
                   ]
               |) in
-            let~ value : U :=
+            let~ value : Ty.apply (Ty.path "*") [] [ U ] :=
               M.alloc (|
                 M.call_closure (|
                   U,
@@ -77,7 +82,11 @@ Module iter.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.associated_in_trait "core::ops::try_trait::Residual" [] [ U ] R "TryType"),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.associated_in_trait "core::ops::try_trait::Residual" [] [ U ] R "TryType" ]),
               residual,
               [
                 fun γ =>
@@ -317,10 +326,15 @@ Module iter.
             M.read (|
               M.match_operator (|
                 Some
-                  (Ty.tuple
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
                     [
-                      Ty.path "usize";
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -496,23 +510,28 @@ Module iter.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Some
-                                  (Ty.function
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.function
                                         [
-                                          B;
-                                          Ty.associated_in_trait
-                                            "core::iter::traits::iterator::Iterator"
-                                            []
-                                            []
-                                            I
-                                            "Item"
+                                          Ty.tuple
+                                            [
+                                              B;
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ]
                                         ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
-                                      []
-                                      [ T; B ])),
+                                        (Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [ T; B ])
+                                    ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -520,23 +539,28 @@ Module iter.
                                       (let acc := M.copy (| γ |) in
                                       M.match_operator (|
                                         Some
-                                          (Ty.function
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
                                             [
-                                              Ty.tuple
+                                              Ty.function
                                                 [
-                                                  B;
-                                                  Ty.associated_in_trait
-                                                    "core::iter::traits::iterator::Iterator"
-                                                    []
-                                                    []
-                                                    I
-                                                    "Item"
+                                                  Ty.tuple
+                                                    [
+                                                      B;
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "Item"
+                                                    ]
                                                 ]
-                                            ]
-                                            (Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [ T; B ])),
+                                                (Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [ T; B ])
+                                            ]),
                                         M.alloc (| α1 |),
                                         [
                                           fun γ =>
@@ -546,10 +570,15 @@ Module iter.
                                                 M.match_operator (|
                                                   Some
                                                     (Ty.apply
-                                                      (Ty.path
-                                                        "core::ops::control_flow::ControlFlow")
+                                                      (Ty.path "*")
                                                       []
-                                                      [ T; B ]),
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [ T; B ]
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -674,7 +703,11 @@ Module iter.
                                                             0
                                                           |) in
                                                         let r := M.copy (| γ0_0 |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.alloc (|
                                                             M.write (|
                                                               M.deref (|

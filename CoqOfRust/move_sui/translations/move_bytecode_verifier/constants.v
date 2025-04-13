@@ -48,9 +48,15 @@ Module constants.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some
-                          (Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError")),
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ]
+                                ]
+                                (Ty.path "move_binary_format::errors::VMError")
+                            ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -114,13 +120,17 @@ Module constants.
     | [], [], [ module ] =>
       ltac:(M.monadic
         (let module := M.alloc (| module |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -231,9 +241,9 @@ Module constants.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -299,7 +309,7 @@ Module constants.
                                         let idx := M.copy (| γ1_0 |) in
                                         let constant := M.copy (| γ1_1 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -454,12 +464,16 @@ Module constants.
       ltac:(M.monadic
         (let idx := M.alloc (| idx |) in
         let constant := M.alloc (| constant |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -631,9 +645,14 @@ Module constants.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -710,9 +729,14 @@ Module constants.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply

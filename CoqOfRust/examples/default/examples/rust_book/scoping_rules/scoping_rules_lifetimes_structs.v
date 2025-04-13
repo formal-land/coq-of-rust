@@ -184,9 +184,14 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ]),
             self,
             [
               fun γ =>
@@ -293,15 +298,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 18 |) in
-        let~ y : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
-        let~ single : Ty.path "scoping_rules_lifetimes_structs::Borrowed" :=
+        let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 18 |) in
+        let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 15 |) in
+        let~ single :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ] :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_structs::Borrowed"
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
-        let~ double : Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" :=
+        let~ double :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ] :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_lifetimes_structs::NamedBorrowed"
@@ -315,18 +327,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |))
               ]
           |) in
-        let~ reference : Ty.path "scoping_rules_lifetimes_structs::Either" :=
+        let~ reference :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_structs::Either" ] :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_structs::Either::Ref"
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
-        let~ number : Ty.path "scoping_rules_lifetimes_structs::Either" :=
+        let~ number :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_structs::Either" ] :=
           M.alloc (|
             Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -387,8 +401,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -450,8 +464,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -512,8 +526,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

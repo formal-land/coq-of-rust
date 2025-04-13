@@ -80,11 +80,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ static_string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ static_string :
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
             M.alloc (| mk_str (| "I'm in read-only memory" |) |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -148,9 +149,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ lifetime_num : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
-          let~ coerced_static : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ lifetime_num : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 9 |) in
+          let~ coerced_static :
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
@@ -167,8 +170,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -232,8 +235,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

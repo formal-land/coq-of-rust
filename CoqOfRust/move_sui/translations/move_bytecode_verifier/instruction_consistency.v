@@ -77,9 +77,17 @@ Module instruction_consistency.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                              (Ty.path "move_binary_format::errors::VMError")),
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "move_binary_format::errors::PartialVMError" ]
+                                  ]
+                                  (Ty.path "move_binary_format::errors::VMError")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -153,13 +161,17 @@ Module instruction_consistency.
       | [], [], [ module ] =>
         ltac:(M.monadic
           (let module := M.alloc (| module |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -278,9 +290,9 @@ Module instruction_consistency.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -351,7 +363,7 @@ Module instruction_consistency.
                                           let idx := M.copy (| γ1_0 |) in
                                           let func_def := M.copy (| γ1_1 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -383,8 +395,13 @@ Module instruction_consistency.
                                                     |) in
                                                   let code := M.alloc (| γ1_0 |) in
                                                   let~ checker :
-                                                      Ty.path
-                                                        "move_bytecode_verifier::instruction_consistency::InstructionConsistency" :=
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::instruction_consistency::InstructionConsistency"
+                                                        ] :=
                                                     M.alloc (|
                                                       Value.StructRecord
                                                         "move_bytecode_verifier::instruction_consistency::InstructionConsistency"
@@ -405,7 +422,8 @@ Module instruction_consistency.
                                                         ]
                                                     |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Some
+                                                      (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -663,13 +681,17 @@ Module instruction_consistency.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let code := M.alloc (| code |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -795,9 +817,9 @@ Module instruction_consistency.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -868,7 +890,7 @@ Module instruction_consistency.
                                           let offset := M.copy (| γ1_0 |) in
                                           let instr := M.copy (| γ1_1 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             instr,
                                             [
                                               fun γ =>
@@ -881,9 +903,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1035,11 +1059,16 @@ Module instruction_consistency.
                                                   let field_inst_index := M.alloc (| γ1_0 |) in
                                                   let~ field_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -1078,9 +1107,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1234,9 +1265,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1388,11 +1421,16 @@ Module instruction_consistency.
                                                   let field_inst_index := M.alloc (| γ1_0 |) in
                                                   let~ field_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -1431,9 +1469,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1587,9 +1627,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1739,11 +1781,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ func_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::FunctionInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -1780,9 +1827,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1936,9 +1985,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2088,11 +2139,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -2129,9 +2185,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2285,9 +2343,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2437,11 +2497,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -2478,9 +2543,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2634,9 +2701,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2786,11 +2855,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -2827,9 +2901,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2983,9 +3059,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3135,11 +3213,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -3176,9 +3259,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3332,9 +3417,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3484,11 +3571,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -3525,9 +3617,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3681,9 +3775,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3833,11 +3929,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -3874,9 +3975,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4030,9 +4133,11 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4182,11 +4287,16 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ struct_inst :
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "*")
                                                         []
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefInstantiation"
+                                                            ]
                                                         ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -4223,9 +4333,11 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4415,7 +4527,11 @@ Module instruction_consistency.
                                                         | [ num ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ]),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -5136,9 +5252,14 @@ Module instruction_consistency.
           M.read (|
             let~ field_handle :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_binary_format::file_format::FieldHandle" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FieldHandle" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -5271,14 +5392,23 @@ Module instruction_consistency.
           let offset := M.alloc (| offset |) in
           let struct_def_index := M.alloc (| struct_def_index |) in
           let generic := M.alloc (| generic |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ struct_def :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5310,9 +5440,14 @@ Module instruction_consistency.
                   |) in
                 let~ struct_handle :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5348,9 +5483,9 @@ Module instruction_consistency.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5488,14 +5623,23 @@ Module instruction_consistency.
           let offset := M.alloc (| offset |) in
           let func_handle_index := M.alloc (| func_handle_index |) in
           let generic := M.alloc (| generic |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ function_handle :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5525,9 +5669,9 @@ Module instruction_consistency.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

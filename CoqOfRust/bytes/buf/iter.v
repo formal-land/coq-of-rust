@@ -215,12 +215,12 @@ Module buf.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
+            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -265,7 +265,7 @@ Module buf.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ b : Ty.path "u8" :=
+                  let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                     M.copy (|
                       M.SubPointer.get_array_field (|
                         M.deref (|
@@ -298,7 +298,7 @@ Module buf.
                         Value.Integer IntegerKind.Usize 0
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -343,7 +343,7 @@ Module buf.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ rem : Ty.path "usize" :=
+              let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",

@@ -400,7 +400,7 @@ Module legacy.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -431,7 +431,7 @@ Module legacy.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -517,7 +517,7 @@ Module legacy.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "core::cmp::Ordering"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -565,7 +565,7 @@ Module legacy.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Some (Ty.path "core::cmp::Ordering"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -692,7 +692,11 @@ Module legacy.
             M.read (|
               M.match_operator (|
                 Some
-                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -748,9 +752,14 @@ Module legacy.
                       M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "*")
                             []
-                            [ Ty.path "core::cmp::Ordering" ]),
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

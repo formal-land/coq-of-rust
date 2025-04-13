@@ -96,12 +96,19 @@ Module bls12_381.
         ltac:(M.monadic
           (let input := M.alloc (| input |) in
           let gas_limit := M.alloc (| gas_limit |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "revm_precompile::interface::PrecompileOutput";
+                Ty.path "revm_precompile::interface::PrecompileErrors"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -158,9 +165,9 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -252,7 +259,11 @@ Module bls12_381.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    let~ res : Ty.path "alloc::string::String" :=
+                                                    let~ res :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "alloc::string::String" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "alloc::string::String",
@@ -301,15 +312,20 @@ Module bls12_381.
                                                                       M.match_operator (|
                                                                         Some
                                                                           (Ty.apply
-                                                                            (Ty.path "array")
+                                                                            (Ty.path "*")
+                                                                            []
                                                                             [
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                2
-                                                                            ]
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument"
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ]
                                                                             ]),
                                                                         M.alloc (|
                                                                           Value.Tuple
@@ -465,7 +481,11 @@ Module bls12_381.
                     ]
                   |) in
                 let~ slice :
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -550,12 +570,16 @@ Module bls12_381.
                       |)
                     |)
                   |) in
-                let~ p0_aff : Ty.apply (Ty.path "&") [] [ Ty.path "blst::blst_p1_affine" ] :=
+                let~ p0_aff :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "blst::blst_p1_affine" ] ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.match_operator (|
-                        Some (Ty.path "blst::blst_p1_affine"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p1_affine" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -675,7 +699,7 @@ Module bls12_381.
                       |)
                     |)
                   |) in
-                let~ p0 : Ty.path "blst::blst_p1" :=
+                let~ p0 : Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p1" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "blst::blst_p1",
@@ -691,7 +715,7 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -705,10 +729,10 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ input_scalar0 : Ty.path "blst::blst_scalar" :=
+                let~ input_scalar0 : Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_scalar" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "blst::blst_scalar"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_scalar" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -916,7 +940,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ p : Ty.path "blst::blst_p1" :=
+                let~ p : Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p1" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "blst::blst_p1",
@@ -932,7 +956,7 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -976,7 +1000,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ p_aff : Ty.path "blst::blst_p1_affine" :=
+                let~ p_aff : Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p1_affine" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "blst::blst_p1_affine",
@@ -992,7 +1016,7 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1009,7 +1033,8 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ out : Ty.path "alloy_primitives::bytes_::Bytes" :=
+                let~ out :
+                    Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "alloy_primitives::bytes_::Bytes",

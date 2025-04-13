@@ -122,11 +122,16 @@ Module Impl_integration_flipper_Flipper.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
                 [
-                  Ty.path "integration_flipper::Flipper";
-                  Ty.path "integration_flipper::FlipperError"
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "integration_flipper::Flipper";
+                      Ty.path "integration_flipper::FlipperError"
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [
@@ -178,7 +183,7 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -242,7 +247,7 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

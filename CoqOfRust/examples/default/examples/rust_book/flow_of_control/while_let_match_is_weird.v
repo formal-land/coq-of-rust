@@ -33,7 +33,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ optional : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+        let~ optional :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
           |) in
@@ -41,7 +45,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           Ty.tuple [],
           ltac:(M.monadic
             (M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               optional,
               [
                 fun γ =>
@@ -54,7 +58,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |) in
                     let i := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -70,8 +74,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
-                              let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -105,7 +109,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.write (|
                                   optional,
@@ -115,8 +119,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
-                              let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -186,7 +190,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.write (|
                                   optional,

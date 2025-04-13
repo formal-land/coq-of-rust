@@ -19,7 +19,7 @@ Module utils.
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         M.read (|
-          let~ rem : Ty.path "usize" :=
+          let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "usize",
@@ -28,7 +28,7 @@ Module utils.
               |)
             |) in
           M.match_operator (|
-            Some (Ty.path "usize"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -110,9 +110,14 @@ Module utils.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some
-                              (Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                (Ty.path "bool")),
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                    (Ty.path "bool")
+                                ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -148,7 +153,11 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")),
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -241,7 +250,7 @@ Module utils.
         (let vec := M.alloc (| vec |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

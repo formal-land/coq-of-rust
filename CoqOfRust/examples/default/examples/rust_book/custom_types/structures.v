@@ -173,7 +173,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ name : Ty.path "alloc::string::String" :=
+        let~ name : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -189,15 +189,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ mk_str (| "Peter" |) ]
             |)
           |) in
-        let~ age : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 27 |) in
-        let~ peter : Ty.path "structures::Person" :=
+        let~ age : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+          M.alloc (| Value.Integer IntegerKind.U8 27 |) in
+        let~ peter : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Person" ] :=
           M.alloc (|
             Value.StructRecord
               "structures::Person"
               [ ("name", M.read (| name |)); ("age", M.read (| age |)) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -256,14 +257,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ point : Ty.path "structures::Point" :=
+        let~ point : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Point" ] :=
           M.alloc (|
             Value.StructRecord
               "structures::Point"
               [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -362,12 +363,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ bottom_right : Ty.path "structures::Point" :=
+        let~ bottom_right : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Point" ] :=
           M.alloc (|
             M.struct_record_update (M.read (| point |)) [ ("x", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -478,7 +479,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.SubPointer.get_struct_record_field (| γ, "structures::Point", "y" |) in
                 let left_edge := M.copy (| γ0_0 |) in
                 let top_edge := M.copy (| γ0_1 |) in
-                let~ _rectangle : Ty.path "structures::Rectangle" :=
+                let~ _rectangle : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Rectangle" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "structures::Rectangle"
@@ -490,16 +491,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ("bottom_right", M.read (| bottom_right |))
                       ]
                   |) in
-                let~ _unit : Ty.path "structures::Unit" :=
+                let~ _unit : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Unit" ] :=
                   M.alloc (| Value.StructTuple "structures::Unit" [] |) in
-                let~ pair_ : Ty.path "structures::Pair" :=
+                let~ pair_ : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Pair" ] :=
                   M.alloc (|
                     Value.StructTuple
                       "structures::Pair"
                       [ Value.Integer IntegerKind.I32 1; M.read (| UnsupportedLiteral |) ]
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -611,8 +612,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.SubPointer.get_struct_tuple_field (| γ, "structures::Pair", 1 |) in
                         let integer := M.copy (| γ0_0 |) in
                         let decimal := M.copy (| γ0_1 |) in
-                        let~ _ : Ty.tuple [] :=
-                          let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],

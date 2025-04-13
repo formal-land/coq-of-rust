@@ -671,7 +671,7 @@ Module Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -683,7 +683,7 @@ Module Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -753,7 +753,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "mother::Outline"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "mother::Outline" ]),
             self,
             [
               fun γ =>
@@ -846,7 +846,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -858,7 +858,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -880,7 +880,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Some (Ty.path "bool"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -1068,7 +1068,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "mother::Status"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "mother::Status" ]),
             self,
             [
               fun γ =>
@@ -1954,7 +1954,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -1966,7 +1966,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -1988,7 +1988,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Some (Ty.path "bool"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -2372,9 +2372,14 @@ Module Impl_mother_Mother.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2456,7 +2461,7 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -2530,9 +2535,14 @@ Module Impl_mother_Mother.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "mother::Failure" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "mother::Failure" ]
+                ]),
             fail,
             [
               fun γ =>
@@ -2614,8 +2624,8 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

@@ -346,13 +346,18 @@ Module transaction.
                         M.match_operator (|
                           Some
                             (Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
                               [
-                                Ty.dyn
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
-                                    ("revm_context_interface::transaction::common::CommonTxFields::Trait",
-                                      [])
+                                    Ty.dyn
+                                      [
+                                        ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                          [])
+                                      ]
                                   ]
                               ]),
                           M.alloc (|
@@ -712,7 +717,7 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "u128"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
@@ -1122,12 +1127,17 @@ Module transaction.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let base_fee := M.alloc (| base_fee |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "u128") (|
             ltac:(M.monadic
               (M.read (|
                 let~ tx_type :
-                    Ty.path
-                      "revm_context_interface::transaction::transaction_type::TransactionType" :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.path
+                          "revm_context_interface::transaction::transaction_type::TransactionType"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path
@@ -1174,7 +1184,8 @@ Module transaction.
                 M.match_operator (|
                   None,
                   M.match_operator (|
-                    Some (Ty.tuple [ Ty.path "u128"; Ty.path "u128" ]),
+                    Some
+                      (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]),
                     tx_type,
                     [
                       fun γ =>
@@ -1776,7 +1787,11 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ tx_type :
-                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
@@ -1820,7 +1835,7 @@ Module transaction.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "alloy_primitives::common::TxKind"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::common::TxKind" ]),
               tx_type,
               [
                 fun γ =>
@@ -2208,7 +2223,11 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ tx_type :
-                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
@@ -2254,19 +2273,24 @@ Module transaction.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "core::option::Option")
                       []
                       [
-                        Ty.associated_in_trait
-                          "revm_context_interface::transaction::Transaction"
+                        Ty.apply
+                          (Ty.path "&")
                           []
-                          []
-                          Self
-                          "AccessList"
+                          [
+                            Ty.associated_in_trait
+                              "revm_context_interface::transaction::Transaction"
+                              []
+                              []
+                              Self
+                              "AccessList"
+                          ]
                       ]
                   ]),
               tx_type,

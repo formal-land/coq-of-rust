@@ -25,7 +25,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs : Ty.path "f32" :=
+              let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "f32" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "f32",
@@ -92,7 +92,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs : Ty.path "f64" :=
+              let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "f64",
@@ -179,9 +179,18 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 1024 ]
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1024 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -200,13 +209,18 @@ Module fmt.
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 4 ]
+                  (Ty.path "*")
+                  []
                   [
                     Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                      []
-                      [ Ty.path "core::num::fmt::Part" ]
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "core::num::fmt::Part" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -229,7 +243,7 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 4
                 |)
               |) in
-            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::fmt::Formatted",
@@ -367,9 +381,18 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 17 ]
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 17 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -388,13 +411,18 @@ Module fmt.
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 4 ]
+                  (Ty.path "*")
+                  []
                   [
                     Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                      []
-                      [ Ty.path "core::num::fmt::Part" ]
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "core::num::fmt::Part" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -417,7 +445,7 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 4
                 |)
               |) in
-            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::fmt::Formatted",
@@ -539,7 +567,7 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign : Ty.path "bool" :=
+            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -552,10 +580,10 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "core::num::flt2dec::Sign"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
                   force_sign,
                   [
                     fun γ =>
@@ -574,9 +602,14 @@ Module fmt.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -615,7 +648,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ min_precision : Ty.path "usize" :=
+                    (let~ min_precision : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                       M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -689,9 +722,18 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 1024 ]
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1024 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -710,13 +752,18 @@ Module fmt.
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 6 ]
+                  (Ty.path "*")
+                  []
                   [
                     Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                      []
-                      [ Ty.path "core::num::fmt::Part" ]
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 6 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "core::num::fmt::Part" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -739,7 +786,7 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 6
                 |)
               |) in
-            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::fmt::Formatted",
@@ -879,9 +926,18 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 17 ]
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 17 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -900,13 +956,18 @@ Module fmt.
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 6 ]
+                  (Ty.path "*")
+                  []
                   [
                     Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                      []
-                      [ Ty.path "core::num::fmt::Part" ]
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 6 ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "core::num::fmt::Part" ]
+                      ]
                   ] :=
               M.alloc (|
                 repeat (|
@@ -929,7 +990,7 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 6
                 |)
               |) in
-            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::fmt::Formatted",
@@ -1058,7 +1119,7 @@ Module fmt.
           let num := M.alloc (| num |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let~ force_sign : Ty.path "bool" :=
+            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1071,10 +1132,10 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "core::num::flt2dec::Sign"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
                   force_sign,
                   [
                     fun γ =>
@@ -1093,9 +1154,14 @@ Module fmt.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1202,7 +1268,7 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign : Ty.path "bool" :=
+            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1215,10 +1281,10 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "core::num::flt2dec::Sign"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
                   force_sign,
                   [
                     fun γ =>
@@ -1237,9 +1303,14 @@ Module fmt.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1281,9 +1352,14 @@ Module fmt.
                     (M.match_operator (|
                       Some
                         (Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "*")
                           []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                          ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1312,7 +1388,8 @@ Module fmt.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ upper : Ty.path "bool" := M.alloc (| Value.Bool false |) in
+                            let~ upper : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
+                              M.alloc (| Value.Bool false |) in
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1337,7 +1414,7 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ min_precision : Ty.path "usize" :=
+                            (let~ min_precision : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                               M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                             M.alloc (|
                               M.call_closure (|

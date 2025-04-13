@@ -887,7 +887,7 @@ Module Run.
   | Let
       (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
-    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    let Output' : Set := OfTy.get_Set of_ty in
     {{ e 🔽 R, Output' }} ->
     (forall (value_inter : Output.t R Output'),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}

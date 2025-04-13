@@ -28,9 +28,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.path "bool" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
           M.match_operator (|
-            Some (Ty.path "bool"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
             M.alloc (| Value.Integer IntegerKind.I32 1 |),
             [
               fun γ =>
@@ -44,9 +44,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
             ]
           |) in
-        let~ _ : Ty.path "i32" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.match_operator (|
-            Some (Ty.path "i32"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -57,9 +57,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1 |)))
             ]
           |) in
-        let~ _ : Ty.path "i32" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.match_operator (|
-            Some (Ty.path "i32"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -70,7 +70,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Some (Ty.path "i32"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -82,7 +82,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.path "i32"),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

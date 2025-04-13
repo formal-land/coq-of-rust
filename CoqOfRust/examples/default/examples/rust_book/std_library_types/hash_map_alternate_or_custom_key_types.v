@@ -162,7 +162,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -285,8 +285,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
       let username := M.alloc (| username |) in
       let password := M.alloc (| password |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -347,8 +347,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -409,8 +409,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -441,7 +441,11 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ logon : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
+        let~ logon :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ] :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -451,7 +455,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               ]
           |) in
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -491,8 +495,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let account_info := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -523,8 +527,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -595,8 +599,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -670,7 +674,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ : Ty.tuple [] :=
+                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -740,12 +744,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ accounts :
             Ty.apply
-              (Ty.path "std::collections::hash::map::HashMap")
+              (Ty.path "*")
               []
               [
-                Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                Ty.path "std::hash::random::RandomState"
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
+                  []
+                  [
+                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                    Ty.path "std::hash::random::RandomState"
+                  ]
               ] :=
           M.alloc (|
             M.call_closure (|
@@ -773,7 +782,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ account : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
+        let~ account :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ] :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -784,7 +797,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
               ]
           |) in
-        let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
+        let~ account_info :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ] :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
@@ -800,9 +817,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -829,7 +851,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -844,7 +866,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

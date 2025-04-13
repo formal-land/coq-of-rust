@@ -237,7 +237,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let addr := M.alloc (| addr |) in
             M.read (|
-              let~ self_addr : Ty.path "isize" :=
+              let~ self_addr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "isize")
@@ -252,9 +252,9 @@ Module ptr.
                       [ M.read (| self |) ]
                     |))
                 |) in
-              let~ dest_addr : Ty.path "isize" :=
+              let~ dest_addr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (| M.cast (Ty.path "isize") (M.read (| addr |)) |) in
-              let~ offset : Ty.path "isize" :=
+              let~ offset : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -405,9 +405,14 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -509,13 +514,18 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::option::Option")
                         []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -627,9 +637,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -644,7 +654,7 @@ Module ptr.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -926,9 +936,14 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1042,13 +1057,18 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "core::option::Option")
                         []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1434,9 +1454,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1451,7 +1471,7 @@ Module ptr.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -1607,9 +1627,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1624,7 +1644,7 @@ Module ptr.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -1652,7 +1672,7 @@ Module ptr.
                   ]
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*mut") [] [ T ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2463,9 +2483,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2527,7 +2547,7 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ ret : Ty.path "usize" :=
+              let~ ret : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2611,9 +2631,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2811,9 +2831,14 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2844,7 +2869,15 @@ Module ptr.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ me :
-                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                            ] :=
                         M.alloc (|
                           M.cast
                             (Ty.apply
@@ -2904,9 +2937,9 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3002,7 +3035,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -3015,7 +3048,7 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
+              let~ ptr : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
@@ -3028,7 +3061,7 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ tail : Ty.apply (Ty.path "*mut") [] [ T ] :=
+              let~ tail : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
@@ -3172,17 +3205,23 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::option::Option")
                         []
                         [
                           Ty.apply
-                            (Ty.path "slice")
+                            (Ty.path "&")
                             []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ]
                         ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
@@ -3310,17 +3349,23 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "core::option::Option")
                         []
                         [
                           Ty.apply
-                            (Ty.path "slice")
+                            (Ty.path "&mut")
                             []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ]
                         ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
@@ -3560,7 +3605,7 @@ Module ptr.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "core::cmp::Ordering"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3599,7 +3644,7 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.path "core::cmp::Ordering"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>

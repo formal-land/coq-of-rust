@@ -206,7 +206,11 @@ Module cell.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -287,12 +291,17 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ]; Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; T ]
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -346,9 +355,14 @@ Module cell.
                     |) in
                   let~ slot :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                        ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -440,7 +454,7 @@ Module cell.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ T ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -468,12 +482,17 @@ Module cell.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Some
-                                    (Ty.function
-                                      [ Ty.tuple [] ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ T; Ty.path "never" ])),
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
+                                          [ Ty.tuple [] ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ T; Ty.path "never" ])
+                                      ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -557,7 +576,7 @@ Module cell.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "&mut") [] [ T ]),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -588,12 +607,17 @@ Module cell.
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Some
-                                            (Ty.function
-                                              [ Ty.tuple [] ]
-                                              (Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ T; Ty.path "never" ])),
+                                            (Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.function
+                                                  [ Ty.tuple [] ]
+                                                  (Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ T; Ty.path "never" ])
+                                              ]),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -674,12 +698,16 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ]; E ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -779,12 +807,16 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -835,9 +867,11 @@ Module cell.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.apply (Ty.path "&") [] [ T ] :=
+                            let~ _ :
+                                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ] :=
                               M.match_operator (|
-                                Some (Ty.apply (Ty.path "&") [] [ T ]),
+                                Some
+                                  (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1017,13 +1051,17 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ]; E ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ val : T :=
+                  let~ val : Ty.apply (Ty.path "*") [] [ T ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some T,
+                        Some (Ty.apply (Ty.path "*") [] [ T ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1120,9 +1158,14 @@ Module cell.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
-                        [ Ty.apply (Ty.path "&") [] [ T ]; E ]),
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ T ]; E ]
+                        ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1349,7 +1392,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ d : Ty.path "core::fmt::builders::DebugTuple" :=
+              let~ d : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::fmt::builders::DebugTuple",
@@ -1365,9 +1408,19 @@ Module cell.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
+                    ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]),
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1525,7 +1578,11 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ res : Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] :=
+              let~ res :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
@@ -1538,9 +1595,9 @@ Module cell.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1569,7 +1626,7 @@ Module cell.
                           |) in
                         let value := M.copy (| γ0_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ],

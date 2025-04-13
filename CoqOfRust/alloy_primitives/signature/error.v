@@ -103,9 +103,14 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -278,9 +283,15 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -344,9 +355,14 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>

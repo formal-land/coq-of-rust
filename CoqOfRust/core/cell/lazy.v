@@ -112,7 +112,11 @@ Module cell.
             (let this := M.alloc (| this |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::result::Result") [] [ T; F ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ],
@@ -210,9 +214,14 @@ Module cell.
             M.read (|
               let~ state :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -246,7 +255,7 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ T ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
                 state,
                 [
                   fun γ =>
@@ -373,9 +382,14 @@ Module cell.
                 M.read (|
                   let~ state :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -409,7 +423,7 @@ Module cell.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "&mut") [] [ T ]),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
                             state,
                             [
                               fun γ =>
@@ -542,9 +556,14 @@ Module cell.
             M.read (|
               let~ state :
                   Ty.apply
-                    (Ty.path "&mut")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.MutRef,
@@ -608,7 +627,7 @@ Module cell.
                           0
                         |) in
                       let f := M.copy (| γ0_0 |) in
-                      let~ data : T :=
+                      let~ data : Ty.apply (Ty.path "*") [] [ T ] :=
                         M.alloc (|
                           M.call_closure (|
                             T,
@@ -624,7 +643,7 @@ Module cell.
                             [ M.read (| f |); Value.Tuple [] ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -671,9 +690,14 @@ Module cell.
                         |) in
                       let~ state :
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "*")
                             []
-                            [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                            ] :=
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -754,9 +778,14 @@ Module cell.
             M.read (|
               let~ state :
                   Ty.apply
-                    (Ty.path "&mut")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -787,9 +816,14 @@ Module cell.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    ]),
                 state,
                 [
                   fun γ =>
@@ -844,9 +878,14 @@ Module cell.
             M.read (|
               let~ state :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -882,9 +921,14 @@ Module cell.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                    ]),
                 state,
                 [
                   fun γ =>
@@ -1030,7 +1074,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ d : Ty.path "core::fmt::builders::DebugTuple" :=
+              let~ d : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::fmt::builders::DebugTuple",
@@ -1046,9 +1090,19 @@ Module cell.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
+                    ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]),
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

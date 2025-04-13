@@ -20,7 +20,11 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ]),
+          Some
+            (Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]),
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -79,7 +83,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
@@ -91,7 +95,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -180,7 +184,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let quotient := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -320,7 +324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -328,7 +332,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 2 ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -336,16 +340,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
-        let~ none : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+        let~ none :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let~ _equivalent_none : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+        let~ _equivalent_none :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let~ optional_float : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] :=
+        let~ optional_float :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] ] :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -448,8 +464,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

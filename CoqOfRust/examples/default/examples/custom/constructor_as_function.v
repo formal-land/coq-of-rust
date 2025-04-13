@@ -16,7 +16,7 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let tuple := M.alloc (| tuple |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.path "i32"),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
           tuple,
           [
             fun γ =>
@@ -127,9 +127,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ v :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -269,8 +274,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

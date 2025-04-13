@@ -28,7 +28,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ path : Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] :=
+        let~ path :
+            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
@@ -41,7 +42,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hello.txt" |) |) |) ]
             |)
           |) in
-        let~ display : Ty.path "std::path::Display" :=
+        let~ display : Ty.apply (Ty.path "*") [] [ Ty.path "std::path::Display" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::path::Display",
@@ -49,10 +50,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |) ]
             |)
           |) in
-        let~ file : Ty.path "std::fs::File" :=
+        let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
           M.copy (|
             M.match_operator (|
-              Some (Ty.path "std::fs::File"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -169,7 +170,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ s : Ty.path "alloc::string::String" :=
+        let~ s : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -178,7 +179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -289,7 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],

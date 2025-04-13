@@ -566,7 +566,7 @@ Module Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -578,7 +578,7 @@ Module Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -980,7 +980,7 @@ Module Impl_erc1155_Contract.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ caller : Ty.path "erc1155::AccountId" :=
+          let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "erc1155::AccountId",
@@ -999,7 +999,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -1016,7 +1016,11 @@ Module Impl_erc1155_Contract.
                 |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+          let~ _ :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1053,7 +1057,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1083,9 +1087,14 @@ Module Impl_erc1155_Contract.
                               M.match_operator (|
                                 Some
                                   (Ty.apply
-                                    (Ty.path "core::option::Option")
+                                    (Ty.path "*")
                                     []
-                                    [ Ty.path "erc1155::AccountId" ]),
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "erc1155::AccountId" ]
+                                    ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1171,12 +1180,16 @@ Module Impl_erc1155_Contract.
         (let self := M.alloc (| self |) in
         let token_id := M.alloc (| token_id |) in
         let value := M.alloc (| value |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "erc1155::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1230,7 +1243,7 @@ Module Impl_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ caller : Ty.path "erc1155::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "erc1155::AccountId",
@@ -1254,7 +1267,11 @@ Module Impl_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1282,7 +1299,7 @@ Module Impl_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1374,7 +1391,7 @@ Module Impl_erc1155_Contract.
         let token_id := M.alloc (| token_id |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ sender_balance : Ty.path "u128" :=
+          let~ sender_balance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u128",
@@ -1426,7 +1443,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := sender_balance in
               M.write (|
@@ -1438,7 +1455,11 @@ Module Impl_erc1155_Contract.
                 |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+          let~ _ :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1465,7 +1486,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ recipient_balance : Ty.path "u128" :=
+          let~ recipient_balance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u128",
@@ -1512,7 +1533,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := recipient_balance in
               M.write (|
@@ -1524,7 +1545,11 @@ Module Impl_erc1155_Contract.
                 |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+          let~ _ :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -1551,7 +1576,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ caller : Ty.path "erc1155::AccountId" :=
+          let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "erc1155::AccountId",
@@ -1570,7 +1595,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1852,10 +1877,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let token_id := M.alloc (| token_id |) in
         let value := M.alloc (| value |) in
         let data := M.alloc (| data |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "erc1155::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "erc1155::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "erc1155::AccountId",
@@ -1879,9 +1908,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1907,9 +1936,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1978,9 +2007,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2045,7 +2074,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ balance : Ty.path "u128" :=
+              let~ balance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -2065,9 +2094,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2112,7 +2141,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2131,7 +2160,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2206,10 +2235,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let token_ids := M.alloc (| token_ids |) in
         let values := M.alloc (| values |) in
         let data := M.alloc (| data |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "erc1155::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "erc1155::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "erc1155::AccountId",
@@ -2233,9 +2266,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2261,9 +2294,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2332,9 +2365,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2399,9 +2432,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2457,9 +2490,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2534,11 +2567,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ transfers :
                   Ty.apply
-                    (Ty.path "core::iter::adapters::zip::Zip")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ];
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::zip::Zip")
+                        []
+                        [
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ];
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -2632,10 +2670,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2699,9 +2737,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2765,7 +2803,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
                                         let v := M.copy (| γ1_1 |) in
-                                        let~ balance : Ty.path "u128" :=
+                                        let~ balance :
+                                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "u128",
@@ -2788,9 +2827,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -2851,10 +2890,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2889,9 +2928,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2955,7 +2994,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
                                         let v := M.copy (| γ1_1 |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -2984,7 +3023,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -3077,9 +3116,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         M.read (|
           let~ output :
               Ty.apply
-                (Ty.path "alloc::vec::Vec")
+                (Ty.path "*")
                 []
-                [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -3098,10 +3142,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 []
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.use
               (M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3135,9 +3179,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       M.loop (|
                         Ty.tuple [],
                         ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3181,7 +3225,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     let o := M.copy (| γ0_0 |) in
                                     M.use
                                       (M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3216,9 +3260,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.loop (|
                                                 Ty.tuple [],
                                                 ltac:(M.monadic
-                                                  (let~ _ : Ty.tuple [] :=
+                                                  (let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3277,7 +3323,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                 0
                                                               |) in
                                                             let t := M.copy (| γ0_0 |) in
-                                                            let~ amount : Ty.path "u128" :=
+                                                            let~ amount :
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "u128" ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "u128",
@@ -3306,7 +3356,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            let~ _ : Ty.tuple [] :=
+                                                            let~ _ :
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.tuple [],
@@ -3377,10 +3431,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         (let self := M.alloc (| self |) in
         let operator := M.alloc (| operator |) in
         let approved := M.alloc (| approved |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "erc1155::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "erc1155::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc1155::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "erc1155::AccountId",
@@ -3404,9 +3462,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3462,16 +3520,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use approved in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                        let~ _ :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -3506,7 +3568,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
+                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -3540,7 +3602,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

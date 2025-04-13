@@ -37,7 +37,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_core_types::abi::ScriptABI"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::abi::ScriptABI" ]),
               self,
               [
                 fun γ =>
@@ -127,9 +127,14 @@ Module abi.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -232,7 +237,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -244,7 +249,7 @@ Module abi.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -267,7 +272,7 @@ Module abi.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               self,
               [
                 fun γ =>
@@ -405,7 +410,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -417,7 +422,7 @@ Module abi.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -439,7 +444,7 @@ Module abi.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Some (Ty.path "bool"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -578,11 +583,16 @@ Module abi.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ]
                     ]),
                 M.deref (| M.read (| self |) |),
                 [
@@ -744,20 +754,42 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -857,9 +889,9 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -938,9 +970,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1019,9 +1051,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1100,9 +1132,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1189,9 +1221,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1384,20 +1416,42 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1497,9 +1551,9 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1578,9 +1632,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1659,9 +1713,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1760,9 +1814,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1849,9 +1903,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2044,20 +2098,42 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2136,9 +2212,9 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2217,9 +2293,9 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2404,20 +2480,42 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2489,9 +2587,9 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3010,7 +3108,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3041,7 +3139,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3072,7 +3170,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3103,7 +3201,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3815,7 +3913,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3846,7 +3944,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3877,7 +3975,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3911,7 +4009,7 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -4459,7 +4557,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -5564,7 +5662,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               self,
               [
                 fun γ =>
@@ -5605,7 +5703,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               self,
               [
                 fun γ =>
@@ -5648,7 +5746,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -5735,7 +5833,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -5824,13 +5922,18 @@ Module abi.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "slice")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                          ]
                       ]),
                   self,
                   [
@@ -5936,13 +6039,18 @@ Module abi.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "slice")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                          ]
                       ]),
                   self,
                   [

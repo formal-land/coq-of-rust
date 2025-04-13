@@ -641,9 +641,14 @@ Module task.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -900,9 +905,14 @@ Module task.
                           M.match_operator (|
                             Some
                               (Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "*")
                                 []
-                                [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]),
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                ]),
                             M.alloc (|
                               M.borrow (|
                                 Pointer.Kind.MutRef,
@@ -1235,7 +1245,10 @@ Module task.
             (let waker := M.alloc (| waker |) in
             M.read (|
               let~ local_waker :
-                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
@@ -1291,10 +1304,10 @@ Module task.
           ltac:(M.monadic
             (let cx := M.alloc (| cx |) in
             M.read (|
-              let~ ext : Ty.path "core::task::wake::ExtData" :=
+              let~ ext : Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::ExtData" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "core::task::wake::ExtData"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::ExtData" ]),
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -1613,9 +1626,14 @@ Module task.
             M.read (|
               let~ this :
                   Ty.apply
-                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "core::task::wake::Waker" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                        []
+                        [ Ty.path "core::task::wake::Waker" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1634,7 +1652,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2078,7 +2096,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2103,7 +2121,7 @@ Module task.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.write (|
                             M.deref (| M.read (| self |) |),
@@ -2224,7 +2242,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               let~ vtable_ptr :
-                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ]
+                    ] :=
                 M.copy (|
                   M.use
                     (M.alloc (|
@@ -2412,9 +2434,14 @@ Module task.
             M.read (|
               let~ this :
                   Ty.apply
-                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "core::task::wake::LocalWaker" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                        []
+                        [ Ty.path "core::task::wake::LocalWaker" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -2433,7 +2460,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2883,7 +2910,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2908,7 +2935,7 @@ Module task.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.write (|
                             M.deref (| M.read (| self |) |),
@@ -3067,7 +3094,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               let~ vtable_ptr :
-                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ]
+                    ] :=
                 M.copy (|
                   M.use
                     (M.alloc (|

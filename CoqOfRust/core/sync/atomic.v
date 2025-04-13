@@ -248,7 +248,8 @@ Module sync.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                    Some
+                      (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                     self,
                     [
                       fun γ =>
@@ -358,7 +359,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -370,7 +371,7 @@ Module sync.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -413,7 +414,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -888,7 +889,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -946,7 +947,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -959,7 +960,7 @@ Module sync.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1079,7 +1080,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
@@ -1194,7 +1195,15 @@ Module sync.
             M.read (|
               M.match_operator (|
                 Some
-                  (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]),
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "bool"; Ty.path "bool" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1206,10 +1215,15 @@ Module sync.
                             Ty.path "bool"
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ order : Ty.path "core::sync::atomic::Ordering" :=
+                      let~ order :
+                          Ty.apply (Ty.path "*") [] [ Ty.path "core::sync::atomic::Ordering" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "core::sync::atomic::Ordering"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "core::sync::atomic::Ordering" ]),
                             M.alloc (|
                               Value.Tuple [ M.read (| success |); M.read (| failure |) ]
                             |),
@@ -1420,10 +1434,10 @@ Module sync.
                             ]
                           |)
                         |) in
-                      let~ old : Ty.path "bool" :=
+                      let~ old : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "bool"),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1488,9 +1502,14 @@ Module sync.
                       M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "*")
                             []
-                            [ Ty.path "bool"; Ty.path "bool" ]),
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "bool"; Ty.path "bool" ]
+                            ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1521,9 +1540,14 @@ Module sync.
                       (M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "*")
                             []
-                            [ Ty.path "bool"; Ty.path "bool" ]),
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "bool"; Ty.path "bool" ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1646,12 +1670,13 @@ Module sync.
             let new := M.alloc (| new |) in
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1700,9 +1725,14 @@ Module sync.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "bool"; Ty.path "bool" ]),
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "bool"; Ty.path "bool" ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
@@ -1872,7 +1902,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2142,10 +2172,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "bool" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "bool",
@@ -2161,12 +2192,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2201,7 +2232,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2258,7 +2289,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2746,7 +2777,7 @@ Module sync.
             let ptr := M.alloc (| ptr |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2875,7 +2906,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*mut") [] [ T ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3125,10 +3156,14 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
@@ -3144,12 +3179,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -3184,7 +3219,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3244,7 +3279,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -4393,7 +4428,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -4503,7 +4538,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "i8"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "i8" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
@@ -4996,10 +5031,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "i8" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "i8",
@@ -5015,12 +5051,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -5052,7 +5088,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -5109,7 +5145,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5825,7 +5861,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -5935,7 +5971,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "u8"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
@@ -6428,10 +6464,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "u8" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "u8",
@@ -6447,12 +6484,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -6484,7 +6521,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6541,7 +6578,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -7267,7 +7304,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -7377,7 +7414,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "i16"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "i16" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
@@ -7870,10 +7907,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "i16" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "i16",
@@ -7889,12 +7927,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -7929,7 +7967,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -7986,7 +8024,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -8712,7 +8750,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -8822,7 +8860,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "u16"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u16" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
@@ -9315,10 +9353,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "u16" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "u16",
@@ -9334,12 +9373,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -9374,7 +9413,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -9431,7 +9470,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -10157,7 +10196,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -10267,7 +10306,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "i32"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
@@ -10760,10 +10799,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "i32" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "i32",
@@ -10779,12 +10819,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -10819,7 +10859,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -10876,7 +10916,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -11602,7 +11642,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -11712,7 +11752,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "u32"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
@@ -12205,10 +12245,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "u32" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "u32",
@@ -12224,12 +12265,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -12264,7 +12305,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -12321,7 +12362,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -13047,7 +13088,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -13157,7 +13198,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "i64"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "i64" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
@@ -13650,10 +13691,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "i64" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "i64",
@@ -13669,12 +13711,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -13709,7 +13751,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -13766,7 +13808,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -14492,7 +14534,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -14602,7 +14644,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "u64"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
@@ -15095,10 +15137,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "u64" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "u64",
@@ -15114,12 +15157,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -15154,7 +15197,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -15211,7 +15254,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -15937,7 +15980,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -16051,7 +16094,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "isize"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "isize" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -16547,10 +16590,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "isize"; Ty.path "isize" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "isize" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "isize",
@@ -16566,12 +16610,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -16606,7 +16650,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16663,7 +16707,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -17389,7 +17433,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -17503,7 +17547,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "usize"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -17999,10 +18043,11 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "usize"; Ty.path "usize" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ prev : Ty.path "usize" :=
+                  let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -18018,12 +18063,12 @@ Module sync.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -18058,7 +18103,7 @@ Module sync.
                                   |) in
                                 let next := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -18115,7 +18160,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -18332,7 +18377,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::sync::atomic::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::sync::atomic::Ordering" ]),
               order,
               [
                 fun γ =>
@@ -18389,7 +18434,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               order,
               [
                 fun γ =>
@@ -18535,7 +18580,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -18679,7 +18724,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -18766,7 +18811,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -18853,7 +18898,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -18963,7 +19008,7 @@ Module sync.
             M.match_operator (|
               None,
               M.match_operator (|
-                Some (Ty.tuple [ T; Ty.path "bool" ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; Ty.path "bool" ] ]),
                 M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
                 [
                   fun γ =>
@@ -19347,7 +19392,11 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "core::result::Result") [] [ T; T ]),
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -19426,7 +19475,7 @@ Module sync.
             M.match_operator (|
               None,
               M.match_operator (|
-                Some (Ty.tuple [ T; Ty.path "bool" ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; Ty.path "bool" ] ]),
                 M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
                 [
                   fun γ =>
@@ -19810,7 +19859,11 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "core::result::Result") [] [ T; T ]),
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -19864,7 +19917,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -19951,7 +20004,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20038,7 +20091,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20125,7 +20178,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20212,7 +20265,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20299,7 +20352,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20386,7 +20439,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20473,7 +20526,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               order,
               [
                 fun γ =>
@@ -20558,7 +20611,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               order,
               [
                 fun γ =>
@@ -20669,7 +20722,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               order,
               [
                 fun γ =>

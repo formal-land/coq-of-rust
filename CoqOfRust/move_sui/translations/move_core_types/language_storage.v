@@ -86,12 +86,18 @@ Module language_storage.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some
-                              (Ty.function
-                                [ Ty.tuple [] ]
-                                (Ty.apply
-                                  (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                  []
-                                  [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])),
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [] ]
+                                    (Ty.apply
+                                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                      []
+                                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                      ])
+                                ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -279,11 +285,16 @@ Module language_storage.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ]
                     ]),
                 M.deref (| M.read (| self |) |),
                 [
@@ -758,20 +769,42 @@ Module language_storage.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -864,9 +897,9 @@ Module language_storage.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -945,9 +978,9 @@ Module language_storage.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1026,9 +1059,9 @@ Module language_storage.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1107,9 +1140,9 @@ Module language_storage.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1302,20 +1335,42 @@ Module language_storage.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1394,9 +1449,9 @@ Module language_storage.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1475,9 +1530,9 @@ Module language_storage.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1662,20 +1717,42 @@ Module language_storage.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1754,9 +1831,9 @@ Module language_storage.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1835,9 +1912,9 @@ Module language_storage.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2029,9 +2106,14 @@ Module language_storage.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -2371,7 +2453,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2383,7 +2465,7 @@ Module language_storage.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2405,7 +2487,7 @@ Module language_storage.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Some (Ty.path "bool"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -2562,7 +2644,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2574,7 +2656,7 @@ Module language_storage.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2597,7 +2679,7 @@ Module language_storage.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               self,
               [
                 fun γ =>
@@ -2736,7 +2818,11 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_core_types::language_storage::TypeTag"),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_core_types::language_storage::TypeTag" ]),
               self,
               [
                 fun γ =>
@@ -2943,7 +3029,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2955,7 +3041,7 @@ Module language_storage.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2968,7 +3054,12 @@ Module language_storage.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -3136,7 +3227,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -3148,7 +3239,7 @@ Module language_storage.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -3161,7 +3252,7 @@ Module language_storage.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -3183,7 +3274,7 @@ Module language_storage.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -3545,9 +3636,14 @@ Module language_storage.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]),
+                      [
+                        Ty.apply
+                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                          []
+                          [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]
+                      ]),
                   self,
                   [
                     fun γ =>
@@ -4094,7 +4190,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -4125,7 +4221,7 @@ Module language_storage.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -4156,7 +4252,7 @@ Module language_storage.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -4446,7 +4542,12 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -4502,9 +4603,14 @@ Module language_storage.
                     M.match_operator (|
                       Some
                         (Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::cmp::Ordering" ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4563,9 +4669,14 @@ Module language_storage.
                             M.match_operator (|
                               Some
                                 (Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::cmp::Ordering" ]
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4725,7 +4836,7 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -4773,7 +4884,7 @@ Module language_storage.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -4821,7 +4932,7 @@ Module language_storage.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -4966,9 +5077,14 @@ Module language_storage.
           M.read (|
             let~ key :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -5029,7 +5145,7 @@ Module language_storage.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -5948,28 +6064,34 @@ Module language_storage.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    Ty.tuple
+                                    Ty.function
                                       [
-                                        Ty.apply
-                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path
-                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_core_types::language_storage::TypeTag" ]
+                                            Ty.apply
+                                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_core_types::language_storage::TypeTag"
+                                              ]
+                                          ]
                                       ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                    []
-                                    [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                    ])),
+                                      (Ty.apply
+                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                        []
+                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -5977,34 +6099,40 @@ Module language_storage.
                                     (let accum := M.copy (| γ |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "move_core_types::gas_algebra::GasQuantity")
-                                                  []
+                                                Ty.tuple
                                                   [
-                                                    Ty.path
-                                                      "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag"
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "move_core_types::gas_algebra::GasQuantity")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::language_storage::TypeTag"
+                                                      ]
                                                   ]
                                               ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                            ])),
+                                              (Ty.apply
+                                                (Ty.path
+                                                  "move_core_types::gas_algebra::GasQuantity")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                                ])
+                                          ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6324,7 +6452,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -6532,7 +6660,12 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -6661,7 +6794,7 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -7045,7 +7178,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -7253,7 +7386,12 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -7382,7 +7520,7 @@ Module language_storage.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -7655,9 +7793,14 @@ Module language_storage.
           M.read (|
             let~ key :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -7718,7 +7861,7 @@ Module language_storage.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -7907,7 +8050,7 @@ Module language_storage.
             M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
-                let~ res : Ty.path "alloc::string::String" :=
+                let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "alloc::string::String",
@@ -8161,12 +8304,16 @@ Module language_storage.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8405,9 +8552,9 @@ Module language_storage.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -8486,9 +8633,9 @@ Module language_storage.
                               0
                             |) in
                           let first_ty := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8615,9 +8762,9 @@ Module language_storage.
                                     val))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8788,10 +8935,10 @@ Module language_storage.
                                     val))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.use
                               (M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -8925,9 +9072,9 @@ Module language_storage.
                                       M.loop (|
                                         Ty.tuple [],
                                         ltac:(M.monadic
-                                          (let~ _ : Ty.tuple [] :=
+                                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -8992,9 +9139,14 @@ Module language_storage.
                                                         0
                                                       |) in
                                                     let ty := M.copy (| γ0_0 |) in
-                                                    let~ _ : Ty.tuple [] :=
+                                                    let~ _ :
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                       M.match_operator (|
-                                                        Some (Ty.tuple []),
+                                                        Some
+                                                          (Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ]),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -9205,9 +9357,9 @@ Module language_storage.
                                       |)))
                                 ]
                               |)) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9383,9 +9535,14 @@ Module language_storage.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>

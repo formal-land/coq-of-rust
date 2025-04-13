@@ -104,6 +104,10 @@ pub(crate) enum Expr {
         args: Vec<Rc<Expr>>,
         kind: CallKind,
     },
+    CallTy {
+        func: Rc<Expr>,
+        ty: Rc<CoqType>,
+    },
     /// The logical operators are lazily evaluated, so the second
     /// parameter [rhs] must be in monadic form.
     LogicalOperator {
@@ -267,6 +271,7 @@ impl Expr {
                 args,
                 kind: _,
             } => func.has_return() || args.iter().any(|arg| arg.has_return()),
+            Expr::CallTy { func, ty: _ } => func.has_return(),
             Expr::LogicalOperator { name: _, lhs, rhs } => lhs.has_return() || rhs.has_return(),
             Expr::Cast {
                 target_ty: _,
@@ -572,6 +577,7 @@ impl Expr {
                         }),
                     ]),
             },
+            Expr::CallTy { func, ty } => func.to_coq().apply(ty.to_coq()),
             Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
                 .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(rhs.to_coq())]),
             Expr::Cast { target_ty, source } => coq::Expression::just_name("M.cast")
@@ -654,7 +660,7 @@ impl Expr {
             } => Rc::new(coq::Expression::Let {
                 is_user: ty.is_some(),
                 name: name.to_owned(),
-                ty: ty.as_ref().map(|ty| ty.to_coq()),
+                ty: ty.as_ref().map(|ty| ty.clone().make_raw_ref().to_coq()),
                 init: init.to_coq(),
                 body: body.to_coq(),
             }),
@@ -664,7 +670,9 @@ impl Expr {
                 arms,
             } => coq::Expression::just_name("M.match_operator").monadic_apply_many(&[
                 match ty {
-                    Some(ty) => coq::Expression::just_name("Some").apply(ty.to_coq()),
+                    Some(ty) => {
+                        coq::Expression::just_name("Some").apply(ty.clone().make_raw_ref().to_coq())
+                    }
                     None => coq::Expression::just_name("None"),
                 },
                 scrutinee.to_coq(),

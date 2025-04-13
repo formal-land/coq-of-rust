@@ -107,9 +107,14 @@ Module verifier.
         M.read (|
           let~ bytes :
               Ty.apply
-                (Ty.path "alloc::vec::Vec")
+                (Ty.path "*")
                 []
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -128,7 +133,7 @@ Module verifier.
                 []
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -164,7 +169,7 @@ Module verifier.
                 ]
               |)
             |) in
-          let~ now : Ty.path "std::time::Instant" :=
+          let~ now : Ty.apply (Ty.path "*") [] [ Ty.path "std::time::Instant" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "std::time::Instant",
@@ -174,9 +179,14 @@ Module verifier.
             |) in
           let~ result :
               Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -195,8 +205,8 @@ Module verifier.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -333,7 +343,11 @@ Module verifier.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
-                                                  Some (Ty.path "alloc::string::String"),
+                                                  Some
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -361,8 +375,13 @@ Module verifier.
                                                             [
                                                               M.read (|
                                                                 let~ res :
-                                                                    Ty.path
-                                                                      "alloc::string::String" :=
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "alloc::string::String"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -656,9 +675,9 @@ Module verifier.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -871,12 +890,16 @@ Module verifier.
         (let config := M.alloc (| config |) in
         let module := M.alloc (| module |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -948,15 +971,20 @@ Module verifier.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some
-                                          (Ty.function
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
                                             [
-                                              Ty.tuple
+                                              Ty.function
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError"
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                 ]
-                                            ]
-                                            (Ty.path "move_binary_format::errors::VMError")),
+                                                (Ty.path "move_binary_format::errors::VMError")
+                                            ]),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1045,9 +1073,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1153,9 +1181,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1258,9 +1286,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1363,9 +1391,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1469,9 +1497,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1573,9 +1601,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1677,9 +1705,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1781,9 +1809,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1887,9 +1915,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1993,9 +2021,9 @@ Module verifier.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

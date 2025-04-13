@@ -366,7 +366,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
         (let e := M.alloc (| e |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "call_runtime::RuntimeError"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "call_runtime::RuntimeError" ]),
             e,
             [
               fun γ =>

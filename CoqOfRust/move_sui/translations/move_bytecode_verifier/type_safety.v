@@ -84,13 +84,19 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.read (|
-            let~ idx : Ty.path "usize" := M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
+            let~ idx : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
+              M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -291,7 +297,11 @@ Module type_safety.
           (let module := M.alloc (| module |) in
           let function_context := M.alloc (| function_context |) in
           M.read (|
-            let~ locals : Ty.path "move_bytecode_verifier::type_safety::Locals" :=
+            let~ locals :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_bytecode_verifier::type_safety::Locals" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "move_bytecode_verifier::type_safety::Locals",
@@ -624,12 +634,16 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let meter := M.alloc (| meter |) in
           let ty := M.alloc (| ty |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -744,9 +758,9 @@ Module type_safety.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -795,7 +809,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -829,7 +847,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -969,7 +991,7 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1096,12 +1118,16 @@ Module type_safety.
           let meter := M.alloc (| meter |) in
           let ty := M.alloc (| ty |) in
           let n := M.alloc (| n |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1216,9 +1242,9 @@ Module type_safety.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1268,7 +1294,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -1302,7 +1332,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -1442,7 +1476,7 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1698,13 +1732,17 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let meter := M.alloc (| meter |) in
           let tys := M.alloc (| tys |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1738,9 +1776,9 @@ Module type_safety.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1799,7 +1837,7 @@ Module type_safety.
                                             |) in
                                           let ty := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1977,14 +2015,23 @@ Module type_safety.
         (let module := M.alloc (| module |) in
         let function_context := M.alloc (| function_context |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ verifier :
                   Ty.apply
-                    (Ty.path "&mut")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker" ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.MutRef,
@@ -2008,10 +2055,10 @@ Module type_safety.
                     |)
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2084,9 +2131,9 @@ Module type_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2132,7 +2179,7 @@ Module type_safety.
                                         let block_id := M.copy (| γ0_0 |) in
                                         M.use
                                           (M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2231,9 +2278,17 @@ Module type_safety.
                                                   M.loop (|
                                                     Ty.tuple [],
                                                     ltac:(M.monadic
-                                                      (let~ _ : Ty.tuple [] :=
+                                                      (let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Some
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ]),
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -2296,11 +2351,16 @@ Module type_safety.
                                                                 let offset := M.copy (| γ0_0 |) in
                                                                 let~ instr :
                                                                     Ty.apply
-                                                                      (Ty.path "&")
+                                                                      (Ty.path "*")
                                                                       []
                                                                       [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::Bytecode"
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::Bytecode"
+                                                                          ]
                                                                       ] :=
                                                                   M.alloc (|
                                                                     M.borrow (|
@@ -2385,7 +2445,11 @@ Module type_safety.
                                                                     |)
                                                                   |) in
                                                                 M.match_operator (|
-                                                                  Some (Ty.tuple []),
+                                                                  Some
+                                                                    (Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ]),
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       Ty.apply
@@ -2627,13 +2691,25 @@ Module type_safety.
         let mut_ := M.alloc (| mut_ |) in
         let field_handle_index := M.alloc (| field_handle_index |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2684,7 +2760,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -2718,7 +2798,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -2858,7 +2942,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2956,9 +3044,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3021,9 +3109,14 @@ Module type_safety.
                 |) in
               let~ field_handle :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::FieldHandle" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FieldHandle" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3055,9 +3148,14 @@ Module type_safety.
                 |) in
               let~ struct_def :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3093,7 +3191,11 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ expected_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ expected_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -3114,9 +3216,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   operand,
                   [
                     fun γ =>
@@ -3222,16 +3324,26 @@ Module type_safety.
                 |) in
               let~ field_def :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                    ] :=
                 M.copy (|
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "move_binary_format::file_format::FieldDefinition" ]),
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                        ]),
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -3341,11 +3453,16 @@ Module type_safety.
                 |) in
               let~ field_type :
                   Ty.apply
-                    (Ty.path "alloc::boxed::Box")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::SignatureToken";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::SignatureToken";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -3400,9 +3517,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3447,7 +3564,11 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -3586,10 +3707,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let mut_ := M.alloc (| mut_ |) in
         let idx := M.alloc (| idx |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ loc_signature : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ loc_signature :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -3627,9 +3756,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3684,9 +3813,9 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3731,7 +3860,11 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -3929,13 +4062,25 @@ Module type_safety.
         let mut_ := M.alloc (| mut_ |) in
         let idx := M.alloc (| idx |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -3986,7 +4131,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -4020,7 +4169,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -4160,7 +4313,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -4258,9 +4415,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -4330,9 +4487,14 @@ Module type_safety.
                 |) in
               let~ struct_def :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -4362,7 +4524,11 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -4383,9 +4549,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -4406,7 +4572,11 @@ Module type_safety.
                                     M.read (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -4582,7 +4752,11 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -4603,9 +4777,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4650,7 +4824,11 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -4839,14 +5017,23 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let function_handle := M.alloc (| function_handle |) in
         let type_actuals := M.alloc (| type_actuals |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ parameters :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -4882,10 +5069,10 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5012,9 +5199,9 @@ Module type_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -5075,13 +5262,23 @@ Module type_safety.
                                           |) in
                                         let parameter := M.copy (| γ0_0 |) in
                                         let~ arg :
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken" :=
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               Some
-                                                (Ty.path
-                                                  "move_binary_format::file_format::SignatureToken"),
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -5137,8 +5334,13 @@ Module type_safety.
                                                       |) in
                                                     let e := M.copy (| γ0_0 |) in
                                                     let~ err :
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError" :=
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path
@@ -5177,8 +5379,13 @@ Module type_safety.
                                                               [
                                                                 M.read (|
                                                                   let~ res :
-                                                                      Ty.path
-                                                                        "alloc::string::String" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "alloc::string::String"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -5329,8 +5536,13 @@ Module type_safety.
                                                       |) in
                                                     M.match_operator (|
                                                       Some
-                                                        (Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"),
+                                                        (Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -5447,7 +5659,7 @@ Module type_safety.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -5645,10 +5857,10 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5728,9 +5940,9 @@ Module type_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -5786,7 +5998,7 @@ Module type_safety.
                                           |) in
                                         let return_type := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -5989,11 +6201,16 @@ Module type_safety.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
                 [
-                  Ty.path "move_binary_format::file_format::Signature";
-                  Ty.path "move_binary_format::errors::PartialVMError"
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::Signature";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
                 ]),
             M.alloc (|
               M.borrow (|
@@ -6048,11 +6265,16 @@ Module type_safety.
                   let fields := M.alloc (| γ1_0 |) in
                   let~ field_sig :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_binary_format::file_format::SignatureToken";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::SignatureToken";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -6078,10 +6300,10 @@ Module type_safety.
                         []
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -6169,9 +6391,9 @@ Module type_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -6229,7 +6451,7 @@ Module type_safety.
                                                 0
                                               |) in
                                             let field_def := M.copy (| γ0_0 |) in
-                                            let~ _ : Ty.tuple [] :=
+                                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.tuple [],
@@ -6344,10 +6566,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let struct_def := M.alloc (| struct_def |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -6368,10 +6598,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ field_sig : Ty.path "move_binary_format::file_format::Signature" :=
+              let~ field_sig :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::Signature"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6497,10 +6735,10 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6627,9 +6865,9 @@ Module type_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6690,13 +6928,23 @@ Module type_safety.
                                           |) in
                                         let sig := M.copy (| γ0_0 |) in
                                         let~ arg :
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken" :=
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               Some
-                                                (Ty.path
-                                                  "move_binary_format::file_format::SignatureToken"),
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -6752,8 +7000,13 @@ Module type_safety.
                                                       |) in
                                                     let e := M.copy (| γ0_0 |) in
                                                     let~ err :
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError" :=
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path
@@ -6792,8 +7045,13 @@ Module type_safety.
                                                               [
                                                                 M.read (|
                                                                   let~ res :
-                                                                      Ty.path
-                                                                        "alloc::string::String" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "alloc::string::String"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -6944,8 +7202,13 @@ Module type_safety.
                                                       |) in
                                                     M.match_operator (|
                                                       Some
-                                                        (Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"),
+                                                        (Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -7062,7 +7325,7 @@ Module type_safety.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -7155,9 +7418,9 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7313,10 +7576,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let struct_def := M.alloc (| struct_def |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -7337,10 +7608,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ arg : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ arg :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -7391,7 +7670,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -7425,7 +7708,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -7565,7 +7852,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -7663,9 +7954,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7726,10 +8017,18 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ field_sig : Ty.path "move_binary_format::file_format::Signature" :=
+              let~ field_sig :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::Signature"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -7855,10 +8154,10 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -7901,9 +8200,9 @@ Module type_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -7953,7 +8252,7 @@ Module type_safety.
                                           |) in
                                         let sig := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -8140,10 +8439,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let struct_def := M.alloc (| struct_def |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -8164,9 +8471,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8187,7 +8494,11 @@ Module type_safety.
                                     M.read (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -8363,10 +8674,18 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8417,7 +8736,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -8451,7 +8774,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -8591,7 +8918,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -8689,9 +9020,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8759,9 +9090,9 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -8918,10 +9249,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let struct_def := M.alloc (| struct_def |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -8942,9 +9281,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8965,7 +9304,11 @@ Module type_safety.
                                     M.read (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -9141,7 +9484,11 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -9162,10 +9509,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -9216,7 +9571,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -9250,7 +9609,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -9390,7 +9753,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -9488,9 +9855,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9558,9 +9925,9 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -9718,10 +10085,18 @@ Module type_safety.
         let offset := M.alloc (| offset |) in
         let struct_def := M.alloc (| struct_def |) in
         let type_args := M.alloc (| type_args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -9742,9 +10117,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9765,7 +10140,11 @@ Module type_safety.
                                     M.read (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -9941,7 +10320,11 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ struct_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -9962,10 +10345,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ key_struct_operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ key_struct_operand :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -10016,7 +10407,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -10050,7 +10445,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -10190,7 +10589,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -10289,10 +10692,17 @@ Module type_safety.
                   |)
                 |) in
               let~ signer_reference_operand :
-                  Ty.path "move_binary_format::file_format::SignatureToken" :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -10343,7 +10753,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -10377,7 +10791,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -10517,7 +10935,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -10615,9 +11037,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -10681,9 +11103,14 @@ Module type_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    ]),
                 signer_reference_operand,
                 [
                   fun γ =>
@@ -10698,9 +11125,15 @@ Module type_safety.
                       M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "*")
                             []
-                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ]
+                            ]),
                         M.deref (| M.read (| inner |) |),
                         [
                           fun γ =>
@@ -10824,13 +11257,25 @@ Module type_safety.
         let declared_element_type := M.alloc (| declared_element_type |) in
         let offset := M.alloc (| offset |) in
         let mut_ref_only := M.alloc (| mut_ref_only |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand_idx : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand_idx :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -10881,7 +11326,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -10915,7 +11364,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -11055,7 +11508,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -11153,10 +11610,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ operand_vec : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ operand_vec :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11207,7 +11672,11 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -11241,7 +11710,11 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -11381,7 +11854,11 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -11479,9 +11956,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -11549,10 +12026,18 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ element_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ element_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11647,10 +12132,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ element_ref_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ element_ref_type :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -11719,9 +12212,9 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -12343,12 +12836,16 @@ Module type_safety.
         let bytecode := M.alloc (| bytecode |) in
         let offset := M.alloc (| offset |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   bytecode,
                   [
                     fun γ =>
@@ -12359,10 +12856,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Pop"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -12414,7 +12919,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -12449,7 +12958,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -12596,7 +13109,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -12704,11 +13223,16 @@ Module type_safety.
                           |) in
                         let~ abilities :
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "*")
                               []
                               [
-                                Ty.path "move_binary_format::file_format::AbilitySet";
-                                Ty.path "move_binary_format::errors::PartialVMError"
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::AbilitySet";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -12783,7 +13307,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -12804,8 +13328,13 @@ Module type_safety.
                                             M.read (|
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::AbilitySet"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    ]),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -12989,12 +13518,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -13050,8 +13588,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -13090,7 +13633,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -13240,8 +13787,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -13354,7 +13906,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -13444,10 +13996,18 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13499,7 +14059,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -13534,7 +14098,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -13681,7 +14249,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -13788,7 +14362,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -13905,10 +14479,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Abort"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13960,7 +14542,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -13995,7 +14581,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -14142,7 +14732,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -14249,7 +14845,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -14334,15 +14930,20 @@ Module type_safety.
                           |) in
                         let~ return_ :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
                               [
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "&")
                                   []
                                   [
-                                    Ty.path "move_binary_format::file_format::SignatureToken";
-                                    Ty.path "alloc::alloc::Global"
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::SignatureToken";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
                                   ]
                               ] :=
                           M.alloc (|
@@ -14384,7 +14985,7 @@ Module type_safety.
                           |) in
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14518,9 +15119,9 @@ Module type_safety.
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -14586,13 +15187,23 @@ Module type_safety.
                                                   |) in
                                                 let return_type := M.copy (| γ0_0 |) in
                                                 let~ operand :
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken" :=
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ] :=
                                                   M.copy (|
                                                     M.match_operator (|
                                                       Some
-                                                        (Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"),
+                                                        (Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -14650,8 +15261,13 @@ Module type_safety.
                                                               |) in
                                                             let e := M.copy (| γ0_0 |) in
                                                             let~ err :
-                                                                Ty.path
-                                                                  "move_binary_format::errors::PartialVMError" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -14694,8 +15310,13 @@ Module type_safety.
                                                                       [
                                                                         M.read (|
                                                                           let~ res :
-                                                                              Ty.path
-                                                                                "alloc::string::String" :=
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "alloc::string::String"
+                                                                                ] :=
                                                                             M.alloc (|
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -14846,8 +15467,13 @@ Module type_safety.
                                                               |) in
                                                             M.match_operator (|
                                                               Some
-                                                                (Ty.path
-                                                                  "move_binary_format::file_format::SignatureToken"),
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                  ]),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -14969,7 +15595,7 @@ Module type_safety.
                                                     |)
                                                   |) in
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -15110,10 +15736,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::FreezeRef"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -15165,7 +15799,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -15200,7 +15838,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -15347,7 +15989,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -15454,7 +16102,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           operand,
                           [
                             fun γ =>
@@ -15467,7 +16115,7 @@ Module type_safety.
                                   |) in
                                 let inner := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -15644,7 +16292,7 @@ Module type_safety.
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -15820,9 +16468,14 @@ Module type_safety.
                         let field_inst_index := M.alloc (| γ1_0 |) in
                         let~ field_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldInstantiation" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -15854,9 +16507,14 @@ Module type_safety.
                           |) in
                         let~ type_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -15892,9 +16550,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16071,7 +16729,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16218,7 +16876,7 @@ Module type_safety.
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16394,9 +17052,14 @@ Module type_safety.
                         let field_inst_index := M.alloc (| γ1_0 |) in
                         let~ field_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldInstantiation" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16428,9 +17091,14 @@ Module type_safety.
                           |) in
                         let~ type_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16466,9 +17134,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16645,7 +17313,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16790,9 +17458,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU8",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16931,9 +17599,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU16",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17072,9 +17740,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU32",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17213,9 +17881,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU64",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17354,9 +18022,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU128",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17495,9 +18163,9 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU256",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17638,7 +18306,10 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ signature :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "move_binary_format::file_format::SignatureToken",
@@ -17691,9 +18362,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17850,9 +18521,9 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -17999,7 +18670,10 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ local_signature :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "move_binary_format::file_format::SignatureToken",
@@ -18042,9 +18716,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -18065,8 +18739,13 @@ Module type_safety.
                                               M.read (|
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::AbilitySet"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::AbilitySet"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -18307,7 +18986,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18444,7 +19123,10 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ local_signature :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "move_binary_format::file_format::SignatureToken",
@@ -18488,7 +19170,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18625,7 +19307,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18762,7 +19444,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18900,9 +19582,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ function_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18933,7 +19620,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19111,9 +19798,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ func_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -19147,9 +19839,14 @@ Module type_safety.
                           |) in
                         let~ func_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19187,13 +19884,18 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
                               [
                                 Ty.apply
                                   (Ty.path "&")
                                   []
-                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ]
+                                  ]
                               ] :=
                           M.alloc (|
                             M.borrow (|
@@ -19235,9 +19937,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19418,7 +20120,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19564,9 +20266,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19597,7 +20304,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19775,9 +20482,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -19811,9 +20525,14 @@ Module type_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19851,9 +20570,14 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19889,9 +20613,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20068,7 +20792,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20212,9 +20936,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20245,7 +20974,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20423,9 +21152,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -20459,9 +21195,14 @@ Module type_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20499,9 +21240,14 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20537,9 +21283,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20716,7 +21462,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20856,10 +21602,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::ReadRef"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -20911,7 +21665,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -20946,7 +21704,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -21093,7 +21855,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21200,7 +21968,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           operand,
                           [
                             fun γ =>
@@ -21234,9 +22002,9 @@ Module type_safety.
                                       match γ with
                                       | [ inner ] =>
                                         ltac:(M.monadic
-                                          (let~ _ : Ty.tuple [] :=
+                                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -21258,8 +22026,13 @@ Module type_safety.
                                                                 M.read (|
                                                                   M.match_operator (|
                                                                     Some
-                                                                      (Ty.path
-                                                                        "move_binary_format::file_format::AbilitySet"),
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ]),
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -21470,9 +22243,9 @@ Module type_safety.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -21655,10 +22428,17 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::WriteRef"
                           |) in
                         let~ ref_operand :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -21710,7 +22490,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -21745,7 +22529,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -21892,7 +22680,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21999,10 +22793,17 @@ Module type_safety.
                             |)
                           |) in
                         let~ val_operand :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -22054,7 +22855,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -22089,7 +22894,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -22236,7 +23045,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -22343,10 +23158,17 @@ Module type_safety.
                             |)
                           |) in
                         let~ ref_inner_signature :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               ref_operand,
                               [
                                 fun γ =>
@@ -22397,9 +23219,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -22420,8 +23242,13 @@ Module type_safety.
                                               M.read (|
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::AbilitySet"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::AbilitySet"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -22610,7 +23437,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -22686,10 +23513,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU8"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -22741,7 +23576,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -22776,7 +23615,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -22923,7 +23766,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -23029,9 +23878,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -23094,9 +23943,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23234,10 +24083,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU64"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -23289,7 +24146,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -23324,7 +24185,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -23471,7 +24336,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -23577,9 +24448,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -23642,9 +24513,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23782,10 +24653,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU128"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -23837,7 +24716,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -23872,7 +24755,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -24019,7 +24906,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24125,9 +25018,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -24190,9 +25083,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24406,12 +25299,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand1 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -24467,8 +25369,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -24507,7 +25414,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -24657,8 +25568,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -24771,12 +25687,21 @@ Module type_safety.
                                       |)
                                     |) in
                                   let~ operand2 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -24832,8 +25757,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -24872,7 +25802,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -25022,8 +25956,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -25136,7 +26075,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -25184,9 +26123,9 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -25389,12 +26328,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand1 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -25450,8 +26398,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -25490,7 +26443,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -25640,8 +26597,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -25754,12 +26716,21 @@ Module type_safety.
                                       |)
                                     |) in
                                   let~ operand2 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -25815,8 +26786,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -25855,7 +26831,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -26005,8 +26985,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -26119,7 +27104,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -26174,9 +27159,9 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -26379,12 +27364,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand1 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -26440,8 +27434,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -26480,7 +27479,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -26630,8 +27633,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -26744,12 +27752,21 @@ Module type_safety.
                                       |)
                                     |) in
                                   let~ operand2 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -26805,8 +27822,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -26845,7 +27867,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -26995,8 +28021,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -27109,7 +28140,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -27180,9 +28211,9 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -27365,10 +28396,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Not"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -27420,7 +28459,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -27455,7 +28498,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -27602,7 +28649,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -27709,7 +28762,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -27749,9 +28802,9 @@ Module type_safety.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -27948,12 +29001,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand1 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -28009,8 +29071,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -28049,7 +29116,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -28199,8 +29270,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -28313,12 +29389,21 @@ Module type_safety.
                                       |)
                                     |) in
                                   let~ operand2 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -28374,8 +29459,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -28414,7 +29504,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -28564,8 +29658,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -28678,7 +29777,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -28700,8 +29799,13 @@ Module type_safety.
                                                       M.read (|
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_binary_format::file_format::AbilitySet"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet"
+                                                              ]),
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -28878,9 +29982,9 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -29103,12 +30207,21 @@ Module type_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ operand1 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -29164,8 +30277,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -29204,7 +30322,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -29354,8 +30476,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -29468,12 +30595,21 @@ Module type_safety.
                                       |)
                                     |) in
                                   let~ operand2 :
-                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -29529,8 +30665,13 @@ Module type_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -29569,7 +30710,11 @@ Module type_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -29719,8 +30864,13 @@ Module type_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -29833,7 +30983,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -29882,7 +31032,7 @@ Module type_safety.
                                               Value.Bool true
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -30067,7 +31217,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30243,9 +31393,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -30279,9 +31436,14 @@ Module type_safety.
                           |) in
                         let~ type_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30317,9 +31479,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -30496,7 +31658,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30643,7 +31805,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30819,9 +31981,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -30855,9 +32024,14 @@ Module type_safety.
                           |) in
                         let~ type_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30893,9 +32067,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -31072,7 +32246,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31220,9 +32394,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31253,7 +32432,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31431,9 +32610,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -31467,9 +32653,14 @@ Module type_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31507,9 +32698,14 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31545,9 +32741,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -31724,7 +32920,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31868,9 +33064,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31901,7 +33102,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32079,9 +33280,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -32115,9 +33323,14 @@ Module type_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32155,9 +33368,14 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32193,9 +33411,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32372,7 +33590,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32516,9 +33734,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32549,7 +33772,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32723,9 +33946,16 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -32759,9 +33989,14 @@ Module type_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32799,9 +34034,14 @@ Module type_safety.
                           |) in
                         let~ type_args :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32837,9 +34077,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -33016,7 +34256,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33163,9 +34403,14 @@ Module type_safety.
                         let num := M.alloc (| γ1_1 |) in
                         let~ element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -33235,9 +34480,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -33273,7 +34518,8 @@ Module type_safety.
                                       0
                                     |) in
                                   let num_to_pop := M.copy (| γ0_0 |) in
-                                  let~ is_mismatched : Ty.path "bool" :=
+                                  let~ is_mismatched :
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -33364,15 +34610,20 @@ Module type_safety.
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
                                                           Some
-                                                            (Ty.function
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
                                                               [
-                                                                Ty.tuple
+                                                                Ty.function
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                      ]
                                                                   ]
-                                                              ]
-                                                              (Ty.path "bool")),
+                                                                  (Ty.path "bool")
+                                                              ]),
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -33430,7 +34681,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -33480,9 +34731,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -33668,10 +34919,18 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -33723,7 +34982,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -33758,7 +35021,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -33905,7 +35172,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -34013,9 +35286,14 @@ Module type_safety.
                           |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -34085,9 +35363,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -34155,9 +35433,9 @@ Module type_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -34340,9 +35618,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -34413,7 +35696,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -34554,9 +35837,14 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -34627,7 +35915,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -34767,10 +36055,17 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ operand_elem :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -34822,7 +36117,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -34857,7 +36156,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -35004,7 +36307,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -35111,10 +36420,17 @@ Module type_safety.
                             |)
                           |) in
                         let~ operand_vec :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -35166,7 +36482,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -35201,7 +36521,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -35348,7 +36672,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -35456,9 +36786,14 @@ Module type_safety.
                           |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -35528,9 +36863,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -35615,9 +36950,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -35735,10 +37070,17 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ operand_vec :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -35790,7 +37132,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -35825,7 +37171,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -35972,7 +37322,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -36080,9 +37436,14 @@ Module type_safety.
                           |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -36152,9 +37513,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -36222,9 +37583,9 @@ Module type_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -36411,10 +37772,17 @@ Module type_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let num := M.alloc (| γ1_1 |) in
                         let~ operand_vec :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -36466,7 +37834,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -36501,7 +37873,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -36648,7 +38024,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -36756,9 +38138,14 @@ Module type_safety.
                           |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -36828,9 +38215,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -36955,9 +38342,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -37114,10 +38501,17 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ operand_idx2 :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -37169,7 +38563,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -37204,7 +38602,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -37351,7 +38753,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -37458,10 +38866,17 @@ Module type_safety.
                             |)
                           |) in
                         let~ operand_idx1 :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -37513,7 +38928,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -37548,7 +38967,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -37695,7 +39118,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -37802,10 +39231,17 @@ Module type_safety.
                             |)
                           |) in
                         let~ operand_vec :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -37857,7 +39293,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -37892,7 +39332,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -38039,7 +39483,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -38145,9 +39595,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -38256,9 +39706,14 @@ Module type_safety.
                           |) in
                         let~ declared_element_type :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -38328,9 +39783,9 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -38445,10 +39900,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU16"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -38500,7 +39963,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -38535,7 +40002,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -38682,7 +40153,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -38788,9 +40265,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -38853,9 +40330,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -38993,10 +40470,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU32"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -39048,7 +40533,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -39083,7 +40572,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -39230,7 +40723,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -39336,9 +40835,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -39401,9 +40900,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -39541,10 +41040,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU256"
                           |) in
-                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
+                        let~ operand :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -39596,7 +41103,11 @@ Module type_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -39631,7 +41142,11 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -39778,7 +41293,13 @@ Module type_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path "move_binary_format::file_format::SignatureToken"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -39884,9 +41405,9 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -39949,9 +41470,9 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -40111,7 +41632,11 @@ Module type_safety.
         let type_args := M.alloc (| type_args |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -40283,12 +41808,12 @@ Module type_safety.
       ltac:(M.monadic
         (let token := M.alloc (| token |) in
         let subst := M.alloc (| subst |) in
-        M.catch_return (|
+        M.catch_return (Ty.path "move_binary_format::file_format::SignatureToken") (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -40353,7 +41878,11 @@ Module type_safety.
                   ]
                 |) in
               M.match_operator (|
-                Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                 token,
                 [
                   fun γ =>
@@ -40799,21 +42328,26 @@ Module type_safety.
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 Some
-                                                                  (Ty.function
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
                                                                     [
-                                                                      Ty.tuple
+                                                                      Ty.function
                                                                         [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
+                                                                          Ty.tuple
                                                                             [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::SignatureToken"
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                                ]
                                                                             ]
                                                                         ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken")),
+                                                                        (Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken")
+                                                                    ]),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -40982,9 +42516,9 @@ Module type_safety.
                           0
                         |) in
                       let idx := M.alloc (| γ1_0 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -40995,9 +42529,9 @@ Module type_safety.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -41168,9 +42702,14 @@ Module type_safety.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::option::Option")
+                (Ty.path "*")
                 []
-                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                ]),
             vector_ref_ty,
             [
               fun γ =>
@@ -41185,9 +42724,14 @@ Module type_safety.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                        ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -41201,9 +42745,14 @@ Module type_safety.
                           (M.match_operator (|
                             Some
                               (Ty.apply
-                                (Ty.path "core::option::Option")
+                                (Ty.path "*")
                                 []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -41240,9 +42789,14 @@ Module type_safety.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                        ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

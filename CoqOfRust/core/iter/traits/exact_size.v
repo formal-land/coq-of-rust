@@ -40,9 +40,9 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let lower := M.copy (| γ0_0 |) in
                         let upper := M.copy (| γ0_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               Value.Tuple
                                 [
@@ -65,7 +65,7 @@ Module iter.
                                   let left_val := M.copy (| γ0_0 |) in
                                   let right_val := M.copy (| γ0_1 |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -114,7 +114,11 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                                let~ kind :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"

@@ -243,9 +243,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _tuple1 :
             Ty.apply
-              (Ty.path "generics_phantom_type::PhantomTuple")
+              (Ty.path "*")
               []
-              [ Ty.path "char"; Ty.path "f32" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type::PhantomTuple")
+                  []
+                  [ Ty.path "char"; Ty.path "f32" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
@@ -253,9 +258,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _tuple2 :
             Ty.apply
-              (Ty.path "generics_phantom_type::PhantomTuple")
+              (Ty.path "*")
               []
-              [ Ty.path "char"; Ty.path "f64" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type::PhantomTuple")
+                  []
+                  [ Ty.path "char"; Ty.path "f64" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
@@ -263,9 +273,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _struct1 :
             Ty.apply
-              (Ty.path "generics_phantom_type::PhantomStruct")
+              (Ty.path "*")
               []
-              [ Ty.path "char"; Ty.path "f32" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type::PhantomStruct")
+                  []
+                  [ Ty.path "char"; Ty.path "f32" ]
+              ] :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"
@@ -276,9 +291,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _struct2 :
             Ty.apply
-              (Ty.path "generics_phantom_type::PhantomStruct")
+              (Ty.path "*")
               []
-              [ Ty.path "char"; Ty.path "f64" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type::PhantomStruct")
+                  []
+                  [ Ty.path "char"; Ty.path "f64" ]
+              ] :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"

@@ -338,51 +338,56 @@ Module interpreter_types.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                        Ty.tuple
                                           [
                                             Ty.apply
-                                              (Ty.path "ruint::Uint")
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
                                               [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ];
                                             Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
+                                              (Ty.path "&mut")
                                               []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]
                                           ]
                                       ]
                                   ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
+                                  (Ty.apply
+                                    (Ty.path "&mut")
                                     []
-                                ])),
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ])
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -498,31 +503,36 @@ Module interpreter_types.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                    Ty.tuple
                                       [
                                         Ty.apply
-                                          (Ty.path "ruint::Uint")
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
                                           [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
                                           ]
-                                          []
                                       ]
                                   ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [])),
+                                  (Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [])
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -613,20 +623,25 @@ Module interpreter_types.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
+                                    Ty.tuple
                                       [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
                                       ]
-                                      []
                                   ]
-                              ]
-                              (Ty.path "alloy_primitives::bits::address::Address")),
+                                  (Ty.path "alloy_primitives::bits::address::Address")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>

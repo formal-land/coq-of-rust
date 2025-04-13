@@ -295,11 +295,16 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
                 [
-                  Ty.path "constructors_return_value::ConstructorsReturnValue";
-                  Ty.path "constructors_return_value::ConstructorError"
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "constructors_return_value::ConstructorsReturnValue";
+                      Ty.path "constructors_return_value::ConstructorError"
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [
@@ -450,22 +455,10 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         M.read (|
           let~ value :
               Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
                 [
                   Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "constructors_return_value::AccountId";
-                      Ty.path "constructors_return_value::ConstructorError"
-                    ];
-                  Ty.path "constructors_return_value::LangError"
-                ] :=
-            M.copy (|
-              M.match_operator (|
-                Some
-                  (Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [
@@ -477,6 +470,28 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                           Ty.path "constructors_return_value::ConstructorError"
                         ];
                       Ty.path "constructors_return_value::LangError"
+                    ]
+                ] :=
+            M.copy (|
+              M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "constructors_return_value::AccountId";
+                              Ty.path "constructors_return_value::ConstructorError"
+                            ];
+                          Ty.path "constructors_return_value::LangError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [

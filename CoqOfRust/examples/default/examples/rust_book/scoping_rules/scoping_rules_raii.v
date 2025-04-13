@@ -16,9 +16,14 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       (M.read (|
         let~ _box1 :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -76,9 +81,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _box2 :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -97,12 +107,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _box3 :
               Ty.apply
-                (Ty.path "alloc::boxed::Box")
+                (Ty.path "*")
                 []
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -124,7 +139,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.use
           (M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -154,9 +169,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
-                      (let~ _ : Ty.tuple [] :=
+                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -190,7 +205,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],

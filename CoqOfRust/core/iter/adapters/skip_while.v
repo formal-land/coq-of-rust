@@ -314,7 +314,8 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ flag : Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ] :=
+                let~ flag :
+                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ] ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
@@ -325,7 +326,7 @@ Module iter.
                       |)
                     |)
                   |) in
-                let~ pred : Ty.apply (Ty.path "&mut") [] [ P ] :=
+                let~ pred : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ P ] ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
@@ -474,12 +475,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -500,7 +501,7 @@ Module iter.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -549,7 +550,7 @@ Module iter.
                                           init,
                                           M.read (|
                                             M.match_operator (|
-                                              Some Acc,
+                                              Some (Ty.apply (Ty.path "*") [] [ Acc ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -741,12 +742,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return Acc (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -767,7 +768,7 @@ Module iter.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply

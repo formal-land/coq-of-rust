@@ -19,10 +19,10 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let carry := M.alloc (| carry |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -62,9 +62,9 @@ Module algorithms.
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -108,7 +108,7 @@ Module algorithms.
                                           0
                                         |) in
                                       let i := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
                                           None,
                                           M.alloc (|
@@ -145,7 +145,8 @@ Module algorithms.
                                                   M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let lhs := M.copy (| γ0_0 |) in
                                                 let lhs := M.copy (| γ0_1 |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.write (|
                                                       M.SubPointer.get_array_field (|
@@ -155,7 +156,8 @@ Module algorithms.
                                                       M.read (| lhs |)
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.write (| carry, M.read (| lhs |) |)
                                                   |) in
@@ -195,10 +197,10 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let borrow := M.alloc (| borrow |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -238,9 +240,9 @@ Module algorithms.
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -284,7 +286,7 @@ Module algorithms.
                                           0
                                         |) in
                                       let i := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
                                           None,
                                           M.alloc (|
@@ -321,7 +323,8 @@ Module algorithms.
                                                   M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let lhs := M.copy (| γ0_0 |) in
                                                 let lhs := M.copy (| γ0_1 |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.write (|
                                                       M.SubPointer.get_array_field (|
@@ -331,7 +334,8 @@ Module algorithms.
                                                       M.read (| lhs |)
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.write (| borrow, M.read (| lhs |) |)
                                                   |) in

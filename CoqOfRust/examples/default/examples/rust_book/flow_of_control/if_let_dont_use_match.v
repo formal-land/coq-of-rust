@@ -23,13 +23,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ optional : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+        let~ optional :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 7 ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             optional,
             [
               fun γ =>
@@ -37,8 +41,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let i := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],

@@ -69,9 +69,17 @@ Module check_duplication.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                              (Ty.path "move_binary_format::errors::VMError")),
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "move_binary_format::errors::PartialVMError" ]
+                                  ]
+                                  (Ty.path "move_binary_format::errors::VMError")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -148,12 +156,16 @@ Module check_duplication.
       | [], [], [ module ] =>
         ltac:(M.monadic
           (let module := M.alloc (| module |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -291,9 +303,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -434,9 +446,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -574,9 +586,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -714,9 +726,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -855,9 +867,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -996,9 +1008,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1137,9 +1149,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1280,9 +1292,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1424,15 +1436,18 @@ Module check_duplication.
                     ]
                   |) in
                 let~ checker :
-                    Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker" :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::check_duplication::DuplicationChecker"
                       [ ("module", M.read (| module |)) ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1541,9 +1556,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1652,9 +1667,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1763,9 +1778,9 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1920,9 +1935,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2016,9 +2036,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2110,9 +2135,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2202,9 +2232,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2294,9 +2329,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2386,9 +2426,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2512,26 +2557,31 @@ Module check_duplication.
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     Some
-                                      (Ty.function
+                                      (Ty.apply
+                                        (Ty.path "*")
+                                        []
                                         [
-                                          Ty.tuple
+                                          Ty.function
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                              Ty.tuple
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructHandle"
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructHandle"
+                                                    ]
                                                 ]
                                             ]
-                                        ]
-                                        (Ty.tuple
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::ModuleHandleIndex";
-                                            Ty.path
-                                              "move_binary_format::file_format::IdentifierIndex"
-                                          ])),
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandleIndex";
+                                                Ty.path
+                                                  "move_binary_format::file_format::IdentifierIndex"
+                                              ])
+                                        ]),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -2636,9 +2686,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2730,9 +2785,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -2856,26 +2916,31 @@ Module check_duplication.
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     Some
-                                      (Ty.function
+                                      (Ty.apply
+                                        (Ty.path "*")
+                                        []
                                         [
-                                          Ty.tuple
+                                          Ty.function
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                              Ty.tuple
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionHandle"
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionHandle"
+                                                    ]
                                                 ]
                                             ]
-                                        ]
-                                        (Ty.tuple
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::ModuleHandleIndex";
-                                            Ty.path
-                                              "move_binary_format::file_format::IdentifierIndex"
-                                          ])),
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandleIndex";
+                                                Ty.path
+                                                  "move_binary_format::file_format::IdentifierIndex"
+                                              ])
+                                        ]),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -2974,9 +3039,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -3102,9 +3172,14 @@ Module check_duplication.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -3228,12 +3303,16 @@ Module check_duplication.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3419,12 +3498,16 @@ Module check_duplication.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3602,21 +3685,26 @@ Module check_duplication.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Some
-                                                    (Ty.function
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
                                                       [
-                                                        Ty.tuple
+                                                        Ty.function
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
+                                                            Ty.tuple
                                                               [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::StructDefinition"
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructDefinition"
+                                                                  ]
                                                               ]
                                                           ]
-                                                      ]
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::StructHandleIndex")),
+                                                          (Ty.path
+                                                            "move_binary_format::file_format::StructHandleIndex")
+                                                      ]),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -3677,10 +3765,10 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3803,9 +3891,9 @@ Module check_duplication.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3877,22 +3965,10 @@ Module check_duplication.
                                           let struct_def := M.copy (| γ1_1 |) in
                                           let~ fields :
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "*")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::FieldDefinition";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ] :=
-                                            M.copy (|
-                                              M.match_operator (|
-                                                Some
-                                                  (Ty.apply
                                                     (Ty.path "&")
                                                     []
                                                     [
@@ -3903,6 +3979,28 @@ Module check_duplication.
                                                           Ty.path
                                                             "move_binary_format::file_format::FieldDefinition";
                                                           Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ]
+                                                ] :=
+                                            M.copy (|
+                                              M.match_operator (|
+                                                Some
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldDefinition";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
                                                         ]
                                                     ]),
                                                 M.alloc (|
@@ -3943,9 +4041,9 @@ Module check_duplication.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -4018,7 +4116,7 @@ Module check_duplication.
                                               ]
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -4209,21 +4307,27 @@ Module check_duplication.
                                                                       ltac:(M.monadic
                                                                         (M.match_operator (|
                                                                           Some
-                                                                            (Ty.function
+                                                                            (Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
                                                                               [
-                                                                                Ty.tuple
+                                                                                Ty.function
                                                                                   [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
+                                                                                    Ty.tuple
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::file_format::FieldDefinition"
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_binary_format::file_format::FieldDefinition"
+                                                                                          ]
                                                                                       ]
                                                                                   ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::file_format::IdentifierIndex")),
+                                                                                  (Ty.path
+                                                                                    "move_binary_format::file_format::IdentifierIndex")
+                                                                              ]),
                                                                           M.alloc (| α0 |),
                                                                           [
                                                                             fun γ =>
@@ -4297,9 +4401,9 @@ Module check_duplication.
                             |)))
                       ]
                     |)) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4412,20 +4516,25 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
                                                   [
-                                                    Ty.tuple
+                                                    Ty.function
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
+                                                        Ty.tuple
                                                           [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::StructDefinition"
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::StructDefinition"
+                                                              ]
                                                           ]
                                                       ]
-                                                  ]
-                                                  (Ty.path "bool")),
+                                                      (Ty.path "bool")
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -4577,11 +4686,16 @@ Module check_duplication.
                   |) in
                 let~ implemented_struct_handles :
                     Ty.apply
-                      (Ty.path "std::collections::hash::set::HashSet")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_binary_format::file_format::StructHandleIndex";
-                        Ty.path "std::hash::random::RandomState"
+                        Ty.apply
+                          (Ty.path "std::collections::hash::set::HashSet")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::StructHandleIndex";
+                            Ty.path "std::hash::random::RandomState"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -4747,21 +4861,26 @@ Module check_duplication.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some
-                                          (Ty.function
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
                                             [
-                                              Ty.tuple
+                                              Ty.function
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
+                                                  Ty.tuple
                                                     [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::StructDefinition"
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefinition"
+                                                        ]
                                                     ]
                                                 ]
-                                            ]
-                                            (Ty.path
-                                              "move_binary_format::file_format::StructHandleIndex")),
+                                                (Ty.path
+                                                  "move_binary_format::file_format::StructHandleIndex")
+                                            ]),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -4783,9 +4902,9 @@ Module check_duplication.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4883,9 +5002,14 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "bool")),
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                                      (Ty.path "bool")
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -4893,8 +5017,13 @@ Module check_duplication.
                                                     (let x := M.copy (| γ |) in
                                                     M.read (|
                                                       let~ y :
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructHandleIndex" :=
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructHandleIndex"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.path
@@ -5169,12 +5298,16 @@ Module check_duplication.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5352,21 +5485,26 @@ Module check_duplication.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Some
-                                                    (Ty.function
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
                                                       [
-                                                        Ty.tuple
+                                                        Ty.function
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
+                                                            Ty.tuple
                                                               [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::FunctionDefinition"
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                                  ]
                                                               ]
                                                           ]
-                                                      ]
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::FunctionHandleIndex")),
+                                                          (Ty.path
+                                                            "move_binary_format::file_format::FunctionHandleIndex")
+                                                      ]),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -5427,10 +5565,10 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5557,9 +5695,9 @@ Module check_duplication.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -5631,11 +5769,16 @@ Module check_duplication.
                                           let function_def := M.copy (| γ1_1 |) in
                                           let~ acquires :
                                               Ty.apply
-                                                (Ty.path "core::slice::iter::Iter")
+                                                (Ty.path "*")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinitionIndex"
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.call_closure (|
@@ -5710,7 +5853,7 @@ Module check_duplication.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -5808,9 +5951,9 @@ Module check_duplication.
                             |)))
                       ]
                     |)) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5924,20 +6067,25 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
                                                   [
-                                                    Ty.tuple
+                                                    Ty.function
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
+                                                        Ty.tuple
                                                           [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FunctionDefinition"
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::FunctionDefinition"
+                                                              ]
                                                           ]
                                                       ]
-                                                  ]
-                                                  (Ty.path "bool")),
+                                                      (Ty.path "bool")
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -6089,11 +6237,16 @@ Module check_duplication.
                   |) in
                 let~ implemented_function_handles :
                     Ty.apply
-                      (Ty.path "std::collections::hash::set::HashSet")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_binary_format::file_format::FunctionHandleIndex";
-                        Ty.path "std::hash::random::RandomState"
+                        Ty.apply
+                          (Ty.path "std::collections::hash::set::HashSet")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                            Ty.path "std::hash::random::RandomState"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -6261,21 +6414,26 @@ Module check_duplication.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some
-                                          (Ty.function
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
                                             [
-                                              Ty.tuple
+                                              Ty.function
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
+                                                  Ty.tuple
                                                     [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::FunctionDefinition"
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionDefinition"
+                                                        ]
                                                     ]
                                                 ]
-                                            ]
-                                            (Ty.path
-                                              "move_binary_format::file_format::FunctionHandleIndex")),
+                                                (Ty.path
+                                                  "move_binary_format::file_format::FunctionHandleIndex")
+                                            ]),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -6297,9 +6455,9 @@ Module check_duplication.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -6397,9 +6555,14 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "bool")),
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                                      (Ty.path "bool")
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -6407,8 +6570,13 @@ Module check_duplication.
                                                     (let x := M.copy (| γ |) in
                                                     M.read (|
                                                       let~ y :
-                                                          Ty.path
-                                                            "move_binary_format::file_format::FunctionHandleIndex" :=
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionHandleIndex"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.path
@@ -6640,21 +6808,26 @@ Module check_duplication.
       | [], [ T ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
-          M.catch_return (|
+          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ uniq :
                     Ty.apply
-                      (Ty.path "std::collections::hash::set::HashSet")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.associated_in_trait
-                          "core::iter::traits::collect::IntoIterator"
+                        Ty.apply
+                          (Ty.path "std::collections::hash::set::HashSet")
                           []
-                          []
-                          T
-                          "Item";
-                        Ty.path "std::hash::random::RandomState"
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              T
+                              "Item";
+                            Ty.path "std::hash::random::RandomState"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -6690,10 +6863,10 @@ Module check_duplication.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -6784,9 +6957,9 @@ Module check_duplication.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -6855,7 +7028,7 @@ Module check_duplication.
                                           let i := M.copy (| γ1_0 |) in
                                           let x := M.copy (| γ1_1 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>

@@ -168,9 +168,14 @@ Module utilities.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "alloc::borrow::Cow")
+                (Ty.path "*")
                 []
-                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]),
+                [
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -263,9 +268,13 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                  (let~ padded :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ] :=
                     M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -363,9 +372,14 @@ Module utilities.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "alloc::borrow::Cow")
+                (Ty.path "*")
                 []
-                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                [
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -408,9 +422,14 @@ Module utilities.
                 ltac:(M.monadic
                   (let~ padded :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -421,7 +440,7 @@ Module utilities.
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -521,9 +540,14 @@ Module utilities.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "alloc::borrow::Cow")
+                (Ty.path "*")
                 []
-                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]),
+                [
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -616,9 +640,13 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                  (let~ padded :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ] :=
                     M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -723,9 +751,14 @@ Module utilities.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "alloc::borrow::Cow")
+                (Ty.path "*")
                 []
-                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                [
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -768,9 +801,14 @@ Module utilities.
                 ltac:(M.monadic
                   (let~ padded :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -781,7 +819,7 @@ Module utilities.
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -946,13 +984,18 @@ Module utilities.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "&")
+                (Ty.path "*")
                 []
                 [
                   Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
+                    (Ty.path "&")
                     []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        []
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [

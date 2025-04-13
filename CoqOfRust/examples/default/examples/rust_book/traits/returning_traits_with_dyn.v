@@ -94,11 +94,16 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "alloc::boxed::Box")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ]),
               M.alloc (| Value.Tuple [] |),
               [
@@ -196,14 +201,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ random_number : Ty.path "f64" := M.copy (| UnsupportedLiteral |) in
+        let~ random_number : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
+          M.copy (| UnsupportedLiteral |) in
         let~ animal :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
               [
-                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                Ty.path "alloc::alloc::Global"
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
               ] :=
           M.alloc (|
             M.call_closure (|
@@ -218,8 +229,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| random_number |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

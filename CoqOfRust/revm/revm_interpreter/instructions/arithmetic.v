@@ -19,12 +19,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -92,7 +92,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -208,7 +208,7 @@ Module instructions.
                         let γ2_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| op2 |) |),
@@ -265,12 +265,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -338,7 +338,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -454,7 +454,7 @@ Module instructions.
                         let γ2_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| op2 |) |),
@@ -511,12 +511,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -584,7 +584,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -700,7 +700,7 @@ Module instructions.
                         let γ2_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| op2 |) |),
@@ -759,12 +759,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -832,7 +832,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -949,7 +949,7 @@ Module instructions.
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -986,7 +986,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.write (|
                                       M.deref (| M.read (| op2 |) |),
@@ -1049,12 +1049,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1122,7 +1122,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -1238,7 +1238,7 @@ Module instructions.
                         let γ2_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| op2 |) |),
@@ -1290,12 +1290,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1363,7 +1363,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -1480,7 +1480,7 @@ Module instructions.
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -1517,7 +1517,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.write (|
                                       M.deref (| M.read (| op2 |) |),
@@ -1580,12 +1580,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1653,7 +1653,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -1817,12 +1817,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1890,7 +1890,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -2067,12 +2067,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2140,7 +2140,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -2318,10 +2318,11 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ spec_id : Ty.path "revm_specification::hardfork::SpecId" :=
+                let~ spec_id :
+                    Ty.apply (Ty.path "*") [] [ Ty.path "revm_specification::hardfork::SpecId" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_specification::hardfork::SpecId",
@@ -2427,9 +2428,9 @@ Module instructions.
                         let γ2_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                         let op1 := M.copy (| γ2_0 |) in
                         let op2 := M.copy (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -2453,7 +2454,7 @@ Module instructions.
                                     |) in
                                   let gas_used := M.copy (| γ0_0 |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -2522,7 +2523,8 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.tuple [],
@@ -2569,7 +2571,7 @@ Module instructions.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -2608,7 +2610,7 @@ Module instructions.
                                   |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| op2 |) |),
@@ -2672,12 +2674,12 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "unit") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2745,7 +2747,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -2862,7 +2864,7 @@ Module instructions.
                         let ext := M.copy (| γ2_0 |) in
                         let x := M.copy (| γ1_1 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2932,7 +2934,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ ext : Ty.path "u64" :=
+                                let~ ext : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                   M.copy (|
                                     M.SubPointer.get_array_field (|
                                       M.deref (|
@@ -2964,7 +2966,7 @@ Module instructions.
                                       Value.Integer IntegerKind.Usize 0
                                     |)
                                   |) in
-                                let~ bit_index : Ty.path "usize" :=
+                                let~ bit_index : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                   M.alloc (|
                                     M.cast
                                       (Ty.path "usize")
@@ -2981,7 +2983,7 @@ Module instructions.
                                         ]
                                       |))
                                   |) in
-                                let~ bit : Ty.path "bool" :=
+                                let~ bit : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -3008,12 +3010,17 @@ Module instructions.
                                   |) in
                                 let~ mask :
                                     Ty.apply
-                                      (Ty.path "ruint::Uint")
+                                      (Ty.path "*")
+                                      []
                                       [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      [] :=
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3121,7 +3128,7 @@ Module instructions.
                                       ]
                                     |)
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.write (|
                                       M.deref (| M.read (| x |) |),
@@ -3129,12 +3136,17 @@ Module instructions.
                                         M.match_operator (|
                                           Some
                                             (Ty.apply
-                                              (Ty.path "ruint::Uint")
+                                              (Ty.path "*")
+                                              []
                                               [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []),
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>

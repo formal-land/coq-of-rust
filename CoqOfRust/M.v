@@ -701,9 +701,9 @@ Definition catch (ty : option Ty.t) (body : M) (handler : Exception.t -> M) : M 
   | inr exception => handler exception
   end).
 
-Definition catch_return (body : M) : M :=
+Definition catch_return (ty : Ty.t) (body : M) : M :=
   catch
-    None
+    (Some ty)
     body
     (fun exception =>
       match exception with

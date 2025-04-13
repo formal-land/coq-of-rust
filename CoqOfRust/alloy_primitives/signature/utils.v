@@ -64,12 +64,12 @@ Module signature.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.catch_return (|
+          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -101,7 +101,7 @@ Module signature.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ cmp : Ty.path "u64" :=
+                let~ cmp : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.cast
                       (Ty.path "u64")
@@ -159,7 +159,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               v,
               [
                 fun γ =>
@@ -239,7 +239,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "u8"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
               v,
               [
                 fun γ =>

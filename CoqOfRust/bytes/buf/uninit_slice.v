@@ -198,17 +198,22 @@ Module buf.
                 M.read (|
                   let~ maybe_init :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
                         [
                           Ty.apply
-                            (Ty.path "slice")
+                            (Ty.path "&mut")
                             []
                             [
                               Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                (Ty.path "slice")
                                 []
-                                [ Ty.path "u8" ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.path "u8" ]
+                                ]
                             ]
                         ] :=
                     M.alloc (|
@@ -309,9 +314,9 @@ Module buf.
             let index := M.alloc (| index |) in
             let byte := M.alloc (| byte |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -440,9 +445,9 @@ Module buf.
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     Value.Tuple
                       [
@@ -486,7 +491,7 @@ Module buf.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -513,7 +518,11 @@ Module buf.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                      let~ kind :
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
                                           Value.StructTuple "core::panicking::AssertKind::Eq" []
                                         |) in
@@ -557,7 +566,7 @@ Module buf.
                         |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

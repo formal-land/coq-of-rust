@@ -88,9 +88,14 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -177,7 +182,7 @@ Module option.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -189,7 +194,7 @@ Module option.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -212,7 +217,7 @@ Module option.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               self,
               [
                 fun γ =>
@@ -268,7 +273,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -310,7 +315,7 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               self,
               [
                 fun γ =>
@@ -402,7 +407,7 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               self,
               [
                 fun γ =>
@@ -462,7 +467,11 @@ Module option.
           M.read (|
             M.match_operator (|
               Some
-                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                  ]),
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -513,9 +522,14 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  ]),
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -569,9 +583,14 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
@@ -682,9 +701,18 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::pin::Pin")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                      ]
                   ]),
               M.alloc (|
                 M.call_closure (|
@@ -790,7 +818,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ discriminant : Ty.path "isize" :=
+            let~ discriminant : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -1042,7 +1070,7 @@ Module option.
           let msg := M.alloc (| msg |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1095,7 +1123,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1149,7 +1177,7 @@ Module option.
           let default := M.alloc (| default |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1203,7 +1231,7 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1270,7 +1298,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1335,7 +1363,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some T,
+              Some (Ty.apply (Ty.path "*") [] [ T ]),
               self,
               [
                 fun γ =>
@@ -1392,7 +1420,8 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ U ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]),
               self,
               [
                 fun γ =>
@@ -1456,9 +1485,9 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1471,7 +1500,7 @@ Module option.
                           0
                         |) in
                       let x := M.alloc (| γ0_0 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -1527,7 +1556,7 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some U,
+              Some (Ty.apply (Ty.path "*") [] [ U ]),
               self,
               [
                 fun γ =>
@@ -1592,7 +1621,7 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some U,
+              Some (Ty.apply (Ty.path "*") [] [ U ]),
               self,
               [
                 fun γ =>
@@ -1666,7 +1695,11 @@ Module option.
           let err := M.alloc (| err |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::result::Result") [] [ T; E ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
               self,
               [
                 fun γ =>
@@ -1717,7 +1750,11 @@ Module option.
           let err := M.alloc (| err |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::result::Result") [] [ T; E ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
               self,
               [
                 fun γ =>
@@ -1824,13 +1861,24 @@ Module option.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                                ])),
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::deref::Deref"
+                                        []
+                                        []
+                                        T
+                                        "Target"
+                                    ])
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -1934,13 +1982,24 @@ Module option.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                              (Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                                ])),
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::deref::Deref"
+                                        []
+                                        []
+                                        T
+                                        "Target"
+                                    ])
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -2088,7 +2147,8 @@ Module option.
           let optb := M.alloc (| optb |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ U ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]),
               self,
               [
                 fun γ =>
@@ -2136,7 +2196,8 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ U ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]),
               self,
               [
                 fun γ =>
@@ -2199,12 +2260,12 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let predicate := M.alloc (| predicate |) in
-          M.catch_return (|
+          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2218,7 +2279,7 @@ Module option.
                             |) in
                           let x := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2300,7 +2361,8 @@ Module option.
           let optb := M.alloc (| optb |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -2349,7 +2411,8 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -2410,7 +2473,8 @@ Module option.
           let optb := M.alloc (| optb |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| optb |) ] |),
               [
                 fun γ =>
@@ -2472,7 +2536,7 @@ Module option.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.write (|
                       M.deref (| M.read (| self |) |),
@@ -2570,7 +2634,8 @@ Module option.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some (Ty.function [ Ty.tuple [] ] T),
+                                  Some
+                                    (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] T ]),
                                   M.alloc (| α0 |),
                                   [ fun γ => ltac:(M.monadic (M.read (| value |))) ]
                                 |)))
@@ -2680,9 +2745,9 @@ Module option.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2690,7 +2755,7 @@ Module option.
                           (let γ := self in
                           let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| self |) |),
@@ -2823,7 +2888,8 @@ Module option.
           let predicate := M.alloc (| predicate |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2943,7 +3009,11 @@ Module option.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ] ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -3004,7 +3074,8 @@ Module option.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ R ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ R ] ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -3080,10 +3151,15 @@ Module option.
           M.read (|
             M.match_operator (|
               Some
-                (Ty.tuple
+                (Ty.apply
+                  (Ty.path "*")
+                  []
                   [
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                    Ty.apply (Ty.path "core::option::Option") [] [ U ]
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                        Ty.apply (Ty.path "core::option::Option") [] [ U ]
+                      ]
                   ]),
               self,
               [
@@ -3154,7 +3230,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -3205,7 +3282,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -3276,7 +3354,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -3327,7 +3406,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -3401,9 +3481,14 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -3533,7 +3618,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>
@@ -3593,7 +3679,7 @@ Module option.
           let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
               [
                 fun γ =>
@@ -3985,7 +4071,7 @@ Module option.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -4093,7 +4179,12 @@ Module option.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -4224,7 +4315,7 @@ Module option.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -4486,7 +4577,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ len : Ty.path "usize" :=
+            let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "usize",
@@ -5600,28 +5691,33 @@ Module option.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::GenericShunt")
-                                      []
+                                    Ty.tuple
                                       [
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::collect::IntoIterator"
-                                          []
-                                          []
-                                          I
-                                          "IntoIter";
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "core::iter::adapters::GenericShunt")
                                           []
-                                          [ Ty.path "core::convert::Infallible" ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              I
+                                              "IntoIter";
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::convert::Infallible" ]
+                                          ]
                                       ]
                                   ]
-                              ]
-                              V),
+                                  V
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -5716,14 +5812,19 @@ Module option.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "core::ops::control_flow::ControlFlow")
                       []
-                      [ Ty.path "core::convert::Infallible" ];
-                    T
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::convert::Infallible" ];
+                        T
+                      ]
                   ]),
               self,
               [
@@ -5789,7 +5890,8 @@ Module option.
           (let residual := M.alloc (| residual |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               residual,
               [
                 fun γ =>
@@ -5893,7 +5995,8 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
               self,
               [
                 fun γ =>

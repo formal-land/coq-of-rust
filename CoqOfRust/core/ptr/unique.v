@@ -140,9 +140,14 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

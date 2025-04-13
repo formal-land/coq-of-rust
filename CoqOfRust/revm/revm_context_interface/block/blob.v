@@ -271,7 +271,7 @@ Module block.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -364,7 +364,7 @@ Module block.
           ltac:(M.monadic
             (let excess_blob_gas := M.alloc (| excess_blob_gas |) in
             M.read (|
-              let~ blob_gasprice : Ty.path "u128" :=
+              let~ blob_gasprice : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -497,9 +497,9 @@ Module block.
           let numerator := M.alloc (| numerator |) in
           let denominator := M.alloc (| denominator |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -515,7 +515,7 @@ Module block.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -537,7 +537,11 @@ Module block.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    let~ kind :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Ne" []
                                       |) in
@@ -611,15 +615,17 @@ Module block.
                       |)))
                 ]
               |) in
-            let~ factor : Ty.path "u128" :=
+            let~ factor : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (| M.cast (Ty.path "u128") (M.read (| factor |)) |) in
-            let~ numerator : Ty.path "u128" :=
+            let~ numerator : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (| M.cast (Ty.path "u128") (M.read (| numerator |)) |) in
-            let~ denominator : Ty.path "u128" :=
+            let~ denominator : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
-            let~ i : Ty.path "u128" := M.alloc (| Value.Integer IntegerKind.U128 1 |) in
-            let~ output : Ty.path "u128" := M.alloc (| Value.Integer IntegerKind.U128 0 |) in
-            let~ numerator_accum : Ty.path "u128" :=
+            let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
+              M.alloc (| Value.Integer IntegerKind.U128 1 |) in
+            let~ output : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
+              M.alloc (| Value.Integer IntegerKind.U128 0 |) in
+            let~ numerator_accum : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u128",
@@ -627,12 +633,12 @@ Module block.
                   [ M.read (| factor |); M.read (| denominator |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.loop (|
                 Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -648,7 +654,7 @@ Module block.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               let β := output in
                               M.write (|
@@ -660,7 +666,7 @@ Module block.
                                 |)
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 numerator_accum,
@@ -682,7 +688,7 @@ Module block.
                                 |)
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               let β := i in
                               M.write (|
@@ -700,7 +706,7 @@ Module block.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)

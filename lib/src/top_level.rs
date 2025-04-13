@@ -240,7 +240,8 @@ fn compile_fn_sig_and_body<'a>(
     let args = body.map(|body| get_args(env, body, decl.inputs));
     let ret_ty =
         body.map(|body| compile_fn_ret_ty(env, &body.value.hir_id.owner.def_id, &decl.output));
-    let body = body.and_then(|body| compile_function_body(env, args.as_ref(), body, is_axiom));
+    let body = body
+        .and_then(|body| compile_function_body(env, args.as_ref(), body, is_axiom, ret_ty.clone()));
 
     Rc::new(FnSigAndBody { args, ret_ty, body })
 }
@@ -895,6 +896,7 @@ fn compile_function_body(
     args: Option<&FnArgs>,
     body: &rustc_hir::Body,
     is_axiom: bool,
+    ret_ty: Option<Rc<CoqType>>,
 ) -> Option<Rc<Expr>> {
     if env.axiomatize || is_axiom {
         return None;
@@ -907,8 +909,13 @@ fn compile_function_body(
     }
 
     let body_without_bindings = if body_without_bindings.has_return() {
+        let ret_ty = ret_ty.unwrap_or_else(|| CoqType::path(&["Expected ret_ty"]));
+
         Rc::new(Expr::Call {
-            func: Expr::local_var("M.catch_return"),
+            func: Rc::new(Expr::CallTy {
+                func: Expr::local_var("M.catch_return"),
+                ty: ret_ty,
+            }),
             args: vec![Rc::new(Expr::Lambda {
                 args: vec![],
                 body: body_without_bindings,

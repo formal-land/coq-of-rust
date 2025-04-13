@@ -28,12 +28,16 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       let begin := M.alloc (| begin |) in
       let items := M.alloc (| items |) in
       let end_ := M.alloc (| end_ |) in
-      M.catch_return (|
+      M.catch_return
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
         ltac:(M.monadic
           (M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -184,12 +188,17 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 ]
               |) in
             let~ items :
-                Ty.associated_in_trait
-                  "core::iter::traits::collect::IntoIterator"
+                Ty.apply
+                  (Ty.path "*")
                   []
-                  []
-                  impl_IntoIterator_Item___T_
-                  "IntoIter" :=
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      impl_IntoIterator_Item___T_
+                      "IntoIter"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.associated_in_trait
@@ -210,9 +219,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   [ M.read (| items |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -245,9 +254,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           0
                         |) in
                       let x := M.copy (| γ0_0 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -409,7 +418,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         |) in
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.associated_in_trait
@@ -442,9 +451,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -492,9 +501,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                   0
                                                 |) in
                                               let x := M.copy (| γ0_0 |) in
-                                              let~ _ : Ty.tuple [] :=
+                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -686,9 +695,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

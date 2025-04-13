@@ -87,7 +87,8 @@ Module instructions.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                    Some
+                      (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                     self,
                     [
                       fun γ =>
@@ -163,7 +164,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "i8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -175,7 +176,7 @@ Module instructions.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "i8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -245,7 +246,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "i8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -257,7 +258,7 @@ Module instructions.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "i8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -317,7 +318,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "i8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -329,7 +330,7 @@ Module instructions.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "i8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -381,7 +382,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.path "i8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i8",
@@ -526,7 +527,11 @@ Module instructions.
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "revm_interpreter::instructions::i256::Sign"),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_interpreter::instructions::i256::Sign" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -635,7 +640,11 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let~ sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+            let~ sign :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -643,9 +652,9 @@ Module instructions.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -678,7 +687,7 @@ Module instructions.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -718,7 +727,7 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 let β :=
                   M.SubPointer.get_array_field (|
@@ -786,7 +795,7 @@ Module instructions.
         ltac:(M.monadic
           (let op := M.alloc (| op |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (| M.read (| op |) |),
@@ -863,7 +872,11 @@ Module instructions.
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
           M.read (|
-            let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+            let~ first_sign :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -871,7 +884,11 @@ Module instructions.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |) ]
                 |)
               |) in
-            let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+            let~ second_sign :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -880,7 +897,7 @@ Module instructions.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -978,10 +995,18 @@ Module instructions.
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []) (|
             ltac:(M.monadic
               (M.read (|
-                let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                let~ second_sign :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -998,9 +1023,9 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1064,7 +1089,11 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                let~ first_sign :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -1081,9 +1110,9 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1236,9 +1265,14 @@ Module instructions.
                   |) in
                 let~ d :
                     Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [] :=
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1266,7 +1300,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1286,9 +1320,14 @@ Module instructions.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      []),
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1459,10 +1498,18 @@ Module instructions.
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []) (|
             ltac:(M.monadic
               (M.read (|
-                let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                let~ first_sign :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -1479,9 +1526,9 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1545,7 +1592,11 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                let~ second_sign :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_interpreter::instructions::i256::Sign",
@@ -1562,9 +1613,9 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1630,9 +1681,14 @@ Module instructions.
                   |) in
                 let~ r :
                     Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [] :=
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1660,7 +1716,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1680,9 +1736,14 @@ Module instructions.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      []),
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

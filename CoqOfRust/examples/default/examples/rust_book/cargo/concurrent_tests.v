@@ -16,7 +16,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let o := M.alloc (| o |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           o,
           [
             fun γ =>
@@ -24,7 +24,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _a := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -58,7 +58,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -121,7 +121,7 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file : Ty.path "std::fs::File" :=
+          let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "std::fs::File",
@@ -208,7 +208,7 @@ Module tests.
             |) in
           M.use
             (M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -238,9 +238,9 @@ Module tests.
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
+                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
@@ -275,7 +275,7 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -382,7 +382,7 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file : Ty.path "std::fs::File" :=
+          let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "std::fs::File",
@@ -469,7 +469,7 @@ Module tests.
             |) in
           M.use
             (M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -499,9 +499,9 @@ Module tests.
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
+                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
@@ -536,7 +536,7 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],

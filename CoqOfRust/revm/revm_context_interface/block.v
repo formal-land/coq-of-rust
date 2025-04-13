@@ -58,15 +58,20 @@ Module block.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.path
-                                      "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                    Ty.tuple
+                                      [
+                                        Ty.path
+                                          "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                      ]
                                   ]
-                              ]
-                              (Ty.path "u128")),
+                                  (Ty.path "u128")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -144,15 +149,20 @@ Module block.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.path
-                                      "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                    Ty.tuple
+                                      [
+                                        Ty.path
+                                          "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                      ]
                                   ]
-                              ]
-                              (Ty.path "u64")),
+                                  (Ty.path "u64")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>

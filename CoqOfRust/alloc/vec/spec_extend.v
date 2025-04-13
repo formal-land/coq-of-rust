@@ -122,8 +122,8 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
-                let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -165,7 +165,7 @@ Module vec.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -286,7 +286,11 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+              let~ slice :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
@@ -299,7 +303,7 @@ Module vec.
                     [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

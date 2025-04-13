@@ -142,7 +142,7 @@ Module Impl_basic_contract_caller_OtherContract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -224,7 +224,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
         M.read (|
-          let~ other_contract : Ty.path "basic_contract_caller::OtherContract" :=
+          let~ other_contract :
+              Ty.apply (Ty.path "*") [] [ Ty.path "basic_contract_caller::OtherContract" ] :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
@@ -259,7 +260,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

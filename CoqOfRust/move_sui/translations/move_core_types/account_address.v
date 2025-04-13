@@ -435,13 +435,18 @@ Module account_address.
           (M.read (|
             let~ addr :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [ Ty.path "u8" ] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_array_field (|
@@ -492,13 +497,18 @@ Module account_address.
           (M.read (|
             let~ addr :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [ Ty.path "u8" ] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_array_field (|
@@ -547,13 +557,18 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ rng : Ty.path "rand_core::os::OsRng" :=
+            let~ rng : Ty.apply (Ty.path "*") [] [ Ty.path "rand_core::os::OsRng" ] :=
               M.alloc (| Value.StructTuple "rand_core::os::OsRng" [] |) in
             let~ buf :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [ Ty.path "u8" ] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -714,7 +729,7 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ hex_str : Ty.path "alloc::string::String" :=
+            let~ hex_str : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "alloc::string::String",
@@ -795,7 +810,7 @@ Module account_address.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "alloc::string::String"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -934,12 +949,19 @@ Module account_address.
       | [], [], [ literal ] =>
         ltac:(M.monadic
           (let literal := M.alloc (| literal |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -986,7 +1008,7 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ hex_len : Ty.path "usize" :=
+                let~ hex_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
@@ -1004,11 +1026,16 @@ Module account_address.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_core_types::account_address::AccountAddress";
-                        Ty.path "move_core_types::account_address::AccountAddressParseError"
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.path "move_core_types::account_address::AccountAddressParseError"
+                          ]
                       ]),
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1041,7 +1068,8 @@ Module account_address.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ hex_str : Ty.path "alloc::string::String" :=
+                        let~ hex_str :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "alloc::string::String",
@@ -1069,10 +1097,10 @@ Module account_address.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1130,9 +1158,9 @@ Module account_address.
                                     M.loop (|
                                       Ty.tuple [],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1180,7 +1208,8 @@ Module account_address.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.tuple [],
@@ -1206,7 +1235,7 @@ Module account_address.
                                     |)))
                               ]
                             |)) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -1354,7 +1383,7 @@ Module account_address.
             M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
-                let~ res : Ty.path "alloc::string::String" :=
+                let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "alloc::string::String",
@@ -1562,10 +1591,15 @@ Module account_address.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "hex::error::FromHexError" ] ]
-                                  (Ty.path
-                                    "move_core_types::account_address::AccountAddressParseError")),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "hex::error::FromHexError" ] ]
+                                      (Ty.path
+                                        "move_core_types::account_address::AccountAddressParseError")
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1604,7 +1638,7 @@ Module account_address.
             M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
-                let~ res : Ty.path "alloc::string::String" :=
+                let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "alloc::string::String",
@@ -1815,10 +1849,15 @@ Module account_address.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "core::array::TryFromSliceError" ] ]
-                                  (Ty.path
-                                    "move_core_types::account_address::AccountAddressParseError")),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "core::array::TryFromSliceError" ] ]
+                                      (Ty.path
+                                        "move_core_types::account_address::AccountAddressParseError")
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2172,12 +2211,16 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2198,9 +2241,9 @@ Module account_address.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2331,10 +2374,10 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -2374,9 +2417,9 @@ Module account_address.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2423,9 +2466,9 @@ Module account_address.
                                               0
                                             |) in
                                           let byte := M.copy (| γ0_0 |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -2708,12 +2751,16 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2734,9 +2781,9 @@ Module account_address.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2867,10 +2914,10 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -2910,9 +2957,9 @@ Module account_address.
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2959,9 +3006,9 @@ Module account_address.
                                               0
                                             |) in
                                           let byte := M.copy (| γ0_0 |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -3656,11 +3703,16 @@ Module account_address.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::account_address::AccountAddress";
-                    Ty.path "move_core_types::account_address::AccountAddressParseError"
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "move_core_types::account_address::AccountAddress";
+                        Ty.path "move_core_types::account_address::AccountAddressParseError"
+                      ]
                   ]),
               M.alloc (| Value.Tuple [] |),
               [
@@ -3756,17 +3808,29 @@ Module account_address.
       | [], [ D ], [ deserializer ] =>
         ltac:(M.monadic
           (let deserializer := M.alloc (| deserializer |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_core_types::account_address::AccountAddress";
-                        Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                          ]
                       ]),
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3790,10 +3854,10 @@ Module account_address.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ s : Ty.path "alloc::string::String" :=
+                        let~ s : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "alloc::string::String"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4036,10 +4100,18 @@ Module account_address.
                     fun γ =>
                       ltac:(M.monadic
                         (let~ value :
-                            Ty.path "move_core_types::account_address::deserialize::Value" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_core_types::account_address::deserialize::Value" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_core_types::account_address::deserialize::Value"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_core_types::account_address::deserialize::Value"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4258,11 +4330,16 @@ Module account_address.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
-                    Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                      ]
                   ]),
               M.alloc (| Value.Tuple [] |),
               [

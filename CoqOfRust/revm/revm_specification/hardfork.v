@@ -194,7 +194,7 @@ Module hardfork.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -500,7 +500,7 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u8" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -512,7 +512,7 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u8" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -582,7 +582,7 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u8" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -594,7 +594,7 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u8" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -654,7 +654,7 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "u8" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -666,7 +666,7 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "u8" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -718,7 +718,7 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "u8" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -777,9 +777,14 @@ Module hardfork.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "revm_specification::hardfork::SpecId" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "revm_specification::hardfork::SpecId" ]
+                  ]),
               value,
               [
                 fun γ =>
@@ -1326,7 +1331,7 @@ Module hardfork.
           (let name := M.alloc (| name |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "revm_specification::hardfork::SpecId"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_specification::hardfork::SpecId" ]),
               name,
               [
                 fun γ =>
@@ -1545,7 +1550,7 @@ Module hardfork.
           (let spec_id := M.alloc (| spec_id |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
               spec_id,
               [
                 fun γ =>

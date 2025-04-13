@@ -106,15 +106,20 @@ Module iter.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.associated_in_trait
-                          "core::ops::coroutine::Coroutine"
+                        Ty.apply
+                          (Ty.path "core::option::Option")
                           []
-                          [ Ty.tuple [] ]
-                          G
-                          "Yield"
+                          [
+                            Ty.associated_in_trait
+                              "core::ops::coroutine::Coroutine"
+                              []
+                              [ Ty.tuple [] ]
+                              G
+                              "Yield"
+                          ]
                       ]),
                   M.alloc (|
                     M.call_closure (|

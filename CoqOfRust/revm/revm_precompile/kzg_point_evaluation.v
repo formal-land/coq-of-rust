@@ -121,12 +121,19 @@ Module kzg_point_evaluation.
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -181,9 +188,9 @@ Module kzg_point_evaluation.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -270,7 +277,11 @@ Module kzg_point_evaluation.
                   ]
                 |) in
               let~ versioned_hash :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -344,7 +355,11 @@ Module kzg_point_evaluation.
                   |)
                 |) in
               let~ commitment :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -420,9 +435,9 @@ Module kzg_point_evaluation.
                     |)
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -509,7 +524,11 @@ Module kzg_point_evaluation.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ commitment : Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ] :=
+              let~ commitment :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ],
@@ -521,7 +540,11 @@ Module kzg_point_evaluation.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| commitment |) |) |) ]
                   |)
                 |) in
-              let~ z : Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ] :=
+              let~ z :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ],
@@ -620,7 +643,11 @@ Module kzg_point_evaluation.
                     ]
                   |)
                 |) in
-              let~ y : Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ] :=
+              let~ y :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ],
@@ -719,7 +746,11 @@ Module kzg_point_evaluation.
                     ]
                   |)
                 |) in
-              let~ proof : Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ] :=
+              let~ proof :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ],
@@ -818,9 +849,9 @@ Module kzg_point_evaluation.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -972,7 +1003,11 @@ Module kzg_point_evaluation.
         (let commitment := M.alloc (| commitment |) in
         M.read (|
           let~ hash :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -1140,7 +1175,7 @@ Module kzg_point_evaluation.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (| hash, Value.Integer IntegerKind.Usize 0 |),
@@ -1187,7 +1222,10 @@ Module kzg_point_evaluation.
         let proof := M.alloc (| proof |) in
         M.read (|
           let~ kzg_settings :
-              Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::KZGSettings" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::KZGSettings" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::KZGSettings" ],

@@ -68,7 +68,11 @@ Module collections.
             ltac:(M.monadic
               (let t := M.alloc (| t |) in
               M.read (|
-                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -84,7 +88,7 @@ Module collections.
                       [ M.read (| t |) ]
                     |)
                   |) in
-                let~ new_ref : Ty.apply (Ty.path "&mut") [] [ T ] :=
+                let~ new_ref : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,

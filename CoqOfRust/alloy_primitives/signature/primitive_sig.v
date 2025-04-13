@@ -214,7 +214,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -245,7 +245,7 @@ Module signature.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -528,12 +528,24 @@ Module signature.
         | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature";
+                  Ty.associated_in_trait
+                    "core::convert::TryFrom"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+                    (Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature")
+                    "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -584,10 +596,10 @@ Module signature.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ parity : Ty.path "bool" :=
+                  let~ parity : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -830,21 +842,43 @@ Module signature.
         | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature";
+                  Ty.associated_in_trait
+                    "core::str::traits::FromStr"
+                    []
+                    []
+                    (Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature")
+                    "Err"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ bytes :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ] :=
                     M.copy (|
                       M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "alloc::vec::Vec")
+                            (Ty.path "*")
                             []
-                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1494,9 +1528,14 @@ Module signature.
             M.read (|
               let~ s :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1515,9 +1554,14 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1706,9 +1750,14 @@ Module signature.
             M.read (|
               let~ r :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1766,9 +1815,14 @@ Module signature.
                 |) in
               let~ s :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1937,13 +1991,18 @@ Module signature.
             M.read (|
               let~ sig :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 65 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 65 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 65 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2031,7 +2090,7 @@ Module signature.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2118,7 +2177,7 @@ Module signature.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_array_field (| sig, Value.Integer IntegerKind.Usize 64 |),

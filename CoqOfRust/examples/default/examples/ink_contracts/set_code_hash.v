@@ -129,7 +129,7 @@ Module Impl_set_code_hash_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -146,8 +146,8 @@ Module Impl_set_code_hash_Incrementer.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -271,7 +271,7 @@ Module Impl_set_code_hash_Incrementer.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -315,9 +315,14 @@ Module Impl_set_code_hash_Incrementer.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
-                                  (Ty.tuple [])),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
+                                      (Ty.tuple [])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -345,8 +350,8 @@ Module Impl_set_code_hash_Incrementer.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

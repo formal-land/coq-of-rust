@@ -15,7 +15,7 @@ Module task.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -248,7 +248,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -325,7 +325,11 @@ Module task.
           (let waker := M.alloc (| waker |) in
           M.read (|
             let~ waker :
-                Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
@@ -338,7 +342,7 @@ Module task.
                   [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -369,9 +373,18 @@ Module task.
           M.read (|
             let~ waker :
                 Ty.apply
-                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ W; Ty.path "alloc::alloc::Global" ]
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -414,7 +427,7 @@ Module task.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -483,7 +496,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -520,7 +533,7 @@ Module task.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -754,7 +767,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -843,7 +856,10 @@ Module task.
           (let waker := M.alloc (| waker |) in
           M.read (|
             let~ waker :
-                Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
@@ -856,7 +872,7 @@ Module task.
                   [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -888,9 +904,15 @@ Module task.
           M.read (|
             let~ waker :
                 Ty.apply
-                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ]
+                      ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -921,7 +943,7 @@ Module task.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -998,7 +1020,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

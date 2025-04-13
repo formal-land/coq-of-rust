@@ -227,7 +227,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -239,7 +239,7 @@ Module fmt.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -788,42 +788,52 @@ Module fmt.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    Ty.tuple
+                                    Ty.function
                                       [
-                                        Ty.apply (Ty.path "&") [] [ T ];
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.path "core::fmt::Formatter" ]
+                                        Ty.tuple
+                                          [
+                                            Ty.apply (Ty.path "&") [] [ T ];
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "core::fmt::Formatter" ]
+                                          ]
                                       ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                                      (Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
-                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
-                                                  [ Ty.path "core::fmt::Formatter" ]
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [ Ty.path "core::fmt::Formatter" ]
+                                                  ]
                                               ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                                              (Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                                          ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1095,9 +1105,14 @@ Module fmt.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::fmt::rt::Argument",
@@ -1175,7 +1190,11 @@ Module fmt.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ]),
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::fmt::rt::Argument",

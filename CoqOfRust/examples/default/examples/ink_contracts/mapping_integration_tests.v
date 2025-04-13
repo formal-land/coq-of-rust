@@ -512,9 +512,14 @@ Module Impl_mapping_integration_tests_Mappings.
         (M.read (|
           let~ balances :
               Ty.apply
-                (Ty.path "mapping_integration_tests::Mapping")
+                (Ty.path "*")
                 []
-                [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "mapping_integration_tests::Mapping")
+                    []
+                    [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -561,7 +566,8 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",
@@ -640,7 +646,8 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",
@@ -716,7 +723,8 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",
@@ -791,7 +799,8 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",
@@ -869,7 +878,8 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",
@@ -898,7 +908,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -946,7 +956,8 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "mapping_integration_tests::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "mapping_integration_tests::AccountId",

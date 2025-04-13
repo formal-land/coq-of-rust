@@ -452,7 +452,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -483,7 +483,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -514,7 +514,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -857,7 +857,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let returned := M.alloc (| returned |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 let β :=
                   M.SubPointer.get_struct_record_field (|
@@ -895,7 +895,7 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -928,7 +928,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 let β :=
                   M.SubPointer.get_struct_record_field (|
@@ -968,10 +968,10 @@ Module gas.
           (let self := M.alloc (| self |) in
           let is_london := M.alloc (| is_london |) in
           M.read (|
-            let~ max_refund_quotient : Ty.path "u64" :=
+            let~ max_refund_quotient : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "u64"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -983,7 +983,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1060,7 +1060,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1123,11 +1123,11 @@ Module gas.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let remaining := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
-                    let~ success : Ty.path "bool" :=
+                    let~ success : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                       M.alloc (| UnOp.not (| M.read (| overflow |) |) |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1135,7 +1135,7 @@ Module gas.
                               (let γ := M.use success in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
@@ -1181,7 +1181,7 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "revm_interpreter::gas::MemoryExtensionResult") (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
@@ -1218,9 +1218,9 @@ Module gas.
                             0
                           |) in
                         let additional_cost := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1626,7 +1626,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1747,12 +1747,12 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_num := M.alloc (| new_num |) in
-          M.catch_return (|
+          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1787,7 +1787,7 @@ Module gas.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
@@ -1798,7 +1798,7 @@ Module gas.
                       M.read (| new_num |)
                     |)
                   |) in
-                let~ cost : Ty.path "u64" :=
+                let~ cost : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -1806,7 +1806,7 @@ Module gas.
                       [ M.read (| new_num |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],

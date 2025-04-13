@@ -142,9 +142,14 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]),
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -211,9 +216,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -260,7 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -308,7 +313,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -363,9 +372,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -404,7 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -452,7 +461,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -509,9 +522,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ result :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -530,9 +548,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 8 ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -559,7 +577,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -607,7 +625,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -664,9 +686,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ result :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -685,9 +712,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               Value.Tuple
                 [
@@ -706,7 +733,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -754,7 +781,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

@@ -113,9 +113,14 @@ Module iter.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "*")
                       []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -223,13 +228,13 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (|
+              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ A ]) (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ f : F :=
+                    let~ f : Ty.apply (Ty.path "*") [] [ F ] :=
                       M.copy (|
                         M.match_operator (|
-                          Some F,
+                          Some (Ty.apply (Ty.path "*") [] [ F ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply

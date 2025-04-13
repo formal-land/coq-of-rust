@@ -195,15 +195,27 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let driver := M.alloc (| driver |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  Self
+                  "Error"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -228,9 +240,14 @@ Module annotated_visitor.
                                           M.match_operator (|
                                             Some
                                               (Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "*")
                                                 []
-                                                [ Ty.tuple [] ]),
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.tuple [] ]
+                                                ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -406,7 +423,7 @@ Module annotated_visitor.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -439,15 +456,27 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let driver := M.alloc (| driver |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  Self
+                  "Error"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -484,19 +513,24 @@ Module annotated_visitor.
                                           M.match_operator (|
                                             Some
                                               (Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "*")
                                                 []
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
+                                                      Ty.tuple
                                                         [
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveFieldLayout"
-                                                        ];
-                                                      Ty.tuple []
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::annotated_value::MoveFieldLayout"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ]
                                                     ]
                                                 ]),
                                             M.alloc (|
@@ -710,7 +744,7 @@ Module annotated_visitor.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -1336,9 +1370,14 @@ Module annotated_visitor.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -1631,9 +1670,14 @@ Module annotated_visitor.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -1919,7 +1963,24 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let visitor := M.alloc (| visitor |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value"
+                  ];
+                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+              ]) (|
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
@@ -1928,15 +1989,20 @@ Module annotated_visitor.
                     M.match_operator (|
                       Some
                         (Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "*")
                           []
                           [
-                            Ty.associated_in_trait
-                              "move_core_types::annotated_visitor::Visitor"
+                            Ty.apply
+                              (Ty.path "core::option::Option")
                               []
-                              []
-                              V
-                              "Value"
+                              [
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value"
+                              ]
                           ]),
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1972,21 +2038,31 @@ Module annotated_visitor.
                         fun γ =>
                           ltac:(M.monadic
                             (let~ res :
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
+                                Ty.apply
+                                  (Ty.path "*")
                                   []
-                                  []
-                                  V
-                                  "Value" :=
-                              M.copy (|
-                                M.match_operator (|
-                                  Some
-                                    (Ty.associated_in_trait
+                                  [
+                                    Ty.associated_in_trait
                                       "move_core_types::annotated_visitor::Visitor"
                                       []
                                       []
                                       V
-                                      "Value"),
+                                      "Value"
+                                  ] :=
+                              M.copy (|
+                                M.match_operator (|
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value"
+                                      ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2194,7 +2270,7 @@ Module annotated_visitor.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 let β :=
                                   M.SubPointer.get_struct_record_field (|
@@ -2297,12 +2373,18 @@ Module annotated_visitor.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
-                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ] ]
-                              ]
-                              (Ty.path "bool")),
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ]
+                                      ]
+                                  ]
+                                  (Ty.path "bool")
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -2506,7 +2588,31 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let visitor := M.alloc (| visitor |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
+                        Ty.associated_in_trait
+                          "move_core_types::annotated_visitor::Visitor"
+                          []
+                          []
+                          V
+                          "Value"
+                      ]
+                  ];
+                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
@@ -2542,21 +2648,31 @@ Module annotated_visitor.
                           |) in
                         let field := M.copy (| γ0_0 |) in
                         let~ res :
-                            Ty.associated_in_trait
-                              "move_core_types::annotated_visitor::Visitor"
+                            Ty.apply
+                              (Ty.path "*")
                               []
-                              []
-                              V
-                              "Value" :=
-                          M.copy (|
-                            M.match_operator (|
-                              Some
-                                (Ty.associated_in_trait
+                              [
+                                Ty.associated_in_trait
                                   "move_core_types::annotated_visitor::Visitor"
                                   []
                                   []
                                   V
-                                  "Value"),
+                                  "Value"
+                              ] :=
+                          M.copy (|
+                            M.match_operator (|
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2785,7 +2901,7 @@ Module annotated_visitor.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β :=
                               M.SubPointer.get_struct_record_field (|
@@ -2971,37 +3087,45 @@ Module annotated_visitor.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some
-                            (Ty.function
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
                               [
-                                Ty.tuple
+                                Ty.function
                                   [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
+                                            Ty.tuple
                                               [
-                                                Ty.path
-                                                  "move_core_types::annotated_value::MoveFieldLayout"
-                                              ];
-                                            Ty.tuple []
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::annotated_value::MoveFieldLayout"
+                                                  ];
+                                                Ty.tuple []
+                                              ]
                                           ]
                                       ]
                                   ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
-                                ])),
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ]
+                                    ])
+                              ]),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -3083,30 +3207,35 @@ Module annotated_visitor.
                                             ltac:(M.monadic
                                               (M.match_operator (|
                                                 Some
-                                                  (Ty.function
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
                                                     [
-                                                      Ty.tuple
+                                                      Ty.function
                                                         [
                                                           Ty.tuple
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
+                                                              Ty.tuple
                                                                 [
-                                                                  Ty.path
-                                                                    "move_core_types::annotated_value::MoveFieldLayout"
-                                                                ];
-                                                              Ty.tuple []
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::annotated_value::MoveFieldLayout"
+                                                                    ];
+                                                                  Ty.tuple []
+                                                                ]
                                                             ]
                                                         ]
-                                                    ]
-                                                    (Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::annotated_value::MoveFieldLayout"
-                                                      ])),
+                                                        (Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::annotated_value::MoveFieldLayout"
+                                                          ])
+                                                    ]),
                                                 M.alloc (| α0 |),
                                                 [
                                                   fun γ =>
@@ -3181,27 +3310,39 @@ Module annotated_visitor.
         (let bytes := M.alloc (| bytes |) in
         let layout := M.alloc (| layout |) in
         let visitor := M.alloc (| visitor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Value";
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
                         []
-                        []
-                        V
-                        "Value";
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
-                        []
-                        []
-                        V
-                        "Error"
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ]
                     ]),
                 layout,
                 [
@@ -3216,28 +3357,38 @@ Module annotated_visitor.
                       M.match_operator (|
                         Some
                           (Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "*")
                             []
                             [
-                              Ty.associated_in_trait
-                                "move_core_types::annotated_visitor::Visitor"
+                              Ty.apply
+                                (Ty.path "core::result::Result")
                                 []
-                                []
-                                V
-                                "Value";
-                              Ty.associated_in_trait
-                                "move_core_types::annotated_visitor::Visitor"
-                                []
-                                []
-                                V
-                                "Error"
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ]
                             ]),
                         M.match_operator (|
                           Some
                             (Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ]),
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ]
+                              ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3563,9 +3714,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3770,9 +3926,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3977,9 +4138,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 4 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -4184,9 +4350,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 8 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -4391,9 +4562,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 16 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -4602,9 +4778,14 @@ Module annotated_visitor.
                                       M.match_operator (|
                                         Some
                                           (Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [ Ty.path "u8" ]),
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [ Ty.path "u8" ]
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -4814,9 +4995,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 32 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -5021,9 +5207,14 @@ Module annotated_visitor.
                                   M.match_operator (|
                                     Some
                                       (Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 32 ]
-                                        [ Ty.path "u8" ]),
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -5187,10 +5378,10 @@ Module annotated_visitor.
                           0
                         |) in
                       let l := M.alloc (| γ1_0 |) in
-                      let~ len : Ty.path "u64" :=
+                      let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "u64"),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -5275,10 +5466,18 @@ Module annotated_visitor.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Some
-                                                    (Ty.function
-                                                      [ Ty.tuple [ Ty.path "leb128::read::Error" ] ]
-                                                      (Ty.path
-                                                        "move_core_types::annotated_visitor::Error")),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [ Ty.path "leb128::read::Error" ]
+                                                          ]
+                                                          (Ty.path
+                                                            "move_core_types::annotated_visitor::Error")
+                                                      ]),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -5380,7 +5579,11 @@ Module annotated_visitor.
                             ]
                           |)
                         |) in
-                      let~ driver : Ty.path "move_core_types::annotated_visitor::VecDriver" :=
+                      let~ driver :
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_core_types::annotated_visitor::VecDriver" ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "move_core_types::annotated_visitor::VecDriver",
@@ -5428,21 +5631,31 @@ Module annotated_visitor.
                           |)
                         |) in
                       let~ res :
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Visitor"
+                          Ty.apply
+                            (Ty.path "*")
                             []
-                            []
-                            V
-                            "Value" :=
-                        M.copy (|
-                          M.match_operator (|
-                            Some
-                              (Ty.associated_in_trait
+                            [
+                              Ty.associated_in_trait
                                 "move_core_types::annotated_visitor::Visitor"
                                 []
                                 []
                                 V
-                                "Value"),
+                                "Value"
+                            ] :=
+                        M.copy (|
+                          M.match_operator (|
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value"
+                                ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -5624,12 +5837,12 @@ Module annotated_visitor.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -5637,7 +5850,7 @@ Module annotated_visitor.
                                     (let γ :=
                                       M.use
                                         (M.match_operator (|
-                                          Some (Ty.path "bool"),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -5788,7 +6001,7 @@ Module annotated_visitor.
                                     (M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.alloc (|
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |) in
@@ -5874,10 +6087,21 @@ Module annotated_visitor.
         (let bytes := M.alloc (| bytes |) in
         let layout := M.alloc (| layout |) in
         let visitor := M.alloc (| visitor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Value";
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ driver : Ty.path "move_core_types::annotated_visitor::StructDriver" :=
+              let~ driver :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_core_types::annotated_visitor::StructDriver" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_core_types::annotated_visitor::StructDriver",
@@ -5894,21 +6118,31 @@ Module annotated_visitor.
                   |)
                 |) in
               let~ res :
-                  Ty.associated_in_trait
-                    "move_core_types::annotated_visitor::Visitor"
+                  Ty.apply
+                    (Ty.path "*")
                     []
-                    []
-                    V
-                    "Value" :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.associated_in_trait
+                    [
+                      Ty.associated_in_trait
                         "move_core_types::annotated_visitor::Visitor"
                         []
                         []
                         V
-                        "Value"),
+                        "Value"
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value"
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6090,12 +6324,12 @@ Module annotated_visitor.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -6128,15 +6362,20 @@ Module annotated_visitor.
                                         M.match_operator (|
                                           Some
                                             (Ty.apply
-                                              (Ty.path "core::option::Option")
+                                              (Ty.path "*")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "core::option::Option")
                                                   []
                                                   [
-                                                    Ty.path
-                                                      "move_core_types::annotated_value::MoveFieldLayout"
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::annotated_value::MoveFieldLayout"
+                                                      ]
                                                   ]
                                               ]),
                                           M.alloc (|
@@ -6323,7 +6562,7 @@ Module annotated_visitor.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -6357,14 +6596,22 @@ Module annotated_visitor.
     | [ N ], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+              Ty.path "move_core_types::annotated_visitor::Error"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] :=
+              let~ buf :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] :=
                 M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, N |) |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -6451,9 +6698,15 @@ Module annotated_visitor.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_core_types::annotated_visitor::Error")),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                                (Ty.path
+                                                  "move_core_types::annotated_visitor::Error")
+                                            ]),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>

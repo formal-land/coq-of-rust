@@ -494,7 +494,11 @@ Module convert.
           (let self := M.alloc (| self |) in
           M.never_to_any (|
             M.read (|
-              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+              M.match_operator (|
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+                M.deref (| M.read (| self |) |),
+                []
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -532,7 +536,7 @@ Module convert.
                   (M.never_to_any (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "never"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                         M.deref (| M.read (| self |) |),
                         []
                       |)
@@ -575,7 +579,7 @@ Module convert.
                   (M.never_to_any (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "never"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                         M.deref (| M.read (| self |) |),
                         []
                       |)
@@ -610,7 +614,11 @@ Module convert.
           (let self := M.alloc (| self |) in
           M.never_to_any (|
             M.read (|
-              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+              M.match_operator (|
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+                M.deref (| M.read (| self |) |),
+                []
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -648,7 +656,7 @@ Module convert.
                   (M.never_to_any (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "never"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                         M.deref (| M.read (| self |) |),
                         []
                       |)
@@ -696,7 +704,11 @@ Module convert.
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
             M.read (|
-              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+              M.match_operator (|
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+                M.deref (| M.read (| self |) |),
+                []
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -727,7 +739,11 @@ Module convert.
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
             M.read (|
-              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+              M.match_operator (|
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+                M.deref (| M.read (| self |) |),
+                []
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -791,7 +807,7 @@ Module convert.
                   (M.never_to_any (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "never"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                         M.deref (| M.read (| self |) |),
                         []
                       |)

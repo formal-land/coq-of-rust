@@ -23,7 +23,7 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let number := M.alloc (| number |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
           number,
           [
             fun γ =>
@@ -114,12 +114,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ contacts :
             Ty.apply
-              (Ty.path "std::collections::hash::map::HashMap")
+              (Ty.path "*")
               []
               [
-                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                Ty.path "std::hash::random::RandomState"
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
+                  []
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.path "std::hash::random::RandomState"
+                  ]
               ] :=
           M.alloc (|
             M.call_closure (|
@@ -149,9 +154,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -180,9 +190,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -211,9 +226,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -242,9 +262,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -271,9 +296,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -311,7 +336,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -396,7 +421,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ : Ty.tuple [] :=
+                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -433,9 +458,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -462,9 +492,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -502,7 +532,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -587,7 +617,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ : Ty.tuple [] :=
+                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -624,9 +654,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -657,7 +692,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.use
           (M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -716,9 +751,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
-                      (let~ _ : Ty.tuple [] :=
+                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -778,8 +813,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 let contact := M.copy (| γ1_0 |) in
                                 let γ1_1 := M.read (| γ1_1 |) in
                                 let number := M.copy (| γ1_1 |) in
-                                let~ _ : Ty.tuple [] :=
-                                  let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],

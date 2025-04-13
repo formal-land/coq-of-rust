@@ -80,7 +80,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let result := M.alloc (| result |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -110,7 +110,7 @@ Module interpreter.
             let action := M.alloc (| action |) in
             let result := M.alloc (| result |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -121,7 +121,7 @@ Module interpreter.
                     M.read (| action |)
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|

@@ -64,8 +64,8 @@ Module main.
         M.read (|
           let lo := M.copy (| Value.DeclaredButUndefined |) in
           let hi := M.copy (| Value.DeclaredButUndefined |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] := InlineAssembly in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := InlineAssembly in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (|
             M.call_closure (|

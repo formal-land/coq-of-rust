@@ -15,13 +15,28 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [ P ], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
-      M.catch_return (|
+      M.catch_return
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [
+            Ty.apply
+              (Ty.path "std::io::Lines")
+              []
+              [
+                Ty.apply
+                  (Ty.path "std::io::buffered::bufreader::BufReader")
+                  []
+                  [ Ty.path "std::fs::File" ]
+              ];
+            Ty.path "std::io::error::Error"
+          ]) (|
         ltac:(M.monadic
           (M.read (|
-            let~ file : Ty.path "std::fs::File" :=
+            let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "std::fs::File"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -220,7 +235,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -256,7 +271,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let lines := M.copy (| γ0_0 |) in
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -295,9 +310,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -355,7 +370,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |) in
                                         let line := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -368,8 +383,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     0
                                                   |) in
                                                 let ip := M.copy (| γ0_0 |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.tuple [],

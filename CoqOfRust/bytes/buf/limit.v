@@ -339,9 +339,14 @@ Module buf.
                 M.read (|
                   let~ bytes :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "bytes::buf::uninit_slice::UninitSlice" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "bytes::buf::uninit_slice::UninitSlice" ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -369,7 +374,7 @@ Module buf.
                         ]
                       |)
                     |) in
-                  let~ end_ : Ty.path "usize" :=
+                  let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -457,9 +462,9 @@ Module buf.
             (let self := M.alloc (| self |) in
             let cnt := M.alloc (| cnt |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -497,7 +502,7 @@ Module buf.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -523,7 +528,7 @@ Module buf.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   let β :=
                     M.SubPointer.get_struct_record_field (|

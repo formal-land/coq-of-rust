@@ -90,13 +90,18 @@ Module interpreter.
           M.read (|
             let~ names :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 9 ]
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 9 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
                   ] :=
               M.alloc (|
                 M.borrow (|
@@ -133,13 +138,19 @@ Module interpreter.
               |) in
             let~ values :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "slice")
+                      (Ty.path "&")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]
                   ] :=
               M.alloc (|
                 (* Unsize *)
@@ -754,7 +765,10 @@ Module interpreter.
           let gas_limit := M.alloc (| gas_limit |) in
           M.read (|
             let~ runtime_flag :
-                Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" ] :=
               M.alloc (|
                 Value.StructRecord
                   "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
@@ -1370,7 +1384,7 @@ Module interpreter.
           let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1447,7 +1461,7 @@ Module interpreter.
           let instruction_table := M.alloc (| instruction_table |) in
           let host := M.alloc (| host |) in
           M.read (|
-            let~ opcode : Ty.path "u8" :=
+            let~ opcode : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -1477,7 +1491,7 @@ Module interpreter.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1584,10 +1598,10 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           let instruction_table := M.alloc (| instruction_table |) in
           let host := M.alloc (| host |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "revm_interpreter::interpreter_action::InterpreterAction") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1623,12 +1637,12 @@ Module interpreter.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1679,7 +1693,7 @@ Module interpreter.
                                   |)) in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -1714,7 +1728,7 @@ Module interpreter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -1725,7 +1739,11 @@ Module interpreter.
                         ]
                       |)))
                   |) in
-                let~ action : Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
+                let~ action :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
@@ -1755,9 +1773,9 @@ Module interpreter.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

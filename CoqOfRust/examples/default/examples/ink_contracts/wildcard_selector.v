@@ -136,8 +136,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let _selector := M.copy (| γ0_0 |) in
                   let _message := M.copy (| γ0_1 |) in
-                  let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -253,8 +253,8 @@ Module Impl_wildcard_selector_WildcardSelector.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

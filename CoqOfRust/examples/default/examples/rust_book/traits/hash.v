@@ -22,7 +22,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -53,7 +53,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -140,7 +140,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ s : Ty.path "std::hash::random::DefaultHasher" :=
+        let~ s : Ty.apply (Ty.path "*") [] [ Ty.path "std::hash::random::DefaultHasher" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::hash::random::DefaultHasher",
@@ -153,7 +153,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
               []
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -220,7 +220,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ person1 : Ty.path "hash::Person" :=
+        let~ person1 : Ty.apply (Ty.path "*") [] [ Ty.path "hash::Person" ] :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
@@ -243,7 +243,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phone", Value.Integer IntegerKind.U64 5556667777)
               ]
           |) in
-        let~ person2 : Ty.path "hash::Person" :=
+        let~ person2 : Ty.apply (Ty.path "*") [] [ Ty.path "hash::Person" ] :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
@@ -266,9 +266,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phone", Value.Integer IntegerKind.U64 5556667777)
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

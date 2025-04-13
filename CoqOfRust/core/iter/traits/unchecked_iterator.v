@@ -19,15 +19,20 @@ Module iter.
               M.read (|
                 let~ opt :
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.associated_in_trait
-                          "core::iter::traits::iterator::Iterator"
+                        Ty.apply
+                          (Ty.path "core::option::Option")
                           []
-                          []
-                          Self
-                          "Item"
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              Self
+                              "Item"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|

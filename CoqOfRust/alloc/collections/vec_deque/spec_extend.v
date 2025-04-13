@@ -54,7 +54,7 @@ Module collections.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -112,7 +112,7 @@ Module collections.
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let lower := M.copy (| γ0_0 |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -146,7 +146,7 @@ Module collections.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -172,7 +172,7 @@ Module collections.
                                       Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -248,7 +248,11 @@ Module collections.
                                                             0
                                                           |) in
                                                         let element := M.copy (| γ0_0 |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.tuple [],
@@ -279,7 +283,11 @@ Module collections.
                                                 (M.alloc (|
                                                   M.never_to_any (|
                                                     M.read (|
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
@@ -299,7 +307,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -399,7 +407,7 @@ Module collections.
                         let low := M.copy (| γ0_0 |) in
                         let high := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -412,9 +420,9 @@ Module collections.
                                     0
                                   |) in
                                 let additional := M.copy (| γ0_0 |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -425,9 +433,9 @@ Module collections.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 Value.Tuple
                                                   [
@@ -445,7 +453,8 @@ Module collections.
                                                     let left_val := M.copy (| γ0_0 |) in
                                                     let right_val := M.copy (| γ0_1 |) in
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -481,8 +490,13 @@ Module collections.
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   let~ kind :
-                                                                      Ty.path
-                                                                        "core::panicking::AssertKind" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::panicking::AssertKind"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
@@ -643,7 +657,7 @@ Module collections.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -665,7 +679,7 @@ Module collections.
                                       ]
                                     |)
                                   |) in
-                                let~ written : Ty.path "usize" :=
+                                let~ written : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "usize",
@@ -713,9 +727,9 @@ Module collections.
                                       ]
                                     |)
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -726,9 +740,9 @@ Module collections.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (|
                                                 Value.Tuple
                                                   [
@@ -746,7 +760,8 @@ Module collections.
                                                     let left_val := M.copy (| γ0_0 |) in
                                                     let right_val := M.copy (| γ0_1 |) in
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -782,8 +797,13 @@ Module collections.
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   let~ kind :
-                                                                      Ty.path
-                                                                        "core::panicking::AssertKind" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::panicking::AssertKind"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
@@ -964,7 +984,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
               M.read (|
-                let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+                let~ slice :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
@@ -980,7 +1004,7 @@ Module collections.
                       [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1005,8 +1029,8 @@ Module collections.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -1044,7 +1068,7 @@ Module collections.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       let β :=
                         M.SubPointer.get_struct_record_field (|
@@ -1074,7 +1098,7 @@ Module collections.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1202,7 +1226,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
               M.read (|
-                let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+                let~ slice :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
@@ -1215,7 +1243,7 @@ Module collections.
                       [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1240,7 +1268,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1278,7 +1306,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     let β :=
                       M.SubPointer.get_struct_record_field (|

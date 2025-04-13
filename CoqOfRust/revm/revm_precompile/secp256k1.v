@@ -45,10 +45,24 @@ Module secp256k1.
           (let sig := M.alloc (| sig |) in
           let recid := M.alloc (| recid |) in
           let msg := M.alloc (| msg |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [];
+                Ty.path "secp256k1::Error"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ recid : Ty.path "secp256k1::ecdsa::recovery::RecoveryId" :=
+                let~ recid :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "secp256k1::ecdsa::recovery::RecoveryId" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "secp256k1::ecdsa::recovery::RecoveryId",
@@ -88,10 +102,18 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                let~ sig : Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" :=
+                let~ sig :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature"),
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -237,7 +259,7 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                let~ msg : Ty.path "secp256k1::Message" :=
+                let~ msg : Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::Message" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "secp256k1::Message",
@@ -258,10 +280,10 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                let~ public : Ty.path "secp256k1::key::PublicKey" :=
+                let~ public : Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::key::PublicKey" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "secp256k1::key::PublicKey"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::key::PublicKey" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -440,9 +462,14 @@ Module secp256k1.
                   |) in
                 let~ hash :
                     Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      [] :=
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          []
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -514,7 +541,7 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -606,12 +633,19 @@ Module secp256k1.
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -668,13 +702,18 @@ Module secp256k1.
                 |) in
               let~ input :
                   Ty.apply
-                    (Ty.path "alloc::borrow::Cow")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 128 ]
-                        [ Ty.path "u8" ]
+                        (Ty.path "alloc::borrow::Cow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 128 ]
+                            [ Ty.path "u8" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -741,9 +780,9 @@ Module secp256k1.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -886,17 +925,22 @@ Module secp256k1.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Some
-                                                    (Ty.function
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
                                                       [
-                                                        Ty.tuple
+                                                        Ty.function
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u8" ]
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]
                                                           ]
-                                                      ]
-                                                      (Ty.path "bool")),
+                                                          (Ty.path "bool")
+                                                      ]),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -920,7 +964,7 @@ Module secp256k1.
                                   ltac:(M.monadic
                                     (M.read (|
                                       M.match_operator (|
-                                        Some (Ty.path "bool"),
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                                         M.SubPointer.get_array_field (|
                                           M.deref (|
                                             M.call_closure (|
@@ -1039,13 +1083,18 @@ Module secp256k1.
                 |) in
               let~ msg :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer IntegerKind.Usize 32 ]
+                        (Ty.path "&")
                         []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            []
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -1193,7 +1242,7 @@ Module secp256k1.
                     ]
                   |)
                 |) in
-              let~ recid : Ty.path "u8" :=
+              let~ recid : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -1241,13 +1290,18 @@ Module secp256k1.
                 |) in
               let~ sig :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer IntegerKind.Usize 64 ]
+                        (Ty.path "&")
                         []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer IntegerKind.Usize 64 ]
+                            []
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -1395,7 +1449,7 @@ Module secp256k1.
                     ]
                   |)
                 |) in
-              let~ out : Ty.path "alloy_primitives::bytes_::Bytes" :=
+              let~ out : Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -1473,18 +1527,23 @@ Module secp256k1.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloy_primitives::bits::fixed::FixedBytes")
-                                                  [ Value.Integer IntegerKind.Usize 32 ]
-                                                  []
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      []
+                                                  ]
                                               ]
-                                          ]
-                                          (Ty.path "alloy_primitives::bytes_::Bytes")),
+                                              (Ty.path "alloy_primitives::bytes_::Bytes")
+                                          ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>

@@ -106,20 +106,42 @@ Module gas_algebra.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -198,9 +220,9 @@ Module gas_algebra.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -279,9 +301,9 @@ Module gas_algebra.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -912,9 +934,9 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -936,7 +958,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -958,7 +980,11 @@ Module gas_algebra.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    let~ kind :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Ne" []
                                       |) in
@@ -1201,7 +1227,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let params := M.alloc (| params |) in
           M.read (|
-            let~ multiplier : Ty.path "u64" :=
+            let~ multiplier : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -1217,9 +1243,9 @@ Module gas_algebra.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -1235,7 +1261,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1257,7 +1283,11 @@ Module gas_algebra.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    let~ kind :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Ne" []
                                       |) in
@@ -1900,7 +1930,7 @@ Module gas_algebra.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -2317,9 +2347,9 @@ Module gas_algebra.
         let nominator := M.alloc (| nominator |) in
         let denominator := M.alloc (| denominator |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2335,7 +2365,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2357,7 +2387,11 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
@@ -2401,9 +2435,9 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2419,7 +2453,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2441,7 +2475,11 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
@@ -2485,7 +2523,7 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ res : Ty.path "u128" :=
+          let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u128",
@@ -2504,7 +2542,7 @@ Module gas_algebra.
               |)
             |) in
           M.match_operator (|
-            Some (Ty.path "u64"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2563,9 +2601,9 @@ Module gas_algebra.
         let nominator := M.alloc (| nominator |) in
         let denominator := M.alloc (| denominator |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2581,7 +2619,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2603,7 +2641,11 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
@@ -2647,9 +2689,9 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2665,7 +2707,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2687,7 +2729,11 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
@@ -2731,7 +2777,7 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ n : Ty.path "u128" :=
+          let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u128",
@@ -2742,9 +2788,9 @@ Module gas_algebra.
                 ]
               |)
             |) in
-          let~ d : Ty.path "u128" :=
+          let~ d : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
-          let~ res : Ty.path "u128" :=
+          let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u128",
@@ -2757,7 +2803,7 @@ Module gas_algebra.
                   |);
                   M.read (|
                     M.match_operator (|
-                      Some (Ty.path "u128"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2789,7 +2835,7 @@ Module gas_algebra.
               |)
             |) in
           M.match_operator (|
-            Some (Ty.path "u64"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

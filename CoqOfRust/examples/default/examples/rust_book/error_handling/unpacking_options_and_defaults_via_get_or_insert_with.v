@@ -60,7 +60,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 self,
                 [
                   fun γ =>
@@ -166,14 +166,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ my_fruit :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
+              ] :=
           M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ get_lemon_as_fallback :
-            Ty.function
-              [ Ty.tuple [] ]
-              (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit") :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.function
+                  [ Ty.tuple [] ]
+                  (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
+              ] :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -183,17 +193,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some
-                          (Ty.function
-                            [ Ty.tuple [] ]
-                            (Ty.path
-                              "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")),
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [] ]
+                                (Ty.path
+                                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
+                            ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ : Ty.tuple [] :=
-                                  let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -244,9 +259,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ first_available_fruit :
             Ty.apply
-              (Ty.path "&mut")
+              (Ty.path "*")
               []
-              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -269,8 +289,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, my_fruit |); M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -341,8 +361,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -416,9 +436,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ my_apple :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
-              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
@@ -430,9 +455,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ should_be_apple :
             Ty.apply
-              (Ty.path "&mut")
+              (Ty.path "*")
               []
-              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -455,8 +485,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, my_apple |); M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -527,8 +557,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

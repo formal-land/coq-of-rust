@@ -96,9 +96,14 @@ Module reference_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -238,7 +243,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -253,7 +258,7 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -278,7 +283,7 @@ Module reference_safety.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -366,7 +371,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 self,
                 [
                   fun γ =>
@@ -446,9 +451,14 @@ Module reference_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_borrow_graph::references::RefID" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -529,7 +539,11 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]),
                 self,
                 [
                   fun γ =>
@@ -652,9 +666,14 @@ Module reference_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -836,7 +855,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -848,7 +867,7 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -861,7 +880,7 @@ Module reference_safety.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.path "core::cmp::Ordering"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -891,7 +910,7 @@ Module reference_safety.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Some (Ty.path "core::cmp::Ordering"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -1084,7 +1103,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -1096,7 +1115,7 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -1118,7 +1137,7 @@ Module reference_safety.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -1303,7 +1322,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -1315,7 +1334,7 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -1329,7 +1348,11 @@ Module reference_safety.
                 |) in
               M.match_operator (|
                 Some
-                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                    ]),
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                 [
                   fun γ =>
@@ -1523,9 +1546,14 @@ Module reference_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -2512,7 +2540,7 @@ Module reference_safety.
           ltac:(M.monadic
             (let function_context := M.alloc (| function_context |) in
             M.read (|
-              let~ num_locals : Ty.path "usize" :=
+              let~ num_locals : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2589,7 +2617,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ next_id : Ty.path "usize" :=
+              let~ next_id : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2598,8 +2626,13 @@ Module reference_safety.
                   |)
                 |) in
               let~ state :
-                  Ty.path
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                    ] :=
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
@@ -2676,10 +2709,10 @@ Module reference_safety.
                       ("next_id", M.read (| next_id |))
                     ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2829,9 +2862,9 @@ Module reference_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2899,7 +2932,7 @@ Module reference_safety.
                                         let param_idx := M.copy (| γ1_0 |) in
                                         let param_ty := M.copy (| γ1_1 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -2930,8 +2963,13 @@ Module reference_safety.
                                                     Value.Bool true
                                                   |) in
                                                 let~ id :
-                                                    Ty.path
-                                                      "move_borrow_graph::references::RefID" :=
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_borrow_graph::references::RefID"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path
@@ -2946,7 +2984,8 @@ Module reference_safety.
                                                       [ M.read (| param_idx |) ]
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.tuple [],
@@ -3047,7 +3086,7 @@ Module reference_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -3087,9 +3126,9 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3361,8 +3400,13 @@ Module reference_safety.
             M.read (|
               M.match_operator (|
                 Some
-                  (Ty.path
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                    ]),
                 s,
                 [
                   fun γ =>
@@ -3456,7 +3500,8 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let mut_ := M.alloc (| mut_ |) in
             M.read (|
-              let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+              let~ id :
+                  Ty.apply (Ty.path "*") [] [ Ty.path "move_borrow_graph::references::RefID" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_borrow_graph::references::RefID",
@@ -3477,7 +3522,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -3507,7 +3552,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   let β :=
                     M.SubPointer.get_struct_record_field (|
@@ -3818,7 +3863,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let id := M.alloc (| id |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -4073,7 +4118,7 @@ Module reference_safety.
                           ltac:(M.monadic
                             (M.read (|
                               M.match_operator (|
-                                Some (Ty.path "bool"),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                                 label_opt,
                                 [
                                   fun γ =>
@@ -4189,29 +4234,34 @@ Module reference_safety.
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         Some
-                                                          (Ty.function
+                                                          (Ty.apply
+                                                            (Ty.path "*")
+                                                            []
                                                             [
-                                                              Ty.tuple
+                                                              Ty.function
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
+                                                                  Ty.tuple
                                                                     [
                                                                       Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::map::BTreeMap")
+                                                                        (Ty.path "&")
                                                                         []
                                                                         [
-                                                                          Ty.path
-                                                                            "move_borrow_graph::references::RefID";
-                                                                          Ty.tuple [];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::map::BTreeMap")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_borrow_graph::references::RefID";
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
                                                                         ]
                                                                     ]
                                                                 ]
-                                                            ]
-                                                            (Ty.path "bool")),
+                                                                (Ty.path "bool")
+                                                            ]),
                                                         M.alloc (| α0 |),
                                                         [
                                                           fun γ =>
@@ -4396,29 +4446,34 @@ Module reference_safety.
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
                                                             Some
-                                                              (Ty.function
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
                                                                 [
-                                                                  Ty.tuple
+                                                                  Ty.function
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
+                                                                      Ty.tuple
                                                                         [
                                                                           Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::map::BTreeMap")
+                                                                            (Ty.path "&")
                                                                             []
                                                                             [
-                                                                              Ty.path
-                                                                                "move_borrow_graph::references::RefID";
-                                                                              Ty.tuple [];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::collections::btree::map::BTreeMap")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_borrow_graph::references::RefID";
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ]
                                                                             ]
                                                                         ]
                                                                     ]
-                                                                ]
-                                                                (Ty.path "bool")),
+                                                                    (Ty.path "bool")
+                                                                ]),
                                                             M.alloc (| α0 |),
                                                             [
                                                               fun γ =>
@@ -4595,7 +4650,7 @@ Module reference_safety.
                           ltac:(M.monadic
                             (M.read (|
                               M.match_operator (|
-                                Some (Ty.path "bool"),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                                 label_opt,
                                 [
                                   fun γ =>
@@ -4711,29 +4766,34 @@ Module reference_safety.
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         Some
-                                                          (Ty.function
+                                                          (Ty.apply
+                                                            (Ty.path "*")
+                                                            []
                                                             [
-                                                              Ty.tuple
+                                                              Ty.function
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
+                                                                  Ty.tuple
                                                                     [
                                                                       Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::map::BTreeMap")
+                                                                        (Ty.path "&")
                                                                         []
                                                                         [
-                                                                          Ty.path
-                                                                            "move_borrow_graph::references::RefID";
-                                                                          Ty.tuple [];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::map::BTreeMap")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_borrow_graph::references::RefID";
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
                                                                         ]
                                                                     ]
                                                                 ]
-                                                            ]
-                                                            (Ty.path "bool")),
+                                                                (Ty.path "bool")
+                                                            ]),
                                                         M.alloc (| α0 |),
                                                         [
                                                           fun γ =>
@@ -4915,29 +4975,34 @@ Module reference_safety.
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
                                                             Some
-                                                              (Ty.function
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
                                                                 [
-                                                                  Ty.tuple
+                                                                  Ty.function
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
+                                                                      Ty.tuple
                                                                         [
                                                                           Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::map::BTreeMap")
+                                                                            (Ty.path "&")
                                                                             []
                                                                             [
-                                                                              Ty.path
-                                                                                "move_borrow_graph::references::RefID";
-                                                                              Ty.tuple [];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::collections::btree::map::BTreeMap")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_borrow_graph::references::RefID";
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ]
                                                                             ]
                                                                         ]
                                                                     ]
-                                                                ]
-                                                                (Ty.path "bool")),
+                                                                    (Ty.path "bool")
+                                                                ]),
                                                             M.alloc (| α0 |),
                                                             [
                                                               fun γ =>
@@ -5012,9 +5077,9 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let id := M.alloc (| id |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5107,9 +5172,9 @@ Module reference_safety.
             let id := M.alloc (| id |) in
             let at_field_opt := M.alloc (| at_field_opt |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5231,7 +5296,7 @@ Module reference_safety.
             let id := M.alloc (| id |) in
             let at_field_opt := M.alloc (| at_field_opt |) in
             M.read (|
-              let~ is_mutable : Ty.path "bool" :=
+              let~ is_mutable : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -5558,7 +5623,7 @@ Module reference_safety.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 value,
                 [
                   fun γ =>
@@ -5632,27 +5697,44 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let local := M.alloc (| local |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path
-                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                          Ty.path "move_binary_format::errors::PartialVMError"
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                         ]),
                     M.match_operator (|
                       Some
                         (Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "*")
                           []
                           [
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ]
                           ]),
                       M.alloc (|
                         M.call_closure (|
@@ -5744,7 +5826,11 @@ Module reference_safety.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                            let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                            let~ err :
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
@@ -5778,7 +5864,11 @@ Module reference_safety.
                                       |),
                                       [
                                         M.read (|
-                                          let~ res : Ty.path "alloc::string::String" :=
+                                          let~ res :
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "alloc::string::String" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
@@ -5857,11 +5947,16 @@ Module reference_safety.
                             M.match_operator (|
                               Some
                                 (Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "*")
                                   []
                                   [
-                                    Ty.path
-                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ]
                                   ]),
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -5970,9 +6065,17 @@ Module reference_safety.
                               0
                             |) in
                           let id := M.alloc (| γ1_0 |) in
-                          let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                          let~ id :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_borrow_graph::references::RefID" ] :=
                             M.copy (| M.deref (| M.read (| id |) |) |) in
-                          let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
+                          let~ new_id :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_borrow_graph::references::RefID" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_borrow_graph::references::RefID",
@@ -6018,7 +6121,7 @@ Module reference_safety.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],
@@ -6156,12 +6259,24 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let local := M.alloc (| local |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ old_value :
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path
@@ -6185,11 +6300,16 @@ Module reference_safety.
                                     M.match_operator (|
                                       Some
                                         (Ty.apply
-                                          (Ty.path "&mut")
+                                          (Ty.path "*")
                                           []
                                           [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
                                           ]),
                                       M.alloc (|
                                         M.call_closure (|
@@ -6291,8 +6411,13 @@ Module reference_safety.
                                                 "core::option::Option::None"
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -6331,7 +6456,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -6425,11 +6554,16 @@ Module reference_safety.
                                                     M.match_operator (|
                                                       Some
                                                         (Ty.apply
-                                                          (Ty.path "&mut")
+                                                          (Ty.path "*")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]
                                                           ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -6563,12 +6697,17 @@ Module reference_safety.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path
-                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                          Ty.path "move_binary_format::errors::PartialVMError"
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                         ]),
                     old_value,
                     [
@@ -6699,12 +6838,21 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let local := M.alloc (| local |) in
             let new_value := M.alloc (| new_value |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ old_value :
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path
@@ -6728,11 +6876,16 @@ Module reference_safety.
                                     M.match_operator (|
                                       Some
                                         (Ty.apply
-                                          (Ty.path "&mut")
+                                          (Ty.path "*")
                                           []
                                           [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
                                           ]),
                                       M.alloc (|
                                         M.call_closure (|
@@ -6834,8 +6987,13 @@ Module reference_safety.
                                                 "core::option::Option::None"
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -6874,7 +7032,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -6968,11 +7130,16 @@ Module reference_safety.
                                                     M.match_operator (|
                                                       Some
                                                         (Ty.apply
-                                                          (Ty.path "&mut")
+                                                          (Ty.path "*")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]
                                                           ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -7104,9 +7271,14 @@ Module reference_safety.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
-                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        ]),
                     old_value,
                     [
                       fun γ =>
@@ -7118,7 +7290,7 @@ Module reference_safety.
                               0
                             |) in
                           let id := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],
@@ -7233,12 +7405,19 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let id := M.alloc (| id |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7304,7 +7483,11 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ frozen_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ frozen_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_borrow_graph::references::RefID",
@@ -7321,7 +7504,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -7339,7 +7522,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -7409,12 +7592,19 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let v1 := M.alloc (| v1 |) in
             let v2 := M.alloc (| v2 |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [ M.read (| v1 |); M.read (| v2 |) ] |),
                       [
                         fun γ =>
@@ -7533,7 +7723,7 @@ Module reference_safety.
                                 0
                               |) in
                             let id2 := M.copy (| γ1_0 |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -7578,9 +7768,9 @@ Module reference_safety.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let v1 := M.copy (| γ0_0 |) in
                             let v2 := M.copy (| γ0_1 |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -7619,9 +7809,9 @@ Module reference_safety.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -7699,12 +7889,19 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let id := M.alloc (| id |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7770,7 +7967,7 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -7823,12 +8020,16 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let id := M.alloc (| id |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7893,7 +8094,7 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -7947,12 +8148,19 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let mut_ := M.alloc (| mut_ |) in
             let local := M.alloc (| local |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8019,7 +8227,11 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ new_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_borrow_graph::references::RefID",
@@ -8036,7 +8248,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -8107,11 +8319,18 @@ Module reference_safety.
             let mut_ := M.alloc (| mut_ |) in
             let id := M.alloc (| id |) in
             let field := M.alloc (| field |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ is_mut_borrow_with_full_borrows :
-                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.path "bool") ] :=
                     M.alloc (|
                       M.closure
                         (fun γ =>
@@ -8120,7 +8339,11 @@ Module reference_safety.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some (Ty.function [ Ty.tuple [] ] (Ty.path "bool")),
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.function [ Ty.tuple [] ] (Ty.path "bool") ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -8152,7 +8375,7 @@ Module reference_safety.
                             end))
                     |) in
                   let~ is_imm_borrow_with_mut_borrows :
-                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.path "bool") ] :=
                     M.alloc (|
                       M.closure
                         (fun γ =>
@@ -8161,7 +8384,11 @@ Module reference_safety.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some (Ty.function [ Ty.tuple [] ] (Ty.path "bool")),
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.function [ Ty.tuple [] ] (Ty.path "bool") ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -8197,9 +8424,9 @@ Module reference_safety.
                             | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8286,7 +8513,11 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ field_borrow_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ field_borrow_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_borrow_graph::references::RefID",
@@ -8303,7 +8534,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -8322,7 +8553,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -8383,12 +8614,19 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let mut_ := M.alloc (| mut_ |) in
             let resource := M.alloc (| resource |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8475,7 +8713,11 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ new_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_borrow_graph::references::RefID",
@@ -8492,7 +8734,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -8553,12 +8795,17 @@ Module reference_safety.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                      Ty.path "move_binary_format::errors::PartialVMError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -8651,13 +8898,25 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let vector := M.alloc (| vector |) in
             let mut_ := M.alloc (| mut_ |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some (Ty.path "move_borrow_graph::references::RefID"),
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_borrow_graph::references::RefID" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -8688,7 +8947,11 @@ Module reference_safety.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                              let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                              let~ err :
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
@@ -8722,7 +8985,11 @@ Module reference_safety.
                                         |),
                                         [
                                           M.read (|
-                                            let~ res : Ty.path "alloc::string::String" :=
+                                            let~ res :
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [ Ty.path "alloc::string::String" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "alloc::string::String",
@@ -8800,7 +9067,11 @@ Module reference_safety.
                                   |)
                                 |) in
                               M.match_operator (|
-                                Some (Ty.path "move_borrow_graph::references::RefID"),
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_borrow_graph::references::RefID" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -8904,9 +9175,9 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8975,7 +9246,7 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -9033,13 +9304,28 @@ Module reference_safety.
             let offset := M.alloc (| offset |) in
             let vector := M.alloc (| vector |) in
             let mut_ := M.alloc (| mut_ |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ vec_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ vec_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some (Ty.path "move_borrow_graph::references::RefID"),
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_borrow_graph::references::RefID" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -9070,7 +9356,11 @@ Module reference_safety.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                              let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                              let~ err :
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
@@ -9104,7 +9394,11 @@ Module reference_safety.
                                         |),
                                         [
                                           M.read (|
-                                            let~ res : Ty.path "alloc::string::String" :=
+                                            let~ res :
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [ Ty.path "alloc::string::String" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "alloc::string::String",
@@ -9182,7 +9476,11 @@ Module reference_safety.
                                   |)
                                 |) in
                               M.match_operator (|
-                                Some (Ty.path "move_borrow_graph::references::RefID"),
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_borrow_graph::references::RefID" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -9286,9 +9584,9 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -9357,7 +9655,11 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ elem_id : Ty.path "move_borrow_graph::references::RefID" :=
+                  let~ elem_id :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_borrow_graph::references::RefID",
@@ -9374,7 +9676,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -9392,7 +9694,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -9519,12 +9821,26 @@ Module reference_safety.
             let acquired_resources := M.alloc (| acquired_resources |) in
             let return_ := M.alloc (| return_ |) in
             let meter := M.alloc (| meter |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -9686,10 +10002,10 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -9727,9 +10043,9 @@ Module reference_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -9788,7 +10104,7 @@ Module reference_safety.
                                               |) in
                                             let acquired_resource := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -9870,11 +10186,16 @@ Module reference_safety.
                       |)) in
                   let~ all_references_to_borrow_from :
                       Ty.apply
-                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_borrow_graph::references::RefID";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                            []
+                            [
+                              Ty.path "move_borrow_graph::references::RefID";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -9902,11 +10223,16 @@ Module reference_safety.
                     |) in
                   let~ mutable_references_to_borrow_from :
                       Ty.apply
-                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_borrow_graph::references::RefID";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                            []
+                            [
+                              Ty.path "move_borrow_graph::references::RefID";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -9932,10 +10258,10 @@ Module reference_safety.
                         []
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -10137,24 +10463,31 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
                                                   [
-                                                    Ty.tuple
+                                                    Ty.function
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
+                                                        Ty.tuple
                                                           [
-                                                            Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]
                                                           ]
                                                       ]
-                                                  ]
-                                                  (Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "move_borrow_graph::references::RefID"
-                                                    ])),
+                                                      (Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID"
+                                                        ])
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -10198,9 +10531,9 @@ Module reference_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -10274,9 +10607,9 @@ Module reference_safety.
                                                 0
                                               |) in
                                             let id := M.copy (| γ0_0 |) in
-                                            let~ _ : Ty.tuple [] :=
+                                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -10318,9 +10651,17 @@ Module reference_safety.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Some
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -10397,7 +10738,11 @@ Module reference_safety.
                                                                 (M.alloc (| Value.Tuple [] |)))
                                                           ]
                                                         |) in
-                                                      let~ _ : Ty.path "bool" :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "bool" ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.path "bool",
@@ -10429,7 +10774,7 @@ Module reference_safety.
                                                     ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                                 ]
                                               |) in
-                                            let~ _ : Ty.path "bool" :=
+                                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "bool",
@@ -10463,16 +10808,21 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  let~ returned_refs : Ty.path "usize" :=
+                  let~ returned_refs : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ return_values :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path
-                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -10650,21 +11000,26 @@ Module reference_safety.
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Some
-                                            (Ty.function
+                                            (Ty.apply
+                                              (Ty.path "*")
+                                              []
                                               [
-                                                Ty.tuple
+                                                Ty.function
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]
                                                       ]
                                                   ]
-                                              ]
-                                              (Ty.path
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")),
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                                              ]),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -10673,8 +11028,13 @@ Module reference_safety.
                                                 M.read (|
                                                   M.match_operator (|
                                                     Some
-                                                      (Ty.path
-                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                      (Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        ]),
                                                     return_type,
                                                     [
                                                       fun γ =>
@@ -10687,8 +11047,13 @@ Module reference_safety.
                                                               0
                                                             |) in
                                                           let~ id :
-                                                              Ty.path
-                                                                "move_borrow_graph::references::RefID" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_borrow_graph::references::RefID"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path
@@ -10709,10 +11074,18 @@ Module reference_safety.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.use
                                                               (M.match_operator (|
-                                                                Some (Ty.tuple []),
+                                                                Some
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ]),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -10761,9 +11134,17 @@ Module reference_safety.
                                                                       M.loop (|
                                                                         Ty.tuple [],
                                                                         ltac:(M.monadic
-                                                                          (let~ _ : Ty.tuple [] :=
+                                                                          (let~ _ :
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.tuple [] ] :=
                                                                             M.match_operator (|
-                                                                              Some (Ty.tuple []),
+                                                                              Some
+                                                                                (Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ]),
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -10837,8 +11218,14 @@ Module reference_safety.
                                                                                         γ0_0
                                                                                       |) in
                                                                                     let~ _ :
-                                                                                        Ty.tuple
-                                                                                          [] :=
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.tuple
@@ -10883,7 +11270,11 @@ Module reference_safety.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.alloc (|
                                                               let β := returned_refs in
                                                               M.write (|
@@ -10915,8 +11306,13 @@ Module reference_safety.
                                                               0
                                                             |) in
                                                           let~ id :
-                                                              Ty.path
-                                                                "move_borrow_graph::references::RefID" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_borrow_graph::references::RefID"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path
@@ -10937,10 +11333,18 @@ Module reference_safety.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.use
                                                               (M.match_operator (|
-                                                                Some (Ty.tuple []),
+                                                                Some
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ]),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -10989,9 +11393,17 @@ Module reference_safety.
                                                                       M.loop (|
                                                                         Ty.tuple [],
                                                                         ltac:(M.monadic
-                                                                          (let~ _ : Ty.tuple [] :=
+                                                                          (let~ _ :
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.tuple [] ] :=
                                                                             M.match_operator (|
-                                                                              Some (Ty.tuple []),
+                                                                              Some
+                                                                                (Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ]),
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -11065,8 +11477,14 @@ Module reference_safety.
                                                                                         γ0_0
                                                                                       |) in
                                                                                     let~ _ :
-                                                                                        Ty.tuple
-                                                                                          [] :=
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.tuple
@@ -11111,7 +11529,11 @@ Module reference_safety.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.alloc (|
                                                               let β := returned_refs in
                                                               M.write (|
@@ -11152,9 +11574,9 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -11333,10 +11755,10 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -11371,9 +11793,9 @@ Module reference_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -11495,16 +11917,25 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             let values := M.alloc (| values |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ released :
                       Ty.apply
-                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_borrow_graph::references::RefID";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                            []
+                            [
+                              Ty.path "move_borrow_graph::references::RefID";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -11530,10 +11961,10 @@ Module reference_safety.
                         []
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -11637,9 +12068,9 @@ Module reference_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -11698,7 +12129,7 @@ Module reference_safety.
                                               |) in
                                             let stored_value := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -11712,7 +12143,11 @@ Module reference_safety.
                                                         0
                                                       |) in
                                                     let id := M.alloc (| γ1_0 |) in
-                                                    let~ _ : Ty.path "bool" :=
+                                                    let~ _ :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "bool" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "bool",
@@ -11752,7 +12187,7 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -11809,12 +12244,17 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
-                                              [ Ty.path "move_borrow_graph::references::RefID" ]
-                                          ]
-                                          (Ty.tuple [])),
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [ Ty.path "move_borrow_graph::references::RefID" ]
+                                              ]
+                                              (Ty.tuple [])
+                                          ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -11844,9 +12284,9 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -11910,10 +12350,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -12067,19 +12507,26 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Some
-                                                (Ty.function
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
                                                   [
-                                                    Ty.tuple
+                                                    Ty.function
                                                       [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ]
                                                       ]
-                                                  ]
-                                                  (Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "move_borrow_graph::references::RefID"
-                                                    ])),
+                                                      (Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID"
+                                                        ])
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -12118,9 +12565,9 @@ Module reference_safety.
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -12191,7 +12638,7 @@ Module reference_safety.
                                               |) in
                                             let id := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -12354,12 +12801,17 @@ Module reference_safety.
             M.read (|
               let~ id_map :
                   Ty.apply
-                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_borrow_graph::references::RefID";
-                      Ty.path "move_borrow_graph::references::RefID";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [
+                          Ty.path "move_borrow_graph::references::RefID";
+                          Ty.path "move_borrow_graph::references::RefID";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -12389,9 +12841,14 @@ Module reference_safety.
                 |) in
               let~ _ :
                   Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_borrow_graph::references::RefID" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_borrow_graph::references::RefID" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -12440,12 +12897,17 @@ Module reference_safety.
                 |) in
               let~ locals :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -12698,25 +13160,30 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
                                                 Ty.tuple
                                                   [
-                                                    Ty.path "usize";
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        Ty.path "usize";
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ]
                                                       ]
                                                   ]
                                               ]
-                                          ]
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")),
+                                              (Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                                          ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -12728,8 +13195,13 @@ Module reference_safety.
                                             M.read (|
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 value,
                                                 [
                                                   fun γ =>
@@ -12743,8 +13215,13 @@ Module reference_safety.
                                                         |) in
                                                       let old_id := M.alloc (| γ1_0 |) in
                                                       let~ new_id :
-                                                          Ty.path
-                                                            "move_borrow_graph::references::RefID" :=
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.path
@@ -12761,11 +13238,16 @@ Module reference_safety.
                                                         |) in
                                                       let~ _ :
                                                           Ty.apply
-                                                            (Ty.path "core::option::Option")
+                                                            (Ty.path "*")
                                                             []
                                                             [
-                                                              Ty.path
-                                                                "move_borrow_graph::references::RefID"
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_borrow_graph::references::RefID"
+                                                                ]
                                                             ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
@@ -12834,9 +13316,9 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -12911,11 +13393,16 @@ Module reference_safety.
                 |) in
               let~ borrow_graph :
                   Ty.apply
-                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [];
-                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      Ty.apply
+                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -12953,7 +13440,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -12979,8 +13466,13 @@ Module reference_safety.
                   |)
                 |) in
               let~ canonical_state :
-                  Ty.path
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                    ] :=
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
@@ -13031,9 +13523,9 @@ Module reference_safety.
                         |))
                     ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -13150,17 +13642,22 @@ Module reference_safety.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    Ty.tuple
+                                    Ty.function
                                       [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_borrow_graph::references::RefID" ]
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_borrow_graph::references::RefID" ]
+                                          ]
                                       ]
-                                  ]
-                                  (Ty.path "bool")),
+                                      (Ty.path "bool")
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -13426,24 +13923,29 @@ Module reference_safety.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Some
-                                  (Ty.function
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.function
                                         [
                                           Ty.tuple
                                             [
-                                              Ty.path "usize";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                              Ty.tuple
                                                 [
-                                                  Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                  Ty.path "usize";
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]
                                                 ]
                                             ]
                                         ]
-                                    ]
-                                    (Ty.path "bool")),
+                                        (Ty.path "bool")
+                                    ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -13518,15 +14020,20 @@ Module reference_safety.
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
                                                           Some
-                                                            (Ty.function
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
                                                               [
-                                                                Ty.tuple
+                                                                Ty.function
                                                                   [
-                                                                    Ty.path
-                                                                      "move_borrow_graph::references::RefID"
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_borrow_graph::references::RefID"
+                                                                      ]
                                                                   ]
-                                                              ]
-                                                              (Ty.path "bool")),
+                                                                  (Ty.path "bool")
+                                                              ]),
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -13645,9 +14152,9 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -13719,9 +14226,9 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -13784,9 +14291,9 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -13830,9 +14337,9 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -13920,11 +14427,16 @@ Module reference_safety.
                 |) in
               let~ self_graph :
                   Ty.apply
-                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [];
-                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      Ty.apply
+                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -13964,11 +14476,16 @@ Module reference_safety.
                 |) in
               let~ other_graph :
                   Ty.apply
-                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [];
-                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      Ty.apply
+                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -14008,12 +14525,17 @@ Module reference_safety.
                 |) in
               let~ locals :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -14334,31 +14856,36 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
                                                 Ty.tuple
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ]
                                                       ]
                                                   ]
                                               ]
-                                          ]
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")),
+                                              (Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                                          ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -14370,8 +14897,13 @@ Module reference_safety.
                                             M.read (|
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
@@ -14400,7 +14932,11 @@ Module reference_safety.
                                                           γ0_1,
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                                                         |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.tuple [],
@@ -14454,7 +14990,11 @@ Module reference_safety.
                                                           0
                                                         |) in
                                                       let id := M.alloc (| γ2_0 |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.tuple [],
@@ -14496,9 +15036,17 @@ Module reference_safety.
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let v1 := M.copy (| γ0_0 |) in
                                                       let v2 := M.copy (| γ0_1 |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Some
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -14587,11 +15135,16 @@ Module reference_safety.
                 |) in
               let~ borrow_graph :
                   Ty.apply
-                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [];
-                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      Ty.apply
+                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -14625,9 +15178,14 @@ Module reference_safety.
                 |) in
               let~ current_function :
                   Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
+                    ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -14635,7 +15193,7 @@ Module reference_safety.
                     "current_function"
                   |)
                 |) in
-              let~ next_id : Ty.path "usize" :=
+              let~ next_id : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -14704,12 +15262,24 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             let meter := M.alloc (| meter |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_bytecode_verifier::absint::JoinResult";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ joined :
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path
@@ -14727,9 +15297,9 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -14765,9 +15335,9 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -14854,9 +15424,9 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14982,9 +15552,9 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15136,9 +15706,9 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15290,7 +15860,7 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ locals_unchanged : Ty.path "bool" :=
+                  let~ locals_unchanged : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "bool",
@@ -15488,30 +16058,35 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Some
-                                        (Ty.function
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
                                           [
-                                            Ty.tuple
+                                            Ty.function
                                               [
                                                 Ty.tuple
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ]
                                                       ]
                                                   ]
                                               ]
-                                          ]
-                                          (Ty.path "bool")),
+                                              (Ty.path "bool")
+                                          ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -15560,11 +16135,16 @@ Module reference_safety.
                   M.match_operator (|
                     Some
                       (Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_bytecode_verifier::absint::JoinResult";
-                          Ty.path "move_binary_format::errors::PartialVMError"
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "move_bytecode_verifier::absint::JoinResult";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                         ]),
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -15630,7 +16210,7 @@ Module reference_safety.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |)
                             |) in

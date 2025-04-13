@@ -198,7 +198,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -560,9 +560,14 @@ Module eip7702.
             M.read (|
               let~ authority :
                   Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "alloy_primitives::bits::address::Address" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

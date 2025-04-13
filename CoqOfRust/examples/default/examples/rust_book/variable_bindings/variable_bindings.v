@@ -28,12 +28,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ an_integer : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 1 |) in
-        let~ a_boolean : Ty.path "bool" := M.alloc (| Value.Bool true |) in
-        let~ unit_ : Ty.tuple [] := M.alloc (| Value.Tuple [] |) in
-        let~ copied_integer : Ty.path "u32" := M.copy (| an_integer |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ an_integer : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
+          M.alloc (| Value.Integer IntegerKind.U32 1 |) in
+        let~ a_boolean : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
+          M.alloc (| Value.Bool true |) in
+        let~ unit_ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := M.alloc (| Value.Tuple [] |) in
+        let~ copied_integer : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
+          M.copy (| an_integer |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -96,8 +99,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -158,8 +161,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -220,8 +223,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _unused_variable : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 3 |) in
-        let~ _noisy_unused_variable : Ty.path "u32" :=
+        let~ _unused_variable : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
+          M.alloc (| Value.Integer IntegerKind.U32 3 |) in
+        let~ _noisy_unused_variable : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
           M.alloc (| Value.Integer IntegerKind.U32 2 |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -22,9 +22,14 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         M.match_operator (|
           Some
             (Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+              ]),
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -44,9 +49,14 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -129,7 +139,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let result := M.alloc (| result |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           result,
           [
             fun γ =>
@@ -137,7 +147,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -204,7 +214,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -294,9 +304,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ twenty :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -310,7 +325,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -320,9 +335,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ tt_ :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -336,7 +356,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

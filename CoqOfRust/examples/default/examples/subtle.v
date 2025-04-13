@@ -148,18 +148,18 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       ltac:(M.monadic
         (let source := M.alloc (| source |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -316,7 +316,7 @@ Module Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.deref (| M.read (| self |) |),
@@ -416,7 +416,7 @@ Module Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.deref (| M.read (| self |) |),
@@ -516,7 +516,7 @@ Module Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.deref (| M.read (| self |) |),
@@ -624,18 +624,18 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (let input := M.alloc (| input |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -809,10 +809,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
-        M.catch_return (|
+        M.catch_return (Ty.path "subtle::Choice") (|
           ltac:(M.monadic
             (M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -825,9 +825,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -883,11 +883,12 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ x : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+                M.alloc (| Value.Integer IntegerKind.U8 1 |) in
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -963,9 +964,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -1021,7 +1022,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let ai := M.copy (| γ1_0 |) in
                                         let bi := M.copy (| γ1_1 |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             let β := x in
                                             M.write (|
@@ -1189,7 +1190,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ x : Ty.path "u8" :=
+          let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -1205,7 +1206,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let~ y : Ty.path "u8" :=
+          let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -1344,7 +1345,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ x : Ty.path "u16" :=
+          let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -1360,7 +1361,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let~ y : Ty.path "u16" :=
+          let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -1496,7 +1497,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ x : Ty.path "u32" :=
+          let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -1512,7 +1513,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let~ y : Ty.path "u32" :=
+          let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -1648,7 +1649,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ x : Ty.path "u64" :=
+          let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -1664,7 +1665,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let~ y : Ty.path "u64" :=
+          let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -1800,7 +1801,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ x : Ty.path "usize" :=
+          let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "usize",
@@ -1816,7 +1817,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let~ y : Ty.path "usize" :=
+          let~ y : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "usize",
@@ -1966,7 +1967,7 @@ Module ConditionallySelectable.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.deref (| M.read (| self |) |),
@@ -2009,8 +2010,9 @@ Module ConditionallySelectable.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ t : Self := M.copy (| M.deref (| M.read (| a |) |) |) in
-          let~ _ : Ty.tuple [] :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Self ] :=
+            M.copy (| M.deref (| M.read (| a |) |) |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -2033,7 +2035,7 @@ Module ConditionallySelectable.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -2081,7 +2083,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u8")
@@ -2152,7 +2154,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u8")
@@ -2166,7 +2168,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                     |))
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -2218,7 +2220,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u8")
@@ -2232,7 +2234,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                     |))
                 |))
             |) in
-          let~ t : Ty.path "u8" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -2250,7 +2252,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -2262,7 +2264,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -2312,7 +2314,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2389,7 +2391,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2409,7 +2411,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   |)
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -2461,7 +2463,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i8" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2481,7 +2483,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   |)
                 |))
             |) in
-          let~ t : Ty.path "i8" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "i8",
@@ -2499,7 +2501,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -2511,7 +2513,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -2561,7 +2563,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u16")
@@ -2632,7 +2634,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u16")
@@ -2646,7 +2648,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                     |))
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -2698,7 +2700,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u16")
@@ -2712,7 +2714,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                     |))
                 |))
             |) in
-          let~ t : Ty.path "u16" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -2730,7 +2732,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -2742,7 +2744,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -2792,7 +2794,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2869,7 +2871,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2889,7 +2891,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   |)
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -2941,7 +2943,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i16" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2961,7 +2963,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   |)
                 |))
             |) in
-          let~ t : Ty.path "i16" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "i16",
@@ -2979,7 +2981,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -2991,7 +2993,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -3041,7 +3043,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u32")
@@ -3112,7 +3114,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u32")
@@ -3126,7 +3128,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                     |))
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -3178,7 +3180,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u32")
@@ -3192,7 +3194,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                     |))
                 |))
             |) in
-          let~ t : Ty.path "u32" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -3210,7 +3212,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -3222,7 +3224,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -3272,7 +3274,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3349,7 +3351,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3369,7 +3371,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   |)
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -3421,7 +3423,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i32" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3441,7 +3443,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   |)
                 |))
             |) in
-          let~ t : Ty.path "i32" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "i32",
@@ -3459,7 +3461,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -3471,7 +3473,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -3521,7 +3523,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u64")
@@ -3592,7 +3594,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u64")
@@ -3606,7 +3608,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                     |))
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -3658,7 +3660,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "u64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.cast
                 (Ty.path "u64")
@@ -3672,7 +3674,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                     |))
                 |))
             |) in
-          let~ t : Ty.path "u64" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -3690,7 +3692,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -3702,7 +3704,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -3752,7 +3754,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3829,7 +3831,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3849,7 +3851,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   |)
                 |))
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| self |) |) in
               M.write (|
@@ -3901,7 +3903,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ mask : Ty.path "i64" :=
+          let~ mask : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -3921,7 +3923,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   |)
                 |))
             |) in
-          let~ t : Ty.path "i64" :=
+          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "i64",
@@ -3939,7 +3941,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| a |) |) in
               M.write (|
@@ -3951,7 +3953,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β := M.deref (| M.read (| b |) |) in
               M.write (|
@@ -4080,7 +4082,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
         (let self := M.alloc (| self |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let~ self_neg : T :=
+          let~ self_neg : Ty.apply (Ty.path "*") [] [ T ] :=
             M.alloc (|
               M.call_closure (|
                 T,
@@ -4103,7 +4105,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -4331,7 +4333,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
         (let source := M.alloc (| source |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -4450,9 +4452,9 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let msg := M.alloc (| msg |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -4491,7 +4493,7 @@ Module Impl_subtle_CtOption_T.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -4515,7 +4517,11 @@ Module Impl_subtle_CtOption_T.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -4648,9 +4654,9 @@ Module Impl_subtle_CtOption_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -4689,7 +4695,7 @@ Module Impl_subtle_CtOption_T.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -4713,7 +4719,11 @@ Module Impl_subtle_CtOption_T.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                  let~ kind :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -5106,7 +5116,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let~ tmp : Ty.apply (Ty.path "subtle::CtOption") [] [ U ] :=
+          let~ tmp : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ U ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "subtle::CtOption") [] [ U ],
@@ -5184,7 +5194,7 @@ Module Impl_subtle_CtOption_T.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -5239,7 +5249,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let~ is_none : Ty.path "subtle::Choice" :=
+          let~ is_none : Ty.apply (Ty.path "*") [] [ Ty.path "subtle::Choice" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "subtle::Choice",
@@ -5252,7 +5262,7 @@ Module Impl_subtle_CtOption_T.
                 [ M.borrow (| Pointer.Kind.Ref, self |) ]
               |)
             |) in
-          let~ f : Ty.apply (Ty.path "subtle::CtOption") [] [ T ] :=
+          let~ f : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
@@ -5450,7 +5460,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let~ a : Ty.path "subtle::Choice" :=
+          let~ a : Ty.apply (Ty.path "*") [] [ Ty.path "subtle::Choice" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "subtle::Choice",
@@ -5463,7 +5473,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ b : Ty.path "subtle::Choice" :=
+          let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "subtle::Choice" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "subtle::Choice",
@@ -5636,7 +5646,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ gtb : Ty.path "u8" :=
+          let~ gtb : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -5667,7 +5677,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let~ ltb : Ty.path "u8" :=
+          let~ ltb : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -5698,13 +5708,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5719,7 +5730,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := ltb in
                             M.write (|
@@ -5738,7 +5749,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -5756,7 +5767,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -5765,7 +5776,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                   ]
                 |)))
             |) in
-          let~ bit : Ty.path "u8" :=
+          let~ bit : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u8",
@@ -5773,13 +5784,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5794,7 +5806,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := bit in
                             M.write (|
@@ -5813,7 +5825,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -5831,7 +5843,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -5912,7 +5924,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ gtb : Ty.path "u16" :=
+          let~ gtb : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -5943,7 +5955,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let~ ltb : Ty.path "u16" :=
+          let~ ltb : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -5974,13 +5986,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5995,7 +6008,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := ltb in
                             M.write (|
@@ -6014,7 +6027,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6032,7 +6045,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -6041,7 +6054,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                   ]
                 |)))
             |) in
-          let~ bit : Ty.path "u16" :=
+          let~ bit : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u16",
@@ -6049,13 +6062,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6070,7 +6084,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := bit in
                             M.write (|
@@ -6089,7 +6103,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6107,7 +6121,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -6185,7 +6199,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ gtb : Ty.path "u32" :=
+          let~ gtb : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -6216,7 +6230,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let~ ltb : Ty.path "u32" :=
+          let~ ltb : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -6247,13 +6261,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6268,7 +6283,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := ltb in
                             M.write (|
@@ -6287,7 +6302,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6305,7 +6320,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -6314,7 +6329,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                   ]
                 |)))
             |) in
-          let~ bit : Ty.path "u32" :=
+          let~ bit : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -6322,13 +6337,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6343,7 +6359,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := bit in
                             M.write (|
@@ -6362,7 +6378,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6380,7 +6396,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -6458,7 +6474,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ gtb : Ty.path "u64" :=
+          let~ gtb : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -6489,7 +6505,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let~ ltb : Ty.path "u64" :=
+          let~ ltb : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -6520,13 +6536,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6541,7 +6558,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := ltb in
                             M.write (|
@@ -6560,7 +6577,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6578,7 +6595,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -6587,7 +6604,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                   ]
                 |)))
             |) in
-          let~ bit : Ty.path "u64" :=
+          let~ bit : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -6595,13 +6612,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
               |)
             |) in
-          let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ pow : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+            M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.loop (|
               Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6616,7 +6634,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := bit in
                             M.write (|
@@ -6635,7 +6653,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             let β := pow in
                             M.write (|
@@ -6653,7 +6671,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)

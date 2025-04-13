@@ -115,12 +115,16 @@ Module reference_safety.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let v := M.alloc (| v |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -172,7 +176,11 @@ Module reference_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -206,7 +214,11 @@ Module reference_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -346,7 +358,7 @@ Module reference_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -466,12 +478,16 @@ Module reference_safety.
           (let self := M.alloc (| self |) in
           let v := M.alloc (| v |) in
           let n := M.alloc (| n |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -524,7 +540,11 @@ Module reference_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                          let~ err :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -558,7 +578,11 @@ Module reference_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res : Ty.path "alloc::string::String" :=
+                                        let~ res :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -698,7 +722,7 @@ Module reference_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -829,7 +853,11 @@ Module reference_safety.
         let meter := M.alloc (| meter |) in
         M.read (|
           let~ initial_state :
-              Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -843,7 +871,10 @@ Module reference_safety.
               |)
             |) in
           let~ verifier :
-              Ty.path "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis" :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
@@ -937,14 +968,23 @@ Module reference_safety.
         let offset := M.alloc (| offset |) in
         let function_handle := M.alloc (| function_handle |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ parameters :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -982,12 +1022,17 @@ Module reference_safety.
                 |) in
               let~ arguments :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -1231,21 +1276,26 @@ Module reference_safety.
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Some
-                                            (Ty.function
+                                            (Ty.apply
+                                              (Ty.path "*")
+                                              []
                                               [
-                                                Ty.tuple
+                                                Ty.function
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]
                                                       ]
                                                   ]
-                                              ]
-                                              (Ty.path
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")),
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                                              ]),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -1316,21 +1366,31 @@ Module reference_safety.
                 |) in
               let~ acquired_resources :
                   Ty.apply
-                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::StructDefinitionIndex";
-                      Ty.path "alloc::alloc::Global"
-                    ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                      Ty.apply
                         (Ty.path "alloc::collections::btree::set::BTreeSet")
                         []
                         [
                           Ty.path "move_binary_format::file_format::StructDefinitionIndex";
                           Ty.path "alloc::alloc::Global"
+                        ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ]),
                     M.alloc (|
                       M.call_closure (|
@@ -1397,9 +1457,15 @@ Module reference_safety.
                           let idx := M.copy (| γ0_0 |) in
                           let~ func_def :
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "*")
                                 []
-                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ] :=
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1431,9 +1497,14 @@ Module reference_safety.
                             |) in
                           let~ fh :
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "*")
                                 []
-                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1472,11 +1543,17 @@ Module reference_safety.
                           M.match_operator (|
                             Some
                               (Ty.apply
-                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                (Ty.path "*")
                                 []
                                 [
-                                  Ty.path "move_binary_format::file_format::StructDefinitionIndex";
-                                  Ty.path "alloc::alloc::Global"
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::StructDefinitionIndex";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ]),
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1729,9 +1806,14 @@ Module reference_safety.
                 |) in
               let~ return_ :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1769,23 +1851,33 @@ Module reference_safety.
                 |) in
               let~ values :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                      Ty.path "alloc::alloc::Global"
-                    ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                      Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
                         [
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
                           Ty.path "alloc::alloc::Global"
+                        ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ]),
                     M.alloc (|
                       M.call_closure (|
@@ -1933,10 +2025,10 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1973,9 +2065,9 @@ Module reference_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2027,7 +2119,7 @@ Module reference_safety.
                                           |) in
                                         let value := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -2187,7 +2279,7 @@ Module reference_safety.
         (let struct_def := M.alloc (| struct_def |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "usize"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
             M.alloc (|
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2266,13 +2358,17 @@ Module reference_safety.
       ltac:(M.monadic
         (let verifier := M.alloc (| verifier |) in
         let struct_def := M.alloc (| struct_def |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -2316,9 +2412,9 @@ Module reference_safety.
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2362,7 +2458,7 @@ Module reference_safety.
                                             0
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -2385,8 +2481,13 @@ Module reference_safety.
                                                               Pointer.Kind.Ref,
                                                               M.match_operator (|
                                                                 Some
-                                                                  (Ty.path
-                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                    ]),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -2447,8 +2548,13 @@ Module reference_safety.
                                                                         |) in
                                                                       let e := M.copy (| γ0_0 |) in
                                                                       let~ err :
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -2491,8 +2597,14 @@ Module reference_safety.
                                                                                 [
                                                                                   M.read (|
                                                                                     let~ res :
-                                                                                        Ty.path
-                                                                                          "alloc::string::String" :=
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "alloc::string::String"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -2643,8 +2755,13 @@ Module reference_safety.
                                                                         |) in
                                                                       M.match_operator (|
                                                                         Some
-                                                                          (Ty.path
-                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                          (Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                            ]),
                                                                         M.alloc (|
                                                                           Value.Tuple []
                                                                         |),
@@ -2781,8 +2898,13 @@ Module reference_safety.
                                                     Value.Bool true
                                                   |) in
                                                 let~ err :
-                                                    Ty.path
-                                                      "move_binary_format::errors::PartialVMError" :=
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path
@@ -2821,7 +2943,13 @@ Module reference_safety.
                                                           [
                                                             M.read (|
                                                               let~ res :
-                                                                  Ty.path "alloc::string::String" :=
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloc::string::String"
+                                                                    ] :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.path "alloc::string::String",
@@ -2910,7 +3038,7 @@ Module reference_safety.
                                                     |)
                                                   |) in
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -3028,9 +3156,9 @@ Module reference_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3172,12 +3300,16 @@ Module reference_safety.
       ltac:(M.monadic
         (let verifier := M.alloc (| verifier |) in
         let struct_def := M.alloc (| struct_def |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3200,8 +3332,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3257,8 +3394,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -3297,7 +3439,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -3447,8 +3593,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -3565,7 +3716,11 @@ Module reference_safety.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                        let~ err :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -3599,7 +3754,11 @@ Module reference_safety.
                                   |),
                                   [
                                     M.read (|
-                                      let~ res : Ty.path "alloc::string::String" :=
+                                      let~ res :
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "alloc::string::String" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -3669,7 +3828,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -3764,9 +3923,9 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3930,11 +4089,16 @@ Module reference_safety.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
                 [
-                  Ty.path "move_binary_format::file_format::SignatureToken";
-                  Ty.path "move_binary_format::errors::PartialVMError"
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::SignatureToken";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
                 ]),
             M.alloc (|
               M.call_closure (|
@@ -4374,12 +4538,16 @@ Module reference_safety.
         let bytecode := M.alloc (| bytecode |) in
         let offset := M.alloc (| offset |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4499,9 +4667,9 @@ Module reference_safety.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4632,9 +4800,9 @@ Module reference_safety.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4765,9 +4933,9 @@ Module reference_safety.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   bytecode,
                   [
                     fun γ =>
@@ -4793,8 +4961,13 @@ Module reference_safety.
                               M.read (|
                                 M.match_operator (|
                                   Some
-                                    (Ty.path
-                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -4850,7 +5023,11 @@ Module reference_safety.
                                           |) in
                                         let e := M.copy (| γ0_0 |) in
                                         let~ err :
-                                            Ty.path "move_binary_format::errors::PartialVMError" :=
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "move_binary_format::errors::PartialVMError"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -4887,7 +5064,11 @@ Module reference_safety.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      let~ res : Ty.path "alloc::string::String" :=
+                                                      let~ res :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "alloc::string::String" ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.path "alloc::string::String",
@@ -5035,8 +5216,13 @@ Module reference_safety.
                                           |) in
                                         M.match_operator (|
                                           Some
-                                            (Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                            (Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -5156,13 +5342,23 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -5292,7 +5488,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5425,13 +5621,23 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -5561,7 +5767,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5694,7 +5900,7 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5751,8 +5957,13 @@ Module reference_safety.
                                     M.read (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -5808,8 +6019,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -5848,7 +6064,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -5998,8 +6218,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6188,10 +6413,18 @@ Module reference_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::FreezeRef"
                           |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -6210,8 +6443,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -6267,8 +6505,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -6307,7 +6550,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -6457,8 +6704,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6589,7 +6841,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -6624,7 +6880,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -6706,7 +6966,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -6813,13 +7077,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ frozen :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -6949,7 +7223,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -7101,13 +7375,23 @@ Module reference_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (let~ v1 :
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7163,8 +7447,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -7203,7 +7492,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -7353,8 +7646,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -7467,13 +7765,23 @@ Module reference_safety.
                                       |)
                                     |) in
                                   let~ v2 :
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7529,8 +7837,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -7569,7 +7882,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -7719,8 +8036,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -7833,13 +8155,23 @@ Module reference_safety.
                                       |)
                                     |) in
                                   let~ value :
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7973,7 +8305,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -8108,10 +8440,18 @@ Module reference_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::ReadRef"
                           |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8130,8 +8470,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -8187,8 +8532,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -8227,7 +8577,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -8377,8 +8731,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -8509,7 +8868,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -8544,7 +8907,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -8626,7 +8993,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -8733,13 +9104,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8869,7 +9250,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -8999,10 +9380,18 @@ Module reference_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::WriteRef"
                           |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9021,8 +9410,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -9078,8 +9472,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -9118,7 +9517,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -9268,8 +9671,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -9400,7 +9808,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -9435,7 +9847,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -9517,7 +9933,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -9624,13 +10044,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ val_operand :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9686,7 +10116,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -9721,7 +10155,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -9868,8 +10306,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -9975,9 +10418,9 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -10004,7 +10447,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -10038,7 +10485,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -10120,7 +10571,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -10227,7 +10678,7 @@ Module reference_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10361,13 +10812,23 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10498,7 +10959,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10631,13 +11092,23 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10768,7 +11239,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10900,10 +11371,18 @@ Module reference_safety.
                             0
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10922,8 +11401,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -10979,8 +11463,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -11019,7 +11508,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -11169,8 +11662,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -11301,7 +11799,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -11336,7 +11838,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -11418,7 +11924,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -11525,13 +12035,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -11663,7 +12183,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -11797,9 +12317,14 @@ Module reference_safety.
                         let field_inst_index := M.alloc (| γ1_0 |) in
                         let~ field_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldInstantiation" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -11829,10 +12354,18 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -11851,8 +12384,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -11908,8 +12446,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -11948,7 +12491,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -12098,8 +12645,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -12230,7 +12782,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -12265,7 +12821,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -12347,7 +12907,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -12454,13 +13018,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -12598,7 +13172,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -12730,10 +13304,18 @@ Module reference_safety.
                             0
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -12752,8 +13334,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -12809,8 +13396,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -12849,7 +13441,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -12999,8 +13595,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -13131,7 +13732,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -13166,7 +13771,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -13248,7 +13857,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -13355,13 +13968,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13493,7 +14116,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -13627,9 +14250,14 @@ Module reference_safety.
                         let field_inst_index := M.alloc (| γ1_0 |) in
                         let~ field_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldInstantiation" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -13659,10 +14287,18 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                        let~ id :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_borrow_graph::references::RefID"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13681,8 +14317,13 @@ Module reference_safety.
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -13738,8 +14379,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -13778,7 +14424,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -13928,8 +14578,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -14060,7 +14715,11 @@ Module reference_safety.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -14095,7 +14754,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -14177,7 +14840,11 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "move_borrow_graph::references::RefID"),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_borrow_graph::references::RefID" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -14284,13 +14951,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -14428,7 +15105,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -14560,9 +15237,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -14585,8 +15262,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -14644,8 +15326,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -14687,8 +15374,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -14839,8 +15531,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -14970,7 +15667,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -15004,7 +15705,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -15086,7 +15791,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -15193,13 +15898,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -15330,7 +16045,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -15462,9 +16177,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -15487,8 +16202,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -15546,8 +16266,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -15589,8 +16314,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -15741,8 +16471,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -15872,7 +16607,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -15906,7 +16645,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -15988,7 +16731,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -16096,9 +16839,16 @@ Module reference_safety.
                           |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -16131,13 +16881,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -16274,7 +17034,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16406,9 +17166,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -16431,8 +17191,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -16490,8 +17255,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -16533,8 +17303,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -16685,8 +17460,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -16816,7 +17596,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -16850,7 +17634,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -16932,7 +17720,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -17039,13 +17827,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -17176,7 +17974,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -17308,9 +18106,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -17333,8 +18131,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -17392,8 +18195,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -17435,8 +18243,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -17587,8 +18400,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -17718,7 +18536,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -17752,7 +18574,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -17834,7 +18660,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -17942,9 +18768,16 @@ Module reference_safety.
                           |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -17977,13 +18810,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -18120,7 +18963,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18252,9 +19095,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -18277,8 +19120,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -18336,8 +19184,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -18379,8 +19232,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -18531,8 +19389,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -18662,7 +19525,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -18696,7 +19563,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -18778,7 +19649,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -18885,13 +19756,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -19021,7 +19902,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19153,9 +20034,9 @@ Module reference_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -19178,8 +20059,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -19237,8 +20123,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -19280,8 +20171,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -19432,8 +20328,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -19563,7 +20464,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -19597,7 +20502,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -19679,7 +20588,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -19787,9 +20696,16 @@ Module reference_safety.
                           |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -19822,13 +20738,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ value :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -19964,7 +20890,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20098,9 +21024,14 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ function_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20131,7 +21062,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20275,9 +21206,14 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ func_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -20311,9 +21247,14 @@ Module reference_safety.
                           |) in
                         let~ function_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20350,7 +21291,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20492,12 +21433,17 @@ Module reference_safety.
                           |) in
                         let~ return_values :
                             Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                              (Ty.path "*")
                               []
                               [
-                                Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                Ty.path "alloc::alloc::Global"
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -20525,10 +21471,10 @@ Module reference_safety.
                               []
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -20610,9 +21556,9 @@ Module reference_safety.
                                     M.loop (|
                                       Ty.tuple [],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -20660,7 +21606,8 @@ Module reference_safety.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.tuple [],
@@ -20685,8 +21632,13 @@ Module reference_safety.
                                                           M.read (|
                                                             M.match_operator (|
                                                               Some
-                                                                (Ty.path
-                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                  ]),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -20746,8 +21698,13 @@ Module reference_safety.
                                                                       |) in
                                                                     let e := M.copy (| γ0_0 |) in
                                                                     let~ err :
-                                                                        Ty.path
-                                                                          "move_binary_format::errors::PartialVMError" :=
+                                                                        Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -20790,8 +21747,14 @@ Module reference_safety.
                                                                               [
                                                                                 M.read (|
                                                                                   let~ res :
-                                                                                      Ty.path
-                                                                                        "alloc::string::String" :=
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "alloc::string::String"
+                                                                                        ] :=
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
                                                                                         Ty.path
@@ -20942,8 +21905,13 @@ Module reference_safety.
                                                                       |) in
                                                                     M.match_operator (|
                                                                       Some
-                                                                        (Ty.path
-                                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                        (Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                          ]),
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -21078,7 +22046,7 @@ Module reference_safety.
                                     |)))
                               ]
                             |)) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -21135,7 +22103,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -21413,9 +22381,9 @@ Module reference_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21438,8 +22406,13 @@ Module reference_safety.
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
                                                             Some
-                                                              (Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                ]),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -21499,8 +22472,13 @@ Module reference_safety.
                                                                     |) in
                                                                   let e := M.copy (| γ0_0 |) in
                                                                   let~ err :
-                                                                      Ty.path
-                                                                        "move_binary_format::errors::PartialVMError" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -21543,8 +22521,13 @@ Module reference_safety.
                                                                             [
                                                                               M.read (|
                                                                                 let~ res :
-                                                                                    Ty.path
-                                                                                      "alloc::string::String" :=
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::string::String"
+                                                                                      ] :=
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -21695,8 +22678,13 @@ Module reference_safety.
                                                                     |) in
                                                                   M.match_operator (|
                                                                     Some
-                                                                      (Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                        ]),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -21831,8 +22819,13 @@ Module reference_safety.
                                                 Value.Bool true
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -21871,7 +22864,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -21958,7 +22955,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -22101,9 +23098,9 @@ Module reference_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -22126,8 +23123,13 @@ Module reference_safety.
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
                                                             Some
-                                                              (Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                ]),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -22187,8 +23189,13 @@ Module reference_safety.
                                                                     |) in
                                                                   let e := M.copy (| γ0_0 |) in
                                                                   let~ err :
-                                                                      Ty.path
-                                                                        "move_binary_format::errors::PartialVMError" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -22231,8 +23238,13 @@ Module reference_safety.
                                                                             [
                                                                               M.read (|
                                                                                 let~ res :
-                                                                                    Ty.path
-                                                                                      "alloc::string::String" :=
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::string::String"
+                                                                                      ] :=
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -22383,8 +23395,13 @@ Module reference_safety.
                                                                     |) in
                                                                   M.match_operator (|
                                                                     Some
-                                                                      (Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                        ]),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -22519,8 +23536,13 @@ Module reference_safety.
                                                 Value.Bool true
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -22559,7 +23581,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -22646,7 +23672,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -22754,7 +23780,7 @@ Module reference_safety.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -22773,8 +23799,13 @@ Module reference_safety.
                                           M.read (|
                                             M.match_operator (|
                                               Some
-                                                (Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                (Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                  ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -22830,8 +23861,13 @@ Module reference_safety.
                                                       |) in
                                                     let e := M.copy (| γ0_0 |) in
                                                     let~ err :
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError" :=
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path
@@ -22870,8 +23906,13 @@ Module reference_safety.
                                                               [
                                                                 M.read (|
                                                                   let~ res :
-                                                                      Ty.path
-                                                                        "alloc::string::String" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "alloc::string::String"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -23022,8 +24063,13 @@ Module reference_safety.
                                                       |) in
                                                     M.match_operator (|
                                                       Some
-                                                        (Ty.path
-                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                        (Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -23176,7 +24222,7 @@ Module reference_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -23342,7 +24388,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23503,7 +24549,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23664,7 +24710,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23825,7 +24871,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23986,7 +25032,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -24147,7 +25193,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -24310,9 +25356,14 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ signature :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -24352,7 +25403,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -24649,9 +25700,9 @@ Module reference_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24674,8 +25725,13 @@ Module reference_safety.
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
                                                             Some
-                                                              (Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                ]),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -24735,8 +25791,13 @@ Module reference_safety.
                                                                     |) in
                                                                   let e := M.copy (| γ0_0 |) in
                                                                   let~ err :
-                                                                      Ty.path
-                                                                        "move_binary_format::errors::PartialVMError" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -24779,8 +25840,13 @@ Module reference_safety.
                                                                             [
                                                                               M.read (|
                                                                                 let~ res :
-                                                                                    Ty.path
-                                                                                      "alloc::string::String" :=
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::string::String"
+                                                                                      ] :=
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -24931,8 +25997,13 @@ Module reference_safety.
                                                                     |) in
                                                                   M.match_operator (|
                                                                     Some
-                                                                      (Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                        ]),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -25067,8 +26138,13 @@ Module reference_safety.
                                                 Value.Bool true
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -25107,7 +26183,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -25194,7 +26274,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -25302,9 +26382,9 @@ Module reference_safety.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -25327,8 +26407,13 @@ Module reference_safety.
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
                                                             Some
-                                                              (Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                ]),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -25388,8 +26473,13 @@ Module reference_safety.
                                                                     |) in
                                                                   let e := M.copy (| γ0_0 |) in
                                                                   let~ err :
-                                                                      Ty.path
-                                                                        "move_binary_format::errors::PartialVMError" :=
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -25432,8 +26522,13 @@ Module reference_safety.
                                                                             [
                                                                               M.read (|
                                                                                 let~ res :
-                                                                                    Ty.path
-                                                                                      "alloc::string::String" :=
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::string::String"
+                                                                                      ] :=
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -25584,8 +26679,13 @@ Module reference_safety.
                                                                     |) in
                                                                   M.match_operator (|
                                                                     Some
-                                                                      (Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                        ]),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -25720,8 +26820,13 @@ Module reference_safety.
                                                 Value.Bool true
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -25760,7 +26865,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -25847,7 +26956,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -25956,7 +27065,7 @@ Module reference_safety.
                                       ]
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -26097,9 +27206,14 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26130,7 +27244,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26265,9 +27379,16 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -26301,9 +27422,14 @@ Module reference_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26340,7 +27466,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26475,9 +27601,14 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26508,7 +27639,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26643,9 +27774,16 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -26679,9 +27817,14 @@ Module reference_safety.
                           |) in
                         let~ struct_def :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26718,7 +27861,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26858,9 +28001,9 @@ Module reference_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let num := M.alloc (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -26898,12 +28041,17 @@ Module reference_safety.
                                   let num_to_pop := M.copy (| γ0_0 |) in
                                   let~ result :
                                       Ty.apply
-                                        (Ty.path "core::result::Result")
+                                        (Ty.path "*")
                                         []
                                         [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                          Ty.path "move_abstract_stack::AbsStackError"
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "move_abstract_stack::AbsStackError"
+                                            ]
                                         ] :=
                                     M.alloc (|
                                       M.call_closure (|
@@ -26941,13 +28089,23 @@ Module reference_safety.
                                       |)
                                     |) in
                                   let~ abs_value :
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                        ] :=
                                     M.copy (|
                                       M.match_operator (|
                                         Some
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]),
                                         result,
                                         [
                                           fun γ =>
@@ -26970,8 +28128,13 @@ Module reference_safety.
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
                                               let~ err :
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError" :=
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path
@@ -27010,7 +28173,11 @@ Module reference_safety.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -27160,8 +28327,13 @@ Module reference_safety.
                                                 |) in
                                               M.match_operator (|
                                                 Some
-                                                  (Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                    ]),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -27273,9 +28445,9 @@ Module reference_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -27303,8 +28475,13 @@ Module reference_safety.
                                                 Value.Bool true
                                               |) in
                                             let~ err :
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError" :=
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ] :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path
@@ -27343,7 +28520,11 @@ Module reference_safety.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -27430,7 +28611,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -27543,10 +28724,17 @@ Module reference_safety.
                             ]
                           |) in
                         let~ element_type :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -27670,7 +28858,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -27856,13 +29044,23 @@ Module reference_safety.
                             0
                           |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -27918,7 +29116,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -27953,7 +29155,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -28100,8 +29306,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -28207,9 +29418,9 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28335,7 +29546,7 @@ Module reference_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -28495,9 +29706,9 @@ Module reference_safety.
                             "move_binary_format::file_format::Bytecode::VecImmBorrow",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -28520,8 +29731,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -28579,8 +29795,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -28622,8 +29843,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -28774,8 +30000,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -28905,7 +30136,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -28939,7 +30174,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -29021,7 +30260,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -29128,13 +30367,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -29190,7 +30439,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -29225,7 +30478,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -29372,8 +30629,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -29480,13 +30742,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ elem_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -29617,7 +30889,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -29748,9 +31020,9 @@ Module reference_safety.
                             "move_binary_format::file_format::Bytecode::VecMutBorrow",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -29773,8 +31045,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -29832,8 +31109,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -29875,8 +31157,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -30027,8 +31314,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -30158,7 +31450,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -30192,7 +31488,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -30274,7 +31574,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -30381,13 +31681,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -30443,7 +31753,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -30478,7 +31792,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -30625,8 +31943,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -30733,13 +32056,23 @@ Module reference_safety.
                             |)
                           |) in
                         let~ elem_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -30870,7 +32203,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31001,9 +32334,9 @@ Module reference_safety.
                             "move_binary_format::file_format::Bytecode::VecPushBack",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -31026,8 +32359,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -31085,8 +32423,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -31128,8 +32471,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -31280,8 +32628,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -31411,7 +32764,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -31445,7 +32802,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -31527,7 +32888,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -31634,13 +32995,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -31696,7 +33067,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -31731,7 +33106,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -31878,8 +33257,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -31985,9 +33369,9 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32124,13 +33508,23 @@ Module reference_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -32186,7 +33580,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -32221,7 +33619,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -32368,8 +33770,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -32475,9 +33882,9 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32603,10 +34010,17 @@ Module reference_safety.
                             ]
                           |) in
                         let~ element_type :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -32730,7 +34144,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32891,9 +34305,9 @@ Module reference_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let num := M.alloc (| γ1_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -32916,8 +34330,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -32975,8 +34394,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -33018,8 +34442,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -33170,8 +34599,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -33301,7 +34735,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -33335,7 +34773,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -33417,7 +34859,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -33524,10 +34966,17 @@ Module reference_safety.
                             ]
                           |) in
                         let~ element_type :
-                            Ty.path "move_binary_format::file_format::SignatureToken" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -33651,7 +35100,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33805,9 +35254,9 @@ Module reference_safety.
                             "move_binary_format::file_format::Bytecode::VecSwap",
                             0
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -33830,8 +35279,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -33889,8 +35343,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -33932,8 +35391,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -34084,8 +35548,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -34215,7 +35684,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -34249,7 +35722,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -34331,7 +35808,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -34437,9 +35914,9 @@ Module reference_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -34462,8 +35939,13 @@ Module reference_safety.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Some
-                                                    (Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                    (Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -34521,8 +36003,13 @@ Module reference_safety.
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
                                                         let~ err :
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError" :=
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path
@@ -34564,8 +36051,13 @@ Module reference_safety.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -34716,8 +36208,13 @@ Module reference_safety.
                                                           |) in
                                                         M.match_operator (|
                                                           Some
-                                                            (Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                                            (Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                              ]),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -34847,7 +36344,11 @@ Module reference_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
+                                  let~ err :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::errors::PartialVMError" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -34881,7 +36382,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res : Ty.path "alloc::string::String" :=
+                                                let~ res :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "alloc::string::String" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -34963,7 +36468,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -35070,13 +36575,23 @@ Module reference_safety.
                             ]
                           |) in
                         let~ vec_ref :
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ] :=
                           M.copy (|
                             M.match_operator (|
                               Some
-                                (Ty.path
-                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -35132,7 +36647,11 @@ Module reference_safety.
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -35167,7 +36686,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -35314,8 +36837,13 @@ Module reference_safety.
                                       |) in
                                     M.match_operator (|
                                       Some
-                                        (Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -35421,9 +36949,9 @@ Module reference_safety.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -35600,12 +37128,16 @@ Module reference_safety.
           let index := M.alloc (| index |) in
           let last_index := M.alloc (| last_index |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -35718,9 +37250,9 @@ Module reference_safety.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -35736,9 +37268,9 @@ Module reference_safety.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -35780,7 +37312,11 @@ Module reference_safety.
                                         Value.Bool true
                                       |) in
                                     let~ err :
-                                        Ty.path "move_binary_format::errors::PartialVMError" :=
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::errors::PartialVMError"
+                                          ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -35815,7 +37351,11 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res : Ty.path "alloc::string::String" :=
+                                                  let~ res :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "alloc::string::String" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
@@ -35897,7 +37437,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>

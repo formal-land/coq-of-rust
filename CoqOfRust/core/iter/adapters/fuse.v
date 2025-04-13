@@ -310,15 +310,20 @@ Module iter.
                 M.match_operator (|
                   Some
                     (Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.associated_in_trait
-                          "core::iter::traits::iterator::Iterator"
+                        Ty.apply
+                          (Ty.path "core::option::Option")
                           []
-                          []
-                          I
-                          "Item"
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
                       ]),
                   M.SubPointer.get_struct_record_field (|
                     self,
@@ -386,7 +391,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Some (Ty.path "usize"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                   M.SubPointer.get_struct_record_field (|
                     self,
                     "core::iter::adapters::fuse::Fuse",
@@ -444,10 +449,15 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   Some
-                    (Ty.tuple
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
                       [
-                        Ty.path "usize";
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ]
                       ]),
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -559,9 +569,9 @@ Module iter.
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -579,7 +589,7 @@ Module iter.
                               0
                             |) in
                           let iter := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 acc,
@@ -674,12 +684,17 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   Some
-                    (Ty.associated_in_trait
-                      "core::iter::traits::iterator::Iterator"
+                    (Ty.apply
+                      (Ty.path "*")
                       []
-                      []
-                      I
-                      "Item"),
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]),
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::iter::adapters::fuse::Fuse",
@@ -882,9 +897,9 @@ Module iter.
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -902,7 +917,7 @@ Module iter.
                               0
                             |) in
                           let iter := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 acc,
@@ -1005,7 +1020,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Some (Ty.path "usize"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::iter::adapters::fuse::Fuse",
@@ -1062,7 +1077,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Some (Ty.path "bool"),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::iter::adapters::fuse::Fuse",
@@ -1356,19 +1371,24 @@ Module iter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::iterator::Iterator"
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                        []
-                                        I
-                                        "Item"
-                                    ])),
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1434,12 +1454,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1457,13 +1477,13 @@ Module iter.
                                   0
                                 |) in
                               let iter := M.alloc (| γ0_0 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     acc,
                                     M.read (|
                                       M.match_operator (|
-                                        Some Acc,
+                                        Some (Ty.apply (Ty.path "*") [] [ Acc ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -1564,7 +1584,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
@@ -1663,19 +1683,24 @@ Module iter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::iterator::Iterator"
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                        []
-                                        I
-                                        "Item"
-                                    ])),
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1782,19 +1807,24 @@ Module iter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::iterator::Iterator"
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                        []
-                                        I
-                                        "Item"
-                                    ])),
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1901,19 +1931,24 @@ Module iter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::iterator::Iterator"
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                        []
-                                        I
-                                        "Item"
-                                    ])),
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1980,12 +2015,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2003,13 +2038,13 @@ Module iter.
                                   0
                                 |) in
                               let iter := M.alloc (| γ0_0 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     acc,
                                     M.read (|
                                       M.match_operator (|
-                                        Some Acc,
+                                        Some (Ty.apply (Ty.path "*") [] [ Acc ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -2110,7 +2145,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2210,19 +2245,24 @@ Module iter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::iterator::Iterator"
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ I ] ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                        []
-                                        I
-                                        "Item"
-                                    ])),
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2302,7 +2342,12 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -2331,7 +2376,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2471,7 +2517,12 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -2500,7 +2551,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2650,12 +2702,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2673,13 +2725,13 @@ Module iter.
                                   0
                                 |) in
                               let iter := M.alloc (| γ0_0 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     acc,
                                     M.read (|
                                       M.match_operator (|
-                                        Some Acc,
+                                        Some (Ty.apply (Ty.path "*") [] [ Acc ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -2819,7 +2871,18 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::adapters::fuse::FuseImpl"
+                      []
+                      [ I ]
+                      (Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ])
+                      "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -2848,7 +2911,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2991,7 +3055,12 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -3020,7 +3089,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3163,7 +3233,12 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -3192,7 +3267,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3343,12 +3419,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -3366,13 +3442,13 @@ Module iter.
                                   0
                                 |) in
                               let iter := M.alloc (| γ0_0 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (|
                                     acc,
                                     M.read (|
                                       M.match_operator (|
-                                        Some Acc,
+                                        Some (Ty.apply (Ty.path "*") [] [ Acc ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3513,7 +3589,18 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
-              M.catch_return (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::adapters::fuse::FuseImpl"
+                      []
+                      [ I ]
+                      (Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ])
+                      "Item"
+                  ]) (|
                 ltac:(M.monadic
                   (M.call_closure (|
                     Ty.apply
@@ -3542,7 +3629,8 @@ Module iter.
                         M.deref (|
                           M.read (|
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&mut") [] [ I ]),
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ I ] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3825,10 +3913,14 @@ Module iter.
           ltac:(M.monadic
             (let opt := M.alloc (| opt |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ U ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ x : Ty.apply (Ty.path "core::option::Option") [] [ U ] :=
+                  let~ x :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ U ],
@@ -3850,7 +3942,11 @@ Module iter.
                                 M.deref (|
                                   M.read (|
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3963,9 +4059,9 @@ Module iter.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3986,7 +4082,7 @@ Module iter.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.write (|
                                   M.deref (| M.read (| opt |) |),

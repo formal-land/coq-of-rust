@@ -86,7 +86,11 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_core_types::transaction_argument::TransactionArgument"),
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]),
               self,
               [
                 fun γ =>
@@ -382,7 +386,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -394,7 +398,7 @@ Module transaction_argument.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -417,7 +421,7 @@ Module transaction_argument.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               self,
               [
                 fun γ =>
@@ -816,7 +820,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -828,7 +832,7 @@ Module transaction_argument.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -850,7 +854,7 @@ Module transaction_argument.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Some (Ty.path "bool"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -1275,11 +1279,16 @@ Module transaction_argument.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ]
                     ]),
                 M.deref (| M.read (| self |) |),
                 [
@@ -1791,9 +1800,14 @@ Module transaction_argument.
             M.match_operator (|
               Some
                 (Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "*")
                   []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -2583,7 +2597,8 @@ Module transaction_argument.
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_core_types::runtime_value::MoveValue"),
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::runtime_value::MoveValue" ]),
               val,
               [
                 fun γ =>
@@ -2774,14 +2789,25 @@ Module transaction_argument.
       | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                Ty.path "anyhow::Error"
+              ]) (|
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
                 [
                   M.read (|
                     M.match_operator (|
-                      Some (Ty.path "move_core_types::transaction_argument::TransactionArgument"),
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]),
                       val,
                       [
                         fun γ =>
@@ -2871,9 +2897,14 @@ Module transaction_argument.
                                     M.match_operator (|
                                       Some
                                         (Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                          (Ty.path "*")
                                           []
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3066,22 +3097,27 @@ Module transaction_argument.
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 Some
-                                                                  (Ty.function
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
                                                                     [
-                                                                      Ty.tuple
+                                                                      Ty.function
                                                                         [
-                                                                          Ty.path
-                                                                            "move_core_types::runtime_value::MoveValue"
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::runtime_value::MoveValue"
+                                                                            ]
                                                                         ]
-                                                                    ]
-                                                                    (Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.path "u8";
-                                                                        Ty.path "anyhow::Error"
-                                                                      ])),
+                                                                        (Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path "u8";
+                                                                            Ty.path "anyhow::Error"
+                                                                          ])
+                                                                    ]),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -3091,13 +3127,18 @@ Module transaction_argument.
                                                                         M.match_operator (|
                                                                           Some
                                                                             (Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
+                                                                              (Ty.path "*")
                                                                               []
                                                                               [
-                                                                                Ty.path "u8";
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path "u8";
+                                                                                    Ty.path
+                                                                                      "anyhow::Error"
+                                                                                  ]
                                                                               ]),
                                                                           M.alloc (|
                                                                             Value.Tuple []
@@ -3160,8 +3201,14 @@ Module transaction_argument.
                                                                                               M.read (|
                                                                                                 let~
                                                                                                       res :
-                                                                                                    Ty.path
-                                                                                                      "alloc::string::String" :=
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "*")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "alloc::string::String"
+                                                                                                      ] :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
                                                                                                       Ty.path
@@ -3395,7 +3442,11 @@ Module transaction_argument.
                                                         [
                                                           M.read (|
                                                             let~ res :
-                                                                Ty.path "alloc::string::String" :=
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
@@ -3706,23 +3757,28 @@ Module transaction_argument.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some
-                              (Ty.function
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
                                 [
-                                  Ty.tuple
+                                  Ty.function
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path
-                                            "move_core_types::transaction_argument::TransactionArgument"
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::transaction_argument::TransactionArgument"
+                                            ]
                                         ]
                                     ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                                    (Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+                                ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -4369,12 +4425,17 @@ Module transaction_argument.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                                      (Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

@@ -52,7 +52,11 @@ Module unit_.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some (Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple [])),
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple []) ]),
                           M.alloc (| α0 |),
                           [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
                         |)))

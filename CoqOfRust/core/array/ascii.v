@@ -26,17 +26,22 @@ Module array.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::option::Option")
                         []
                         [
                           Ty.apply
-                            (Ty.path "array")
-                            [ N ]
-                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ N ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                            ]
                         ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
@@ -129,21 +134,31 @@ Module array.
             M.read (|
               let~ byte_ptr :
                   Ty.apply
-                    (Ty.path "*const")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
               let~ ascii_ptr :
                   Ty.apply
-                    (Ty.path "*const")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "array")
-                        [ N ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.cast

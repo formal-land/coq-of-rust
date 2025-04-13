@@ -410,7 +410,11 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind"),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]),
                 self,
                 [
                   fun γ =>
@@ -494,7 +498,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -506,7 +510,7 @@ Module ffi.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -528,7 +532,7 @@ Module ffi.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -635,9 +639,14 @@ Module ffi.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -796,7 +805,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::ffi::c_str::FromBytesWithNulError",
@@ -1334,12 +1343,16 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1463,9 +1476,9 @@ Module ffi.
                             val))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1483,9 +1496,9 @@ Module ffi.
                                 0
                               |) in
                             let pos := M.copy (| γ0_0 |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1693,7 +1706,7 @@ Module ffi.
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1783,7 +1796,11 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let~ nul_pos : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
+              let~ nul_pos :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -1797,11 +1814,16 @@ Module ffi.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
-                      Ty.path "core::ffi::c_str::FromBytesUntilNulError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                          Ty.path "core::ffi::c_str::FromBytesUntilNulError"
+                        ]
                     ]),
                 nul_pos,
                 [
@@ -1816,9 +1838,14 @@ Module ffi.
                       let nul_pos := M.copy (| γ0_0 |) in
                       let~ subslice :
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "*")
                             []
-                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1919,7 +1946,11 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let~ nul_pos : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
+              let~ nul_pos :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -1933,11 +1964,16 @@ Module ffi.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
-                      Ty.path "core::ffi::c_str::FromBytesWithNulError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                          Ty.path "core::ffi::c_str::FromBytesWithNulError"
+                        ]
                     ]),
                 nul_pos,
                 [
@@ -2381,7 +2417,11 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ bytes :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
@@ -2751,7 +2791,11 @@ Module ffi.
             let index := M.alloc (| index |) in
             M.read (|
               let~ bytes :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
@@ -2765,7 +2809,11 @@ Module ffi.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3427,7 +3475,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ ret : Ty.path "u8" :=
+              let~ ret : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -3449,7 +3497,11 @@ Module ffi.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3467,7 +3519,7 @@ Module ffi.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ _ : Ty.tuple [] :=
+                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
@@ -3521,10 +3573,15 @@ Module ffi.
             M.read (|
               M.match_operator (|
                 Some
-                  (Ty.tuple
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
                     [
-                      Ty.path "usize";
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [

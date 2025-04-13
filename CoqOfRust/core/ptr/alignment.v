@@ -164,7 +164,7 @@ Module ptr.
           (let a := M.alloc (| a |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               a,
               [
                 fun γ =>
@@ -264,9 +264,14 @@ Module ptr.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::option::Option")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "core::ptr::alignment::Alignment" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::ptr::alignment::Alignment" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -334,9 +339,9 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -351,7 +356,7 @@ Module ptr.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -539,7 +544,7 @@ Module ptr.
             let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "core::ptr::alignment::Alignment"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::ptr::alignment::Alignment" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1602,7 +1607,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "u64" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",
@@ -1614,7 +1619,7 @@ Module ptr.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "u64" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",

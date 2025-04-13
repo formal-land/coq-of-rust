@@ -22,8 +22,8 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       let func2 := M.alloc (| func2 |) in
       let foo := M.alloc (| foo |) in
       M.read (|
-        let~ x : impl_Default := M.copy (| func |) in
-        let~ _ : Ty.tuple [] :=
+        let~ x : Ty.apply (Ty.path "*") [] [ impl_Default ] := M.copy (| func |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               x,
@@ -42,8 +42,8 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
               |)
             |)
           |) in
-        let~ y : impl_Default'1 := M.copy (| func2 |) in
-        let~ _ : Ty.tuple [] :=
+        let~ y : Ty.apply (Ty.path "*") [] [ impl_Default'1 ] := M.copy (| func2 |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               y,
@@ -62,12 +62,17 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
               |)
             |)
           |) in
-        let~ z : A := M.copy (| foo |) in
+        let~ z : Ty.apply (Ty.path "*") [] [ A ] := M.copy (| foo |) in
         let~ b :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
-              [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply

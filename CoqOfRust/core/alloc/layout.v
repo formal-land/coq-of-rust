@@ -304,7 +304,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -401,11 +401,16 @@ Module alloc.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "core::alloc::layout::Layout";
-                      Ty.path "core::alloc::layout::LayoutError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::alloc::layout::Layout";
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -480,7 +485,7 @@ Module alloc.
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -510,9 +515,9 @@ Module alloc.
                               0
                             |) in
                           let align := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -643,12 +648,17 @@ Module alloc.
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::alloc::layout::Layout"; Ty.path "core::alloc::layout::LayoutError"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -735,9 +745,9 @@ Module alloc.
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -752,7 +762,7 @@ Module alloc.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -1092,11 +1102,16 @@ Module alloc.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "core::alloc::layout::Layout";
-                      Ty.path "core::alloc::layout::LayoutError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::alloc::layout::Layout";
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1231,7 +1246,7 @@ Module alloc.
                           0
                         |) in
                       let align := M.copy (| γ0_0 |) in
-                      let~ len_rounded_up : Ty.path "usize" :=
+                      let~ len_rounded_up : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "usize",
@@ -1316,7 +1331,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ align_m1 : Ty.path "usize" :=
+              let~ align_m1 : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1336,7 +1351,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ size_rounded_up : Ty.path "usize" :=
+              let~ size_rounded_up : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1395,7 +1410,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ new_size : Ty.path "usize" :=
+              let~ new_size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1467,7 +1482,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ padded : Ty.path "core::alloc::layout::Layout" :=
+              let~ padded : Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::alloc::layout::Layout",
@@ -1483,11 +1498,16 @@ Module alloc.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
-                      Ty.path "core::alloc::layout::LayoutError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1581,7 +1601,8 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
             M.read (|
-              let~ new_align : Ty.path "core::ptr::alignment::Alignment" :=
+              let~ new_align :
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::ptr::alignment::Alignment" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::ptr::alignment::Alignment",
@@ -1609,7 +1630,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ offset : Ty.path "usize" :=
+              let~ offset : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1631,7 +1652,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ new_size : Ty.path "usize" :=
+              let~ new_size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1651,11 +1672,16 @@ Module alloc.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
-                      Ty.path "core::alloc::layout::LayoutError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1729,11 +1755,16 @@ Module alloc.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "core::alloc::layout::Layout";
-                      Ty.path "core::alloc::layout::LayoutError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::alloc::layout::Layout";
+                          Ty.path "core::alloc::layout::LayoutError"
+                        ]
                     ]),
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1824,7 +1855,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
             M.read (|
-              let~ new_size : Ty.path "usize" :=
+              let~ new_size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1920,7 +1951,12 @@ Module alloc.
         | [], [ T ], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::alloc::layout::Layout"; Ty.path "core::alloc::layout::LayoutError"
+                ]) (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|

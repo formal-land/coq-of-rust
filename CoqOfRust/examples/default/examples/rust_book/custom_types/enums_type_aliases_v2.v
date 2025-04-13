@@ -45,7 +45,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "i32"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
             self,
             [
               fun γ =>

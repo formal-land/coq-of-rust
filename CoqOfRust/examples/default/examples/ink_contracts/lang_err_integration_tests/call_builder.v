@@ -240,9 +240,14 @@ Module Impl_call_builder_CallBuilderTest.
         M.read (|
           let~ result :
               Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "call_builder::LangError" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "call_builder::LangError" ]
+                ] :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
@@ -254,7 +259,11 @@ Module Impl_call_builder_CallBuilderTest.
             |) in
           M.match_operator (|
             Some
-              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ]),
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ]
+                ]),
             result,
             [
               fun γ =>

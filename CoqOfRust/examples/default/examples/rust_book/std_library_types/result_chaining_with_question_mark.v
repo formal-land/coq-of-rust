@@ -54,7 +54,7 @@ Module checked.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -142,9 +142,16 @@ Module checked.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "f64";
+                      Ty.path "result_chaining_with_question_mark::checked::MathError"
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [
@@ -211,9 +218,16 @@ Module checked.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "f64";
+                      Ty.path "result_chaining_with_question_mark::checked::MathError"
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [
@@ -280,9 +294,16 @@ Module checked.
           M.match_operator (|
             Some
               (Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "f64";
+                      Ty.path "result_chaining_with_question_mark::checked::MathError"
+                    ]
                 ]),
             M.alloc (| Value.Tuple [] |),
             [
@@ -348,13 +369,17 @@ Module checked.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ ratio : Ty.path "f64" :=
+              let~ ratio : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "f64"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -471,10 +496,10 @@ Module checked.
                     ]
                   |)
                 |) in
-              let~ ln : Ty.path "f64" :=
+              let~ ln : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "f64"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -637,7 +662,7 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.tuple []),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -671,7 +696,11 @@ Module checked.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                                   why,
                                   [
                                     fun γ =>
@@ -726,7 +755,7 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -808,7 +837,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

@@ -32,9 +32,9 @@ Module panicking.
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -53,7 +53,7 @@ Module panicking.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ pi : Ty.path "core::panic::panic_info::PanicInfo" :=
+          let~ pi : Ty.apply (Ty.path "*") [] [ Ty.path "core::panic::panic_info::PanicInfo" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "core::panic::panic_info::PanicInfo",
@@ -1537,9 +1537,9 @@ Module panicking.
         (let index := M.alloc (| index |) in
         let len := M.alloc (| len |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1669,9 +1669,9 @@ Module panicking.
         (let required := M.alloc (| required |) in
         let found := M.alloc (| found |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1910,7 +1910,7 @@ Module panicking.
         (let fmt := M.alloc (| fmt |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "never"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -1952,7 +1952,7 @@ Module panicking.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ : Ty.tuple [] :=
+                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -2021,7 +2021,7 @@ Module panicking.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   self,
                   [
                     fun γ =>
@@ -2266,10 +2266,10 @@ Module panicking.
         let right := M.alloc (| right |) in
         let args := M.alloc (| args |) in
         M.read (|
-          let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          let~ op : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
             M.copy (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 kind,
                 [
                   fun γ =>
@@ -2292,7 +2292,7 @@ Module panicking.
               |)
             |) in
           M.match_operator (|
-            Some (Ty.path "never"),
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
             args,
             [
               fun γ =>

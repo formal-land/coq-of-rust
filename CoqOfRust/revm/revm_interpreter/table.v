@@ -137,7 +137,7 @@ Module table.
           let instruction := M.alloc (| instruction |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.tuple []),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               self,
               [
                 fun γ =>
@@ -270,28 +270,33 @@ Module table.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Some
-                                    (Ty.function
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
                                       [
-                                        Ty.tuple
+                                        Ty.function
                                           [
-                                            Ty.function
+                                            Ty.tuple
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
+                                                Ty.function
                                                   [
                                                     Ty.apply
-                                                      (Ty.path
-                                                        "revm_interpreter::interpreter::Interpreter")
+                                                      (Ty.path "&mut")
                                                       []
-                                                      [ WIRE ]
-                                                  ];
-                                                Ty.apply (Ty.path "&mut") [] [ H ]
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "revm_interpreter::interpreter::Interpreter")
+                                                          []
+                                                          [ WIRE ]
+                                                      ];
+                                                    Ty.apply (Ty.path "&mut") [] [ H ]
+                                                  ]
+                                                  (Ty.tuple [])
                                               ]
-                                              (Ty.tuple [])
                                           ]
-                                      ]
-                                      CI),
+                                          CI
+                                      ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -362,13 +367,18 @@ Module table.
                     M.match_operator (|
                       Some
                         (Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
                           [
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 256 ]
-                              [ CI ]
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 256 ]
+                                  [ CI ]
+                              ]
                           ]),
                       self,
                       [
@@ -492,7 +502,7 @@ Module table.
                             0
                           |) in
                         let table := M.alloc (| γ1_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.deref (| M.read (| self |) |),
@@ -674,7 +684,7 @@ Module table.
           let opcode := M.alloc (| opcode |) in
           let instruction := M.alloc (| instruction |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (|
@@ -849,7 +859,11 @@ Module table.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI),
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ]),
                         M.alloc (| α0 |),
                         [
                           fun γ =>

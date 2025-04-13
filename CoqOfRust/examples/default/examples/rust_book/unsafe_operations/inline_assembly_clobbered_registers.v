@@ -42,14 +42,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ name_buf :
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ Ty.path "u8" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ Ty.path "u8" ]
+              ] :=
           M.alloc (|
             repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] := InlineAssembly in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
-        let~ name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+        let~ name : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -87,8 +91,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

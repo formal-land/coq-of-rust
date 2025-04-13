@@ -95,9 +95,14 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -228,7 +233,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -240,7 +245,7 @@ Module signature.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -263,7 +268,7 @@ Module signature.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 self,
                 [
                   fun γ =>
@@ -388,7 +393,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -400,7 +405,7 @@ Module signature.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -422,7 +427,7 @@ Module signature.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -829,11 +834,16 @@ Module signature.
               M.match_operator (|
                 Some
                   (Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "alloy_primitives::signature::parity::Parity";
-                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "alloy_primitives::signature::parity::Parity";
+                          Ty.path "alloy_primitives::signature::error::SignatureError"
+                        ]
                     ]),
                 value,
                 [
@@ -1000,7 +1010,11 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1012,9 +1026,9 @@ Module signature.
                           0
                         |) in
                       let v := M.copy (| γ0_0 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -1040,7 +1054,7 @@ Module signature.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
                                     let β := v in
                                     M.write (|
@@ -1056,7 +1070,7 @@ Module signature.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           let β := v in
                           M.write (|
@@ -1153,7 +1167,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 self,
                 [
                   fun γ =>
@@ -1312,7 +1326,11 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ]),
                 self,
                 [
                   fun γ =>
@@ -1397,7 +1415,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "u64"),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
                 self,
                 [
                   fun γ =>
@@ -1472,7 +1490,11 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "alloy_primitives::signature::parity::Parity"),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "alloy_primitives::signature::parity::Parity" ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1536,7 +1558,7 @@ Module signature.
                           [
                             M.read (|
                               M.match_operator (|
-                                Some (Ty.path "u64"),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1630,7 +1652,11 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "alloy_primitives::signature::parity::Parity"),
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "alloy_primitives::signature::parity::Parity" ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1692,10 +1718,10 @@ Module signature.
             (let self := M.alloc (| self |) in
             let chain_id := M.alloc (| chain_id |) in
             M.read (|
-              let~ parity : Ty.path "bool" :=
+              let~ parity : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "bool"),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                     self,
                     [
                       fun γ =>

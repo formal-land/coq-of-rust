@@ -22,18 +22,18 @@ Module algorithms.
           (let limbs := M.alloc (| limbs |) in
           let amount := M.alloc (| amount |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -71,11 +71,12 @@ Module algorithms.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ overflow : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ _ : Ty.tuple [] :=
+            let~ overflow : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u64" ],
@@ -101,9 +102,9 @@ Module algorithms.
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -147,7 +148,7 @@ Module algorithms.
                                           0
                                         |) in
                                       let limb := M.copy (| γ0_0 |) in
-                                      let~ value : Ty.path "u64" :=
+                                      let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "u64",
@@ -165,7 +166,7 @@ Module algorithms.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             overflow,
@@ -186,7 +187,7 @@ Module algorithms.
                                             |)
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             M.deref (| M.read (| limb |) |),
@@ -230,18 +231,18 @@ Module algorithms.
           (let limbs := M.alloc (| limbs |) in
           let amount := M.alloc (| amount |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -279,11 +280,12 @@ Module algorithms.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ overflow : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ _ : Ty.tuple [] :=
+            let~ overflow : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -342,9 +344,9 @@ Module algorithms.
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -393,7 +395,7 @@ Module algorithms.
                                           0
                                         |) in
                                       let limb := M.copy (| γ0_0 |) in
-                                      let~ value : Ty.path "u64" :=
+                                      let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "u64",
@@ -411,7 +413,7 @@ Module algorithms.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             overflow,
@@ -432,7 +434,7 @@ Module algorithms.
                                             |)
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             M.deref (| M.read (| limb |) |),

@@ -641,7 +641,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::FpCategory",
@@ -678,7 +678,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::FpCategory",
@@ -726,7 +726,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ b : Ty.path "u32" :=
+            let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u32",
@@ -735,7 +735,7 @@ Module f32.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "core::num::FpCategory"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::FpCategory" ]),
               M.alloc (|
                 Value.Tuple
                   [
@@ -920,10 +920,10 @@ Module f32.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "f32") (|
             ltac:(M.monadic
               (M.read (|
-                let~ bits : Ty.path "u32" :=
+                let~ bits : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -931,9 +931,9 @@ Module f32.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -983,7 +983,7 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ abs : Ty.path "u32" :=
+                let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -998,10 +998,10 @@ Module f32.
                       ]
                     |)
                   |) in
-                let~ next_bits : Ty.path "u32" :=
+                let~ next_bits : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "u32"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1025,7 +1025,7 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.path "u32"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1107,10 +1107,10 @@ Module f32.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "f32") (|
             ltac:(M.monadic
               (M.read (|
-                let~ bits : Ty.path "u32" :=
+                let~ bits : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -1118,9 +1118,9 @@ Module f32.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1170,7 +1170,7 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ abs : Ty.path "u32" :=
+                let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -1185,10 +1185,10 @@ Module f32.
                       ]
                     |)
                   |) in
-                let~ next_bits : Ty.path "u32" :=
+                let~ next_bits : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "u32"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1212,7 +1212,7 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.path "u32"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1413,7 +1413,7 @@ Module f32.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "f32"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1432,7 +1432,7 @@ Module f32.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.path "f32"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1452,7 +1452,7 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.path "f32"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1472,7 +1472,7 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "f32"),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -1558,7 +1558,7 @@ Module f32.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "f32"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1577,7 +1577,7 @@ Module f32.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.path "f32"),
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1597,7 +1597,7 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.path "f32"),
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1617,7 +1617,7 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.path "f32"),
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -2058,7 +2058,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ left : Ty.path "i32" :=
+            let~ left : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "i32")
@@ -2068,7 +2068,7 @@ Module f32.
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |))
               |) in
-            let~ right : Ty.path "i32" :=
+            let~ right : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "i32")
@@ -2078,7 +2078,7 @@ Module f32.
                     [ M.read (| M.deref (| M.read (| other |) |) |) ]
                   |))
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 let β := left in
                 M.write (|
@@ -2108,7 +2108,7 @@ Module f32.
                   |)
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 let β := right in
                 M.write (|
@@ -2187,9 +2187,9 @@ Module f32.
           let min := M.alloc (| min |) in
           let max := M.alloc (| max |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2224,9 +2224,9 @@ Module f32.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2241,14 +2241,15 @@ Module f32.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] := M.alloc (| M.write (| self, M.read (| min |) |) |) in
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                        M.alloc (| M.write (| self, M.read (| min |) |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2263,7 +2264,8 @@ Module f32.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] := M.alloc (| M.write (| self, M.read (| max |) |) |) in
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                        M.alloc (| M.write (| self, M.read (| max |) |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -2312,7 +2314,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "f32"),
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

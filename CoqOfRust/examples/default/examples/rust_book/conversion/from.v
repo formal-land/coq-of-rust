@@ -45,7 +45,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.path "from::Number" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "from::Number" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "from::Number",
