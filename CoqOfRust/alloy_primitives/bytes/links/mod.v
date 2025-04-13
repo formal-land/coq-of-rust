@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import alloy_primitives.bytes.mod.
+Require Import bytes.links.bytes.
 Require Import core.convert.links.mod.
 Require Import core.links.clone.
 Require Import core.links.default.
@@ -76,7 +77,7 @@ Module Impl_Deref_for_Bytes.
   Definition Self : Set :=
     Bytes.t.
 
-  Instance run : Deref.Run Self Self.
+  Instance run : Deref.Run Self bytes.Bytes.t.
   Admitted.
 End Impl_Deref_for_Bytes.
 Export Impl_Deref_for_Bytes.
