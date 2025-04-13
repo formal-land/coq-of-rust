@@ -31,7 +31,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.alloc (| Value.Integer IntegerKind.I32 1 |) in
         M.loop (|
-          Ty.tuple [],
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           ltac:(M.monadic
             (M.match_operator (|
               Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

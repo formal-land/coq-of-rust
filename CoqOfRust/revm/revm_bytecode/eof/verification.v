@@ -849,7 +849,7 @@ Module eof.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -1337,7 +1337,7 @@ Module eof.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
-                                          Ty.tuple [],
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                               M.match_operator (|
@@ -2132,7 +2132,7 @@ Module eof.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -3616,13 +3616,13 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -4012,13 +4012,21 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "revm_bytecode::eof::verification::EofError" ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "revm_bytecode::eof::verification::EofError" ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -5979,25 +5987,25 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        None,
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                         Value.DeclaredButUndefined,
                                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                       |)))
@@ -6387,7 +6395,19 @@ Module eof.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                            ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6483,7 +6503,19 @@ Module eof.
                             |) in
                           let container := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            None,
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
+                                ]),
                             container,
                             [
                               fun γ =>
@@ -7747,7 +7779,7 @@ Module eof.
                   M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -7826,7 +7858,7 @@ Module eof.
                                   |)
                                 |) in
                               M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 opcode,
                                 [
                                   fun γ =>
@@ -8299,7 +8331,10 @@ Module eof.
                                                         ltac:(M.monadic
                                                           (let iter := M.copy (| γ |) in
                                                           M.loop (|
-                                                            Ty.tuple [],
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             ltac:(M.monadic
                                                               (let~ _ :
                                                                   Ty.apply
@@ -8785,7 +8820,7 @@ Module eof.
                                                 ltac:(M.monadic
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
-                                                    Ty.tuple [],
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     ltac:(M.monadic
                                                       (let~ _ :
                                                           Ty.apply
@@ -9585,7 +9620,7 @@ Module eof.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -9883,13 +9918,27 @@ Module eof.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.path
+                          "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo"
+                      ]),
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.path
+                                  "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo"
+                              ]),
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                         |)))

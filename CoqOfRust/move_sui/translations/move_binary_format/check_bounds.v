@@ -1679,7 +1679,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -1973,7 +1973,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -2266,7 +2266,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -2564,7 +2564,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -2862,7 +2862,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -3160,7 +3160,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -3456,7 +3456,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -3764,7 +3764,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -4072,7 +4072,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -4377,7 +4377,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -4677,7 +4677,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -5036,7 +5036,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -6688,7 +6688,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
@@ -7043,7 +7043,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
@@ -8568,7 +8568,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -9266,7 +9266,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
@@ -10130,7 +10130,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -11588,7 +11588,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -11944,7 +11944,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -12218,7 +12218,17 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FieldHandleIndex"
+                                                          ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -12458,7 +12468,17 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FieldInstantiationIndex"
+                                                          ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -13009,7 +13029,14 @@ Module check_bounds.
                                                                                           γ
                                                                                         |) in
                                                                                       M.loop (|
-                                                                                        Ty.tuple [],
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ],
                                                                                         ltac:(M.monadic
                                                                                           (let~ _ :
                                                                                               Ty.apply
@@ -13992,7 +14019,10 @@ Module check_bounds.
                                                                             (let iter :=
                                                                               M.copy (| γ |) in
                                                                             M.loop (|
-                                                                              Ty.tuple [],
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.tuple [] ],
                                                                               ltac:(M.monadic
                                                                                 (let~ _ :
                                                                                     Ty.apply
@@ -14283,7 +14313,17 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefinitionIndex"
+                                                          ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -14578,7 +14618,17 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                          ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -15184,7 +15234,14 @@ Module check_bounds.
                                                                                           γ
                                                                                         |) in
                                                                                       M.loop (|
-                                                                                        Ty.tuple [],
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ],
                                                                                         ltac:(M.monadic
                                                                                           (let~ _ :
                                                                                               Ty.apply
@@ -15489,7 +15546,10 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -15634,7 +15694,10 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -15801,7 +15864,17 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureIndex"
+                                                          ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -16295,7 +16368,10 @@ Module check_bounds.
                                                                               (let iter :=
                                                                                 M.copy (| γ |) in
                                                                               M.loop (|
-                                                                                Ty.tuple [],
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ],
                                                                                 ltac:(M.monadic
                                                                                   (let~ _ :
                                                                                       Ty.apply
@@ -16603,7 +16679,7 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern (Ty.tuple []) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -17096,7 +17172,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -17159,7 +17235,7 @@ Module check_bounds.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern (Ty.tuple []) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -17856,7 +17932,8 @@ Module check_bounds.
                                                     |) in
                                                   let struct_inst := M.alloc (| γ1_0 |) in
                                                   M.match_operator (|
-                                                    None,
+                                                    Some
+                                                      (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                     M.alloc (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
@@ -18655,7 +18732,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -18800,7 +18877,7 @@ Module check_bounds.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern (Ty.tuple []) (|
                                                     γ,
                                                     [
                                                       fun γ =>

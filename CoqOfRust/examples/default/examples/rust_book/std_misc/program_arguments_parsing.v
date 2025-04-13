@@ -308,7 +308,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (M.catch_return (Ty.path "unit") (|
+      (M.catch_return (Ty.tuple []) (|
         ltac:(M.monadic
           (M.read (|
             let~ args :

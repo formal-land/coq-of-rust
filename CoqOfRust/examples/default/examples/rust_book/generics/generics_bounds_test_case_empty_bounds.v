@@ -65,7 +65,11 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| None, β0, [ fun γ => ltac:(M.monadic (mk_str (| "red" |))) ] |)))
+      M.match_operator (|
+        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+        β0,
+        [ fun γ => ltac:(M.monadic (mk_str (| "red" |))) ]
+      |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -84,7 +88,11 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| None, β0, [ fun γ => ltac:(M.monadic (mk_str (| "blue" |))) ] |)))
+      M.match_operator (|
+        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+        β0,
+        [ fun γ => ltac:(M.monadic (mk_str (| "blue" |))) ]
+      |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

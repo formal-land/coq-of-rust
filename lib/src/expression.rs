@@ -139,7 +139,7 @@ pub(crate) enum Expr {
         body: Rc<Expr>,
     },
     Match {
-        ty: Option<Rc<CoqType>>,
+        ty: Rc<CoqType>,
         scrutinee: Rc<Expr>,
         arms: Vec<Rc<Expr>>,
     },
@@ -669,19 +669,16 @@ impl Expr {
                 scrutinee,
                 arms,
             } => coq::Expression::just_name("M.match_operator").monadic_apply_many(&[
-                match ty {
-                    Some(ty) => {
-                        coq::Expression::just_name("Some").apply(ty.clone().make_raw_ref().to_coq())
-                    }
-                    None => coq::Expression::just_name("None"),
-                },
+                coq::Expression::just_name("Some").apply(ty.to_coq()),
                 scrutinee.to_coq(),
                 Rc::new(coq::Expression::List {
                     exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
                 }),
             ]),
-            Expr::Loop { ty, body } => coq::Expression::just_name("M.loop")
-                .monadic_apply_many(&[ty.to_coq(), coq::Expression::monadic(body.to_coq())]),
+            Expr::Loop { ty, body } => coq::Expression::just_name("M.loop").monadic_apply_many(&[
+                ty.clone().make_raw_ref().to_coq(),
+                coq::Expression::monadic(body.to_coq()),
+            ]),
             Expr::Index { base, index } => {
                 coq::Expression::just_name("M.SubPointer.get_array_field")
                     .monadic_apply_many(&[base.to_coq(), index.to_coq()])

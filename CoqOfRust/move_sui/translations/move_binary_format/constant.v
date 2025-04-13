@@ -405,7 +405,7 @@ Module constant.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern (Ty.tuple []) (|
                         γ,
                         [
                           fun γ =>

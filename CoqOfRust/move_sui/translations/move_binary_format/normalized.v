@@ -2017,43 +2017,48 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ]),
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
@@ -11033,13 +11038,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -11605,13 +11610,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -12266,19 +12271,19 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -14254,37 +14259,38 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
@@ -15030,13 +15036,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -15582,13 +15588,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -25248,151 +25254,276 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ]),
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      None,
+                                                                      Some
+                                                                        (Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [ Ty.tuple [] ]),
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
-                                                                              None,
+                                                                              Some
+                                                                                (Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ]),
                                                                               Value.DeclaredButUndefined,
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      None,
+                                                                                      Some
+                                                                                        (Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ]),
                                                                                       Value.DeclaredButUndefined,
                                                                                       [
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
-                                                                                              None,
+                                                                                              Some
+                                                                                                (Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "*")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.tuple
+                                                                                                      []
+                                                                                                  ]),
                                                                                               Value.DeclaredButUndefined,
                                                                                               [
                                                                                                 fun
                                                                                                     γ =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
-                                                                                                      None,
+                                                                                                      Some
+                                                                                                        (Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "*")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.tuple
+                                                                                                              []
+                                                                                                          ]),
                                                                                                       Value.DeclaredButUndefined,
                                                                                                       [
                                                                                                         fun
                                                                                                             γ =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              None,
+                                                                                                              Some
+                                                                                                                (Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "*")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.tuple
+                                                                                                                      []
+                                                                                                                  ]),
                                                                                                               Value.DeclaredButUndefined,
                                                                                                               [
                                                                                                                 fun
                                                                                                                     γ =>
                                                                                                                   ltac:(M.monadic
                                                                                                                     (M.match_operator (|
-                                                                                                                      None,
+                                                                                                                      Some
+                                                                                                                        (Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "*")
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.tuple
+                                                                                                                              []
+                                                                                                                          ]),
                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                       [
                                                                                                                         fun
                                                                                                                             γ =>
                                                                                                                           ltac:(M.monadic
                                                                                                                             (M.match_operator (|
-                                                                                                                              None,
+                                                                                                                              Some
+                                                                                                                                (Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "*")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.tuple
+                                                                                                                                      []
+                                                                                                                                  ]),
                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                               [
                                                                                                                                 fun
                                                                                                                                     γ =>
                                                                                                                                   ltac:(M.monadic
                                                                                                                                     (M.match_operator (|
-                                                                                                                                      None,
+                                                                                                                                      Some
+                                                                                                                                        (Ty.apply
+                                                                                                                                          (Ty.path
+                                                                                                                                            "*")
+                                                                                                                                          []
+                                                                                                                                          [
+                                                                                                                                            Ty.tuple
+                                                                                                                                              []
+                                                                                                                                          ]),
                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                       [
                                                                                                                                         fun
                                                                                                                                             γ =>
                                                                                                                                           ltac:(M.monadic
                                                                                                                                             (M.match_operator (|
-                                                                                                                                              None,
+                                                                                                                                              Some
+                                                                                                                                                (Ty.apply
+                                                                                                                                                  (Ty.path
+                                                                                                                                                    "*")
+                                                                                                                                                  []
+                                                                                                                                                  [
+                                                                                                                                                    Ty.tuple
+                                                                                                                                                      []
+                                                                                                                                                  ]),
                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                               [
                                                                                                                                                 fun
                                                                                                                                                     γ =>
                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                      None,
+                                                                                                                                                      Some
+                                                                                                                                                        (Ty.apply
+                                                                                                                                                          (Ty.path
+                                                                                                                                                            "*")
+                                                                                                                                                          []
+                                                                                                                                                          [
+                                                                                                                                                            Ty.tuple
+                                                                                                                                                              []
+                                                                                                                                                          ]),
                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                       [
                                                                                                                                                         fun
                                                                                                                                                             γ =>
                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                              None,
+                                                                                                                                                              Some
+                                                                                                                                                                (Ty.apply
+                                                                                                                                                                  (Ty.path
+                                                                                                                                                                    "*")
+                                                                                                                                                                  []
+                                                                                                                                                                  [
+                                                                                                                                                                    Ty.tuple
+                                                                                                                                                                      []
+                                                                                                                                                                  ]),
                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                               [
                                                                                                                                                                 fun
                                                                                                                                                                     γ =>
                                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                                      None,
+                                                                                                                                                                      Some
+                                                                                                                                                                        (Ty.apply
+                                                                                                                                                                          (Ty.path
+                                                                                                                                                                            "*")
+                                                                                                                                                                          []
+                                                                                                                                                                          [
+                                                                                                                                                                            Ty.tuple
+                                                                                                                                                                              []
+                                                                                                                                                                          ]),
                                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                                       [
                                                                                                                                                                         fun
                                                                                                                                                                             γ =>
                                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                                              None,
+                                                                                                                                                                              Some
+                                                                                                                                                                                (Ty.apply
+                                                                                                                                                                                  (Ty.path
+                                                                                                                                                                                    "*")
+                                                                                                                                                                                  []
+                                                                                                                                                                                  [
+                                                                                                                                                                                    Ty.tuple
+                                                                                                                                                                                      []
+                                                                                                                                                                                  ]),
                                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                                               [
                                                                                                                                                                                 fun
                                                                                                                                                                                     γ =>
                                                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                                                      None,
+                                                                                                                                                                                      Some
+                                                                                                                                                                                        (Ty.apply
+                                                                                                                                                                                          (Ty.path
+                                                                                                                                                                                            "*")
+                                                                                                                                                                                          []
+                                                                                                                                                                                          [
+                                                                                                                                                                                            Ty.tuple
+                                                                                                                                                                                              []
+                                                                                                                                                                                          ]),
                                                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                                                       [
                                                                                                                                                                                         fun
                                                                                                                                                                                             γ =>
                                                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                                                              None,
+                                                                                                                                                                                              Some
+                                                                                                                                                                                                (Ty.apply
+                                                                                                                                                                                                  (Ty.path
+                                                                                                                                                                                                    "*")
+                                                                                                                                                                                                  []
+                                                                                                                                                                                                  [
+                                                                                                                                                                                                    Ty.tuple
+                                                                                                                                                                                                      []
+                                                                                                                                                                                                  ]),
                                                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                                                               [
                                                                                                                                                                                                 fun
@@ -28433,49 +28564,58 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ]),
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      None,
+                                                                      Some
+                                                                        (Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [ Ty.tuple [] ]),
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
@@ -30158,7 +30298,11 @@ Module normalized.
                       |) in
                     let struct_inst := M.alloc (| γ1_0 |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::normalized::Type" ]),
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -31139,7 +31283,22 @@ Module normalized.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern
+                      (Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]) (|
                       γ,
                       [
                         fun γ =>
@@ -31307,7 +31466,7 @@ Module normalized.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern (Ty.tuple []) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -32075,7 +32234,7 @@ Module normalized.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern (Ty.tuple []) (|
                       γ,
                       [
                         fun γ =>
@@ -34734,7 +34893,7 @@ Module normalized.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -36389,7 +36548,11 @@ Module normalized.
                       |) in
                     let fhi_idx := M.alloc (| γ1_0 |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::normalized::Bytecode" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -38637,7 +38800,7 @@ Module normalized.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
-                                                Ty.tuple [],
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 ltac:(M.monadic
                                                   (let~ _ :
                                                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -39878,7 +40041,23 @@ Module normalized.
         let si_idx := M.alloc (| si_idx |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::normalized::Type";
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ]
+                ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -39916,7 +40095,23 @@ Module normalized.
                   let def := M.alloc (| γ1_0 |) in
                   let type_parameters := M.alloc (| γ1_1 |) in
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -40279,7 +40474,23 @@ Module normalized.
         let idx := M.alloc (| idx |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "move_binary_format::normalized::FieldRef";
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::normalized::Type";
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ]
+                ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply

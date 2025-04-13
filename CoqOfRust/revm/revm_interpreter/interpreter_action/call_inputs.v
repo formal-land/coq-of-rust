@@ -983,43 +983,51 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        None,
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                None,
+                                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                 Value.DeclaredButUndefined,
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        None,
+                                                        Some
+                                                          (Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ]),
                                                         Value.DeclaredButUndefined,
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                None,
+                                                                Some
+                                                                  (Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ]),
                                                                 Value.DeclaredButUndefined,
                                                                 [
                                                                   fun γ =>
@@ -2142,7 +2150,7 @@ Module interpreter_action.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern (Ty.tuple []) (|
                         γ,
                         [
                           fun γ =>
@@ -2724,7 +2732,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -2949,7 +2957,17 @@ Module interpreter_action.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern
+                        (Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]) (|
                         γ,
                         [
                           fun γ =>

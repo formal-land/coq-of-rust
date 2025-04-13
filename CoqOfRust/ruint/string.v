@@ -205,19 +205,20 @@ Module string.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "ruint::string::ParseError" ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "ruint::string::ParseError" ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some
+                                (Ty.apply (Ty.path "*") [] [ Ty.path "ruint::string::ParseError" ]),
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -464,19 +465,19 @@ Module string.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -1410,7 +1411,7 @@ Module string.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.find_or_pattern (|
+                                                                (M.find_or_pattern (Ty.tuple []) (|
                                                                   γ,
                                                                   [
                                                                     fun γ =>
@@ -1447,7 +1448,7 @@ Module string.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.find_or_pattern (|
+                                                                (M.find_or_pattern (Ty.tuple []) (|
                                                                   γ,
                                                                   [
                                                                     fun γ =>
@@ -1492,7 +1493,7 @@ Module string.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.find_or_pattern (|
+                                                                (M.find_or_pattern (Ty.tuple []) (|
                                                                   γ,
                                                                   [
                                                                     fun γ =>
@@ -1818,7 +1819,19 @@ Module string.
           (let src := M.alloc (| src |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                        Ty.path "ruint::string::ParseError"
+                      ]
+                  ]),
               M.match_operator (|
                 Some
                   (Ty.apply
@@ -1848,7 +1861,14 @@ Module string.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.tuple
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "u64" ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple
@@ -1884,7 +1904,7 @@ Module string.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.find_or_pattern (|
+                                      (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
                                           fun γ =>
@@ -1921,7 +1941,7 @@ Module string.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.find_or_pattern (|
+                                      (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
                                           fun γ =>
@@ -1958,7 +1978,7 @@ Module string.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.find_or_pattern (|
+                                      (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
                                           fun γ =>

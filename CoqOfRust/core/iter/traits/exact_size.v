@@ -13,7 +13,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

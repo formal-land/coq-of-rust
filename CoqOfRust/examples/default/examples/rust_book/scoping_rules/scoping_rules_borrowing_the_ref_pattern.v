@@ -20,7 +20,11 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -114,7 +118,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ c : Ty.apply (Ty.path "*") [] [ Ty.path "char" ] :=
           M.alloc (| Value.UnicodeChar 81 |) in
         M.match_operator (|
-          None,
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           c,
           [
             fun γ =>
@@ -221,7 +225,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _copy_of_x : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
                       point,
                       [
                         fun γ =>
@@ -251,7 +255,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.copy (| point |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     mutable_point,
                     [
                       fun γ =>
@@ -519,7 +523,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     mutable_tuple,
                     [
                       fun γ =>

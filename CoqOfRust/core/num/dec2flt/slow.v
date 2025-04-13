@@ -329,7 +329,7 @@ Module num.
                     M.alloc (| Value.Integer IntegerKind.I32 0 |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
-                      Ty.tuple [],
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -487,7 +487,7 @@ Module num.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
-                      Ty.tuple [],
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -584,7 +584,7 @@ Module num.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (M.find_or_pattern (|
+                                                    (M.find_or_pattern (Ty.tuple []) (|
                                                       γ,
                                                       [
                                                         fun γ =>
@@ -765,7 +765,7 @@ Module num.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
-                      Ty.tuple [],
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

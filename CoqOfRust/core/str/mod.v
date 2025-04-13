@@ -58,19 +58,19 @@ Module str.
         let β1 := M.alloc (| β1 |) in
         let β2 := M.alloc (| β2 |) in
         M.match_operator (|
-          None,
+          Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
           β0,
           [
             fun γ =>
               ltac:(M.monadic
                 (M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                   β1,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
                           β2,
                           [
                             fun γ =>
@@ -3807,7 +3807,22 @@ Module str.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              ]
+                          ]
+                      ]),
                   M.match_operator (|
                     Some
                       (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]),
@@ -4070,7 +4085,22 @@ Module str.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              ]
+                          ]
+                      ]),
                   M.match_operator (|
                     Some
                       (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]),

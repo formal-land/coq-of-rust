@@ -296,7 +296,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "erc721::AccountId" ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -2366,7 +2366,16 @@ Module Impl_erc721_Erc721.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "erc721::Error" ]
+                    ]),
                 self,
                 [
                   fun γ =>

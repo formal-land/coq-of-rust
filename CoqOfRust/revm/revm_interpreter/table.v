@@ -489,7 +489,21 @@ Module table.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 256 ]
+                              [ CI ]
+                          ]
+                      ]),
                   self,
                   [
                     fun γ =>
@@ -562,7 +576,21 @@ Module table.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 256 ]
+                                      [ CI ]
+                                  ]
+                              ]),
                           self,
                           [
                             fun γ =>

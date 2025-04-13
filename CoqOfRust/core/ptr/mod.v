@@ -504,7 +504,7 @@ Module ptr.
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         let count := M.alloc (| count |) in
-        M.catch_return (Ty.path "unit") (|
+        M.catch_return (Ty.tuple []) (|
           ltac:(M.monadic
             (M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1087,7 +1087,7 @@ Module ptr.
           let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
             M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           M.loop (|
-            Ty.tuple [],
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             ltac:(M.monadic
               (M.match_operator (|
                 Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2640,7 +2640,7 @@ Module ptr.
               |) in
             let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.loop (|
-                Ty.tuple [],
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 ltac:(M.monadic
                   (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
@@ -2702,7 +2702,7 @@ Module ptr.
                       |)
                     |) in
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [ Ty.path "usize"; Ty.path "bool" ],

@@ -1182,7 +1182,7 @@ Module transaction.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
                   M.match_operator (|
                     Some
                       (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]),

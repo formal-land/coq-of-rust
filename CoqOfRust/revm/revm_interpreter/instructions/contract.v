@@ -73,7 +73,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -385,7 +385,7 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -539,7 +539,7 @@ Module instructions.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -1611,7 +1611,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1730,7 +1730,7 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2077,7 +2077,7 @@ Module instructions.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple
@@ -3509,7 +3509,16 @@ Module instructions.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3968,7 +3977,11 @@ Module instructions.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4305,7 +4318,7 @@ Module instructions.
                                     M.never_to_any (|
                                       M.read (|
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -4610,7 +4623,16 @@ Module instructions.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4986,7 +5008,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -5075,7 +5097,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5101,7 +5123,7 @@ Module instructions.
                           |) in
                         let target_address := M.copy (| γ0_0 |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5132,7 +5154,7 @@ Module instructions.
                                   |) in
                                 let input := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -5311,7 +5333,7 @@ Module instructions.
                                             ]
                                           |) in
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -5582,7 +5604,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -5671,7 +5693,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5697,7 +5719,7 @@ Module instructions.
                           |) in
                         let target_address := M.copy (| γ0_0 |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5728,7 +5750,7 @@ Module instructions.
                                   |) in
                                 let input := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6057,7 +6079,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -6146,7 +6168,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -6172,7 +6194,7 @@ Module instructions.
                           |) in
                         let target_address := M.copy (| γ0_0 |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -6203,7 +6225,7 @@ Module instructions.
                                   |) in
                                 let input := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6497,7 +6519,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -6700,7 +6722,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7882,7 +7904,11 @@ Module instructions.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
-                                      None,
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "revm_context_interface::cfg::CreateScheme" ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -8708,11 +8734,11 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -8966,7 +8992,7 @@ Module instructions.
                             ]
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -9009,7 +9035,7 @@ Module instructions.
                                 let input := M.copy (| γ1_0 |) in
                                 let return_memory_offset := M.copy (| γ1_1 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -9048,7 +9074,7 @@ Module instructions.
                                           |) in
                                         let account_load := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -9495,11 +9521,11 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -9662,7 +9688,7 @@ Module instructions.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -9705,7 +9731,7 @@ Module instructions.
                                 let input := M.copy (| γ1_0 |) in
                                 let return_memory_offset := M.copy (| γ1_1 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -9755,7 +9781,7 @@ Module instructions.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -10274,7 +10300,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -10377,7 +10403,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -10538,7 +10564,7 @@ Module instructions.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10581,7 +10607,7 @@ Module instructions.
                                 let input := M.copy (| γ1_0 |) in
                                 let return_memory_offset := M.copy (| γ1_1 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -10631,7 +10657,7 @@ Module instructions.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -11096,7 +11122,7 @@ Module instructions.
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -11199,7 +11225,7 @@ Module instructions.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -11360,7 +11386,7 @@ Module instructions.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -11403,7 +11429,7 @@ Module instructions.
                                 let input := M.copy (| γ1_0 |) in
                                 let return_memory_offset := M.copy (| γ1_1 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -11453,7 +11479,7 @@ Module instructions.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          None,
+                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply

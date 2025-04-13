@@ -54,7 +54,7 @@ Module option.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -5930,7 +5930,7 @@ Module option.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]),
             β0,
             [
               fun γ =>

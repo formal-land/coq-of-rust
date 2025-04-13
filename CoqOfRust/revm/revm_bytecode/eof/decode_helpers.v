@@ -222,7 +222,26 @@ Module eof.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                Ty.path "u16"
+                              ];
+                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

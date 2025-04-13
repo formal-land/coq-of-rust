@@ -76,12 +76,12 @@ Module slice.
               let ancestor_pivot := M.alloc (| ancestor_pivot |) in
               let limit := M.alloc (| limit |) in
               let is_less := M.alloc (| is_less |) in
-              M.catch_return (Ty.path "unit") (|
+              M.catch_return (Ty.tuple []) (|
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -671,7 +671,7 @@ Module slice.
                               |)
                             |) in
                           M.match_operator (|
-                            None,
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -705,7 +705,7 @@ Module slice.
                                   let left := M.copy (| γ0_0 |) in
                                   let right := M.copy (| γ0_1 |) in
                                   M.match_operator (|
-                                    None,
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple
@@ -965,7 +965,7 @@ Module slice.
                         |) in
                       M.alloc (| Value.Tuple [] |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -1396,11 +1396,11 @@ Module slice.
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -1503,7 +1503,7 @@ Module slice.
                             |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.alloc (|
@@ -2465,7 +2465,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2727,7 +2727,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ is_done : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                             M.alloc (|

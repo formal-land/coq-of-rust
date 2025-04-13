@@ -48,9 +48,13 @@ Module OfTy.
 End OfTy.
 
 Smpl Create of_value.
-Smpl Add reflexivity : of_value.
 (* Because some types contain constant parameters *)
 Smpl Add smpl of_value : of_ty.
+
+Lemma of_value_link_eq {A : Set} `{Link A} (value : A) :
+  φ value = φ value.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_link_eq : of_value.
 
 Module OfValue.
   Inductive t (value' : Value.t) : Type :=
@@ -316,7 +320,7 @@ End Never.
 Module Unit.
   Global Instance IsLink : Link unit := {
     Φ := Ty.tuple [];
-    φ 'tt := Value.Tuple [];
+    φ _ := Value.Tuple [];
   }.
 
   Definition of_ty : OfTy.t (Ty.tuple []).
@@ -330,7 +334,7 @@ Module Unit.
  
   Definition of_value :
     OfValue.t (Value.Tuple []).
-  Proof. eapply OfValue.Make with (A := unit); smpl of_value. Defined.
+  Proof. eapply OfValue.Make with (A := unit) (value := tt); reflexivity. Defined.
   Smpl Add apply of_value : of_value.
 End Unit.
 
@@ -896,12 +900,17 @@ Module Run.
   | Loop
       (ty : Ty.t) (body : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
-    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    let Output' : Set := OfTy.get_Set of_ty in
     {{ body 🔽 R, Output' }} ->
     (forall (value_inter : Output.t R Output'),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Loop ty body k 🔽 R, Output }}
+  | MatchTuple
+      (fields : list Value.t)
+      (k : list Value.t -> M) :
+    {{ k fields 🔽 R, Output }} ->
+    {{ LowM.MatchTuple (Value.Tuple fields) k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite
@@ -1119,6 +1128,9 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
     end.
+  }
+  { (* MatchTuple *)
+    exact (evaluate _ _ _ _ _ run).
   }
   { (* Rewrite *)
     exact (evaluate _ _ _ _ _ run).
@@ -1359,10 +1371,13 @@ Ltac run_symbolic_let :=
 
 Ltac run_symbolic_loop :=
   unshelve eapply Run.Loop; [
-    smpl of_ty |
+    repeat smpl of_ty |
     |
     cbn; intros []
   ].
+
+Ltac run_symbolic_match_tuple :=
+  with_strategy transparent [φ] apply Run.MatchTuple.
 
 Ltac run_symbolic_one_step_immediate :=
   match goal with
@@ -1383,6 +1398,7 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_let ||
     run_sub_pointer ||
     run_symbolic_loop ||
+    run_symbolic_match_tuple ||
     fold @LowM.let_
   end.
 
@@ -1390,7 +1406,7 @@ Smpl Create run_symbolic.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  progress (repeat (
+  unshelve (progress (repeat (
     run_symbolic_one_step_immediate ||
     smpl run_symbolic ||
     match goal with
@@ -1404,7 +1420,7 @@ Ltac run_symbolic :=
         destruct expression; run_symbolic
       end
     end
-  )).
+  ))); try exact tt.
 
 Axiom is_discriminant_tuple_eq :
   forall

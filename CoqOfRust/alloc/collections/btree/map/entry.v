@@ -3706,7 +3706,7 @@ Module collections.
                   let~ emptied_internal_root : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                     M.alloc (| Value.Bool false |) in
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple

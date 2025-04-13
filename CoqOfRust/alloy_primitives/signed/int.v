@@ -29,7 +29,12 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
+                    ]),
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -199,7 +204,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -367,7 +372,16 @@ Module signed.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -2466,7 +2480,21 @@ Module signed.
             let abs := M.alloc (| abs |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::signed::int::Signed")
+                            [ BITS; LIMBS ]
+                            []
+                        ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -2574,7 +2602,22 @@ Module signed.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::ParseSignedError"
+                            ]
+                        ]),
                     M.match_operator (|
                       Some
                         (Ty.apply
@@ -3159,7 +3202,22 @@ Module signed.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::ParseSignedError"
+                            ]
+                        ]),
                     M.match_operator (|
                       Some
                         (Ty.apply

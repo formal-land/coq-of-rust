@@ -2471,7 +2471,7 @@ Module vec.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2628,7 +2628,7 @@ Module vec.
                     fun γ =>
                       ltac:(M.monadic
                         (M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2859,7 +2859,7 @@ Module vec.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -3100,7 +3100,7 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

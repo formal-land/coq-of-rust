@@ -3798,7 +3798,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -3863,7 +3863,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -3904,7 +3904,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -3937,7 +3937,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -4007,7 +4007,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   M.alloc (| Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>

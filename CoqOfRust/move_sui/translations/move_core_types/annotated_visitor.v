@@ -212,7 +212,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -473,7 +473,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2616,7 +2616,42 @@ Module annotated_visitor.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::annotated_value::MoveFieldLayout"
+                                      ];
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value"
+                                  ]
+                              ];
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5839,7 +5874,7 @@ Module annotated_visitor.
                         |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
                             (M.match_operator (|
                               Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -6326,7 +6361,7 @@ Module annotated_visitor.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
                       Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

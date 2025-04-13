@@ -2212,7 +2212,16 @@ Module collections.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::Difference")
+                              []
+                              [ T; A ]
+                          ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -2344,7 +2353,16 @@ Module collections.
                             let self_min := M.copy (| γ0_0 |) in
                             let self_max := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              None,
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::set::Difference")
+                                      []
+                                      [ T; A ]
+                                  ]),
                               M.match_operator (|
                                 Some
                                   (Ty.apply
@@ -2552,7 +2570,7 @@ Module collections.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.find_or_pattern (|
+                                                      (M.find_or_pattern (Ty.tuple []) (|
                                                         γ,
                                                         [
                                                           fun γ =>
@@ -3143,7 +3161,16 @@ Module collections.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::Intersection")
+                              []
+                              [ T; A ]
+                          ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -3252,7 +3279,16 @@ Module collections.
                             let self_min := M.copy (| γ0_0 |) in
                             let self_max := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              None,
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::set::Intersection")
+                                      []
+                                      [ T; A ]
+                                  ]),
                               M.match_operator (|
                                 Some
                                   (Ty.apply
@@ -3440,7 +3476,7 @@ Module collections.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.find_or_pattern (|
+                                                      (M.find_or_pattern (Ty.tuple []) (|
                                                         γ,
                                                         [
                                                           fun γ =>
@@ -4366,7 +4402,7 @@ Module collections.
                         ]
                       |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -4462,7 +4498,7 @@ Module collections.
                             let self_min := M.copy (| γ0_0 |) in
                             let self_max := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                               M.match_operator (|
                                 Some
                                   (Ty.apply
@@ -4886,7 +4922,7 @@ Module collections.
                                                       ltac:(M.monadic
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
-                                                          Ty.tuple [],
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           ltac:(M.monadic
                                                             (let~ _ :
                                                                 Ty.apply
@@ -5177,7 +5213,7 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.loop (|
-                                                Ty.tuple [],
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
                                                     Some
@@ -6851,7 +6887,16 @@ Module collections.
               let pred := M.alloc (| pred |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::ExtractIf")
+                          []
+                          [ T; F; A ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -9005,7 +9050,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let β1 := M.alloc (| β1 |) in
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 β1,
                 [
                   fun γ =>
@@ -11555,7 +11600,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -12016,7 +12061,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (let~ self_next :
                                           Ty.apply
@@ -12285,7 +12330,17 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ]
+                      ]),
                   M.match_operator (|
                     Some
                       (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]),
@@ -12647,10 +12702,10 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (M.match_operator (|
-                            None,
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -12824,7 +12879,17 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
@@ -13459,7 +13524,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -13864,7 +13929,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (let~ small_next :
                                           Ty.apply
@@ -14451,7 +14516,16 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -14548,7 +14622,17 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],

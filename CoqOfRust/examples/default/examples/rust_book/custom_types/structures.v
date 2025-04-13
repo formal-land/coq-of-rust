@@ -468,7 +468,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         M.match_operator (|
-          None,
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           point,
           [
             fun γ =>
@@ -601,7 +601,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   pair_,
                   [
                     fun γ =>

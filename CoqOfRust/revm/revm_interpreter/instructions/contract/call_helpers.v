@@ -44,7 +44,25 @@ Module instructions.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "alloy_primitives::bytes_::Bytes";
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                            ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply

@@ -37,7 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
           |) in
         M.loop (|
-          Ty.tuple [],
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           ltac:(M.monadic
             (M.match_operator (|
               Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

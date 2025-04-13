@@ -4343,7 +4343,7 @@ Module iter.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -4636,7 +4636,17 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "usize";
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                              ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -4716,7 +4726,20 @@ Module iter.
                             let flo := M.copy (| γ0_0 |) in
                             let fhi := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              None,
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ]
+                                  ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple
@@ -4859,7 +4882,8 @@ Module iter.
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.tuple
@@ -6156,7 +6180,7 @@ Module iter.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -8051,7 +8075,7 @@ Module iter.
                   (M.read (|
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -8220,7 +8244,17 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -9085,7 +9119,7 @@ Module iter.
                   (M.read (|
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

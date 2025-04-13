@@ -318,6 +318,7 @@ Module LowM.
   | CallLogicalOp (op : LogicalOp.t) (lhs : Value.t) (rhs : t A) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
+  | MatchTuple (tuple : Value.t) (k : list Value.t -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
@@ -325,6 +326,7 @@ Module LowM.
   Arguments CallLogicalOp {_}.
   Arguments Let {_}.
   Arguments Loop {_}.
+  Arguments MatchTuple {_}.
   Arguments Impossible {_}.
 
   Fixpoint let_ {A : Set} (e1 : t A) (e2 : A -> t A) : t A :=
@@ -340,6 +342,8 @@ Module LowM.
       Let ty e (fun v => let_ (k v) e2)
     | Loop ty body k =>
       Loop ty body (fun v => let_ (k v) e2)
+    | MatchTuple tuple k =>
+      MatchTuple tuple (fun fields => let_ (k fields) e2)
     | Impossible message => Impossible message
     end.
 End LowM.
@@ -712,9 +716,9 @@ Definition catch_return (ty : Ty.t) (body : M) : M :=
       end
     ).
 
-Definition catch_continue (body : M) : M :=
+Definition catch_continue (ty : Ty.t) (body : M) : M :=
   catch
-    None
+    (Some ty)
     body
     (fun exception =>
       match exception with
@@ -723,9 +727,9 @@ Definition catch_continue (body : M) : M :=
       end
     ).
 
-Definition catch_break (body : M) : M :=
+Definition catch_break (ty : Ty.t) (body : M) : M :=
   catch
-    None
+    (Some ty)
     body
     (fun exception =>
       match exception with
@@ -737,9 +741,9 @@ Definition catch_break (body : M) : M :=
 Definition loop (ty : Ty.t) (body : M) : M :=
   LowM.Loop
     ty
-    (catch_continue body)
+    (catch_continue ty body)
     (fun result =>
-      catch_break (LowM.Pure result)).
+      catch_break ty (LowM.Pure result)).
 
 (** It is recommended to provide a [ty] when there are more than one branch, to prevent a
     combinatorial explosion. Indeed, only when a [ty] is there we can use a hard monadic `let` tà
@@ -769,6 +773,7 @@ Fixpoint match_operator
     no arms are valid, we raise an [Exception.BreakMatch].
 *)
 Fixpoint find_or_pattern_aux
+    (arm_ty : Ty.t)
     (scrutinee : Value.t)
     (arms : list (Value.t -> M)) :
     M :=
@@ -776,27 +781,24 @@ Fixpoint find_or_pattern_aux
   | nil => break_match
   | arm :: arms =>
     catch
-      None
+      (Some arm_ty)
       (arm scrutinee)
       (fun exception =>
         match exception with
-        | Exception.BreakMatch => find_or_pattern_aux scrutinee arms
+        | Exception.BreakMatch => find_or_pattern_aux arm_ty scrutinee arms
         | _ => raise exception
         end
       )
   end.
 
-(* TODO: add a [ty] parameter to prevent combinatorial explosion or find another similar way. *)
 Definition find_or_pattern
+    (arm_ty : Ty.t)
     (scrutinee : Value.t)
     (arms : list (Value.t -> M))
     (body : list Value.t -> M) :
     M :=
-  let* free_vars := find_or_pattern_aux scrutinee arms in
-  match free_vars with
-  | Value.Tuple free_vars => body free_vars
-  | _ => impossible "expected a tuple of free variables"
-  end.
+  let* free_vars := find_or_pattern_aux arm_ty scrutinee arms in
+  LowM.MatchTuple free_vars body.
 
 Definition never_to_any (x : Value.t) : M :=
   M.panic (Panic.Make "never_to_any got called").

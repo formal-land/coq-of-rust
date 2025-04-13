@@ -602,7 +602,7 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ],
@@ -731,7 +731,7 @@ Module cell.
                           |)
                         |) in
                       M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
                         state,
                         [
                           fun γ =>

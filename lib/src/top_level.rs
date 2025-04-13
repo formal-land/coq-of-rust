@@ -902,6 +902,8 @@ fn compile_function_body(
         return None;
     }
 
+    let ret_ty = ret_ty.unwrap_or_else(|| CoqType::path(&["Expected ret_ty"]));
+
     let body_without_bindings = compile_hir_id(env, body.value.hir_id).read();
 
     if body_without_bindings.is_unimplemented() {
@@ -909,12 +911,10 @@ fn compile_function_body(
     }
 
     let body_without_bindings = if body_without_bindings.has_return() {
-        let ret_ty = ret_ty.unwrap_or_else(|| CoqType::path(&["Expected ret_ty"]));
-
         Rc::new(Expr::Call {
             func: Rc::new(Expr::CallTy {
                 func: Expr::local_var("M.catch_return"),
-                ty: ret_ty,
+                ty: ret_ty.clone(),
             }),
             args: vec![Rc::new(Expr::Lambda {
                 args: vec![],
@@ -935,7 +935,7 @@ fn compile_function_body(
                 |body, (name, _, pattern)| match pattern {
                     None => body,
                     Some(pattern) => crate::thir_expression::build_match(
-                        None,
+                        ret_ty.clone().make_raw_ref(),
                         Expr::local_var(name),
                         vec![MatchArm {
                             pattern: pattern.clone(),

@@ -2504,7 +2504,17 @@ Module iter.
                           |) in
                         let b := M.alloc (| γ2_0 |) in
                         M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                  ]
+                              ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple
@@ -2532,7 +2542,20 @@ Module iter.
                                 let a_lower := M.copy (| γ0_0 |) in
                                 let a_upper := M.copy (| γ0_1 |) in
                                 M.match_operator (|
-                                  None,
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ]
+                                      ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple

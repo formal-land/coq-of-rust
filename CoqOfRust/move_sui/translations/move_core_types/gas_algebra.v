@@ -1394,7 +1394,11 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
@@ -1490,7 +1494,11 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],

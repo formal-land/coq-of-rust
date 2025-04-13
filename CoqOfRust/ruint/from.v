@@ -393,13 +393,13 @@ Module from.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1605,13 +1605,13 @@ Module from.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -2351,7 +2351,7 @@ Module from.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.find_or_pattern (|
+                    M.find_or_pattern (Ty.tuple []) (|
                       γ0_0,
                       [
                         fun γ =>
@@ -2450,7 +2450,8 @@ Module from.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern
+                      (Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                       γ,
                       [
                         fun γ =>
@@ -2471,7 +2472,8 @@ Module from.
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            M.find_or_pattern (|
+                            M.find_or_pattern
+                              (Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                               γ0_0,
                               [
                                 fun γ =>
@@ -2654,7 +2656,7 @@ Module from.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern (Ty.tuple [ T ]) (|
                       γ,
                       [
                         fun γ =>
@@ -2760,7 +2762,7 @@ Module from.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern (Ty.tuple [ T ]) (|
                       γ,
                       [
                         fun γ =>
@@ -3027,7 +3029,22 @@ Module from.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                        Ty.apply
+                          (Ty.path "ruint::from::ToUintError")
+                          []
+                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                      ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool" ],
@@ -3208,7 +3225,22 @@ Module from.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [];
+                        Ty.apply
+                          (Ty.path "ruint::from::FromUintError")
+                          []
+                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [] ]
+                      ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -4539,7 +4571,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -4762,7 +4796,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -4985,7 +5021,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -5208,7 +5246,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -5431,7 +5471,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -5654,7 +5696,9 @@ Module from.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern
+                                      (Ty.tuple
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -6000,7 +6044,14 @@ Module from.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ BITS; LIMBS ]
+                                                          []
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -6167,7 +6218,14 @@ Module from.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.find_or_pattern (|
+                                            (M.find_or_pattern
+                                              (Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]) (|
                                               γ,
                                               [
                                                 fun γ =>
@@ -6753,7 +6811,22 @@ Module from.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                    Ty.apply
+                                      (Ty.path "ruint::from::ToUintError")
+                                      []
+                                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                  ]
+                              ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple
@@ -10586,7 +10659,7 @@ Module from.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f32" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "usize" ],
@@ -10704,7 +10777,7 @@ Module from.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "usize" ],

@@ -129,13 +129,21 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -452,13 +460,13 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -1132,7 +1140,26 @@ Module eof.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "revm_bytecode::eof::types_section::TypesSection";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ];
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
+                        ]),
                     M.match_operator (|
                       Some
                         (Ty.apply
@@ -1305,7 +1332,26 @@ Module eof.
                           let input := M.copy (| γ0_0 |) in
                           let inputs := M.copy (| γ0_1 |) in
                           M.match_operator (|
-                            None,
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.path "revm_bytecode::eof::types_section::TypesSection";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ];
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ]
+                                ]),
                             M.match_operator (|
                               Some
                                 (Ty.apply
@@ -1493,7 +1539,28 @@ Module eof.
                                   let input := M.copy (| γ0_0 |) in
                                   let outputs := M.copy (| γ0_1 |) in
                                   M.match_operator (|
-                                    None,
+                                    Some
+                                      (Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path
+                                                    "revm_bytecode::eof::types_section::TypesSection";
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
+                                        ]),
                                     M.match_operator (|
                                       Some
                                         (Ty.apply

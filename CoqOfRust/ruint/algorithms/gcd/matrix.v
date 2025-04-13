@@ -23,13 +23,21 @@ Module algorithms.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "ruint::algorithms::gcd::matrix::Matrix" ]),
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "ruint::algorithms::gcd::matrix::Matrix" ]),
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                         |)))
@@ -221,13 +229,13 @@ Module algorithms.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)))
@@ -657,7 +665,7 @@ Module algorithms.
               (let self := M.alloc (| self |) in
               let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
-              M.catch_return (Ty.path "unit") (|
+              M.catch_return (Ty.tuple []) (|
                 ltac:(M.monadic
                   (M.read (|
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -685,7 +693,7 @@ Module algorithms.
                         ]
                       |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -1977,7 +1985,7 @@ Module algorithms.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (let~ q : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                 M.alloc (|
@@ -2701,7 +2709,7 @@ Module algorithms.
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

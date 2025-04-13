@@ -863,7 +863,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1651,7 +1651,7 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
-                    M.find_or_pattern (|
+                    M.find_or_pattern (Ty.tuple []) (|
                       γ0_0,
                       [
                         fun γ =>
@@ -1764,7 +1764,7 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
-                    M.find_or_pattern (|
+                    M.find_or_pattern (Ty.tuple []) (|
                       γ0_0,
                       [
                         fun γ =>
@@ -1867,7 +1867,7 @@ Module cmp.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -2137,7 +2137,7 @@ Module cmp.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.find_or_pattern (|
+                  (M.find_or_pattern (Ty.tuple []) (|
                     γ,
                     [
                       fun γ =>
@@ -3750,7 +3750,12 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               β1,
               [
                 fun γ =>
@@ -6801,7 +6806,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
               β1,
               [
                 fun γ =>
@@ -6848,7 +6853,12 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ]),
               β1,
               [
                 fun γ =>
@@ -6883,7 +6893,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
               β1,
               [
                 fun γ =>

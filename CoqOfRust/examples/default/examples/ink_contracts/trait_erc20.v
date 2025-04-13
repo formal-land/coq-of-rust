@@ -184,7 +184,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "trait_erc20::AccountId" ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)

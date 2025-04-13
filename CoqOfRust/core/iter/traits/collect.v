@@ -174,7 +174,7 @@ Module iter.
               let additional := M.alloc (| additional |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   additional,
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
@@ -335,7 +335,7 @@ Module iter.
               let into_iter := M.alloc (| into_iter |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   self,
                   [
                     fun γ =>
@@ -670,7 +670,7 @@ Module iter.
             let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -1031,11 +1031,11 @@ Module iter.
               (let self := M.alloc (| self |) in
               let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
-              M.catch_return (Ty.path "unit") (|
+              M.catch_return (Ty.tuple []) (|
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple

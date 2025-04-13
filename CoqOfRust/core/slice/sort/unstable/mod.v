@@ -45,7 +45,7 @@ Module slice.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             let is_less := M.alloc (| is_less |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -247,7 +247,7 @@ Module slice.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             let is_less := M.alloc (| is_less |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -264,7 +264,7 @@ Module slice.
                       |)
                     |) in
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [ Ty.path "usize"; Ty.path "bool" ],

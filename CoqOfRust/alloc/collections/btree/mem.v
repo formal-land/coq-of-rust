@@ -114,7 +114,7 @@ Module collections.
                   |)
                 |) in
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ R ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ T; R ],

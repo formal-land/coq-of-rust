@@ -31,7 +31,11 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let β1 := M.alloc (| β1 |) in
-        M.match_operator (| None, β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+        M.match_operator (|
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          β1,
+          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

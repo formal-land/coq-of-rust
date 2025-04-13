@@ -27,7 +27,8 @@ Module Impl_core_clone_Clone_for_ruint_Uint_BITS_LIMBS.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -77,7 +78,7 @@ Module Impl_core_cmp_Eq_for_ruint_Uint_BITS_LIMBS.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -1136,7 +1137,14 @@ Module Impl_ruint_Uint_BITS_LIMBS.
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.tuple
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool" ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple

@@ -71,7 +71,7 @@ Module slice.
               let scratch := M.alloc (| scratch |) in
               let mid := M.alloc (| mid |) in
               let is_less := M.alloc (| is_less |) in
-              M.catch_return (Ty.path "unit") (|
+              M.catch_return (Ty.tuple []) (|
                 ltac:(M.monadic
                   (M.read (|
                     let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -483,7 +483,7 @@ Module slice.
                       |)
                     |) in
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -756,7 +756,7 @@ Module slice.
                 let is_less := M.alloc (| is_less |) in
                 M.read (|
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (let~ left :
                           Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=

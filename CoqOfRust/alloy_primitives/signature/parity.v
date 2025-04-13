@@ -44,13 +44,21 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "alloy_primitives::signature::parity::Parity" ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "alloy_primitives::signature::parity::Parity" ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -588,13 +596,13 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -849,7 +857,7 @@ Module signature.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern (Ty.tuple []) (|
                         γ,
                         [
                           fun γ =>
@@ -894,7 +902,7 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern (Ty.tuple []) (|
                         γ,
                         [
                           fun γ =>
@@ -1233,7 +1241,8 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern
+                        (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
                         γ,
                         [
                           fun γ =>
@@ -1335,7 +1344,8 @@ Module signature.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern
+                        (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
                         γ,
                         [
                           fun γ =>
@@ -1753,7 +1763,7 @@ Module signature.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.find_or_pattern (|
+                          (M.find_or_pattern (Ty.tuple [ Ty.path "bool" ]) (|
                             γ,
                             [
                               fun γ =>

@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "e2e_call_runtime::AccountId" ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)

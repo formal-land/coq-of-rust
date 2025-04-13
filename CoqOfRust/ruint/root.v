@@ -344,7 +344,7 @@ Module root.
                 let~ decreasing : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                   M.alloc (| Value.Bool false |) in
                 M.loop (|
-                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
                   ltac:(M.monadic
                     (let~ division :
                         Ty.apply
@@ -538,7 +538,7 @@ Module root.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (M.find_or_pattern (|
+                            (M.find_or_pattern (Ty.tuple []) (|
                               γ,
                               [
                                 fun γ =>

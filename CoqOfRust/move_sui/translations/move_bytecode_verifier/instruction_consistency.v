@@ -288,7 +288,7 @@ Module instruction_consistency.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -815,7 +815,7 @@ Module instruction_consistency.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -4483,7 +4483,10 @@ Module instruction_consistency.
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern
+                                                    (Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                      ]) (|
                                                     γ,
                                                     [
                                                       fun γ =>
@@ -4681,7 +4684,7 @@ Module instruction_consistency.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.find_or_pattern (|
+                                                  (M.find_or_pattern (Ty.tuple []) (|
                                                     γ,
                                                     [
                                                       fun γ =>

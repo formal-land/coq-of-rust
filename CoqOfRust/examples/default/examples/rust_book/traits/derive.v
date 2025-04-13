@@ -205,7 +205,7 @@ Module Impl_derive_Inches.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ]),
             self,
             [
               fun γ =>

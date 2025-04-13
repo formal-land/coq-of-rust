@@ -68,7 +68,7 @@ Module instructions.
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           let dest := M.alloc (| dest |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -319,7 +319,7 @@ Module instructions.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -427,7 +427,7 @@ Module instructions.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
-                                                      Ty.tuple [],
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       ltac:(M.monadic
                                                         (let~ _ :
                                                             Ty.apply
@@ -796,7 +796,7 @@ Module instructions.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|

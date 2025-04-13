@@ -2638,7 +2638,11 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -2821,7 +2825,11 @@ Module slice.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -6679,7 +6687,11 @@ Module slice.
           (let len := M.alloc (| len |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]),
             β1,
             [
               fun γ =>
@@ -6816,7 +6828,16 @@ Module slice.
           (let len := M.alloc (| len |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
+                ]),
             β1,
             [
               fun γ =>
@@ -7178,7 +7199,11 @@ Module slice.
           (let len := M.alloc (| len |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]),
             β1,
             [
               fun γ =>

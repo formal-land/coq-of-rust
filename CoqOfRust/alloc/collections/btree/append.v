@@ -331,7 +331,7 @@ Module collections.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
@@ -531,7 +531,7 @@ Module collections.
                                                     let~ _ :
                                                         Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                       M.loop (|
-                                                        Ty.tuple [],
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
                                                             Some
@@ -1046,7 +1046,10 @@ Module collections.
                                                               ltac:(M.monadic
                                                                 (let iter := M.copy (| γ |) in
                                                                 M.loop (|
-                                                                  Ty.tuple [],
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ],
                                                                   ltac:(M.monadic
                                                                     (let~ _ :
                                                                         Ty.apply
@@ -1441,7 +1444,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ K; V ] ] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

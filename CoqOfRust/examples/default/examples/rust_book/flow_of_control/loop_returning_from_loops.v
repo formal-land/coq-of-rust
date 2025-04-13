@@ -26,7 +26,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.copy (|
             M.loop (|
-              Ty.path "i32",
+              Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
               ltac:(M.monadic
                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|

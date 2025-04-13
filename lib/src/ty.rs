@@ -56,7 +56,7 @@ impl CoqType {
     }
 
     pub(crate) fn unit() -> Rc<CoqType> {
-        CoqType::path(&["unit"])
+        Rc::new(CoqType::Tuple { tys: vec![] })
     }
 
     pub(crate) fn make_ref(mutbl: &rustc_hir::Mutability, ty: Rc<CoqType>) -> Rc<CoqType> {

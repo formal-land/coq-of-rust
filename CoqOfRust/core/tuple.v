@@ -447,7 +447,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T ] ]),
               array,
               [
                 fun γ =>
@@ -490,7 +490,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -1671,7 +1675,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T ] ]),
               array,
               [
                 fun γ =>
@@ -1716,7 +1720,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -3593,7 +3601,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -3643,7 +3651,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -6268,7 +6280,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -6325,7 +6337,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -9716,7 +9732,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -9776,7 +9792,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -13925,7 +13945,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -13988,7 +14008,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -19072,7 +19096,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -19138,7 +19162,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -25203,7 +25231,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -25272,7 +25300,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -32331,7 +32363,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -32403,7 +32435,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -40492,7 +40528,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -40567,7 +40603,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -49714,7 +49754,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -49792,7 +49832,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ]),
               tuple,
               [
                 fun γ =>
@@ -60018,7 +60062,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ]),
               array,
               [
                 fun γ =>
@@ -60099,7 +60143,11 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ]),
               tuple,
               [
                 fun γ =>

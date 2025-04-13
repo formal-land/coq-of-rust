@@ -14,7 +14,7 @@ Module mem.
         (let t := M.alloc (| t |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],

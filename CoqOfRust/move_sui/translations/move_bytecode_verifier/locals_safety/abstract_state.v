@@ -580,19 +580,19 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                               |)))
@@ -3016,7 +3016,7 @@ Module locals_safety.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.find_or_pattern (|
+                                                      (M.find_or_pattern (Ty.tuple []) (|
                                                         γ,
                                                         [
                                                           fun γ =>

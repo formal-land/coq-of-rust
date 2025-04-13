@@ -65,13 +65,13 @@ Module alloc.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -267,13 +267,13 @@ Module alloc.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -489,7 +489,7 @@ Module alloc.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -879,7 +879,7 @@ Module alloc.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
@@ -930,7 +930,7 @@ Module alloc.
             (let t := M.alloc (| t |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -991,7 +991,7 @@ Module alloc.
             (let t := M.alloc (| t |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -1220,7 +1220,7 @@ Module alloc.
             let align := M.alloc (| align |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

@@ -514,7 +514,7 @@ Module buf.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cnt := M.alloc (| cnt |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ a_rem : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -1422,7 +1422,7 @@ Module buf.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cnt := M.alloc (| cnt |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ a_rem : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=

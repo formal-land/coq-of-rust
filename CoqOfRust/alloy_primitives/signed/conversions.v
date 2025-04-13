@@ -488,7 +488,22 @@ Module signed.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::ParseSignedError"
+                            ]
+                        ]),
                     M.match_operator (|
                       Some
                         (Ty.apply
@@ -1330,7 +1345,22 @@ Module signed.
                       |)
                     |) in
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                            ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple

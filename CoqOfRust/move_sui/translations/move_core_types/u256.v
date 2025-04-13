@@ -1010,7 +1010,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -1164,7 +1164,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1939,7 +1939,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2005,7 +2005,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2071,7 +2071,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2138,7 +2138,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2151,7 +2151,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
                       rhs,
                       [
                         fun γ =>
@@ -2221,7 +2221,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2234,7 +2234,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
                       rhs,
                       [
                         fun γ =>
@@ -2304,7 +2304,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
               self,
               [
                 fun γ =>
@@ -2317,7 +2317,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
                       rhs,
                       [
                         fun γ =>
@@ -5852,7 +5852,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::UniformU256" ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -6117,7 +6117,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -6769,7 +6769,7 @@ Module u256.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
-                                Ty.path "never",
+                                Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                 ltac:(M.monadic
                                   (let~ v :
                                       Ty.apply
@@ -6797,7 +6797,7 @@ Module u256.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    None,
+                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple
@@ -7405,7 +7405,7 @@ Module u256.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (let~ v :
                               Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ] :=
@@ -7426,7 +7426,7 @@ Module u256.
                               |)
                             |) in
                           M.match_operator (|
-                            None,
+                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple

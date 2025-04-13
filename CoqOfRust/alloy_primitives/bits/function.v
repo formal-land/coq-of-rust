@@ -18,7 +18,11 @@ Module bits.
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "alloy_primitives::bits::function::Function" ]),
               β0,
               [
                 fun γ =>
@@ -790,7 +794,20 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.path "alloy_primitives::bits::address::Address";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            []
+                        ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple

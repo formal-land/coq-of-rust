@@ -21,7 +21,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::any::TypeId" ]),
             β1,
             [
               fun γ =>

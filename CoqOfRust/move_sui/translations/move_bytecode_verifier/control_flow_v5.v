@@ -527,7 +527,11 @@ Module control_flow_v5.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -1455,7 +1459,7 @@ Module control_flow_v5.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -1516,7 +1520,9 @@ Module control_flow_v5.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.find_or_pattern (|
+                                            (M.find_or_pattern
+                                              (Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]) (|
                                               γ,
                                               [
                                                 fun γ =>
@@ -2415,7 +2421,7 @@ Module control_flow_v5.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
@@ -2717,7 +2723,10 @@ Module control_flow_v5.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (M.find_or_pattern (|
+                                                (M.find_or_pattern
+                                                  (Ty.tuple
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                    ]) (|
                                                   γ,
                                                   [
                                                     fun γ =>
@@ -2784,7 +2793,11 @@ Module control_flow_v5.
                                                               Value.Bool true
                                                             |) in
                                                           M.match_operator (|
-                                                            None,
+                                                            Some
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ]),
                                                             M.match_operator (|
                                                               Some
                                                                 (Ty.apply
@@ -3594,7 +3607,14 @@ Module control_flow_v5.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern
+                                                          (Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ]) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -3661,7 +3681,21 @@ Module control_flow_v5.
                                                                       Value.Bool true
                                                                     |) in
                                                                   M.match_operator (|
-                                                                    None,
+                                                                    Some
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
+                                                                        ]),
                                                                     M.match_operator (|
                                                                       Some
                                                                         (Ty.apply
@@ -4491,7 +4525,14 @@ Module control_flow_v5.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern
+                                                          (Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ]) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -5330,7 +5371,14 @@ Module control_flow_v5.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.find_or_pattern (|
+                                                            (M.find_or_pattern
+                                                              (Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "u16" ]
+                                                                ]) (|
                                                               γ,
                                                               [
                                                                 fun γ =>
@@ -6457,7 +6505,7 @@ Module control_flow_v5.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|

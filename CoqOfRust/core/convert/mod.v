@@ -528,7 +528,16 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ]),
             β1,
             [
               fun γ =>
@@ -571,7 +580,16 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ]),
             β1,
             [
               fun γ =>
@@ -648,7 +666,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
             β1,
             [
               fun γ =>
@@ -799,7 +817,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             β1,
             [
               fun γ =>

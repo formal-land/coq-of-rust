@@ -801,25 +801,25 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        None,
+                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                         Value.DeclaredButUndefined,
                                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                       |)))
@@ -1960,7 +1960,30 @@ Module eof.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                                Ty.path "usize"
+                              ];
+                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                          ]
+                      ]),
                   M.match_operator (|
                     Some
                       (Ty.apply
@@ -2313,7 +2336,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
@@ -3261,7 +3284,7 @@ Module eof.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
@@ -3572,7 +3595,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
@@ -3937,7 +3960,26 @@ Module eof.
                       |)
                     |) in
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "revm_bytecode::eof::header::EofHeader";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ];
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
+                        ]),
                     M.match_operator (|
                       Some
                         (Ty.apply
@@ -4148,7 +4190,26 @@ Module eof.
                               ]
                             |) in
                           M.match_operator (|
-                            None,
+                            Some
+                              (Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.path "revm_bytecode::eof::header::EofHeader";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ];
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ]
+                                ]),
                             M.match_operator (|
                               Some
                                 (Ty.apply
@@ -4378,7 +4439,27 @@ Module eof.
                                       ]
                                     |) in
                                   M.match_operator (|
-                                    None,
+                                    Some
+                                      (Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "revm_bytecode::eof::header::EofHeader";
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
+                                        ]),
                                     M.match_operator (|
                                       Some
                                         (Ty.apply
@@ -4629,7 +4710,32 @@ Module eof.
                                               ]
                                             |) in
                                           M.match_operator (|
-                                            None,
+                                            Some
+                                              (Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.path
+                                                            "revm_bytecode::eof::header::EofHeader";
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ]
+                                                        ];
+                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                    ]
+                                                ]),
                                             M.match_operator (|
                                               Some
                                                 (Ty.apply
@@ -4920,7 +5026,33 @@ Module eof.
                                                       ]
                                                     |) in
                                                   M.match_operator (|
-                                                    None,
+                                                    Some
+                                                      (Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_bytecode::eof::header::EofHeader";
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ]
+                                                                ];
+                                                              Ty.path
+                                                                "revm_bytecode::eof::EofDecodeError"
+                                                            ]
+                                                        ]),
                                                     M.match_operator (|
                                                       Some
                                                         (Ty.apply
@@ -5210,7 +5342,33 @@ Module eof.
                                                               ]
                                                             |) in
                                                           M.match_operator (|
-                                                            None,
+                                                            Some
+                                                              (Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.path
+                                                                            "revm_bytecode::eof::header::EofHeader";
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ]
+                                                                        ];
+                                                                      Ty.path
+                                                                        "revm_bytecode::eof::EofDecodeError"
+                                                                    ]
+                                                                ]),
                                                             M.match_operator (|
                                                               Some
                                                                 (Ty.apply
@@ -5774,7 +5932,38 @@ Module eof.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
-                                                                    None,
+                                                                    Some
+                                                                      (Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "revm_bytecode::eof::header::EofHeader";
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u8"
+                                                                                        ]
+                                                                                    ]
+                                                                                ];
+                                                                              Ty.path
+                                                                                "revm_bytecode::eof::EofDecodeError"
+                                                                            ]
+                                                                        ]),
                                                                     M.match_operator (|
                                                                       Some
                                                                         (Ty.apply
@@ -6097,7 +6286,27 @@ Module eof.
                                                                                             3
                                                                                         |) in
                                                                                       M.match_operator (|
-                                                                                        None,
+                                                                                        Some
+                                                                                          (Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "slice")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ]
+                                                                                                ]
+                                                                                            ]),
                                                                                         M.match_operator (|
                                                                                           Some
                                                                                             (Ty.apply
@@ -6587,7 +6796,27 @@ Module eof.
                                                                                                   |)
                                                                                                 |) in
                                                                                               M.match_operator (|
-                                                                                                None,
+                                                                                                Some
+                                                                                                  (Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "*")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "slice")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u8"
+                                                                                                            ]
+                                                                                                        ]
+                                                                                                    ]),
                                                                                                 M.match_operator (|
                                                                                                   Some
                                                                                                     (Ty.apply
@@ -7013,7 +7242,39 @@ Module eof.
                                                                               |)
                                                                             |) in
                                                                           M.match_operator (|
-                                                                            None,
+                                                                            Some
+                                                                              (Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "revm_bytecode::eof::header::EofHeader";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u8"
+                                                                                                ]
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "revm_bytecode::eof::EofDecodeError"
+                                                                                    ]
+                                                                                ]),
                                                                             M.match_operator (|
                                                                               Some
                                                                                 (Ty.apply
@@ -7319,7 +7580,40 @@ Module eof.
                                                                                       |)
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    None,
+                                                                                    Some
+                                                                                      (Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::result::Result")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "revm_bytecode::eof::header::EofHeader";
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "&")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "slice")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "u8"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "revm_bytecode::eof::EofDecodeError"
+                                                                                            ]
+                                                                                        ]),
                                                                                     M.match_operator (|
                                                                                       Some
                                                                                         (Ty.apply

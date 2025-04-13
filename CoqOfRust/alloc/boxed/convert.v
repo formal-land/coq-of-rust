@@ -773,7 +773,16 @@ Module boxed.
             (let s := M.alloc (| s |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
@@ -1047,7 +1056,16 @@ Module boxed.
                 ]
               |) in
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1583,7 +1601,11 @@ Module boxed.
                   ]
                 |) in
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -1831,7 +1853,11 @@ Module boxed.
                   ]
                 |) in
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -2106,7 +2132,11 @@ Module boxed.
                   ]
                 |) in
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple

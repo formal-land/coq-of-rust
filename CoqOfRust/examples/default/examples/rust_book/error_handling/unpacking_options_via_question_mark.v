@@ -24,13 +24,21 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some
+              (Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]),
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]),
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                   |)))
@@ -87,7 +95,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "unpacking_options_via_question_mark::Job" ]),
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)

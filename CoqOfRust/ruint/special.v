@@ -400,7 +400,16 @@ Module special.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

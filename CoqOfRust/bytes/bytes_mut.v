@@ -1637,7 +1637,7 @@ Module bytes_mut.
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
           let value := M.alloc (| value |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ additional : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -1984,7 +1984,7 @@ Module bytes_mut.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -2045,7 +2045,7 @@ Module bytes_mut.
                     ]
                   |) in
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "bool",
@@ -5237,7 +5237,7 @@ Module bytes_mut.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -5820,7 +5820,7 @@ Module bytes_mut.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let count := M.alloc (| count |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -7878,7 +7878,7 @@ Module bytes_mut.
                         |)
                       |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -8593,7 +8593,7 @@ Module bytes_mut.
           let src := M.alloc (| src |) in
           M.read (|
             M.loop (|
-              Ty.tuple [],
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               ltac:(M.monadic
                 (M.match_operator (|
                   Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -10118,7 +10118,7 @@ Module bytes_mut.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -10198,7 +10198,7 @@ Module bytes_mut.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
-                                Ty.tuple [],
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
@@ -10446,7 +10446,7 @@ Module bytes_mut.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -10831,7 +10831,7 @@ Module bytes_mut.
     | [], [], [ ptr ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
-        M.catch_return (Ty.path "unit") (|
+        M.catch_return (Ty.tuple []) (|
           ltac:(M.monadic
             (M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

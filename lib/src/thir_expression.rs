@@ -57,6 +57,7 @@ fn build_inner_match(
             Pattern::Wild => body,
             Pattern::Binding {
                 name,
+                ty: _,
                 is_with_ref,
                 pattern,
             } => Rc::new(Expr::Let {
@@ -173,10 +174,16 @@ fn build_inner_match(
                 }),
                 [first_pattern, ..] => {
                     let free_vars = first_pattern.get_free_vars();
+                    let free_vars_ty = Rc::new(CoqType::Tuple {
+                        tys: free_vars.iter().map(|(_, ty)| ty.clone()).collect(),
+                    });
 
                     Rc::new(Expr::Call {
                         kind: CallKind::Effectful,
-                        func: Expr::local_var("M.find_or_pattern"),
+                        func: Rc::new(Expr::CallTy {
+                            func: Expr::local_var("M.find_or_pattern"),
+                            ty: free_vars_ty,
+                        }),
                         args: vec![
                             Expr::local_var(&scrutinee),
                             Rc::new(Expr::Array {
@@ -193,7 +200,7 @@ fn build_inner_match(
                                                 Rc::new(Expr::Tuple {
                                                     elements: free_vars
                                                         .iter()
-                                                        .map(|name| Expr::local_var(name))
+                                                        .map(|(name, _)| Expr::local_var(name))
                                                         .collect(),
                                                 }),
                                                 0,
@@ -205,7 +212,10 @@ fn build_inner_match(
                             Rc::new(Expr::Lambda {
                                 is_for_match: true,
                                 form: LambdaForm::ListFunction,
-                                args: free_vars.iter().map(|name| (name.clone(), None)).collect(),
+                                args: free_vars
+                                    .iter()
+                                    .map(|(name, ty)| (name.clone(), Some(ty.clone())))
+                                    .collect(),
                                 body,
                             }),
                         ],
@@ -344,11 +354,7 @@ fn build_inner_match(
         })
 }
 
-pub(crate) fn build_match(
-    ty: Option<Rc<CoqType>>,
-    scrutinee: Rc<Expr>,
-    arms: Vec<MatchArm>,
-) -> Rc<Expr> {
+pub(crate) fn build_match(ty: Rc<CoqType>, scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
     Rc::new(Expr::Match {
         ty,
         scrutinee,
@@ -398,7 +404,7 @@ fn get_if_conditions<'a>(
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => get_if_conditions(env, generics, thir, value),
         thir::ExprKind::Let { expr, pat, .. } => {
-            let pattern = crate::thir_pattern::compile_pattern(env, pat);
+            let pattern = crate::thir_pattern::compile_pattern(env, generics, pat);
             let expr = compile_expr(env, generics, thir, expr);
 
             vec![(pattern, expr)]
@@ -503,7 +509,7 @@ pub(crate) fn compile_expr<'a>(
             };
 
             build_match(
-                Some(ty),
+                ty.make_raw_ref(),
                 Expr::tt(),
                 vec![
                     MatchArm {
@@ -649,7 +655,7 @@ pub(crate) fn compile_expr<'a>(
                 .iter()
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
-                    let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
+                    let pattern = crate::thir_pattern::compile_pattern(env, generics, &arm.pattern);
                     let if_let_guard = match &arm.guard {
                         Some(expr_id) => get_if_conditions(env, generics, thir, expr_id),
                         None => vec![],
@@ -664,7 +670,7 @@ pub(crate) fn compile_expr<'a>(
                 })
                 .collect();
 
-            build_match(Some(ty), scrutinee, arms)
+            build_match(ty.make_raw_ref(), scrutinee, arms)
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -913,8 +919,11 @@ pub(crate) fn compile_expr<'a>(
                     .iter()
                     .filter_map(|param| match &param.pat {
                         Some(pattern) => {
-                            let pattern =
-                                crate::thir_pattern::compile_pattern(env, pattern.as_ref());
+                            let pattern = crate::thir_pattern::compile_pattern(
+                                env,
+                                generics,
+                                pattern.as_ref(),
+                            );
                             let ty = compile_type(env, &expr.span, generics, &param.ty);
                             Some((pattern, ty))
                         }
@@ -932,7 +941,7 @@ pub(crate) fn compile_expr<'a>(
                     .enumerate()
                     .rfold(body, |body, (index, (pattern, _))| {
                         build_match(
-                            Some(ty.clone()),
+                            ty.clone().make_raw_ref(),
                             Expr::local_var(&format!("α{index}")).alloc(),
                             vec![MatchArm {
                                 pattern: pattern.clone(),
@@ -1251,6 +1260,14 @@ fn compile_stmts<'a>(
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
 ) -> Rc<Expr> {
+    let return_ty = match &expr_id {
+        Some(expr_id) => {
+            let expr = thir.exprs.get(*expr_id).unwrap();
+            compile_type(env, &expr.span, generics, &expr.ty)
+        }
+        None => CoqType::unit(),
+    };
+
     stmt_ids.iter().rev().fold(
         {
             match &expr_id {
@@ -1270,13 +1287,15 @@ fn compile_stmts<'a>(
                         Some(initializer) => compile_expr(env, generics, thir, initializer),
                         None => Expr::local_var("Value.DeclaredButUndefined"),
                     };
-                    let compiled_pattern = crate::thir_pattern::compile_pattern(env, pattern);
+                    let compiled_pattern =
+                        crate::thir_pattern::compile_pattern(env, generics, pattern);
                     let init_ty =
                         initializer.map(|initializer| thir.exprs.get(initializer).unwrap().ty);
 
                     match compiled_pattern.as_ref() {
                         Pattern::Binding {
                             name,
+                            ty: _,
                             pattern: None,
                             is_with_ref: false,
                         } => Rc::new(Expr::Let {
@@ -1288,7 +1307,7 @@ fn compile_stmts<'a>(
                             body,
                         }),
                         _ => build_match(
-                            None,
+                            return_ty.clone().make_raw_ref(),
                             init,
                             vec![MatchArm {
                                 pattern: compiled_pattern,

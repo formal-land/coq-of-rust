@@ -14,7 +14,11 @@ Module iter.
         | [], [], [ β0 ] =>
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
-            M.match_operator (| None, β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+            M.match_operator (|
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              β0,
+              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -350,7 +354,7 @@ Module iter.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
@@ -1752,7 +1756,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let β1 := M.alloc (| β1 |) in
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
                 β1,
                 [
                   fun γ =>
@@ -1763,7 +1767,7 @@ Module iter.
                           M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2012,7 +2016,7 @@ Module iter.
                     let~ accum : Ty.apply (Ty.path "*") [] [ B ] := M.copy (| init |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -2260,7 +2264,7 @@ Module iter.
                 let~ accum : Ty.apply (Ty.path "*") [] [ B ] := M.copy (| init |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -3803,7 +3807,23 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  Self
+                                  "Item"
+                              ]
+                          ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -4129,7 +4149,23 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  Self
+                                  "Item"
+                              ]
+                          ]),
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -5541,7 +5577,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
-                        M.find_or_pattern (|
+                        M.find_or_pattern (Ty.tuple []) (|
                           γ0_0,
                           [
                             fun γ =>
@@ -5660,7 +5696,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
-                        M.find_or_pattern (|
+                        M.find_or_pattern (Ty.tuple []) (|
                           γ0_0,
                           [
                             fun γ =>
@@ -6820,7 +6856,7 @@ Module iter.
                 let~ accum : Ty.apply (Ty.path "*") [] [ B ] := M.copy (| init |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -6953,7 +6989,7 @@ Module iter.
                     let~ accum : Ty.apply (Ty.path "*") [] [ B ] := M.copy (| init |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

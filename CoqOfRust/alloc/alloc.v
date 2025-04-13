@@ -2783,7 +2783,7 @@ Module alloc.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
             β0,
             [
               fun γ =>

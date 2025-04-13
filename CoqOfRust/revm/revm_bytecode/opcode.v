@@ -21,7 +21,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCode" ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -214,7 +214,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1579,19 +1579,24 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some
+                                (Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]),
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -1841,19 +1846,19 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -4307,7 +4312,25 @@ Module opcode.
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |)
         |) in
-      M.match_operator (| None, prev, [ fun γ => ltac:(M.monadic map) ] |))).
+      M.match_operator (|
+        Some
+          (Ty.apply
+            (Ty.path "*")
+            []
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 256 ]
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                ]
+            ]),
+        prev,
+        [ fun γ => ltac:(M.monadic map) ]
+      |))).
   
   Global Instance Instance_IsConstant_value_OPCODE_INFO :
     M.IsFunction.C "revm_bytecode::opcode::OPCODE_INFO" value_OPCODE_INFO.

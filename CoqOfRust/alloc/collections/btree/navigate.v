@@ -6482,7 +6482,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -6694,7 +6694,7 @@ Module collections.
                                               let b := M.copy (| γ1_0 |) in
                                               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  None,
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.tuple
@@ -6819,7 +6819,7 @@ Module collections.
                                                 |) in
                                               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  None,
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.tuple
@@ -7096,7 +7096,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -7364,7 +7364,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -7643,10 +7643,10 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple
@@ -7930,10 +7930,10 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple
@@ -8341,7 +8341,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let visit := M.alloc (| visit |) in
-              M.catch_return (Ty.path "unit") (|
+              M.catch_return (Ty.tuple []) (|
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -8543,7 +8543,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
-                                    Ty.path "never",
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                                     ltac:(M.monadic
                                       (M.alloc (|
                                         M.write (|
@@ -9681,7 +9681,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10160,7 +10160,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10616,7 +10616,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -11078,7 +11078,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -11692,7 +11692,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
-                            Ty.path "never",
+                            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -12252,7 +12252,7 @@ Module collections.
                     |)
                   |) in
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
                       Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

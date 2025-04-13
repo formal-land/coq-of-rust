@@ -433,7 +433,7 @@ Module gas.
                                                   Value.Bool true
                                                 |) in
                                               M.match_operator (|
-                                                None,
+                                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                 M.match_operator (|
                                                   Some
                                                     (Ty.apply
@@ -827,7 +827,7 @@ Module gas.
                   M.alloc (| Value.Integer IntegerKind.Usize 3 |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
@@ -2109,7 +2109,7 @@ Module gas.
           (let len := M.alloc (| len |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -3742,7 +3742,7 @@ Module gas.
                         |) in
                       let access_list := M.copy (| γ0_0 |) in
                       M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],

@@ -42,19 +42,28 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ]),
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some
+                            (Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "core::num::flt2dec::decoder::Decoded" ]),
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  None,
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ]),
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
@@ -359,19 +368,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                 |)))
@@ -452,7 +461,11 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]),
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -760,7 +773,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
@@ -883,7 +896,14 @@ Module num.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.tuple
+                        [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],

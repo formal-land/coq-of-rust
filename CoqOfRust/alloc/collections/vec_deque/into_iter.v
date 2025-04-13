@@ -634,7 +634,7 @@ Module collections.
                           ]
                       |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ R ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -1416,7 +1416,19 @@ Module collections.
                         |)
                       |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply (Ty.path "array") [ N ] [ T ];
+                                Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                              ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -2426,7 +2438,7 @@ Module collections.
                           ]
                       |) in
                     M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ R ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple

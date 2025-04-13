@@ -110,7 +110,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
@@ -134,7 +134,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
@@ -208,7 +208,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
@@ -232,7 +232,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    None,
+                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
@@ -449,7 +449,7 @@ Module Impl_associated_functions_and_methods_Pair.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
             self,
             [
               fun γ =>

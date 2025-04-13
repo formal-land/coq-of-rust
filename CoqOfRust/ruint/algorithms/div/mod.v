@@ -63,7 +63,7 @@ Module algorithms.
         ltac:(M.monadic
           (let numerator := M.alloc (| numerator |) in
           let divisor := M.alloc (| divisor |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -788,7 +788,7 @@ Module algorithms.
                             M.never_to_any (|
                               M.read (|
                                 M.match_operator (|
-                                  None,
+                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.tuple

@@ -1196,7 +1196,19 @@ Module modexp.
                   |)
                 |) in
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                        ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1234,7 +1246,19 @@ Module modexp.
                         |) in
                       let base_len := M.copy (| γ0_0 |) in
                       M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "revm_precompile::interface::PrecompileOutput";
+                                  Ty.path "revm_precompile::interface::PrecompileErrors"
+                                ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1353,7 +1377,19 @@ Module modexp.
                                   ]
                                 |) in
                               M.match_operator (|
-                                None,
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                                        ]
+                                    ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1890,7 +1926,21 @@ Module modexp.
                                           |)
                                         |) in
                                       M.match_operator (|
-                                        None,
+                                        Some
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ]
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.tuple
@@ -1959,7 +2009,21 @@ Module modexp.
                                               let base := M.copy (| γ0_0 |) in
                                               let input := M.copy (| γ0_1 |) in
                                               M.match_operator (|
-                                                None,
+                                                Some
+                                                  (Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "revm_precompile::interface::PrecompileOutput";
+                                                          Ty.path
+                                                            "revm_precompile::interface::PrecompileErrors"
+                                                        ]
+                                                    ]),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.tuple

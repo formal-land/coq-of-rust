@@ -219,7 +219,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _not_a_reference : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         M.match_operator (|
-          None,
+          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
           M.alloc (| Value.Integer IntegerKind.I32 3 |),
           [
             fun γ =>

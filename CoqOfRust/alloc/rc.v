@@ -3635,7 +3635,7 @@ Module rc.
           let alloc := M.alloc (| alloc |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -4248,7 +4248,19 @@ Module rc.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                            Ty.path "core::alloc::AllocError"
+                          ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -7976,7 +7988,7 @@ Module rc.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -9103,7 +9115,7 @@ Module rc.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
                             (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
@@ -9902,7 +9914,7 @@ Module rc.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -10017,7 +10029,12 @@ Module rc.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -10242,7 +10259,22 @@ Module rc.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                              ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -10358,7 +10390,7 @@ Module rc.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -12746,7 +12778,12 @@ Module rc.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -12837,7 +12874,16 @@ Module rc.
                         |)
                       |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::rc::Rc")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -13159,7 +13205,25 @@ Module rc.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ];
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                              ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -13444,7 +13508,16 @@ Module rc.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -15298,7 +15371,7 @@ Module rc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (Ty.path "unit") (|
+          M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
                 let~ inner : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::rc::WeakInner" ] :=
@@ -16682,7 +16755,11 @@ Module rc.
           let alloc := M.alloc (| alloc |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple

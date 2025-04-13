@@ -51,7 +51,7 @@ Module collections.
               let iter := M.alloc (| iter |) in
               M.read (|
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
                       Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -83,7 +83,7 @@ Module collections.
                               |) in
                             let element := M.copy (| γ0_0 |) in
                             M.match_operator (|
-                              None,
+                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple
@@ -169,7 +169,7 @@ Module collections.
                                         |)
                                       |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -219,7 +219,7 @@ Module collections.
                                                     Value.Bool true
                                                   |) in
                                                 M.match_operator (|
-                                                  None,
+                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -379,7 +379,7 @@ Module collections.
               let iter := M.alloc (| iter |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

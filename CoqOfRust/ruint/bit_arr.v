@@ -94,7 +94,11 @@ Module bit_arr.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "ruint::bit_arr::Bits") [ BITS; LIMBS ] [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -189,7 +193,7 @@ Module bit_arr.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1552,7 +1556,15 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "ruint::bit_arr::Bits") [ BITS; LIMBS ] []; Ty.path "bool"
+                      ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool" ],
@@ -1628,7 +1640,15 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "ruint::bit_arr::Bits") [ BITS; LIMBS ] []; Ty.path "bool"
+                      ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool" ],

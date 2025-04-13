@@ -1737,7 +1737,16 @@ Module boxed.
           (let boxed := M.alloc (| boxed |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -2159,7 +2168,11 @@ Module boxed.
           (let b := M.alloc (| b |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.tuple [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -2224,7 +2237,11 @@ Module boxed.
           (let b := M.alloc (| b |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.tuple [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -4428,7 +4445,8 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -4570,7 +4588,16 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple

@@ -71,7 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         M.loop (|
-          Ty.tuple [],
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           ltac:(M.monadic
             (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|

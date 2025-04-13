@@ -1180,7 +1180,7 @@ Module str.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -2196,7 +2196,7 @@ Module str.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -3998,7 +3998,7 @@ Module str.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -4643,7 +4643,7 @@ Module str.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                 M.alloc (|
                   Value.Tuple
                     [

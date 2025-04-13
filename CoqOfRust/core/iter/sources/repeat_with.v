@@ -264,7 +264,7 @@ Module iter.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
                           (let~ item : Ty.apply (Ty.path "*") [] [ A ] :=
                             M.alloc (|

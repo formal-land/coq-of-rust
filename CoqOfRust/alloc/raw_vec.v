@@ -5317,7 +5317,16 @@ Module raw_vec.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  None,
+                  Some
+                    (Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                      ]),
                   M.match_operator (|
                     Some
                       (Ty.apply

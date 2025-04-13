@@ -26,13 +26,13 @@ Module instantiation_loops.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -248,13 +248,21 @@ Module instantiation_loops.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some
+                (Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ]),
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ]),
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -2496,7 +2504,7 @@ Module instantiation_loops.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -2682,7 +2690,7 @@ Module instantiation_loops.
                                                     ltac:(M.monadic
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
-                                                        Ty.tuple [],
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                         ltac:(M.monadic
                                                           (let~ _ :
                                                               Ty.apply
@@ -2930,7 +2938,7 @@ Module instantiation_loops.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
-                                Ty.tuple [],
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
@@ -3549,7 +3557,7 @@ Module instantiation_loops.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
@@ -5682,7 +5690,7 @@ Module instantiation_loops.
           let node_idx := M.alloc (| node_idx |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -5905,7 +5913,7 @@ Module instantiation_loops.
           let edge_idx := M.alloc (| edge_idx |) in
           M.read (|
             M.match_operator (|
-              None,
+              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple

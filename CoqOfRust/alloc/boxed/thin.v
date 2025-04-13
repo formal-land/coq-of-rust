@@ -1316,7 +1316,11 @@ Module boxed.
                   |)
                 |) in
               M.match_operator (|
-                None,
+                Some
+                  (Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ] ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1736,7 +1740,19 @@ Module boxed.
                       |)
                     |) in
                   M.match_operator (|
-                    None,
+                    Some
+                      (Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply

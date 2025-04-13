@@ -415,25 +415,37 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::RawWakerVTable" ]),
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Some
+                          (Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "core::task::wake::RawWakerVTable" ]),
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "core::task::wake::RawWakerVTable" ]),
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        None,
+                                        Some
+                                          (Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "core::task::wake::RawWakerVTable" ]),
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
@@ -1487,7 +1499,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::Context" ]),
                 self,
                 [
                   fun γ =>
@@ -1807,7 +1819,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
@@ -1831,7 +1843,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::Waker",
@@ -2621,7 +2633,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
@@ -2645,7 +2657,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        None,
+                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::LocalWaker",

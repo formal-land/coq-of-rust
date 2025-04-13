@@ -53,7 +53,7 @@ Module eof.
             let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             M.loop (|
-              Ty.tuple [],
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               ltac:(M.monadic
                 (M.match_operator (|
                   Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
@@ -131,7 +131,7 @@ Module eof.
                             |)
                           |) in
                         M.match_operator (|
-                          None,
+                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                           opcode,
                           [
                             fun γ =>

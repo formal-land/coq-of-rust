@@ -893,7 +893,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::hash::sip::State" ]),
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -2383,7 +2383,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let msg := M.alloc (| msg |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ length : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -2700,7 +2700,7 @@ Module hash.
                   let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] := M.copy (| needed |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.loop (|
-                      Ty.tuple [],
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
                         (M.match_operator (|
                           Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),

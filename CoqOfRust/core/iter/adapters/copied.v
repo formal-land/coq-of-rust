@@ -1455,7 +1455,8 @@ Module iter.
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.match_operator (|
-                                                      None,
+                                                      Some
+                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1537,7 +1538,7 @@ Module iter.
                                         ]
                                       |) in
                                     M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1709,7 +1710,7 @@ Module iter.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      None,
+                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1859,7 +1860,19 @@ Module iter.
                         |)
                       |) in
                     M.match_operator (|
-                      None,
+                      Some
+                        (Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply (Ty.path "array") [ N ] [ T ];
+                                Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                              ]
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

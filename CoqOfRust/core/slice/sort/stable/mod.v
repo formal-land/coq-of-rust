@@ -66,7 +66,7 @@ Module slice.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             let is_less := M.alloc (| is_less |) in
-            M.catch_return (Ty.path "unit") (|
+            M.catch_return (Ty.tuple []) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
