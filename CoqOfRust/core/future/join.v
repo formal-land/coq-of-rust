@@ -57,11 +57,15 @@ Module future.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]
+                  ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -73,12 +77,22 @@ Module future.
                           0
                         |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output"
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::future::future::Future"
+                                  []
+                                  []
+                                  F
+                                  "Output"
+                              ]
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
@@ -167,12 +181,23 @@ Module future.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [
+                  Ty.associated_in_trait
+                    "core::future::future::Future"
+                    []
+                    []
+                    (Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ])
+                    "Output"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.deref (|
                         M.call_closure (|
                           Ty.apply
@@ -235,21 +260,30 @@ Module future.
                               |) in
                             let f := M.alloc (| γ0_0 |) in
                             let~ val :
-                                Ty.associated_in_trait
-                                  "core::future::future::Future"
+                                Ty.apply
+                                  (Ty.path "*")
                                   []
-                                  []
-                                  F
-                                  "Output" :=
-                              M.copy (|
-                                M.match_operator (|
-                                  Some
-                                    (Ty.associated_in_trait
+                                  [
+                                    Ty.associated_in_trait
                                       "core::future::future::Future"
                                       []
                                       []
                                       F
-                                      "Output"),
+                                      "Output"
+                                  ] :=
+                              M.copy (|
+                                M.match_operator (|
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::future::future::Future"
+                                        []
+                                        []
+                                        F
+                                        "Output"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -328,7 +362,7 @@ Module future.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],

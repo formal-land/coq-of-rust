@@ -19,16 +19,28 @@ Module locals_safety.
         (let module := M.alloc (| module |) in
         let function_context := M.alloc (| function_context |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ initial_state :
-                  Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState" :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+                    ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.path
-                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -336,12 +348,16 @@ Module locals_safety.
         let bytecode := M.alloc (| bytecode |) in
         let offset := M.alloc (| offset |) in
         let meter := M.alloc (| meter |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -461,9 +477,9 @@ Module locals_safety.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   bytecode,
                   [
                     fun γ =>
@@ -477,7 +493,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -498,7 +514,7 @@ Module locals_safety.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.find_or_pattern (|
+                                (M.find_or_pattern (Ty.tuple []) (|
                                   γ,
                                   [
                                     fun γ =>
@@ -633,7 +649,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -654,7 +670,7 @@ Module locals_safety.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.find_or_pattern (|
+                                (M.find_or_pattern (Ty.tuple []) (|
                                   γ,
                                   [
                                     fun γ =>
@@ -754,7 +770,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -775,7 +791,7 @@ Module locals_safety.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.find_or_pattern (|
+                                (M.find_or_pattern (Ty.tuple []) (|
                                   γ,
                                   [
                                     fun γ =>
@@ -848,7 +864,8 @@ Module locals_safety.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern
+                          (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]) (|
                           γ,
                           [
                             fun γ =>
@@ -880,7 +897,7 @@ Module locals_safety.
                               | [ idx ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path
@@ -904,7 +921,7 @@ Module locals_safety.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.find_or_pattern (|
+                                          (M.find_or_pattern (Ty.tuple []) (|
                                             γ,
                                             [
                                               fun γ =>
@@ -990,16 +1007,21 @@ Module locals_safety.
                           |) in
                         let~ local_states :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
                               [
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "&")
                                   []
                                   [
-                                    Ty.path
-                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                    Ty.path "alloc::alloc::Global"
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
                                   ]
                               ] :=
                           M.alloc (|
@@ -1027,9 +1049,9 @@ Module locals_safety.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1186,15 +1208,20 @@ Module locals_safety.
                           |) in
                         let~ all_local_abilities :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
                               [
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "&")
                                   []
                                   [
-                                    Ty.path "move_binary_format::file_format::AbilitySet";
-                                    Ty.path "alloc::alloc::Global"
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::AbilitySet";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
                                   ]
                               ] :=
                           M.alloc (|
@@ -1221,9 +1248,9 @@ Module locals_safety.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1307,7 +1334,7 @@ Module locals_safety.
                           |) in
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1473,11 +1500,11 @@ Module locals_safety.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -1565,12 +1592,12 @@ Module locals_safety.
                                                 let local_state := M.copy (| γ1_0 |) in
                                                 let local_abilities := M.copy (| γ1_1 |) in
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   local_state,
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern (Ty.tuple []) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -1683,7 +1710,7 @@ Module locals_safety.
                           |))));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>

@@ -12,7 +12,7 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        None,
+        Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
         β0,
         [
           fun γ =>
@@ -58,7 +58,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
       (let β0 := M.alloc (| β0 |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (|
-        None,
+        Ty.apply
+          (Ty.path "*")
+          []
+          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
         β0,
         [
           fun γ =>
@@ -66,7 +69,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               (let γ := M.read (| γ |) in
               let start := M.copy (| γ |) in
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
                 β1,
                 [
                   fun γ =>
@@ -74,12 +80,15 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let~ start : Ty.path "u32" :=
+                        let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                           M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
-                        let~ end_ : Ty.path "u32" :=
+                        let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                           M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -98,7 +107,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ count : Ty.path "u32" :=
+                                let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "u32",
@@ -107,11 +116,15 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  Some
-                                    (Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "usize" ]),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>

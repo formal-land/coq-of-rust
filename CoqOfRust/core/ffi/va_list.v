@@ -311,7 +311,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ ap : Ty.path "core::ffi::va_list::VaListImpl" :=
+              let~ ap : Ty.apply (Ty.path "*") [] [ Ty.path "core::ffi::va_list::VaListImpl" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::ffi::va_list::VaListImpl",
@@ -327,7 +327,7 @@ Module ffi.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ ret : R :=
+              let~ ret : Ty.apply (Ty.path "*") [] [ R ] :=
                 M.alloc (|
                   M.call_closure (|
                     R,
@@ -358,8 +358,8 @@ Module ffi.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
-                let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -662,9 +662,14 @@ Module ffi.
             M.read (|
               let~ dest :
                   Ty.apply
-                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "core::ffi::va_list::VaListImpl" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::ffi::va_list::VaListImpl" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -683,7 +688,7 @@ Module ffi.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

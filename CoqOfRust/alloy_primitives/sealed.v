@@ -313,13 +313,13 @@ Module sealed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -353,7 +353,7 @@ Module sealed.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -523,9 +523,14 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -577,9 +582,14 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -636,9 +646,14 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -708,9 +723,14 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply

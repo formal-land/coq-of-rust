@@ -14,7 +14,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ child : Ty.path "std::process::Child" :=
+        let~ child : Ty.apply (Ty.path "*") [] [ Ty.path "std::process::Child" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::process::Child",
@@ -72,7 +72,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _result : Ty.path "std::process::ExitStatus" :=
+        let~ _result : Ty.apply (Ty.path "*") [] [ Ty.path "std::process::ExitStatus" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::process::ExitStatus",
@@ -97,8 +97,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

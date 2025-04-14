@@ -54,7 +54,10 @@ Module fmt.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String") ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -103,7 +106,7 @@ Module fmt.
         ltac:(M.monadic
           (let args := M.alloc (| args |) in
           M.read (|
-            let~ capacity : Ty.path "usize" :=
+            let~ capacity : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "usize",
@@ -116,7 +119,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, args |) ]
                 |)
               |) in
-            let~ output : Ty.path "alloc::string::String" :=
+            let~ output : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "alloc::string::String",
@@ -129,7 +132,7 @@ Module fmt.
                   [ M.read (| capacity |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

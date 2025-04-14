@@ -47,11 +47,6 @@ Module Impl_Interpreter.
       unit.
   Proof.
     constructor.
-    cbn.
-    eapply Run.Rewrite. {
-      erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_IW.
-      reflexivity.
-    }
     destruct run_InterpreterTypes_for_IW.
     destruct run_Jumps_for_Bytecode.
     destruct run_CustomInstruction_for_FN.
@@ -85,11 +80,6 @@ Module Impl_Interpreter.
       InterpreterAction.t.
   Proof.
     constructor.
-    cbn.
-    eapply Run.Rewrite. {
-      erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_IW.
-      reflexivity.
-    }
     destruct run_InterpreterTypes_for_IW.
     destruct run_LoopControl_for_Control.
     run_symbolic.

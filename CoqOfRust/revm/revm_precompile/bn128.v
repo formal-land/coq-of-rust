@@ -53,50 +53,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -230,50 +239,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -424,50 +442,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -601,50 +628,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -803,50 +839,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -998,50 +1043,59 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                      Ty.path "u64"
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ])),
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                        Ty.path "u64"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let input := M.copy (| γ |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                              Ty.path "u64"
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "revm_precompile::interface::PrecompileOutput";
-                                            Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "revm_precompile::interface::PrecompileOutput";
+                                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ])
+                                      ],
                                     M.alloc (| α1 |),
                                     [
                                       fun γ =>
@@ -1270,10 +1324,14 @@ Module bn128.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.function
-                            [ Ty.tuple [ Ty.path "substrate_bn::FieldError" ] ]
-                            (Ty.path "revm_precompile::interface::PrecompileError")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "substrate_bn::FieldError" ] ]
+                              (Ty.path "revm_precompile::interface::PrecompileError")
+                          ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -1307,13 +1365,18 @@ Module bn128.
     | [], [], [ input ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "substrate_bn::G1"; Ty.path "revm_precompile::interface::PrecompileError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ px : Ty.path "substrate_bn::Fq" :=
+              let~ px : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Fq" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "substrate_bn::Fq"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Fq" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1466,10 +1529,10 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ py : Ty.path "substrate_bn::Fq" :=
+              let~ py : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Fq" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "substrate_bn::Fq"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Fq" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1664,12 +1727,18 @@ Module bn128.
         let py := M.alloc (| py |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "substrate_bn::G1"; Ty.path "revm_precompile::interface::PrecompileError"
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "substrate_bn::G1";
+                    Ty.path "revm_precompile::interface::PrecompileError"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -1844,10 +1913,14 @@ Module bn128.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [ Ty.tuple [ Ty.path "substrate_bn::groups::Error" ] ]
-                                        (Ty.path "revm_precompile::interface::PrecompileError")),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
+                                          [ Ty.tuple [ Ty.path "substrate_bn::groups::Error" ] ]
+                                          (Ty.path "revm_precompile::interface::PrecompileError")
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -1899,12 +1972,19 @@ Module bn128.
         (let input := M.alloc (| input |) in
         let gas_cost := M.alloc (| gas_cost |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1953,13 +2033,18 @@ Module bn128.
                 |) in
               let~ input :
                   Ty.apply
-                    (Ty.path "alloc::borrow::Cow")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 128 ]
-                        [ Ty.path "u8" ]
+                        (Ty.path "alloc::borrow::Cow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 128 ]
+                            [ Ty.path "u8" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -1980,10 +2065,10 @@ Module bn128.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
-              let~ p1 : Ty.path "substrate_bn::G1" :=
+              let~ p1 : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "substrate_bn::G1"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2166,10 +2251,10 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ p2 : Ty.path "substrate_bn::G1" :=
+              let~ p2 : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "substrate_bn::G1"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2354,15 +2439,20 @@ Module bn128.
                 |) in
               let~ output :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 64 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 64 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2404,7 +2494,7 @@ Module bn128.
                             0
                           |) in
                         let sum := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -2489,7 +2579,7 @@ Module bn128.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -2650,12 +2740,19 @@ Module bn128.
         (let input := M.alloc (| input |) in
         let gas_cost := M.alloc (| gas_cost |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2704,13 +2801,18 @@ Module bn128.
                 |) in
               let~ input :
                   Ty.apply
-                    (Ty.path "alloc::borrow::Cow")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 96 ]
-                        [ Ty.path "u8" ]
+                        (Ty.path "alloc::borrow::Cow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 96 ]
+                            [ Ty.path "u8" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -2731,10 +2833,10 @@ Module bn128.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
-              let~ p : Ty.path "substrate_bn::G1" :=
+              let~ p : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "substrate_bn::G1"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::G1" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2917,7 +3019,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ fr : Ty.path "substrate_bn::Fr" :=
+              let~ fr : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Fr" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "substrate_bn::Fr",
@@ -3025,15 +3127,20 @@ Module bn128.
                 |) in
               let~ output :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 64 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 64 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3075,7 +3182,7 @@ Module bn128.
                             0
                           |) in
                         let mul := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -3160,7 +3267,7 @@ Module bn128.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -3366,10 +3473,17 @@ Module bn128.
         let pair_per_point_cost := M.alloc (| pair_per_point_cost |) in
         let pair_base_cost := M.alloc (| pair_base_cost |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ gas_used : Ty.path "u64" :=
+              let~ gas_used : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",
@@ -3415,9 +3529,9 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3464,9 +3578,9 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3542,10 +3656,10 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ success : Ty.path "bool" :=
+              let~ success : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "bool"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3574,7 +3688,7 @@ Module bn128.
                           M.alloc (| Value.Bool true |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ elements : Ty.path "usize" :=
+                          (let~ elements : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "usize",
@@ -3606,12 +3720,17 @@ Module bn128.
                             |) in
                           let~ points :
                               Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                                (Ty.path "*")
                                 []
                                 [
-                                  Ty.tuple
-                                    [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2" ];
-                                  Ty.path "alloc::alloc::Global"
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ] :=
                             M.alloc (|
                               M.call_closure (|
@@ -3639,10 +3758,10 @@ Module bn128.
                                 [ M.read (| elements |) ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.use
                               (M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -3676,11 +3795,11 @@ Module bn128.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
-                                        Ty.tuple [],
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         ltac:(M.monadic
-                                          (let~ _ : Ty.tuple [] :=
+                                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -3730,16 +3849,21 @@ Module bn128.
                                                       |) in
                                                     let idx := M.copy (| γ0_0 |) in
                                                     let~ read_fq_at :
-                                                        Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                                          (Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "substrate_bn::Fq";
-                                                              Ty.path
-                                                                "revm_precompile::interface::PrecompileError"
-                                                            ]) :=
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.function
+                                                              [ Ty.tuple [ Ty.path "usize" ] ]
+                                                              (Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path "substrate_bn::Fq";
+                                                                  Ty.path
+                                                                    "revm_precompile::interface::PrecompileError"
+                                                                ])
+                                                          ] :=
                                                       M.alloc (|
                                                         M.closure
                                                           (fun γ =>
@@ -3748,22 +3872,26 @@ Module bn128.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Some
-                                                                      (Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "usize" ]
-                                                                        ]
-                                                                        (Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.function
                                                                           [
-                                                                            Ty.path
-                                                                              "substrate_bn::Fq";
-                                                                            Ty.path
-                                                                              "revm_precompile::interface::PrecompileError"
-                                                                          ])),
+                                                                            Ty.tuple
+                                                                              [ Ty.path "usize" ]
+                                                                          ]
+                                                                          (Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "substrate_bn::Fq";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileError"
+                                                                            ])
+                                                                      ],
                                                                     M.alloc (| α0 |),
                                                                     [
                                                                       fun γ =>
@@ -3771,9 +3899,16 @@ Module bn128.
                                                                           (let n :=
                                                                             M.copy (| γ |) in
                                                                           M.read (|
-                                                                            let~ _ : Ty.tuple [] :=
+                                                                            let~ _ :
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ] :=
                                                                               M.match_operator (|
-                                                                                Some (Ty.tuple []),
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ],
                                                                                 M.alloc (|
                                                                                   Value.Tuple []
                                                                                 |),
@@ -3795,12 +3930,23 @@ Module bn128.
                                                                                             true
                                                                                         |) in
                                                                                       let~ _ :
-                                                                                          Ty.tuple
-                                                                                            [] :=
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ] :=
                                                                                         M.match_operator (|
-                                                                                          Some
-                                                                                            (Ty.tuple
-                                                                                              []),
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ],
                                                                                           M.alloc (|
                                                                                             Value.Tuple
                                                                                               []
@@ -3890,7 +4036,11 @@ Module bn128.
                                                                                 ]
                                                                               |) in
                                                                             let~ start :
-                                                                                Ty.path "usize" :=
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.path "usize",
@@ -3931,14 +4081,21 @@ Module bn128.
                                                                               |) in
                                                                             let~ slice :
                                                                                 Ty.apply
-                                                                                  (Ty.path "&")
+                                                                                  (Ty.path "*")
                                                                                   []
                                                                                   [
                                                                                     Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
+                                                                                      (Ty.path "&")
                                                                                       []
-                                                                                      [ Ty.path "u8"
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
                                                                                       ]
                                                                                   ] :=
                                                                               M.alloc (|
@@ -4087,17 +4244,22 @@ Module bn128.
                                                                                         | [ α0 ] =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.function
-                                                                                                  [
-                                                                                                    Ty.tuple
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "substrate_bn::FieldError"
-                                                                                                      ]
-                                                                                                  ]
-                                                                                                  (Ty.path
-                                                                                                    "revm_precompile::interface::PrecompileError")),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.function
+                                                                                                    [
+                                                                                                      Ty.tuple
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "substrate_bn::FieldError"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    (Ty.path
+                                                                                                      "revm_precompile::interface::PrecompileError")
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 α0
                                                                                               |),
@@ -4125,10 +4287,17 @@ Module bn128.
                                                                   "wrong number of arguments"
                                                               end))
                                                       |) in
-                                                    let~ ax : Ty.path "substrate_bn::Fq" :=
+                                                    let~ ax :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -4284,10 +4453,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ ay : Ty.path "substrate_bn::Fq" :=
+                                                    let~ ay :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -4443,10 +4619,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bay : Ty.path "substrate_bn::Fq" :=
+                                                    let~ bay :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -4602,10 +4785,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bax : Ty.path "substrate_bn::Fq" :=
+                                                    let~ bax :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -4761,10 +4951,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bby : Ty.path "substrate_bn::Fq" :=
+                                                    let~ bby :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -4920,10 +5117,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bbx : Ty.path "substrate_bn::Fq" :=
+                                                    let~ bbx :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::Fq" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::Fq"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::Fq" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -5079,10 +5283,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ a : Ty.path "substrate_bn::G1" :=
+                                                    let~ a :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::G1" ] :=
                                                       M.copy (|
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::G1"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::G1" ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -5211,9 +5422,17 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ b : Ty.path "substrate_bn::G2" :=
+                                                    let~ b :
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [ Ty.path "substrate_bn::G2" ] :=
                                                       M.copy (|
-                                                        let~ ba : Ty.path "substrate_bn::Fq2" :=
+                                                        let~ ba :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.path "substrate_bn::Fq2" ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path "substrate_bn::Fq2",
@@ -5226,7 +5445,11 @@ Module bn128.
                                                               [ M.read (| bax |); M.read (| bay |) ]
                                                             |)
                                                           |) in
-                                                        let~ bb : Ty.path "substrate_bn::Fq2" :=
+                                                        let~ bb :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.path "substrate_bn::Fq2" ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.path "substrate_bn::Fq2",
@@ -5240,7 +5463,10 @@ Module bn128.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
-                                                          Some (Ty.path "substrate_bn::G2"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.path "substrate_bn::G2" ],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -5324,9 +5550,13 @@ Module bn128.
                                                                     [
                                                                       M.read (|
                                                                         M.match_operator (|
-                                                                          Some
-                                                                            (Ty.path
-                                                                              "substrate_bn::AffineG2"),
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "substrate_bn::AffineG2"
+                                                                            ],
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               Ty.apply
@@ -5442,17 +5672,22 @@ Module bn128.
                                                                                               ] =>
                                                                                             ltac:(M.monadic
                                                                                               (M.match_operator (|
-                                                                                                Some
-                                                                                                  (Ty.function
-                                                                                                    [
-                                                                                                      Ty.tuple
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "substrate_bn::groups::Error"
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                    (Ty.path
-                                                                                                      "revm_precompile::interface::PrecompileError")),
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "*")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.function
+                                                                                                      [
+                                                                                                        Ty.tuple
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "substrate_bn::groups::Error"
+                                                                                                          ]
+                                                                                                      ]
+                                                                                                      (Ty.path
+                                                                                                        "revm_precompile::interface::PrecompileError")
+                                                                                                  ],
                                                                                                 M.alloc (|
                                                                                                   α0
                                                                                                 |),
@@ -5563,7 +5798,8 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ _ : Ty.tuple [] :=
+                                                    let~ _ :
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.tuple [],
@@ -5600,7 +5836,7 @@ Module bn128.
                                       |)))
                                 ]
                               |)) in
-                          let~ mul : Ty.path "substrate_bn::Gt" :=
+                          let~ mul : Ty.apply (Ty.path "*") [] [ Ty.path "substrate_bn::Gt" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "substrate_bn::Gt",

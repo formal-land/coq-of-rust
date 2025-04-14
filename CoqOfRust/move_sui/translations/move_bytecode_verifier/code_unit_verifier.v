@@ -97,10 +97,15 @@ Module code_unit_verifier.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                              (Ty.path "move_binary_format::errors::VMError")),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ]
+                                ]
+                                (Ty.path "move_binary_format::errors::VMError")
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -192,17 +197,26 @@ Module code_unit_verifier.
           (let verifier_config := M.alloc (| verifier_config |) in
           let module := M.alloc (| module |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ name_def_map :
                     Ty.apply
-                      (Ty.path "std::collections::hash::map::HashMap")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_binary_format::file_format::IdentifierIndex";
-                        Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
-                        Ty.path "std::hash::random::RandomState"
+                        Ty.apply
+                          (Ty.path "std::collections::hash::map::HashMap")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::IdentifierIndex";
+                            Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                            Ty.path "std::hash::random::RandomState"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -230,10 +244,10 @@ Module code_unit_verifier.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -350,11 +364,11 @@ Module code_unit_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -426,11 +440,16 @@ Module code_unit_verifier.
                                           let func_def := M.copy (| γ1_1 |) in
                                           let~ fh :
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "*")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionHandle"
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionHandle"
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.call_closure (|
@@ -465,11 +484,16 @@ Module code_unit_verifier.
                                             |) in
                                           let~ _ :
                                               Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "*")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.call_closure (|
@@ -517,12 +541,12 @@ Module code_unit_verifier.
                             |)))
                       ]
                     |)) in
-                let~ total_back_edges : Ty.path "usize" :=
+                let~ total_back_edges : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -639,11 +663,11 @@ Module code_unit_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -714,17 +738,23 @@ Module code_unit_verifier.
                                           let idx := M.copy (| γ1_0 |) in
                                           let function_definition := M.copy (| γ1_1 |) in
                                           let~ index :
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinitionIndex" :=
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                ] :=
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::file_format::FunctionDefinitionIndex"
                                                 [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             |) in
-                                          let~ num_back_edges : Ty.path "usize" :=
+                                          let~ num_back_edges :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                             M.copy (|
                                               M.match_operator (|
-                                                Some (Ty.path "usize"),
+                                                Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -851,17 +881,21 @@ Module code_unit_verifier.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Some
-                                                                        (Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError")),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.function
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ]
+                                                                            ]
+                                                                            (Ty.path
+                                                                              "move_binary_format::errors::PartialVMError")
+                                                                        ],
                                                                       M.alloc (| α0 |),
                                                                       [
                                                                         fun γ =>
@@ -972,7 +1006,7 @@ Module code_unit_verifier.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.alloc (|
                                               let β := total_back_edges in
                                               M.write (|
@@ -991,9 +1025,9 @@ Module code_unit_verifier.
                             |)))
                       ]
                     |)) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1012,7 +1046,7 @@ Module code_unit_verifier.
                             |) in
                           let limit := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1150,10 +1184,14 @@ Module code_unit_verifier.
           let module := M.alloc (| module |) in
           let name_def_map := M.alloc (| name_def_map |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -1252,16 +1290,25 @@ Module code_unit_verifier.
                   |) in
                 let~ code :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "move_binary_format::file_format::CodeUnit" ] :=
-                  M.copy (|
-                    M.match_operator (|
-                      Some
-                        (Ty.apply
+                      [
+                        Ty.apply
                           (Ty.path "&")
                           []
-                          [ Ty.path "move_binary_format::file_format::CodeUnit" ]),
+                          [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                      ] :=
+                  M.copy (|
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                        ],
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1302,10 +1349,17 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ function_context : Ty.path "move_bytecode_verifier::absint::FunctionContext" :=
+                let~ function_context :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "move_bytecode_verifier::absint::FunctionContext"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1432,9 +1486,9 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1453,7 +1507,7 @@ Module code_unit_verifier.
                             |) in
                           let limit := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1590,7 +1644,7 @@ Module code_unit_verifier.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ num_back_edges : Ty.path "usize" :=
+                let~ num_back_edges : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
@@ -1628,9 +1682,9 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1649,7 +1703,7 @@ Module code_unit_verifier.
                             |) in
                           let limit := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1718,7 +1772,10 @@ Module code_unit_verifier.
                     ]
                   |) in
                 let~ code_unit_verifier :
-                    Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier" :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier"
@@ -1730,9 +1787,9 @@ Module code_unit_verifier.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name_def_map |) |) |))
                       ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1848,9 +1905,9 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1967,9 +2024,9 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2122,12 +2179,16 @@ Module code_unit_verifier.
           (let self := M.alloc (| self |) in
           let verifier_config := M.alloc (| verifier_config |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2267,9 +2328,9 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2403,9 +2464,9 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply

@@ -16,7 +16,7 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ storage_num : Ty.path "usize" :=
+              let~ storage_num : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -145,25 +145,29 @@ Module transaction.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.path
-                                                      "alloy_primitives::bits::address::Address";
-                                                    Ty.associated_in_trait
-                                                      "revm_context_interface::transaction::access_list::AccessListTrait"
-                                                      []
-                                                      []
-                                                      Self
-                                                      "{{synthetic}}'1"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "usize")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "alloy_primitives::bits::address::Address";
+                                                      Ty.associated_in_trait
+                                                        "revm_context_interface::transaction::access_list::AccessListTrait"
+                                                        []
+                                                        []
+                                                        Self
+                                                        "{{synthetic}}'1"
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.path "usize")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -197,7 +201,7 @@ Module transaction.
                     ]
                   |)
                 |) in
-              let~ account_num : Ty.path "usize" :=
+              let~ account_num : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -820,35 +824,40 @@ Module transaction.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_eip2930::AccessListItem" ]
-                                    ]
-                                ]
-                                (Ty.tuple
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
                                   [
-                                    Ty.path "alloy_primitives::bits::address::Address";
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::copied::Copied")
-                                      []
+                                    Ty.tuple
                                       [
                                         Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
+                                          (Ty.path "&")
                                           []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              []
-                                          ]
+                                          [ Ty.path "alloy_eip2930::AccessListItem" ]
                                       ]
-                                  ])),
+                                  ]
+                                  (Ty.tuple
+                                    [
+                                      Ty.path "alloy_primitives::bits::address::Address";
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::copied::Copied")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                []
+                                            ]
+                                        ]
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -857,18 +866,23 @@ Module transaction.
                                   M.read (|
                                     let~ slots :
                                         Ty.apply
-                                          (Ty.path "core::iter::adapters::copied::Copied")
+                                          (Ty.path "*")
                                           []
                                           [
                                             Ty.apply
-                                              (Ty.path "core::slice::iter::Iter")
+                                              (Ty.path "core::iter::adapters::copied::Copied")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path
-                                                    "alloy_primitives::bits::fixed::FixedBytes")
-                                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      []
+                                                  ]
                                               ]
                                           ] :=
                                       M.alloc (|

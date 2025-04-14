@@ -719,7 +719,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1128,7 +1128,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (|
@@ -1229,7 +1229,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let~ pointer : Ty.apply (Ty.path "&") [] [ T ] :=
+            let~ pointer : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1240,7 +1240,7 @@ Module pin.
                   |)
                 |)
               |) in
-            let~ new_pointer : Ty.apply (Ty.path "&") [] [ U ] :=
+            let~ new_pointer : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ U ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&") [] [ U ],
@@ -1476,7 +1476,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let~ pointer : Ty.apply (Ty.path "&mut") [] [ T ] :=
+            let~ pointer : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.MutRef,
@@ -1497,7 +1497,7 @@ Module pin.
                   |)
                 |)
               |) in
-            let~ new_pointer : Ty.apply (Ty.path "&mut") [] [ U ] :=
+            let~ new_pointer : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ U ],

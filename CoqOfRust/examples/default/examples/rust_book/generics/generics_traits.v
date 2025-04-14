@@ -31,7 +31,11 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let β1 := M.alloc (| β1 |) in
-        M.match_operator (| None, β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+        M.match_operator (|
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          β1,
+          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -63,11 +67,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ empty : Ty.path "generics_traits::Empty" :=
+        let~ empty : Ty.apply (Ty.path "*") [] [ Ty.path "generics_traits::Empty" ] :=
           M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
-        let~ null : Ty.path "generics_traits::Null" :=
+        let~ null : Ty.apply (Ty.path "*") [] [ Ty.path "generics_traits::Null" ] :=
           M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

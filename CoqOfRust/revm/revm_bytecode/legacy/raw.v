@@ -200,7 +200,7 @@ Module legacy.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -486,7 +486,11 @@ Module legacy.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ jump_table : Ty.path "revm_bytecode::legacy::jump_map::JumpTable" :=
+              let~ jump_table :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
@@ -499,7 +503,7 @@ Module legacy.
                     [ M.borrow (| Pointer.Kind.Ref, self |) ]
                   |)
                 |) in
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -537,9 +541,14 @@ Module legacy.
                 |) in
               let~ padded_bytecode :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -564,7 +573,7 @@ Module legacy.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -636,7 +645,7 @@ Module legacy.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -831,9 +840,14 @@ Module legacy.
           M.read (|
             let~ jumps :
                 Ty.apply
-                  (Ty.path "bitvec::vec::BitVec")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "bitvec::vec::BitVec")
+                      []
+                      [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply

@@ -17,7 +17,7 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let carry := M.alloc (| carry |) in
           M.read (|
-            let~ result : Ty.path "u128" :=
+            let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u128",
@@ -110,7 +110,7 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let borrow := M.alloc (| borrow |) in
           M.read (|
-            let~ result : Ty.path "u128" :=
+            let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u128",

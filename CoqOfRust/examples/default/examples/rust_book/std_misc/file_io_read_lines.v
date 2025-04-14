@@ -14,11 +14,20 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
-      M.catch_return (|
+      M.catch_return
+        (Ty.apply
+          (Ty.path "std::io::Lines")
+          []
+          [
+            Ty.apply
+              (Ty.path "std::io::buffered::bufreader::BufReader")
+              []
+              [ Ty.path "std::fs::File" ]
+          ]) (|
         ltac:(M.monadic
           (M.never_to_any (|
             M.read (|
-              let~ file : Ty.path "std::fs::File" :=
+              let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "std::fs::File",
@@ -119,13 +128,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ lines :
             Ty.apply
-              (Ty.path "std::io::Lines")
+              (Ty.path "*")
               []
               [
                 Ty.apply
-                  (Ty.path "std::io::buffered::bufreader::BufReader")
+                  (Ty.path "std::io::Lines")
                   []
-                  [ Ty.path "std::fs::File" ]
+                  [
+                    Ty.apply
+                      (Ty.path "std::io::buffered::bufreader::BufReader")
+                      []
+                      [ Ty.path "std::fs::File" ]
+                  ]
               ] :=
           M.alloc (|
             M.call_closure (|
@@ -158,7 +172,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.use
           (M.match_operator (|
-            Some (Ty.tuple []),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -195,11 +209,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
-                      (let~ _ : Ty.tuple [] :=
+                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -253,8 +267,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     0
                                   |) in
                                 let line := M.copy (| γ0_0 |) in
-                                let~ _ : Ty.tuple [] :=
-                                  let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [],

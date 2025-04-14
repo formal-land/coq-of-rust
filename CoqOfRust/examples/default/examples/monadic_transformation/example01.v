@@ -49,7 +49,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.path "u64" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "u64",
@@ -57,7 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.U64 0 ]
             |)
           |) in
-        let~ _ : Ty.path "u64" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "u64",
@@ -71,7 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.path "u64" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "u64",
@@ -91,7 +91,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.path "u64" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "u64",
@@ -117,7 +117,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

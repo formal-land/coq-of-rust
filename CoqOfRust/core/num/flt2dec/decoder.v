@@ -42,19 +42,25 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  None,
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
@@ -359,19 +365,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          None,
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  None,
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                 |)))
@@ -452,7 +458,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -481,11 +487,15 @@ Module num.
               let f := M.alloc (| f |) in
               M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ],
                   self,
                   [
                     fun γ =>
@@ -638,7 +648,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_discr : Ty.path "isize" :=
+                let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "isize",
@@ -650,7 +660,7 @@ Module num.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
-                let~ __arg1_discr : Ty.path "isize" :=
+                let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "isize",
@@ -672,7 +682,7 @@ Module num.
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
-                          Some (Ty.path "bool"),
+                          Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                           M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                           [
                             fun γ =>
@@ -755,7 +765,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  None,
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
@@ -878,7 +888,11 @@ Module num.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.tuple [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                  ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
@@ -903,7 +917,7 @@ Module num.
                       let mant := M.copy (| γ0_0 |) in
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
-                      let~ even : Ty.path "bool" :=
+                      let~ even : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "bool",
@@ -918,10 +932,17 @@ Module num.
                             ]
                           |)
                         |) in
-                      let~ decoded : Ty.path "core::num::flt2dec::decoder::FullDecoded" :=
+                      let~ decoded :
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "core::num::flt2dec::decoder::FullDecoded"),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "core::num::FpCategory",
@@ -989,7 +1010,11 @@ Module num.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
                                   let~ minnorm :
-                                      Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ] :=
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ]
+                                        ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
@@ -1020,7 +1045,10 @@ Module num.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.path "core::num::flt2dec::decoder::FullDecoded"),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>

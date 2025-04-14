@@ -240,12 +240,12 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -298,10 +298,10 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -344,11 +344,11 @@ Module slice.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
-                                Ty.tuple [],
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -396,7 +396,7 @@ Module slice.
                                               |) in
                                             let idx := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -495,12 +495,12 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -553,7 +553,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ size : Ty.path "usize" :=
+                  let~ size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -658,10 +658,11 @@ Module slice.
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ l : Ty.path "usize" :=
+                  let~ l : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -690,7 +691,11 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let~ lhs : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] :=
+                  let~ lhs :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -721,7 +726,11 @@ Module slice.
                         |)
                       |)
                     |) in
-                  let~ rhs : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] :=
+                  let~ rhs :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -752,10 +761,10 @@ Module slice.
                         |)
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -783,11 +792,11 @@ Module slice.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
-                                Ty.tuple [],
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -835,7 +844,7 @@ Module slice.
                                               |) in
                                             let i := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1302,10 +1311,10 @@ Module slice.
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "core::cmp::Ordering") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ l : Ty.path "usize" :=
+                  let~ l : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -1334,7 +1343,11 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let~ lhs : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] :=
+                  let~ lhs :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -1365,7 +1378,11 @@ Module slice.
                         |)
                       |)
                     |) in
-                  let~ rhs : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] :=
+                  let~ rhs :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ A ] ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -1396,10 +1413,10 @@ Module slice.
                         |)
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -1427,11 +1444,11 @@ Module slice.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
-                                Ty.tuple [],
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1479,7 +1496,7 @@ Module slice.
                                               |) in
                                             let i := M.copy (| γ0_0 |) in
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -1714,7 +1731,7 @@ Module slice.
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
             M.read (|
-              let~ diff : Ty.path "isize" :=
+              let~ diff : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -1747,10 +1764,10 @@ Module slice.
                     ]
                   |)
                 |) in
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1826,7 +1843,8 @@ Module slice.
                     ]
                   |)
                 |) in
-              let~ left : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ left :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
@@ -1850,7 +1868,8 @@ Module slice.
                     ]
                   |)
                 |) in
-              let~ right : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ right :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
@@ -1874,7 +1893,7 @@ Module slice.
                     ]
                   |)
                 |) in
-              let~ order : Ty.path "isize" :=
+              let~ order : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "isize")
@@ -1884,9 +1903,9 @@ Module slice.
                       [ M.read (| left |); M.read (| right |); M.read (| len |) ]
                     |))
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1901,7 +1920,7 @@ Module slice.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (| M.write (| order, M.read (| diff |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1996,10 +2015,14 @@ Module slice.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                (Ty.path "bool")),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                  (Ty.path "bool")
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -2114,12 +2137,16 @@ Module slice.
             (let self := M.alloc (| self |) in
             let x := M.alloc (| x |) in
             M.read (|
-              let~ byte : Ty.path "u8" :=
+              let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
                 |) in
               let~ bytes :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -2226,12 +2253,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u16" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u16" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u16" ],
@@ -2252,10 +2283,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -2292,11 +2323,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -2357,7 +2388,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -2427,24 +2458,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u16"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u16"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -2454,25 +2489,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u16"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u16"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -2608,11 +2647,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -2673,12 +2718,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u32" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u32" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u32" ],
@@ -2699,10 +2748,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -2739,11 +2788,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -2804,7 +2853,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -2874,24 +2923,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u32"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u32"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -2901,25 +2954,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u32"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u32"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -3055,11 +3112,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -3120,12 +3183,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u64" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u64" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u64" ],
@@ -3146,10 +3213,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3186,11 +3253,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3251,7 +3318,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -3321,24 +3388,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u64"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u64"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -3348,25 +3419,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u64"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u64"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -3502,11 +3577,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -3567,12 +3648,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i16" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i16" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i16" ],
@@ -3593,10 +3678,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3633,11 +3718,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3698,7 +3783,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -3768,24 +3853,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "i16"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "i16"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -3795,25 +3884,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "i16"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "i16"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -3949,11 +4042,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -4014,12 +4113,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i32" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i32" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i32" ],
@@ -4040,10 +4143,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -4080,11 +4183,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -4145,7 +4248,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -4215,24 +4318,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "i32"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "i32"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -4242,25 +4349,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "i32"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "i32"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -4396,11 +4507,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -4461,12 +4578,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i64" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i64" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "i64" ],
@@ -4487,10 +4608,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -4527,11 +4648,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -4592,7 +4713,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -4662,24 +4783,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "i64"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "i64"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -4689,25 +4814,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "i64"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "i64"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -4843,11 +4972,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -4908,12 +5043,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f32" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f32" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f32" ],
@@ -4934,10 +5073,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -4974,11 +5113,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -5039,7 +5178,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -5109,24 +5248,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "f32"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "f32"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -5136,25 +5279,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "f32"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "f32"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -5290,11 +5437,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -5355,12 +5508,16 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
-                        Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f64" ] :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f64" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "f64" ],
@@ -5381,10 +5538,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5421,11 +5578,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -5486,7 +5643,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -5556,24 +5713,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "f64"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "f64"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -5583,25 +5744,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "f64"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "f64"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -5737,11 +5902,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -5802,15 +5973,20 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
                         Ty.apply
-                          (Ty.path "core::slice::iter::ChunksExact")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "usize" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::ChunksExact")
+                              []
+                              [ Ty.path "usize" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5834,10 +6010,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5874,11 +6050,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -5943,7 +6119,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6013,24 +6189,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "usize"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -6040,25 +6220,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "usize"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -6194,13 +6378,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -6261,15 +6449,20 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arr := M.alloc (| arr |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.never_to_any (|
                   M.read (|
                     let~ chunks :
                         Ty.apply
-                          (Ty.path "core::slice::iter::ChunksExact")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "isize" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::ChunksExact")
+                              []
+                              [ Ty.path "isize" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -6293,10 +6486,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.use
                         (M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -6333,11 +6526,11 @@ Module slice.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
-                                  Ty.tuple [],
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
+                                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -6402,7 +6595,7 @@ Module slice.
                                                 |) in
                                               let chunk := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                Some (Ty.tuple []),
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6472,24 +6665,28 @@ Module slice.
                                                                       | [ α0; α1 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Some
-                                                                              (Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bool";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "isize"
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                                (Ty.path "bool")),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bool";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "isize"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "bool")
+                                                                              ],
                                                                             M.alloc (| α0 |),
                                                                             [
                                                                               fun γ =>
@@ -6499,25 +6696,29 @@ Module slice.
                                                                                       γ
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "bool";
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "isize"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "bool")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "bool";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "isize"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "bool")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α1
                                                                                     |),
@@ -6653,13 +6854,17 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>

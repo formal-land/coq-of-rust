@@ -21,7 +21,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "core::any::TypeId" ],
             β1,
             [
               fun γ =>
@@ -162,7 +162,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ t : Ty.path "core::any::TypeId" :=
+            let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "core::any::TypeId" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::any::TypeId",
@@ -170,7 +170,7 @@ Module error.
                   []
                 |)
               |) in
-            let~ concrete : Ty.path "core::any::TypeId" :=
+            let~ concrete : Ty.apply (Ty.path "*") [] [ Ty.path "core::any::TypeId" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::any::TypeId",
@@ -229,8 +229,11 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -309,11 +312,15 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -702,9 +709,14 @@ Module error.
         M.read (|
           let~ tagged :
               Ty.apply
-                (Ty.path "core::error::Tagged")
+                (Ty.path "*")
                 []
-                [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ] :=
+                [
+                  Ty.apply
+                    (Ty.path "core::error::Tagged")
+                    []
+                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                ] :=
             M.alloc (|
               Value.StructRecord
                 "core::error::Tagged"
@@ -721,7 +733,7 @@ Module error.
                       [ Value.StructTuple "core::option::Option::None" [] ])
                 ]
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1000,9 +1012,9 @@ Module error.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1055,7 +1067,7 @@ Module error.
                               0
                             |) in
                           let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1104,9 +1116,9 @@ Module error.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1159,7 +1171,7 @@ Module error.
                               0
                             |) in
                           let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1297,7 +1309,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -1743,13 +1755,18 @@ Module error.
               M.read (|
                 let~ erased :
                     Ty.apply
-                      (Ty.path "&mut")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "core::error::Tagged")
+                          (Ty.path "&mut")
                           []
-                          [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "core::error::Tagged")
+                              []
+                              [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                          ]
                       ] :=
                   M.copy (|
                     M.use
@@ -1850,16 +1867,20 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                    ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2019,16 +2040,20 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                    ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2323,9 +2348,14 @@ Module error.
           M.read (|
             let~ current :
                 Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                  ] :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
@@ -2333,7 +2363,7 @@ Module error.
                   "current"
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -2413,12 +2443,16 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.tuple
-                  [
-                    Ty.path "usize";
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2619,7 +2653,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

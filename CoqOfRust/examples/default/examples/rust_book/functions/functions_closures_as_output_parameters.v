@@ -13,7 +13,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text : Ty.path "alloc::string::String" :=
+        let~ text : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -37,13 +37,13 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -137,7 +137,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text : Ty.path "alloc::string::String" :=
+        let~ text : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -161,13 +161,13 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -261,7 +261,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text : Ty.path "alloc::string::String" :=
+        let~ text : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "alloc::string::String",
@@ -285,13 +285,13 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -389,7 +389,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ fn_plain : Ty.associated_unknown :=
+        let~ fn_plain : Ty.apply (Ty.path "*") [] [ Ty.associated_unknown ] :=
           M.alloc (|
             M.call_closure (|
               Ty.associated_unknown,
@@ -397,7 +397,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ fn_mut : Ty.associated_unknown :=
+        let~ fn_mut : Ty.apply (Ty.path "*") [] [ Ty.associated_unknown ] :=
           M.alloc (|
             M.call_closure (|
               Ty.associated_unknown,
@@ -405,7 +405,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ fn_once : Ty.associated_unknown :=
+        let~ fn_once : Ty.apply (Ty.path "*") [] [ Ty.associated_unknown ] :=
           M.alloc (|
             M.call_closure (|
               Ty.associated_unknown,
@@ -413,7 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -429,7 +429,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, fn_plain |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -445,7 +445,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, fn_mut |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

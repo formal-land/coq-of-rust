@@ -205,7 +205,7 @@ Module Impl_derive_Inches.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ],
             self,
             [
               fun γ =>
@@ -279,12 +279,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _one_second : Ty.path "derive::Seconds" :=
+        let~ _one_second : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Seconds" ] :=
           M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer IntegerKind.I32 1 ] |) in
-        let~ foot : Ty.path "derive::Inches" :=
+        let~ foot : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Inches" ] :=
           M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer IntegerKind.I32 12 ] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -345,14 +345,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ meter : Ty.path "derive::Centimeters" :=
+        let~ meter : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ] :=
           M.alloc (|
             Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let~ cmp : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+        let~ cmp : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.copy (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -401,8 +401,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

@@ -80,7 +80,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -173,12 +173,17 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 let~ _drop_allocation :
                     Ty.apply
-                      (Ty.path "alloc::raw_vec::RawVec")
+                      (Ty.path "*")
                       []
-                      [ Src; Ty.path "alloc::alloc::Global" ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::raw_vec::RawVec")
+                          []
+                          [ Src; Ty.path "alloc::alloc::Global" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -224,7 +229,7 @@ Module vec.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],

@@ -21,7 +21,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -214,7 +214,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -410,7 +410,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ n : Ty.path "u8" :=
+            let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u8",
@@ -424,11 +424,15 @@ Module opcode.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -642,11 +646,15 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "revm_bytecode::opcode::OpCode" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "revm_bytecode::opcode::OpCode" ]
+                ],
               M.SubPointer.get_array_field (|
                 get_constant (|
                   "revm_bytecode::opcode::OPCODE_INFO",
@@ -726,7 +734,7 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -812,7 +820,7 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -898,7 +906,7 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1028,7 +1036,7 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1225,11 +1233,15 @@ Module opcode.
           (let opcode := M.alloc (| opcode |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1328,7 +1340,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "revm_bytecode::opcode::OpCodeInfo"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1419,7 +1431,7 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+            let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -1564,19 +1576,22 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -1826,19 +1841,19 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -1872,7 +1887,10 @@ Module opcode.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1926,11 +1944,15 @@ Module opcode.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1987,11 +2009,15 @@ Module opcode.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2049,11 +2075,15 @@ Module opcode.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -2114,11 +2144,15 @@ Module opcode.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -2179,11 +2213,15 @@ Module opcode.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2355,7 +2393,7 @@ Module opcode.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -2403,7 +2441,7 @@ Module opcode.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -2451,7 +2489,7 @@ Module opcode.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -2500,7 +2538,7 @@ Module opcode.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some (Ty.path "core::cmp::Ordering"),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -2552,7 +2590,10 @@ Module opcode.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.path "core::cmp::Ordering"),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -2604,7 +2645,10 @@ Module opcode.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some (Ty.path "core::cmp::Ordering"),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -2763,7 +2807,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2794,7 +2838,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2825,7 +2869,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2856,7 +2900,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2887,7 +2931,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -2918,7 +2962,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -3395,9 +3439,9 @@ Module opcode.
         ltac:(M.monadic
           (let name := M.alloc (| name |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3533,7 +3577,11 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ slice :
-                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
@@ -3768,7 +3816,7 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -3802,7 +3850,7 @@ Module opcode.
         (let op := M.alloc (| op |) in
         let n := M.alloc (| n |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -3835,7 +3883,7 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -3871,7 +3919,7 @@ Module opcode.
         let inputs := M.alloc (| inputs |) in
         let outputs := M.alloc (| outputs |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -3882,7 +3930,7 @@ Module opcode.
                 M.read (| inputs |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -3932,13 +3980,18 @@ Module opcode.
     ltac:(M.monadic
       (let~ map :
           Ty.apply
-            (Ty.path "array")
-            [ Value.Integer IntegerKind.Usize 256 ]
+            (Ty.path "*")
+            []
             [
               Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 256 ]
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                ]
             ] :=
         M.alloc (|
           repeat (|
@@ -3946,11 +3999,13 @@ Module opcode.
             Value.Integer IntegerKind.Usize 256
           |)
         |) in
-      let~ prev : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-      let~ _ : Ty.tuple [] :=
+      let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+        M.alloc (| Value.Integer IntegerKind.U8 0 |) in
+      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+        M.alloc (| Value.Integer IntegerKind.U8 0 |) in
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -4011,8 +4066,9 @@ Module opcode.
             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
           ]
         |) in
-      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4025,7 +4081,7 @@ Module opcode.
             [ mk_str (| "STOP" |) ]
           |)
         |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4033,7 +4089,7 @@ Module opcode.
             [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
           |)
         |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4041,17 +4097,18 @@ Module opcode.
             [ M.read (| info |) ]
           |)
         |) in
-      let~ _ : Ty.tuple [] :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |)
         |) in
-      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
-      let~ _ : Ty.tuple [] :=
+      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+        M.alloc (| Value.Integer IntegerKind.U8 1 |) in
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -4112,8 +4169,9 @@ Module opcode.
             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
           ]
         |) in
-      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4126,7 +4184,7 @@ Module opcode.
             [ mk_str (| "ADD" |) ]
           |)
         |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4134,17 +4192,18 @@ Module opcode.
             [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
           |)
         |) in
-      let~ _ : Ty.tuple [] :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |)
         |) in
-      let~ val : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 49 |) in
-      let~ _ : Ty.tuple [] :=
+      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
+        M.alloc (| Value.Integer IntegerKind.U8 49 |) in
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -4205,8 +4264,9 @@ Module opcode.
             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
           ]
         |) in
-      let~ _ : Ty.tuple [] := M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4219,7 +4279,7 @@ Module opcode.
             [ mk_str (| "BALANCE" |) ]
           |)
         |) in
-      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
         M.alloc (|
           M.call_closure (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -4227,14 +4287,31 @@ Module opcode.
             [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
           |)
         |) in
-      let~ _ : Ty.tuple [] :=
+      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |)
         |) in
-      M.match_operator (| None, prev, [ fun γ => ltac:(M.monadic map) ] |))).
+      M.match_operator (|
+        Ty.apply
+          (Ty.path "*")
+          []
+          [
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 256 ]
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+              ]
+          ],
+        prev,
+        [ fun γ => ltac:(M.monadic map) ]
+      |))).
   
   Global Instance Instance_IsConstant_value_OPCODE_INFO :
     M.IsFunction.C "revm_bytecode::opcode::OPCODE_INFO" value_OPCODE_INFO.

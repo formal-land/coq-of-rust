@@ -18,7 +18,7 @@ Module bool.
           let t := M.alloc (| t |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -54,7 +54,7 @@ Module bool.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

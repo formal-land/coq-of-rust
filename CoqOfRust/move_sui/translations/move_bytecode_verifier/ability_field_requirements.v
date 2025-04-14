@@ -51,10 +51,14 @@ Module ability_field_requirements.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                              (Ty.path "move_binary_format::errors::VMError")
+                          ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -147,13 +151,17 @@ Module ability_field_requirements.
     | [], [], [ module ] =>
       ltac:(M.monadic
         (let module := M.alloc (| module |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -264,11 +272,11 @@ Module ability_field_requirements.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -337,11 +345,16 @@ Module ability_field_requirements.
                                         let struct_def := M.copy (| γ1_1 |) in
                                         let~ sh :
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "*")
                                               []
                                               [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructHandle"
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructHandle"
+                                                  ]
                                               ] :=
                                           M.alloc (|
                                             M.call_closure (|
@@ -376,22 +389,10 @@ Module ability_field_requirements.
                                           |) in
                                         let~ fields :
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "*")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FieldDefinition";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ] :=
-                                          M.copy (|
-                                            M.match_operator (|
-                                              Some
-                                                (Ty.apply
                                                   (Ty.path "&")
                                                   []
                                                   [
@@ -403,7 +404,28 @@ Module ability_field_requirements.
                                                           "move_binary_format::file_format::FieldDefinition";
                                                         Ty.path "alloc::alloc::Global"
                                                       ]
-                                                  ]),
+                                                  ]
+                                              ] :=
+                                          M.copy (|
+                                            M.match_operator (|
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FieldDefinition";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.alloc (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
@@ -443,7 +465,13 @@ Module ability_field_requirements.
                                             |)
                                           |) in
                                         let~ required_abilities :
-                                            Ty.path "move_binary_format::file_format::AbilitySet" :=
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "move_binary_format::file_format::AbilitySet",
@@ -560,17 +588,21 @@ Module ability_field_requirements.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Some
-                                                                  (Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::Ability"
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "move_binary_format::file_format::Ability")),
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::Ability"
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_binary_format::file_format::Ability")
+                                                                  ],
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -611,38 +643,46 @@ Module ability_field_requirements.
                                                       | [ α0; α1 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Some
-                                                              (Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::AbilitySet";
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::Ability"
-                                                                    ]
-                                                                ]
-                                                                (Ty.path
-                                                                  "move_binary_format::file_format::AbilitySet")),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::AbilitySet";
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Ability"
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet")
+                                                              ],
                                                             M.alloc (| α0 |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let acc := M.copy (| γ |) in
                                                                   M.match_operator (|
-                                                                    Some
-                                                                      (Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::AbilitySet";
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::Ability"
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet")),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.function
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::AbilitySet";
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Ability"
+                                                                              ]
+                                                                          ]
+                                                                          (Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet")
+                                                                      ],
                                                                     M.alloc (| α1 |),
                                                                     [
                                                                       fun γ =>
@@ -682,12 +722,17 @@ Module ability_field_requirements.
                                           |) in
                                         let~ type_parameter_abilities :
                                             Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                              (Ty.path "*")
                                               []
                                               [
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet";
-                                                Ty.path "alloc::alloc::Global"
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
                                               ] :=
                                           M.alloc (|
                                             M.call_closure (|
@@ -881,22 +926,26 @@ Module ability_field_requirements.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Some
-                                                                  (Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::StructTypeParameter"
-                                                                            ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "move_binary_format::file_format::AbilitySet")),
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructTypeParameter"
+                                                                              ]
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet")
+                                                                  ],
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -922,7 +971,7 @@ Module ability_field_requirements.
                                           |) in
                                         M.use
                                           (M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -961,11 +1010,15 @@ Module ability_field_requirements.
                                                 ltac:(M.monadic
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
-                                                    Ty.tuple [],
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     ltac:(M.monadic
-                                                      (let~ _ : Ty.tuple [] :=
+                                                      (let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -1032,13 +1085,22 @@ Module ability_field_requirements.
                                                                   |) in
                                                                 let field := M.copy (| γ0_0 |) in
                                                                 let~ field_abilities :
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::AbilitySet" :=
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::AbilitySet"
+                                                                      ] :=
                                                                   M.copy (|
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet"),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -1261,7 +1323,10 @@ Module ability_field_requirements.
                                                                     |)
                                                                   |) in
                                                                 M.match_operator (|
-                                                                  Some (Ty.tuple []),
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ],
                                                                   M.alloc (| Value.Tuple [] |),
                                                                   [
                                                                     fun γ =>

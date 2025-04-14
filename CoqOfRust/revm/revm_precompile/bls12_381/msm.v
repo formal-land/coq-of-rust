@@ -172,12 +172,12 @@ Module bls12_381.
         ltac:(M.monadic
           (let k := M.alloc (| k |) in
           let multiplication_cost := M.alloc (| multiplication_cost |) in
-          M.catch_return (|
+          M.catch_return (Ty.path "u64") (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -201,7 +201,7 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ index : Ty.path "usize" :=
+                let~ index : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
@@ -254,7 +254,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ discount : Ty.path "u64" :=
+                let~ discount : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.cast
                       (Ty.path "u64")

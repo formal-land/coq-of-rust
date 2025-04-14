@@ -83,7 +83,7 @@ Module absint.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -255,12 +255,16 @@ Module absint.
           let initial_state := M.alloc (| initial_state |) in
           let function_context := M.alloc (| function_context |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -382,22 +386,27 @@ Module absint.
                   |) in
                 let~ inv_map :
                     Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "u16";
                         Ty.apply
-                          (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
                           []
                           [
-                            Ty.associated_in_trait
-                              "move_bytecode_verifier::absint::TransferFunctions"
+                            Ty.path "u16";
+                            Ty.apply
+                              (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                               []
-                              []
-                              Self
-                              "State"
-                          ];
-                        Ty.path "alloc::alloc::Global"
+                              [
+                                Ty.associated_in_trait
+                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                  []
+                                  []
+                                  Self
+                                  "State"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -445,7 +454,7 @@ Module absint.
                       []
                     |)
                   |) in
-                let~ entry_block_id : Ty.path "u16" :=
+                let~ entry_block_id : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u16",
@@ -488,25 +497,34 @@ Module absint.
                       ]
                     |)
                   |) in
-                let~ next_block : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ] :=
+                let~ next_block :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ] ] :=
                   M.alloc (|
                     Value.StructTuple "core::option::Option::Some" [ M.read (| entry_block_id |) ]
                   |) in
                 let~ _ :
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
+                          (Ty.path "core::option::Option")
                           []
                           [
-                            Ty.associated_in_trait
-                              "move_bytecode_verifier::absint::TransferFunctions"
+                            Ty.apply
+                              (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                               []
-                              []
-                              Self
-                              "State"
+                              [
+                                Ty.associated_in_trait
+                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                  []
+                                  []
+                                  Self
+                                  "State"
+                              ]
                           ]
                       ] :=
                   M.alloc (|
@@ -559,12 +577,12 @@ Module absint.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -579,25 +597,10 @@ Module absint.
                               let block_id := M.copy (| γ0_0 |) in
                               let~ block_invariant :
                                   Ty.apply
-                                    (Ty.path "&mut")
+                                    (Ty.path "*")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "move_bytecode_verifier::absint::TransferFunctions"
-                                            []
-                                            []
-                                            Self
-                                            "State"
-                                        ]
-                                    ] :=
-                                M.copy (|
-                                  M.match_operator (|
-                                    Some
-                                      (Ty.apply
                                         (Ty.path "&mut")
                                         []
                                         [
@@ -613,7 +616,32 @@ Module absint.
                                                 Self
                                                 "State"
                                             ]
-                                        ]),
+                                        ]
+                                    ] :=
+                                M.copy (|
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path
+                                                "move_bytecode_verifier::absint::BlockInvariant")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "State"
+                                              ]
+                                          ]
+                                      ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -692,7 +720,8 @@ Module absint.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.write (|
                                                       next_block,
@@ -755,15 +784,20 @@ Module absint.
                                 |) in
                               let~ pre_state :
                                   Ty.apply
-                                    (Ty.path "&")
+                                    (Ty.path "*")
                                     []
                                     [
-                                      Ty.associated_in_trait
-                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                      Ty.apply
+                                        (Ty.path "&")
                                         []
-                                        []
-                                        Self
-                                        "State"
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                            []
+                                            []
+                                            Self
+                                            "State"
+                                        ]
                                     ] :=
                                 M.alloc (|
                                   M.borrow (|
@@ -776,21 +810,30 @@ Module absint.
                                   |)
                                 |) in
                               let~ post_state :
-                                  Ty.associated_in_trait
-                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                  Ty.apply
+                                    (Ty.path "*")
                                     []
-                                    []
-                                    Self
-                                    "State" :=
-                                M.copy (|
-                                  M.match_operator (|
-                                    Some
-                                      (Ty.associated_in_trait
+                                    [
+                                      Ty.associated_in_trait
                                         "move_bytecode_verifier::absint::TransferFunctions"
                                         []
                                         []
                                         Self
-                                        "State"),
+                                        "State"
+                                    ] :=
+                                M.copy (|
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_bytecode_verifier::absint::TransferFunctions"
+                                          []
+                                          []
+                                          Self
+                                          "State"
+                                      ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -945,7 +988,11 @@ Module absint.
                                   |)
                                 |) in
                               let~ next_block_candidate :
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ] :=
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ]
+                                    ] :=
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -991,10 +1038,10 @@ Module absint.
                                     ]
                                   |)
                                 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.use
                                   (M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1078,11 +1125,11 @@ Module absint.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
-                                            Ty.tuple [],
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             ltac:(M.monadic
-                                              (let~ _ : Ty.tuple [] :=
+                                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1139,9 +1186,16 @@ Module absint.
                                                           |) in
                                                         let successor_block_id :=
                                                           M.copy (| γ0_0 |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1291,7 +1345,7 @@ Module absint.
                                                             ]
                                                           |) in
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -1367,13 +1421,22 @@ Module absint.
                                                                 let next_block_invariant :=
                                                                   M.copy (| γ0_0 |) in
                                                                 let~ join_result :
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::absint::JoinResult" :=
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::absint::JoinResult"
+                                                                      ] :=
                                                                   M.copy (|
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.path
-                                                                          "move_bytecode_verifier::absint::JoinResult"),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::absint::JoinResult"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -1416,15 +1479,21 @@ Module absint.
                                                                             M.read (|
                                                                               let~ old_pre :
                                                                                   Ty.apply
-                                                                                    (Ty.path "&mut")
+                                                                                    (Ty.path "*")
                                                                                     []
                                                                                     [
-                                                                                      Ty.associated_in_trait
-                                                                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&mut")
                                                                                         []
-                                                                                        []
-                                                                                        Self
-                                                                                        "State"
+                                                                                        [
+                                                                                          Ty.associated_in_trait
+                                                                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                            []
+                                                                                            []
+                                                                                            Self
+                                                                                            "State"
+                                                                                        ]
                                                                                     ] :=
                                                                                 M.alloc (|
                                                                                   M.borrow (|
@@ -1581,7 +1650,10 @@ Module absint.
                                                                     |)
                                                                   |) in
                                                                 M.match_operator (|
-                                                                  Some (Ty.tuple []),
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ],
                                                                   join_result,
                                                                   [
                                                                     fun γ =>
@@ -1602,7 +1674,10 @@ Module absint.
                                                                             "move_bytecode_verifier::absint::JoinResult::Changed"
                                                                           |) in
                                                                         M.match_operator (|
-                                                                          Some (Ty.tuple []),
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [ Ty.tuple [] ],
                                                                           M.alloc (|
                                                                             Value.Tuple []
                                                                           |),
@@ -1680,12 +1755,23 @@ Module absint.
                                                                                   M.never_to_any (|
                                                                                     M.read (|
                                                                                       let~ _ :
-                                                                                          Ty.tuple
-                                                                                            [] :=
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ] :=
                                                                                         M.match_operator (|
-                                                                                          Some
-                                                                                            (Ty.tuple
-                                                                                              []),
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ],
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.apply
@@ -1856,8 +1942,14 @@ Module absint.
                                                                                           ]
                                                                                         |) in
                                                                                       let~ _ :
-                                                                                          Ty.tuple
-                                                                                            [] :=
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "*")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ] :=
                                                                                         M.alloc (|
                                                                                           M.write (|
                                                                                             next_block_candidate,
@@ -1896,21 +1988,26 @@ Module absint.
                                                                   |) in
                                                                 let~ _ :
                                                                     Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
+                                                                      (Ty.path "*")
                                                                       []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
-                                                                            "move_bytecode_verifier::absint::BlockInvariant")
+                                                                            "core::option::Option")
                                                                           []
                                                                           [
-                                                                            Ty.associated_in_trait
-                                                                              "move_bytecode_verifier::absint::TransferFunctions"
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "move_bytecode_verifier::absint::BlockInvariant")
                                                                               []
-                                                                              []
-                                                                              Self
-                                                                              "State"
+                                                                              [
+                                                                                Ty.associated_in_trait
+                                                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                  []
+                                                                                  []
+                                                                                  Self
+                                                                                  "State"
+                                                                              ]
                                                                           ]
                                                                       ] :=
                                                                   M.alloc (|
@@ -2016,7 +2113,7 @@ Module absint.
                                           |)))
                                     ]
                                   |)) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.alloc (|
                                   M.write (| next_block, M.read (| next_block_candidate |) |)
                                 |) in
@@ -2026,7 +2123,7 @@ Module absint.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -2062,12 +2159,24 @@ Module absint.
           let pre_state := M.alloc (| pre_state |) in
           let function_context := M.alloc (| function_context |) in
           let meter := M.alloc (| meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.associated_in_trait
+                  "move_bytecode_verifier::absint::TransferFunctions"
+                  []
+                  []
+                  Self
+                  "State";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2198,12 +2307,17 @@ Module absint.
                     ]
                   |) in
                 let~ state_acc :
-                    Ty.associated_in_trait
-                      "move_bytecode_verifier::absint::TransferFunctions"
+                    Ty.apply
+                      (Ty.path "*")
                       []
-                      []
-                      Self
-                      "State" :=
+                      [
+                        Ty.associated_in_trait
+                          "move_bytecode_verifier::absint::TransferFunctions"
+                          []
+                          []
+                          Self
+                          "State"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.associated_in_trait
@@ -2229,7 +2343,7 @@ Module absint.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pre_state |) |) |) ]
                     |)
                   |) in
-                let~ block_end : Ty.path "u16" :=
+                let~ block_end : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u16",
@@ -2273,10 +2387,10 @@ Module absint.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2358,11 +2472,11 @@ Module absint.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2418,11 +2532,16 @@ Module absint.
                                           let offset := M.copy (| γ0_0 |) in
                                           let~ instr :
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "*")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::Bytecode"
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.borrow (|
@@ -2493,7 +2612,7 @@ Module absint.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply

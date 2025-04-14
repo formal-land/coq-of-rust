@@ -110,7 +110,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
@@ -134,7 +134,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    None,
+                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
@@ -208,7 +208,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
@@ -232,7 +232,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    None,
+                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
@@ -322,7 +322,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -343,7 +343,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -364,7 +364,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -385,7 +385,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -449,7 +449,7 @@ Module Impl_associated_functions_and_methods_Pair.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             self,
             [
               fun γ =>
@@ -468,8 +468,8 @@ Module Impl_associated_functions_and_methods_Pair.
                     |) in
                   let first := M.copy (| γ0_0 |) in
                   let second := M.copy (| γ0_1 |) in
-                  let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -622,7 +622,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ rectangle : Ty.path "associated_functions_and_methods::Rectangle" :=
+        let~ rectangle :
+            Ty.apply (Ty.path "*") [] [ Ty.path "associated_functions_and_methods::Rectangle" ] :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
@@ -651,8 +652,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -730,8 +731,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -809,7 +810,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ square : Ty.path "associated_functions_and_methods::Rectangle" :=
+        let~ square :
+            Ty.apply (Ty.path "*") [] [ Ty.path "associated_functions_and_methods::Rectangle" ] :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
@@ -838,7 +840,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -855,7 +857,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ pair_ : Ty.path "associated_functions_and_methods::Pair" :=
+        let~ pair_ :
+            Ty.apply (Ty.path "*") [] [ Ty.path "associated_functions_and_methods::Pair" ] :=
           M.alloc (|
             Value.StructTuple
               "associated_functions_and_methods::Pair"
@@ -894,7 +897,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

@@ -71,7 +71,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ point : Ty.path "scoping_rules_borrowing_aliasing::Point" :=
+        let~ point :
+            Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
@@ -82,13 +83,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
           |) in
         let~ borrowed_point :
-            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] ] :=
           M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
         let~ another_borrow :
-            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] ] :=
           M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -212,8 +219,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -338,9 +345,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ mutable_borrow :
-            Ty.apply (Ty.path "&mut") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ]
+              ] :=
           M.alloc (| M.borrow (| Pointer.Kind.MutRef, point |) |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               M.SubPointer.get_struct_record_field (|
@@ -351,7 +362,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Integer IntegerKind.I32 5
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               M.SubPointer.get_struct_record_field (|
@@ -362,7 +373,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Integer IntegerKind.I32 2
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               M.SubPointer.get_struct_record_field (|
@@ -373,8 +384,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Integer IntegerKind.I32 1
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -499,10 +510,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ new_borrowed_point :
-            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] ] :=
           M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

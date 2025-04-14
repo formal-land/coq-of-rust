@@ -34,7 +34,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
         M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
         [
           M.read (|
-            let~ res : Ty.path "alloc::string::String" :=
+            let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "alloc::string::String",

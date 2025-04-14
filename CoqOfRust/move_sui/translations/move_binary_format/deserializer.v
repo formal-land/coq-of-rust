@@ -81,13 +81,27 @@ Module deserializer.
         ltac:(M.monadic
           (let binary := M.alloc (| binary |) in
           let binary_config := M.alloc (| binary_config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_binary_format::file_format::CompiledModule";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ module : Ty.path "move_binary_format::file_format::CompiledModule" :=
+                let~ module :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::CompiledModule" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "move_binary_format::file_format::CompiledModule"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::CompiledModule" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -208,9 +222,9 @@ Module deserializer.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -655,20 +669,29 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "u16"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ u16_bytes :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 2 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 2 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -751,10 +774,14 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_binary_format::errors::PartialVMError")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                              (Ty.path "move_binary_format::errors::PartialVMError")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -882,20 +909,29 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ u32_bytes :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 4 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -978,10 +1014,14 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_binary_format::errors::PartialVMError")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                              (Ty.path "move_binary_format::errors::PartialVMError")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1109,20 +1149,29 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ u64_bytes :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 8 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 8 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 8 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1205,10 +1254,14 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_binary_format::errors::PartialVMError")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                              (Ty.path "move_binary_format::errors::PartialVMError")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1336,20 +1389,29 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "u128"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ u128_bytes :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 16 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 16 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1432,10 +1494,14 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_binary_format::errors::PartialVMError")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                              (Ty.path "move_binary_format::errors::PartialVMError")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1565,20 +1631,32 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_core_types::u256::U256";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ u256_bytes :
                   Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [ Ty.path "u8" ] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1661,10 +1739,14 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                            (Ty.path "move_binary_format::errors::PartialVMError")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                              (Ty.path "move_binary_format::errors::PartialVMError")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1814,13 +1896,17 @@ Module deserializer.
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
         let max := M.alloc (| max |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ T; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ x : Ty.path "u64" :=
+              let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u64"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1895,11 +1981,15 @@ Module deserializer.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                              (Ty.path
-                                                "move_binary_format::errors::PartialVMError")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                (Ty.path
+                                                  "move_binary_format::errors::PartialVMError")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -2018,9 +2108,9 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2165,26 +2255,34 @@ Module deserializer.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Some
-                                  (Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.associated_in_trait
-                                            "core::convert::TryInto"
-                                            []
-                                            [ T ]
-                                            (Ty.path "u64")
-                                            "Error"
-                                        ]
-                                    ]
-                                    (Ty.path "move_binary_format::errors::PartialVMError")),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::convert::TryInto"
+                                              []
+                                              [ T ]
+                                              (Ty.path "u64")
+                                              "Error"
+                                          ]
+                                      ]
+                                      (Ty.path "move_binary_format::errors::PartialVMError")
+                                  ],
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.read (|
-                                        let~ msg : Ty.path "alloc::string::String" :=
+                                        let~ msg :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "alloc::string::String" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "alloc::string::String",
@@ -2270,7 +2368,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::SignatureIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -2280,7 +2385,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2431,7 +2536,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -2441,7 +2553,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2594,7 +2706,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::IdentifierIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -2604,7 +2723,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2755,7 +2874,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::StructHandleIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -2765,7 +2891,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2924,7 +3050,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::AddressIdentifierIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -2934,7 +3067,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3089,7 +3222,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3099,7 +3239,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3252,7 +3392,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3262,7 +3409,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3415,7 +3562,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FieldHandleIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3425,7 +3579,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3580,7 +3734,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FieldInstantiationIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3590,7 +3751,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3743,7 +3904,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FunctionInstantiationIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3753,7 +3921,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3908,7 +4076,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::StructDefInstantiationIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -3918,7 +4093,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4071,7 +4246,14 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::ConstantPoolIndex";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
@@ -4081,7 +4263,7 @@ Module deserializer.
                   [
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.path "u16"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4871,13 +5053,27 @@ Module deserializer.
       ltac:(M.monadic
         (let binary := M.alloc (| binary |) in
         let binary_config := M.alloc (| binary_config |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::CompiledModule";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ versioned_binary : Ty.path "move_binary_format::deserializer::VersionedBinary" :=
+              let~ versioned_binary :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedBinary" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::deserializer::VersionedBinary"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::deserializer::VersionedBinary" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -4999,7 +5195,7 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ version : Ty.path "u32" :=
+              let~ version : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u32",
@@ -5013,7 +5209,10 @@ Module deserializer.
                   |)
                 |) in
               let~ self_module_handle_idx :
-                  Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::file_format::ModuleHandleIndex",
@@ -5026,7 +5225,11 @@ Module deserializer.
                     [ M.borrow (| Pointer.Kind.Ref, versioned_binary |) ]
                   |)
                 |) in
-              let~ module : Ty.path "move_binary_format::file_format::CompiledModule" :=
+              let~ module :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::CompiledModule" ] :=
                 M.alloc (|
                   M.struct_record_update
                     (M.call_closure (|
@@ -5047,9 +5250,9 @@ Module deserializer.
                       ("self_module_handle_idx", M.read (| self_module_handle_idx |))
                     ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5211,7 +5414,7 @@ Module deserializer.
                         val))
                   ]
                 |) in
-              let~ end_pos : Ty.path "usize" :=
+              let~ end_pos : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -5224,7 +5427,7 @@ Module deserializer.
                     [ M.borrow (| Pointer.Kind.Ref, versioned_binary |) ]
                   |)
                 |) in
-              let~ had_remaining_bytes : Ty.path "bool" :=
+              let~ had_remaining_bytes : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -5244,9 +5447,9 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -5327,13 +5530,17 @@ Module deserializer.
         (let cursor := M.alloc (| cursor |) in
         let table_count := M.alloc (| table_count |) in
         let tables := M.alloc (| tables |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
@@ -5361,11 +5568,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
@@ -5406,7 +5613,7 @@ Module deserializer.
                                             0
                                           |) in
                                         let _count := M.copy (| γ0_0 |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -5430,9 +5637,13 @@ Module deserializer.
                                                 |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::deserializer::Table"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::deserializer::Table"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -5605,13 +5816,20 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::deserializer::Table";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ kind : Ty.path "u8" :=
+              let~ kind : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u8"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5704,10 +5922,10 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ table_offset : Ty.path "u32" :=
+              let~ table_offset : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u32"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5817,10 +6035,10 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ count : Ty.path "u32" :=
+              let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u32"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5945,7 +6163,10 @@ Module deserializer.
                       [
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format_common::TableType"),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format_common::TableType" ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -6112,10 +6333,14 @@ Module deserializer.
       ltac:(M.monadic
         (let tables := M.alloc (| tables |) in
         let binary_len := M.alloc (| binary_len |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -6185,50 +6410,60 @@ Module deserializer.
                             | [ α0; α1 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some
-                                    (Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_binary_format::deserializer::Table" ];
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_binary_format::deserializer::Table" ]
-                                          ]
-                                      ]
-                                      (Ty.path "core::cmp::Ordering")),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_binary_format::deserializer::Table"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_binary_format::deserializer::Table"
+                                                ]
+                                            ]
+                                        ]
+                                        (Ty.path "core::cmp::Ordering")
+                                    ],
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let t1 := M.copy (| γ |) in
                                         M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::deserializer::Table"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::deserializer::Table"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "core::cmp::Ordering")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::Table"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::Table"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "core::cmp::Ordering")
+                                            ],
                                           M.alloc (| α1 |),
                                           [
                                             fun γ =>
@@ -6278,15 +6513,20 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ current_offset : Ty.path "u32" :=
+              let~ current_offset : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                 M.alloc (| Value.Integer IntegerKind.U32 0 |) in
               let~ table_types :
                   Ty.apply
-                    (Ty.path "std::collections::hash::set::HashSet")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format_common::TableType";
-                      Ty.path "std::hash::random::RandomState"
+                      Ty.apply
+                        (Ty.path "std::collections::hash::set::HashSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "std::hash::random::RandomState"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -6312,10 +6552,10 @@ Module deserializer.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6350,11 +6590,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6403,9 +6643,9 @@ Module deserializer.
                                             0
                                           |) in
                                         let table := M.copy (| γ0_0 |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6465,9 +6705,9 @@ Module deserializer.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6527,9 +6767,9 @@ Module deserializer.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -6607,9 +6847,9 @@ Module deserializer.
                                                   |)))
                                             ]
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6689,7 +6929,7 @@ Module deserializer.
                                             ]
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -7090,12 +7330,16 @@ Module deserializer.
         (let module := M.alloc (| module |) in
         let binary := M.alloc (| binary |) in
         let tables := M.alloc (| tables |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7206,9 +7450,9 @@ Module deserializer.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7449,11 +7693,23 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let tables := M.alloc (| tables |) in
         let common := M.alloc (| common |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ],
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -7568,10 +7824,10 @@ Module deserializer.
                       let constant_pool_max := M.alloc (| γ1_5 |) in
                       let identifiers_max := M.alloc (| γ1_6 |) in
                       let address_identifiers_max := M.alloc (| γ1_7 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -7603,11 +7859,11 @@ Module deserializer.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -7668,7 +7924,7 @@ Module deserializer.
                                                   |) in
                                                 let table := M.copy (| γ0_0 |) in
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.deref (| M.read (| table |) |),
                                                     "move_binary_format::deserializer::Table",
@@ -7684,16 +7940,22 @@ Module deserializer.
                                                           |) in
                                                         let~ module_handles :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::ModuleHandle";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::ModuleHandle";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -7728,9 +7990,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -7880,9 +8149,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -7987,8 +8263,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -8200,16 +8482,22 @@ Module deserializer.
                                                           |) in
                                                         let~ struct_handles :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::StructHandle";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandle";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -8244,9 +8532,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -8396,9 +8691,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -8503,8 +8805,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -8716,16 +9024,22 @@ Module deserializer.
                                                           |) in
                                                         let~ function_handles :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::FunctionHandle";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FunctionHandle";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -8760,9 +9074,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -8912,9 +9233,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -9019,8 +9347,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -9232,16 +9566,22 @@ Module deserializer.
                                                           |) in
                                                         let~ function_instantiations :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::FunctionInstantiation";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FunctionInstantiation";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -9276,9 +9616,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -9428,9 +9775,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -9535,8 +9889,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -9748,16 +10108,22 @@ Module deserializer.
                                                           |) in
                                                         let~ signatures :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::Signature";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Signature";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -9792,9 +10158,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -9942,9 +10315,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -10049,8 +10429,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -10262,16 +10648,22 @@ Module deserializer.
                                                           |) in
                                                         let~ constant_pool :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::Constant";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Constant";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -10306,9 +10698,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -10456,9 +10855,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -10563,8 +10969,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -10774,9 +11186,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::METADATA"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -10893,8 +11312,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -11020,9 +11445,16 @@ Module deserializer.
                                                                   (M.alloc (| Value.Tuple [] |)))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -11215,16 +11647,22 @@ Module deserializer.
                                                           |) in
                                                         let~ identifiers :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_core_types::identifier::Identifier";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::identifier::Identifier";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -11259,9 +11697,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -11409,9 +11854,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -11516,8 +11968,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -11729,16 +12187,22 @@ Module deserializer.
                                                           |) in
                                                         let~ address_identifiers :
                                                             Ty.apply
-                                                              (Ty.path "&mut")
+                                                              (Ty.path "*")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "&mut")
                                                                   []
                                                                   [
-                                                                    Ty.path
-                                                                      "move_core_types::account_address::AccountAddress";
-                                                                    Ty.path "alloc::alloc::Global"
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::account_address::AccountAddress";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
                                                                   ]
                                                               ] :=
                                                           M.alloc (|
@@ -11773,9 +12237,16 @@ Module deserializer.
                                                               ]
                                                             |)
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -11925,9 +12396,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -12032,8 +12510,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -12238,7 +12722,7 @@ Module deserializer.
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern (Ty.tuple []) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -12301,7 +12785,7 @@ Module deserializer.
                                                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                                                           |) in
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -12529,11 +13013,23 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let tables := M.alloc (| tables |) in
         let module := M.alloc (| module |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ],
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -12646,10 +13142,10 @@ Module deserializer.
                       let field_handles_max := M.alloc (| γ1_11 |) in
                       let field_instantiations_max := M.alloc (| γ1_12 |) in
                       let friend_decls_max := M.alloc (| γ1_13 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -12681,11 +13177,11 @@ Module deserializer.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -12746,7 +13242,7 @@ Module deserializer.
                                                   |) in
                                                 let table := M.copy (| γ0_0 |) in
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.deref (| M.read (| table |) |),
                                                     "move_binary_format::deserializer::Table",
@@ -12760,9 +13256,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -12919,9 +13422,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -13035,8 +13545,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -13255,9 +13771,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -13414,9 +13937,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -13530,8 +14060,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -13750,9 +14286,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -13909,9 +14452,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -14025,8 +14575,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -14245,9 +14801,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -14404,9 +14967,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -14520,8 +15090,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -14740,9 +15316,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::FIELD_INST"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -14899,9 +15482,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -15015,8 +15605,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -15235,9 +15831,16 @@ Module deserializer.
                                                             γ,
                                                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -15394,9 +15997,16 @@ Module deserializer.
                                                                   val))
                                                             ]
                                                           |) in
-                                                        let~ _ : Ty.tuple [] :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -15510,8 +16120,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -15725,7 +16341,7 @@ Module deserializer.
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern (Ty.tuple []) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -15859,10 +16475,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let module_handles := M.alloc (| module_handles |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -15874,7 +16494,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -15893,7 +16513,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -15910,12 +16534,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -15953,12 +16577,22 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ address :
-                                Ty.path "move_binary_format::file_format::AddressIdentifierIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::AddressIdentifierIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path
-                                      "move_binary_format::file_format::AddressIdentifierIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::AddressIdentifierIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16086,10 +16720,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ name :
-                                Ty.path "move_binary_format::file_format::IdentifierIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::IdentifierIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::IdentifierIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::IdentifierIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16215,7 +16855,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -16251,7 +16891,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -16302,10 +16942,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let struct_handles := M.alloc (| struct_handles |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -16317,7 +16961,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -16336,7 +16980,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -16353,12 +17001,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -16396,11 +17044,18 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ module :
-                                Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path "move_binary_format::file_format::ModuleHandleIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16528,10 +17183,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ name :
-                                Ty.path "move_binary_format::file_format::IdentifierIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::IdentifierIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::IdentifierIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::IdentifierIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16658,10 +17319,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ abilities :
-                                Ty.path "move_binary_format::file_format::AbilitySet" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::AbilitySet" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16790,23 +17457,33 @@ Module deserializer.
                               |) in
                             let~ type_parameters :
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "*")
                                   []
                                   [
-                                    Ty.path "move_binary_format::file_format::StructTypeParameter";
-                                    Ty.path "alloc::alloc::Global"
-                                  ] :=
-                              M.copy (|
-                                M.match_operator (|
-                                  Some
-                                    (Ty.apply
+                                    Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       []
                                       [
                                         Ty.path
                                           "move_binary_format::file_format::StructTypeParameter";
                                         Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      ]
+                                  ] :=
+                              M.copy (|
+                                M.match_operator (|
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructTypeParameter";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16951,7 +17628,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -16989,7 +17666,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -17044,10 +17721,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let function_handles := M.alloc (| function_handles |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -17059,7 +17740,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -17078,7 +17759,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -17095,12 +17780,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -17138,11 +17823,18 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ module :
-                                Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path "move_binary_format::file_format::ModuleHandleIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -17270,10 +17962,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ name :
-                                Ty.path "move_binary_format::file_format::IdentifierIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::IdentifierIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::IdentifierIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::IdentifierIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -17400,10 +18098,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ parameters :
-                                Ty.path "move_binary_format::file_format::SignatureIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -17530,10 +18234,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ return_ :
-                                Ty.path "move_binary_format::file_format::SignatureIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -17661,22 +18371,31 @@ Module deserializer.
                               |) in
                             let~ type_parameters :
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "*")
                                   []
                                   [
-                                    Ty.path "move_binary_format::file_format::AbilitySet";
-                                    Ty.path "alloc::alloc::Global"
-                                  ] :=
-                              M.copy (|
-                                M.match_operator (|
-                                  Some
-                                    (Ty.apply
+                                    Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       []
                                       [
                                         Ty.path "move_binary_format::file_format::AbilitySet";
                                         Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      ]
+                                  ] :=
+                              M.copy (|
+                                M.match_operator (|
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::file_format::AbilitySet";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -17823,7 +18542,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -17862,7 +18581,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -17910,10 +18629,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let struct_insts := M.alloc (| struct_insts |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -17925,7 +18648,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -17944,7 +18667,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -17961,12 +18688,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -18004,12 +18731,20 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ def :
-                                Ty.path "move_binary_format::file_format::StructDefinitionIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path
-                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -18137,10 +18872,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ type_parameters :
-                                Ty.path "move_binary_format::file_format::SignatureIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -18266,7 +19007,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -18303,7 +19044,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -18356,10 +19097,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let func_insts := M.alloc (| func_insts |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -18371,7 +19116,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -18390,7 +19135,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -18407,12 +19156,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -18450,12 +19199,18 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ handle :
-                                Ty.path "move_binary_format::file_format::FunctionHandleIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandleIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path
-                                      "move_binary_format::file_format::FunctionHandleIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandleIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -18583,10 +19338,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ type_parameters :
-                                Ty.path "move_binary_format::file_format::SignatureIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -18712,7 +19473,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -18749,7 +19510,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -18805,10 +19566,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let identifiers := M.alloc (| identifiers |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -18820,7 +19585,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -18839,7 +19604,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -18856,12 +19625,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -18910,10 +19679,10 @@ Module deserializer.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ size : Ty.path "usize" :=
+                            let~ size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "usize"),
+                                  Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -19039,9 +19808,14 @@ Module deserializer.
                               |) in
                             let~ buffer :
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -19057,7 +19831,7 @@ Module deserializer.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -19124,9 +19898,9 @@ Module deserializer.
                                         0
                                       |) in
                                     let count := M.copy (| γ0_0 |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -19211,10 +19985,17 @@ Module deserializer.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let~ s : Ty.path "move_core_types::identifier::Identifier" :=
+                                    let~ s :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_core_types::identifier::Identifier" ] :=
                                       M.copy (|
                                         M.match_operator (|
-                                          Some (Ty.path "move_core_types::identifier::Identifier"),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::Identifier" ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -19305,14 +20086,19 @@ Module deserializer.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Some
-                                                                  (Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [ Ty.path "anyhow::Error" ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "move_binary_format::errors::PartialVMError")),
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [ Ty.path "anyhow::Error"
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_binary_format::errors::PartialVMError")
+                                                                  ],
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -19447,7 +20233,7 @@ Module deserializer.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -19481,7 +20267,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -19533,10 +20319,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let addresses := M.alloc (| addresses |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -19548,9 +20338,9 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -19650,10 +20440,10 @@ Module deserializer.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -19703,11 +20493,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -19751,7 +20541,8 @@ Module deserializer.
                                             0
                                           |) in
                                         let _i := M.copy (| γ0_0 |) in
-                                        let~ end_addr : Ty.path "usize" :=
+                                        let~ end_addr :
+                                            Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "usize",
@@ -19771,13 +20562,18 @@ Module deserializer.
                                           |) in
                                         let~ address :
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "*")
                                               []
                                               [
-                                                Ty.path
-                                                  "move_core_types::account_address::AccountAddress";
-                                                Ty.path
-                                                  "move_core_types::account_address::AccountAddressParseError"
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::account_address::AccountAddress";
+                                                    Ty.path
+                                                      "move_core_types::account_address::AccountAddressParseError"
+                                                  ]
                                               ] :=
                                           M.alloc (|
                                             M.call_closure (|
@@ -19841,9 +20637,9 @@ Module deserializer.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -19943,11 +20739,11 @@ Module deserializer.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.write (| start, M.read (| end_addr |) |)
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -20033,10 +20829,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let constants := M.alloc (| constants |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -20048,7 +20848,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -20067,7 +20867,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -20084,12 +20888,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -20160,7 +20964,10 @@ Module deserializer.
                                   |);
                                   M.read (|
                                     M.match_operator (|
-                                      Some (Ty.path "move_binary_format::file_format::Constant"),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::Constant" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -20295,7 +21102,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -20327,13 +21134,27 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::Constant";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ type_ : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ type_ :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -20450,16 +21271,25 @@ Module deserializer.
                 |) in
               let~ data :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                    [
+                      Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -20646,10 +21476,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let metadata := M.alloc (| metadata |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -20661,7 +21495,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -20680,7 +21514,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -20697,12 +21535,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -20773,7 +21611,10 @@ Module deserializer.
                                   |);
                                   M.read (|
                                     M.match_operator (|
-                                      Some (Ty.path "move_core_types::metadata::Metadata"),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_core_types::metadata::Metadata" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -20907,7 +21748,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -20939,21 +21780,37 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_core_types::metadata::Metadata";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ key :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                    [
+                      Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -21101,16 +21958,25 @@ Module deserializer.
                 |) in
               let~ value :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                    [
+                      Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -21301,13 +22167,23 @@ Module deserializer.
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
         let size_loader := M.alloc (| size_loader |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ size : Ty.path "usize" :=
+              let~ size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -21449,9 +22325,14 @@ Module deserializer.
                 |) in
               let~ data :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -21462,10 +22343,10 @@ Module deserializer.
                     [ Value.Integer IntegerKind.U8 0; M.read (| size |) ]
                   |)
                 |) in
-              let~ count : Ty.path "usize" :=
+              let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -21575,11 +22456,15 @@ Module deserializer.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                              (Ty.path
-                                                "move_binary_format::errors::PartialVMError")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                                (Ty.path
+                                                  "move_binary_format::errors::PartialVMError")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -21712,9 +22597,9 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -21820,10 +22705,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let signatures := M.alloc (| signatures |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -21835,7 +22724,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -21854,7 +22743,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -21871,12 +22764,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -21925,7 +22818,7 @@ Module deserializer.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -21951,15 +22844,19 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.match_operator (|
-                                            Some
-                                              (Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -22118,7 +23015,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -22153,13 +23050,26 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::SignatureToken";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ len : Ty.path "u64" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u64"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -22285,11 +23195,16 @@ Module deserializer.
                 |) in
               let~ tokens :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::SignatureToken";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::SignatureToken";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -22315,10 +23230,10 @@ Module deserializer.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
@@ -22344,11 +23259,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -22391,7 +23306,7 @@ Module deserializer.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -22412,9 +23327,13 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.MutRef, tokens |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -22751,20 +23670,32 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::SignatureToken";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ read_next :
-                  Ty.function
-                    [ Ty.tuple [] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.path
-                          "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                        Ty.path "move_binary_format::errors::PartialVMError"
-                      ]) :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.function
+                        [ Ty.tuple [] ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path
+                              "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ])
+                    ] :=
                 M.alloc (|
                   M.closure
                     (fun γ =>
@@ -22773,32 +23704,40 @@ Module deserializer.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [ Ty.tuple [] ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path
-                                        "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                      Ty.path "move_binary_format::errors::PartialVMError"
-                                    ])),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [] ]
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ])
+                                ],
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                              Ty.path "move_binary_format::errors::PartialVMError"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
+                                          ],
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -22832,13 +23771,17 @@ Module deserializer.
                                                   0
                                                 |) in
                                               let byte := M.copy (| γ0_0 |) in
-                                              let~ _ : Ty.tuple [] :=
+                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format_common::SerializedType"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format_common::SerializedType"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -22972,7 +23915,7 @@ Module deserializer.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.find_or_pattern (|
+                                                        (M.find_or_pattern (Ty.tuple []) (|
                                                           γ,
                                                           [
                                                             fun γ =>
@@ -23093,8 +24036,14 @@ Module deserializer.
                                                                                     [
                                                                                       M.read (|
                                                                                         let~ res :
-                                                                                            Ty.path
-                                                                                              "alloc::string::String" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.path
@@ -23231,13 +24180,21 @@ Module deserializer.
                                                   [
                                                     M.read (|
                                                       M.match_operator (|
-                                                        Some
-                                                          (Ty.path
-                                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"),
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                                          ],
                                                         M.match_operator (|
-                                                          Some
-                                                            (Ty.path
-                                                              "move_binary_format::file_format_common::SerializedType"),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format_common::SerializedType"
+                                                            ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -23558,13 +24515,22 @@ Module deserializer.
                                                                   "move_binary_format::file_format_common::SerializedType::STRUCT"
                                                                 |) in
                                                               let~ sh_idx :
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::StructHandleIndex" :=
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructHandleIndex"
+                                                                    ] :=
                                                                 M.copy (|
                                                                   M.match_operator (|
-                                                                    Some
-                                                                      (Ty.path
-                                                                        "move_binary_format::file_format::StructHandleIndex"),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandleIndex"
+                                                                      ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -23730,13 +24696,22 @@ Module deserializer.
                                                                   "move_binary_format::file_format_common::SerializedType::STRUCT_INST"
                                                                 |) in
                                                               let~ sh_idx :
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::StructHandleIndex" :=
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructHandleIndex"
+                                                                    ] :=
                                                                 M.copy (|
                                                                   M.match_operator (|
-                                                                    Some
-                                                                      (Ty.path
-                                                                        "move_binary_format::file_format::StructHandleIndex"),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandleIndex"
+                                                                      ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -23885,10 +24860,17 @@ Module deserializer.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ arity : Ty.path "usize" :=
+                                                              let~ arity :
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.path "usize" ] :=
                                                                 M.copy (|
                                                                   M.match_operator (|
-                                                                    Some (Ty.path "usize"),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.path "usize" ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -24034,9 +25016,16 @@ Module deserializer.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ _ : Ty.tuple [] :=
+                                                              let~ _ :
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ] :=
                                                                 M.match_operator (|
-                                                                  Some (Ty.tuple []),
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ],
                                                                   M.alloc (| Value.Tuple [] |),
                                                                   [
                                                                     fun γ =>
@@ -24178,10 +25167,17 @@ Module deserializer.
                                                                   γ,
                                                                   "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER"
                                                                 |) in
-                                                              let~ idx : Ty.path "u16" :=
+                                                              let~ idx :
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.path "u16" ] :=
                                                                 M.copy (|
                                                                   M.match_operator (|
-                                                                    Some (Ty.path "u16"),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -24408,27 +25404,41 @@ Module deserializer.
                 |) in
               let~ stack :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                      Ty.path "alloc::alloc::Global"
-                    ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
+                      Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
                         [
                           Ty.path
                             "move_binary_format::deserializer::load_signature_token::TypeBuilder";
                           Ty.path "alloc::alloc::Global"
-                        ]),
+                        ]
+                    ] :=
+                M.copy (|
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
                     M.match_operator (|
-                      Some
-                        (Ty.path
-                          "move_binary_format::deserializer::load_signature_token::TypeBuilder"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.path
+                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -24651,11 +25661,11 @@ Module deserializer.
                 M.never_to_any (|
                   M.read (|
                     M.loop (|
-                      Ty.path "never",
+                      Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                       ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
+                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -24765,7 +25775,7 @@ Module deserializer.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -24890,7 +25900,11 @@ Module deserializer.
                                     Value.Bool true
                                   |) in
                                 let~ tok :
-                                    Ty.path "move_binary_format::file_format::SignatureToken" :=
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                      ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "move_binary_format::file_format::SignatureToken",
@@ -24947,7 +25961,7 @@ Module deserializer.
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -25055,9 +26069,13 @@ Module deserializer.
                                       M.borrow (| Pointer.Kind.MutRef, stack |);
                                       M.read (|
                                         M.match_operator (|
-                                          Some
-                                            (Ty.path
-                                              "move_binary_format::deserializer::load_signature_token::TypeBuilder"),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                            ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -25327,8 +26345,10 @@ Module deserializer.
             let tok := M.alloc (| tok |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.path "move_binary_format::deserializer::load_signature_token::TypeBuilder"),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_binary_format::deserializer::load_signature_token::TypeBuilder" ],
                 self,
                 [
                   fun γ =>
@@ -25471,7 +26491,7 @@ Module deserializer.
                       let sh_idx := M.copy (| γ0_0 |) in
                       let arity := M.copy (| γ0_1 |) in
                       let ty_args := M.copy (| γ0_2 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -25491,9 +26511,13 @@ Module deserializer.
                           |)
                         |) in
                       M.match_operator (|
-                        Some
-                          (Ty.path
-                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.path
+                              "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                          ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -25687,7 +26711,7 @@ Module deserializer.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                 self,
                 [
                   fun γ =>
@@ -25727,7 +26751,10 @@ Module deserializer.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                 self,
                 [
                   fun γ =>
@@ -25955,18 +26982,29 @@ Module deserializer.
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
         let pos := M.alloc (| pos |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::AbilitySet";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "move_binary_format::file_format::AbilitySet";
-                      Ty.path "move_binary_format::errors::PartialVMError"
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -25998,10 +27036,10 @@ Module deserializer.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ byte : Ty.path "u8" :=
+                      let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "u8"),
+                            Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26104,14 +27142,18 @@ Module deserializer.
                           |)
                         |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "move_binary_format::file_format::AbilitySet";
-                              Ty.path "move_binary_format::errors::PartialVMError"
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::AbilitySet";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
+                          ],
                         pos,
                         [
                           fun γ =>
@@ -26127,12 +27169,18 @@ Module deserializer.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.path "move_binary_format::file_format::AbilitySet"),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         M.match_operator (|
-                                          Some
-                                            (Ty.path
-                                              "move_binary_format::deserializer::DeprecatedNominalResourceFlag"),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::deserializer::DeprecatedNominalResourceFlag"
+                                            ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -26413,7 +27461,7 @@ Module deserializer.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.find_or_pattern (|
+                              (M.find_or_pattern (Ty.tuple []) (|
                                 γ,
                                 [
                                   fun γ =>
@@ -26439,16 +27487,30 @@ Module deserializer.
                                     | [] =>
                                       ltac:(M.monadic
                                         (let~ set :
-                                            Ty.path "move_binary_format::file_format::AbilitySet" :=
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some
-                                                (Ty.path
-                                                  "move_binary_format::file_format::AbilitySet"),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet"
+                                                ],
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.path
-                                                    "move_binary_format::deserializer::DeprecatedKind"),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::deserializer::DeprecatedKind"
+                                                  ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -26703,9 +27765,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::AbilitySet"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    ],
                                                   pos,
                                                   [
                                                     fun γ =>
@@ -26784,10 +27850,10 @@ Module deserializer.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ u : Ty.path "u8" :=
+                      (let~ u : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                         M.copy (|
                           M.match_operator (|
-                            Some (Ty.path "u8"),
+                            Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26933,14 +27999,18 @@ Module deserializer.
                           |)
                         |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "move_binary_format::file_format::AbilitySet";
-                              Ty.path "move_binary_format::errors::PartialVMError"
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::AbilitySet";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -27027,13 +28097,26 @@ Module deserializer.
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
         let pos := M.alloc (| pos |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::AbilitySet";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -27160,11 +28243,16 @@ Module deserializer.
                 |) in
               let~ kinds :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::AbilitySet";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::AbilitySet";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -27190,10 +28278,10 @@ Module deserializer.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -27221,11 +28309,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -27268,7 +28356,7 @@ Module deserializer.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -27289,9 +28377,13 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.MutRef, kinds |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::AbilitySet"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::AbilitySet"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -27485,13 +28577,26 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::StructTypeParameter";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -27620,11 +28725,16 @@ Module deserializer.
                 |) in
               let~ type_params :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::StructTypeParameter";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructTypeParameter";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -27650,10 +28760,10 @@ Module deserializer.
                     [ M.read (| len |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -27681,11 +28791,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -27728,7 +28838,7 @@ Module deserializer.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -27749,9 +28859,13 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.MutRef, type_params |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::StructTypeParameter"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructTypeParameter"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -27949,13 +29063,27 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::StructTypeParameter";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ constraints : Ty.path "move_binary_format::file_format::AbilitySet" :=
+              let~ constraints :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::AbilitySet"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -28076,10 +29204,10 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ is_phantom : Ty.path "bool" :=
+              let~ is_phantom : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "bool"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -28120,10 +29248,10 @@ Module deserializer.
                           M.alloc (| Value.Bool false |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ byte : Ty.path "u8" :=
+                          (let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                             M.copy (|
                               M.match_operator (|
-                                Some (Ty.path "u8"),
+                                Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -28322,10 +29450,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let struct_defs := M.alloc (| struct_defs |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -28337,7 +29469,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -28356,7 +29488,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -28373,12 +29509,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -28428,11 +29564,18 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ struct_handle :
-                                Ty.path "move_binary_format::file_format::StructHandleIndex" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandleIndex"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path "move_binary_format::file_format::StructHandleIndex"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructHandleIndex"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -28560,13 +29703,22 @@ Module deserializer.
                                 |)
                               |) in
                             let~ field_information_flag :
-                                Ty.path
-                                  "move_binary_format::file_format_common::SerializedNativeStructFlag" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format_common::SerializedNativeStructFlag"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path
-                                      "move_binary_format::file_format_common::SerializedNativeStructFlag"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format_common::SerializedNativeStructFlag"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -28593,9 +29745,13 @@ Module deserializer.
                                           |) in
                                         let byte := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some
-                                            (Ty.path
-                                              "move_binary_format::file_format_common::SerializedNativeStructFlag"),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format_common::SerializedNativeStructFlag"
+                                            ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -28795,12 +29951,22 @@ Module deserializer.
                                 |)
                               |) in
                             let~ field_information :
-                                Ty.path "move_binary_format::file_format::StructFieldInformation" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructFieldInformation"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path
-                                      "move_binary_format::file_format::StructFieldInformation"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::StructFieldInformation"
+                                    ],
                                   field_information_flag,
                                   [
                                     fun γ =>
@@ -28824,24 +29990,33 @@ Module deserializer.
                                           |) in
                                         let~ fields :
                                             Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                              (Ty.path "*")
                                               []
                                               [
-                                                Ty.path
-                                                  "move_binary_format::file_format::FieldDefinition";
-                                                Ty.path "alloc::alloc::Global"
-                                              ] :=
-                                          M.copy (|
-                                            M.match_operator (|
-                                              Some
-                                                (Ty.apply
+                                                Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
                                                   []
                                                   [
                                                     Ty.path
                                                       "move_binary_format::file_format::FieldDefinition";
                                                     Ty.path "alloc::alloc::Global"
-                                                  ]),
+                                                  ]
+                                              ] :=
+                                          M.copy (|
+                                            M.match_operator (|
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldDefinition";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -29001,7 +30176,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -29037,7 +30212,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -29072,16 +30247,34 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::FieldDefinition";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ fields :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::FieldDefinition";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::FieldDefinition";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -29107,10 +30300,10 @@ Module deserializer.
                     []
                   |)
                 |) in
-              let~ field_count : Ty.path "u64" :=
+              let~ field_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u64"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -29234,10 +30427,10 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
@@ -29265,11 +30458,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -29312,7 +30505,7 @@ Module deserializer.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -29333,9 +30526,13 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.MutRef, fields |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::FieldDefinition"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FieldDefinition"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -29522,13 +30719,27 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FieldDefinition";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ name : Ty.path "move_binary_format::file_format::IdentifierIndex" :=
+              let~ name :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::IdentifierIndex" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::IdentifierIndex"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::IdentifierIndex" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -29644,10 +30855,17 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ signature : Ty.path "move_binary_format::file_format::SignatureToken" :=
+              let~ signature :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -29811,10 +31029,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let func_defs := M.alloc (| func_defs |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -29826,7 +31048,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -29845,7 +31067,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -29862,12 +31088,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -29917,11 +31143,18 @@ Module deserializer.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ func_def :
-                                Ty.path "move_binary_format::file_format::FunctionDefinition" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some
-                                    (Ty.path "move_binary_format::file_format::FunctionDefinition"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -30048,7 +31281,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -30080,7 +31313,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -30130,10 +31363,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let field_handles := M.alloc (| field_handles |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -30145,7 +31382,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -30164,7 +31401,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -30181,13 +31422,13 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -30241,10 +31482,16 @@ Module deserializer.
                         ]
                       |) in
                     let~ struct_idx :
-                        Ty.path "move_binary_format::file_format::StructDefinitionIndex" :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ] :=
                       M.copy (|
                         M.match_operator (|
-                          Some (Ty.path "move_binary_format::file_format::StructDefinitionIndex"),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30366,10 +31613,10 @@ Module deserializer.
                           ]
                         |)
                       |) in
-                    let~ offset : Ty.path "u16" :=
+                    let~ offset : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                       M.copy (|
                         M.match_operator (|
-                          Some (Ty.path "u16"),
+                          Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30489,7 +31736,7 @@ Module deserializer.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -30559,10 +31806,14 @@ Module deserializer.
         (let binary := M.alloc (| binary |) in
         let table := M.alloc (| table |) in
         let field_insts := M.alloc (| field_insts |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ start : Ty.path "usize" :=
+              let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
@@ -30574,7 +31825,7 @@ Module deserializer.
                       |)
                     |))
                 |) in
-              let~ end_ : Ty.path "usize" :=
+              let~ end_ : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -30593,7 +31844,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ cursor : Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+              let~ cursor :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "move_binary_format::deserializer::VersionedCursor",
@@ -30610,13 +31865,13 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -30669,10 +31924,17 @@ Module deserializer.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let~ handle : Ty.path "move_binary_format::file_format::FieldHandleIndex" :=
+                    let~ handle :
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ] :=
                       M.copy (|
                         M.match_operator (|
-                          Some (Ty.path "move_binary_format::file_format::FieldHandleIndex"),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30793,10 +32055,16 @@ Module deserializer.
                         |)
                       |) in
                     let~ type_parameters :
-                        Ty.path "move_binary_format::file_format::SignatureIndex" :=
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                       M.copy (|
                         M.match_operator (|
-                          Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30916,7 +32184,7 @@ Module deserializer.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -31041,13 +32309,27 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::FunctionDefinition";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ function : Ty.path "move_binary_format::file_format::FunctionHandleIndex" :=
+              let~ function :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::FunctionHandleIndex"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -31164,10 +32446,10 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ flags : Ty.path "u8" :=
+              let~ flags : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u8"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -31242,11 +32524,15 @@ Module deserializer.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                              (Ty.path
-                                                "move_binary_format::errors::PartialVMError")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                (Ty.path
+                                                  "move_binary_format::errors::PartialVMError")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -31376,15 +32662,30 @@ Module deserializer.
                   |)
                 |) in
               M.match_operator (|
-                None,
-                M.match_operator (|
-                  Some
-                    (Ty.tuple
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
                       [
-                        Ty.path "move_binary_format::file_format::Visibility";
-                        Ty.path "bool";
-                        Ty.path "u8"
-                      ]),
+                        Ty.path "move_binary_format::file_format::FunctionDefinition";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
+                  ],
+                M.match_operator (|
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.path "move_binary_format::file_format::Visibility";
+                          Ty.path "bool";
+                          Ty.path "u8"
+                        ]
+                    ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -31421,10 +32722,17 @@ Module deserializer.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ vis : Ty.path "move_binary_format::file_format::Visibility" :=
+                        let~ vis :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Visibility" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::Visibility"),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Visibility" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -31460,7 +32768,7 @@ Module deserializer.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         let β := flags in
                                         M.write (|
@@ -31503,13 +32811,17 @@ Module deserializer.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.tuple
-                              [
-                                Ty.path "move_binary_format::file_format::Visibility";
-                                Ty.path "bool";
-                                Ty.path "u8"
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "move_binary_format::file_format::Visibility";
+                                  Ty.path "bool";
+                                  Ty.path "u8"
+                                ]
+                            ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -31552,14 +32864,28 @@ Module deserializer.
                                     Value.Bool true
                                   |) in
                                 M.match_operator (|
-                                  None,
-                                  M.match_operator (|
-                                    Some
-                                      (Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.tuple
                                         [
                                           Ty.path "move_binary_format::file_format::Visibility";
-                                          Ty.path "bool"
-                                        ]),
+                                          Ty.path "bool";
+                                          Ty.path "u8"
+                                        ]
+                                    ],
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "move_binary_format::file_format::Visibility";
+                                            Ty.path "bool"
+                                          ]
+                                      ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -31600,13 +32926,22 @@ Module deserializer.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let~ vis :
-                                              Ty.path
-                                                "move_binary_format::file_format::Visibility" :=
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Visibility"
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.path
-                                                    "move_binary_format::file_format::Visibility"),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Visibility"
+                                                  ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -31704,12 +33039,18 @@ Module deserializer.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Some
-                                                                        (Ty.function
-                                                                          [ Ty.tuple [ Ty.tuple [] ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError")),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.function
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [ Ty.tuple [] ]
+                                                                            ]
+                                                                            (Ty.path
+                                                                              "move_binary_format::errors::PartialVMError")
+                                                                        ],
                                                                       M.alloc (| α0 |),
                                                                       [
                                                                         fun γ =>
@@ -31860,10 +33201,11 @@ Module deserializer.
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let vis := M.copy (| γ0_0 |) in
                                         let is_entry := M.copy (| γ0_1 |) in
-                                        let~ extra_flags : Ty.path "u8" :=
+                                        let~ extra_flags :
+                                            Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u8"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -31950,17 +33292,21 @@ Module deserializer.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Some
-                                                                      (Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.path
-                                                                                "anyhow::Error"
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::errors::PartialVMError")),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.function
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ]
+                                                                          ]
+                                                                          (Ty.path
+                                                                            "move_binary_format::errors::PartialVMError")
+                                                                      ],
                                                                     M.alloc (| α0 |),
                                                                     [
                                                                       fun γ =>
@@ -32110,10 +33456,17 @@ Module deserializer.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let~ vis : Ty.path "move_binary_format::file_format::Visibility" :=
+                                (let~ vis :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Visibility" ] :=
                                   M.copy (|
                                     M.match_operator (|
-                                      Some (Ty.path "move_binary_format::file_format::Visibility"),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::Visibility" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -32208,11 +33561,15 @@ Module deserializer.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Some
-                                                              (Ty.function
-                                                                [ Ty.tuple [ Ty.tuple [] ] ]
-                                                                (Ty.path
-                                                                  "move_binary_format::errors::PartialVMError")),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.function
+                                                                  [ Ty.tuple [ Ty.tuple [] ] ]
+                                                                  (Ty.path
+                                                                    "move_binary_format::errors::PartialVMError")
+                                                              ],
                                                             M.alloc (| α0 |),
                                                             [
                                                               fun γ =>
@@ -32348,10 +33705,10 @@ Module deserializer.
                                       ]
                                     |)
                                   |) in
-                                let~ extra_flags : Ty.path "u8" :=
+                                let~ extra_flags : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                                   M.copy (|
                                     M.match_operator (|
-                                      Some (Ty.path "u8"),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -32436,14 +33793,18 @@ Module deserializer.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Some
-                                                              (Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
-                                                                (Ty.path
-                                                                  "move_binary_format::errors::PartialVMError")),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [ Ty.path "anyhow::Error" ]
+                                                                  ]
+                                                                  (Ty.path
+                                                                    "move_binary_format::errors::PartialVMError")
+                                                              ],
                                                             M.alloc (| α0 |),
                                                             [
                                                               fun γ =>
@@ -32579,7 +33940,7 @@ Module deserializer.
                                       ]
                                     |)
                                   |) in
-                                let~ is_entry : Ty.path "bool" :=
+                                let~ is_entry : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -32604,9 +33965,9 @@ Module deserializer.
                                       ]
                                     |)
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -32617,7 +33978,7 @@ Module deserializer.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.alloc (|
                                               let β := extra_flags in
                                               M.write (|
@@ -32666,22 +34027,32 @@ Module deserializer.
                       let extra_flags := M.copy (| γ0_2 |) in
                       let~ acquires_global_resources :
                           Ty.apply
-                            (Ty.path "alloc::vec::Vec")
+                            (Ty.path "*")
                             []
                             [
-                              Ty.path "move_binary_format::file_format::StructDefinitionIndex";
-                              Ty.path "alloc::alloc::Global"
-                            ] :=
-                        M.copy (|
-                          M.match_operator (|
-                            Some
-                              (Ty.apply
+                              Ty.apply
                                 (Ty.path "alloc::vec::Vec")
                                 []
                                 [
                                   Ty.path "move_binary_format::file_format::StructDefinitionIndex";
                                   Ty.path "alloc::alloc::Global"
-                                ]),
+                                ]
+                            ] :=
+                        M.copy (|
+                          M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefinitionIndex";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32827,16 +34198,25 @@ Module deserializer.
                         |) in
                       let~ code_unit :
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "*")
                             []
-                            [ Ty.path "move_binary_format::file_format::CodeUnit" ] :=
-                        M.copy (|
-                          M.match_operator (|
-                            Some
-                              (Ty.apply
+                            [
+                              Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
-                                [ Ty.path "move_binary_format::file_format::CodeUnit" ]),
+                                [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                            ] :=
+                        M.copy (|
+                          M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                              ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -32872,7 +34252,7 @@ Module deserializer.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       let β := extra_flags in
                                       M.write (|
@@ -32903,8 +34283,11 @@ Module deserializer.
                                       [
                                         M.read (|
                                           M.match_operator (|
-                                            Some
-                                              (Ty.path "move_binary_format::file_format::CodeUnit"),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::CodeUnit"
+                                              ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -33040,9 +34423,9 @@ Module deserializer.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -33140,13 +34523,26 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ len : Ty.path "u64" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "u64"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -33272,11 +34668,16 @@ Module deserializer.
                 |) in
               let~ indices :
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "*")
                     []
                     [
-                      Ty.path "move_binary_format::file_format::StructDefinitionIndex";
-                      Ty.path "alloc::alloc::Global"
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -33302,10 +34703,10 @@ Module deserializer.
                     []
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
@@ -33331,11 +34732,11 @@ Module deserializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -33378,7 +34779,7 @@ Module deserializer.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -33399,9 +34800,13 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.MutRef, indices |);
                                                 M.read (|
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.path
-                                                        "move_binary_format::file_format::StructDefinitionIndex"),
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructDefinitionIndex"
+                                                      ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -33593,13 +34998,27 @@ Module deserializer.
     | [], [], [ cursor ] =>
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_binary_format::file_format::CodeUnit";
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ locals : Ty.path "move_binary_format::file_format::SignatureIndex" :=
+              let~ locals :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureIndex" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "move_binary_format::file_format::SignatureIndex"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -33714,7 +35133,11 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ code_unit : Ty.path "move_binary_format::file_format::CodeUnit" :=
+              let~ code_unit :
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "move_binary_format::file_format::CodeUnit" ] :=
                 M.alloc (|
                   Value.StructRecord
                     "move_binary_format::file_format::CodeUnit"
@@ -33745,9 +35168,9 @@ Module deserializer.
                         |))
                     ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -34071,13 +35494,17 @@ Module deserializer.
       ltac:(M.monadic
         (let cursor := M.alloc (| cursor |) in
         let code := M.alloc (| code |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ bytecode_count : Ty.path "usize" :=
+              let~ bytecode_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.path "usize"),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -34190,12 +35617,12 @@ Module deserializer.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.loop (|
-                  Ty.tuple [],
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -34234,10 +35661,10 @@ Module deserializer.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ byte : Ty.path "u8" :=
+                            let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "u8"),
+                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -34319,11 +35746,16 @@ Module deserializer.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Some
-                                                          (Ty.function
-                                                            [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                                            (Ty.path
-                                                              "move_binary_format::errors::PartialVMError")),
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.function
+                                                              [ Ty.tuple [ Ty.path "anyhow::Error" ]
+                                                              ]
+                                                              (Ty.path
+                                                                "move_binary_format::errors::PartialVMError")
+                                                          ],
                                                         M.alloc (| α0 |),
                                                         [
                                                           fun γ =>
@@ -34456,10 +35888,16 @@ Module deserializer.
                                 |)
                               |) in
                             let~ opcode :
-                                Ty.path "move_binary_format::file_format_common::Opcodes" :=
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format_common::Opcodes" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format_common::Opcodes"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format_common::Opcodes" ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -34580,14 +36018,14 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 opcode,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.find_or_pattern (|
+                                      (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
                                           fun γ =>
@@ -34661,7 +36099,7 @@ Module deserializer.
                                             | [] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -34753,8 +36191,13 @@ Module deserializer.
                                                                           [
                                                                             M.read (|
                                                                               let~ res :
-                                                                                  Ty.path
-                                                                                    "alloc::string::String" :=
+                                                                                  Ty.apply
+                                                                                    (Ty.path "*")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "alloc::string::String"
+                                                                                    ] :=
                                                                                 M.alloc (|
                                                                                   M.call_closure (|
                                                                                     Ty.path
@@ -34868,14 +36311,14 @@ Module deserializer.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 opcode,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.find_or_pattern (|
+                                      (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
                                           fun γ =>
@@ -35015,8 +36458,13 @@ Module deserializer.
                                                                   [
                                                                     M.read (|
                                                                       let~ res :
-                                                                          Ty.path
-                                                                            "alloc::string::String" :=
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.path
@@ -35143,10 +36591,17 @@ Module deserializer.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ bytecode : Ty.path "move_binary_format::file_format::Bytecode" :=
+                            let~ bytecode :
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Bytecode" ] :=
                               M.copy (|
                                 M.match_operator (|
-                                  Some (Ty.path "move_binary_format::file_format::Bytecode"),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   opcode,
                                   [
                                     fun γ =>
@@ -35186,7 +36641,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u16"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -35330,7 +36785,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u16"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -35474,7 +36929,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u16"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -35612,10 +37067,10 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U8"
                                           |) in
-                                        let~ value : Ty.path "u8" :=
+                                        let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u8"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -35702,17 +37157,21 @@ Module deserializer.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Some
-                                                                      (Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.path
-                                                                                "anyhow::Error"
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::errors::PartialVMError")),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.function
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ]
+                                                                          ]
+                                                                          (Ty.path
+                                                                            "move_binary_format::errors::PartialVMError")
+                                                                      ],
                                                                     M.alloc (| α0 |),
                                                                     [
                                                                       fun γ =>
@@ -35860,10 +37319,10 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U64"
                                           |) in
-                                        let~ value : Ty.path "u64" :=
+                                        let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u64"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -36001,10 +37460,10 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U128"
                                           |) in
-                                        let~ value : Ty.path "u128" :=
+                                        let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u128"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -36203,9 +37662,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::ConstantPoolIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::ConstantPoolIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -36376,7 +37839,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u8"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -36520,7 +37983,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u8"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -36664,7 +38127,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u8"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -36808,7 +38271,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u8"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -36952,7 +38415,7 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u8"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37096,9 +38559,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FieldHandleIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldHandleIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37245,9 +38712,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FieldInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37394,9 +38865,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FieldHandleIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldHandleIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37543,9 +39018,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FieldInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37692,9 +39171,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FunctionHandleIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionHandleIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37841,9 +39324,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FunctionInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -37990,9 +39477,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -38139,9 +39630,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -38288,9 +39783,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -38437,9 +39936,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -38874,9 +40377,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39010,7 +40517,7 @@ Module deserializer.
                                               |);
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u64"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39154,9 +40661,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39303,9 +40814,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39452,9 +40967,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39601,9 +41120,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39750,9 +41273,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -39899,9 +41426,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -40035,7 +41566,7 @@ Module deserializer.
                                               |);
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some (Ty.path "u64"),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -40179,9 +41710,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::SignatureIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -40322,10 +41857,10 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U16"
                                           |) in
-                                        let~ value : Ty.path "u16" :=
+                                        let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u16"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -40463,10 +41998,10 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U32"
                                           |) in
-                                        let~ value : Ty.path "u32" :=
+                                        let~ value : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "u32"),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -40604,10 +42139,17 @@ Module deserializer.
                                             γ,
                                             "move_binary_format::file_format_common::Opcodes::LD_U256"
                                           |) in
-                                        let~ value : Ty.path "move_core_types::u256::U256" :=
+                                        let~ value :
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.path "move_core_types::u256::U256" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some (Ty.path "move_core_types::u256::U256"),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "move_core_types::u256::U256" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -40810,9 +42352,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -40959,9 +42505,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41108,9 +42658,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41257,9 +42811,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41406,9 +42964,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41555,9 +43117,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41704,9 +43270,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -41853,9 +43423,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -42002,9 +43576,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -42151,9 +43729,13 @@ Module deserializer.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructDefInstantiationIndex"),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -42290,7 +43872,7 @@ Module deserializer.
                                   ]
                                 |)
                               |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -42321,7 +43903,7 @@ Module deserializer.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -42373,14 +43955,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::file_format_common::TableType";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format_common::TableType";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -42688,14 +44274,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::file_format_common::SerializedType";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format_common::SerializedType";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -43056,7 +44646,7 @@ Module deserializer.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -43124,14 +44714,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::deserializer::DeprecatedNominalResourceFlag";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::deserializer::DeprecatedNominalResourceFlag";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -43249,14 +44843,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::deserializer::DeprecatedKind";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::deserializer::DeprecatedKind";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -43360,14 +44958,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::file_format_common::SerializedNativeStructFlag";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format_common::SerializedNativeStructFlag";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -43529,14 +45131,18 @@ Module deserializer.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "move_binary_format::file_format_common::Opcodes";
-                    Ty.path "move_binary_format::errors::PartialVMError"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format_common::Opcodes";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                ],
               value,
               [
                 fun γ =>
@@ -44825,13 +46431,18 @@ Module deserializer.
           M.read (|
             let~ names :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 7 ]
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 7 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
                   ] :=
               M.alloc (|
                 M.borrow (|
@@ -44866,13 +46477,19 @@ Module deserializer.
               |) in
             let~ values :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "slice")
+                      (Ty.path "&")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]
                   ] :=
               M.alloc (|
                 (* Unsize *)
@@ -45202,10 +46819,17 @@ Module deserializer.
           (let binary := M.alloc (| binary |) in
           let binary_config := M.alloc (| binary_config |) in
           let load_module_idx := M.alloc (| load_module_idx |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_binary_format::deserializer::VersionedBinary";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ binary_len : Ty.path "usize" :=
+                let~ binary_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
@@ -45220,9 +46844,18 @@ Module deserializer.
                   |) in
                 let~ cursor :
                     Ty.apply
-                      (Ty.path "std::io::cursor::Cursor")
+                      (Ty.path "*")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "std::io::cursor::Cursor")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -45254,15 +46887,20 @@ Module deserializer.
                   |) in
                 let~ magic :
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [ Ty.path "u8" ] :=
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u8" ]
+                      ] :=
                   M.alloc (|
                     repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -45310,7 +46948,7 @@ Module deserializer.
                             |) in
                           let count := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -45467,10 +47105,10 @@ Module deserializer.
                           |)))
                     ]
                   |) in
-                let~ version : Ty.path "u32" :=
+                let~ version : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "u32"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -45568,9 +47206,9 @@ Module deserializer.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -45653,16 +47291,19 @@ Module deserializer.
                     ]
                   |) in
                 let~ versioned_cursor :
-                    Ty.path "move_binary_format::deserializer::VersionedCursor" :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::deserializer::VersionedCursor" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "move_binary_format::deserializer::VersionedCursor"
                       [ ("version", M.read (| version |)); ("cursor", M.read (| cursor |)) ]
                   |) in
-                let~ table_count : Ty.path "u8" :=
+                let~ table_count : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "u8"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -45781,11 +47422,16 @@ Module deserializer.
                   |) in
                 let~ tables :
                     Ty.apply
-                      (Ty.path "alloc::vec::Vec")
+                      (Ty.path "*")
                       []
                       [
-                        Ty.path "move_binary_format::deserializer::Table";
-                        Ty.path "alloc::alloc::Global"
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::deserializer::Table";
+                            Ty.path "alloc::alloc::Global"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -45811,9 +47457,9 @@ Module deserializer.
                       []
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -45931,10 +47577,10 @@ Module deserializer.
                           val))
                     ]
                   |) in
-                let~ table_size : Ty.path "u32" :=
+                let~ table_size : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "u32"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -46054,9 +47700,9 @@ Module deserializer.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -46150,7 +47796,7 @@ Module deserializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ data_offset : Ty.path "usize" :=
+                let~ data_offset : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -46165,10 +47811,17 @@ Module deserializer.
                         [ M.borrow (| Pointer.Kind.Ref, versioned_cursor |) ]
                       |))
                   |) in
-                let~ module_idx : Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
+                let~ module_idx :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "move_binary_format::file_format::ModuleHandleIndex"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -46176,7 +47829,7 @@ Module deserializer.
                             (let γ := M.use load_module_idx in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple [],
@@ -46202,7 +47855,10 @@ Module deserializer.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.path "move_binary_format::file_format::ModuleHandleIndex"),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -46339,7 +47995,7 @@ Module deserializer.
                       ]
                     |)
                   |) in
-                let~ binary_end_offset : Ty.path "usize" :=
+                let~ binary_end_offset : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -46832,7 +48488,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           let pos := M.alloc (| pos |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

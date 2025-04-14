@@ -686,10 +686,8 @@ Module Impl_InstructionResult.
       bool.
   Proof.
     constructor.
-    (* This file is too slow. There a lot of constructors, and we need to find a way to optimize
-       that! *)
-    (* Time destruct self; run. *)
-  Admitted.
+    run_symbolic.
+  Defined.
 
   (* pub const fn is_ok_or_revert(self) -> bool *)
   Instance run_is_ok_or_revert (self : Self) :
@@ -698,9 +696,9 @@ Module Impl_InstructionResult.
         [] [] [ φ self ]
       bool.
   Proof.
-    (* Time destruct self; run.
-  Defined. *)
-  Admitted.
+    constructor.
+    run_symbolic.
+  Defined.
 
   (* pub const fn is_continue(self) -> bool *)
   Instance run_is_continue (self : Self) :
@@ -711,7 +709,7 @@ Module Impl_InstructionResult.
   Proof.
     (* This is the only one that is fast in this file, for some reasons! *)
     constructor.
-    destruct self; run_symbolic.
+    run_symbolic.
   Defined.
 
   (* pub const fn is_revert(self) -> bool *)
@@ -721,9 +719,9 @@ Module Impl_InstructionResult.
         [] [] [ φ self ]
       bool.
   Proof.
-  Admitted.
-    (* Time destruct self; run.
-  Defined. *)
+    constructor.
+    run_symbolic.
+  Defined.
 
   (* pub const fn is_error(self) -> bool *)
   Instance run_is_error (self : Self) :
@@ -732,7 +730,7 @@ Module Impl_InstructionResult.
         [] [] [ φ self ]
       bool.
   Proof.
-  Admitted.
-    (* Time destruct self; run.
-  Defined. *)
+    constructor.
+    run_symbolic.
+  Defined.
 End Impl_InstructionResult.

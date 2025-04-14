@@ -67,13 +67,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ foo : Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ] :=
+        let~ foo :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
             Value.StructRecord
               "polymorphic_associated_function::Foo"
               [ ("data", Value.Integer IntegerKind.I32 42) ]
           |) in
-        let~ bar : Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "f64" ] :=
+        let~ bar :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "f64" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "f64" ],
@@ -86,9 +94,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| foo |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (|
               Value.Tuple
                 [
@@ -111,7 +119,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -135,7 +143,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

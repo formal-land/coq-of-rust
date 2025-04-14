@@ -52,7 +52,7 @@ Module checked.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -138,11 +138,15 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "f64"; Ty.path "result::checked::MathError" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -201,11 +205,15 @@ Module checked.
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "f64"; Ty.path "result::checked::MathError" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -264,11 +272,15 @@ Module checked.
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "f64"; Ty.path "result::checked::MathError" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -335,7 +347,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let y := M.alloc (| y |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.path "f64"),
+          Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -417,7 +429,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let ratio := M.copy (| γ0_0 |) in
                 M.match_operator (|
-                  Some (Ty.path "f64"),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -511,7 +523,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |) in
                         let ln := M.copy (| γ0_0 |) in
                         M.match_operator (|
-                          Some (Ty.path "f64"),
+                          Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -630,8 +642,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

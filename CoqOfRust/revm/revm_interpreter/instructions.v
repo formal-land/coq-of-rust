@@ -18,23 +18,28 @@ Module instructions.
         M.read (|
           let~ table :
               Ty.apply
-                (Ty.path "array")
-                [ Value.Integer IntegerKind.Usize 256 ]
+                (Ty.path "*")
+                []
                 [
-                  Ty.function
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
                     [
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
+                      Ty.function
                         [
                           Ty.apply
-                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            (Ty.path "&mut")
                             []
-                            [ WIRE ]
-                        ];
-                      Ty.apply (Ty.path "&mut") [] [ H ]
+                            [
+                              Ty.apply
+                                (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                []
+                                [ WIRE ]
+                            ];
+                          Ty.apply (Ty.path "&mut") [] [ H ]
+                        ]
+                        (Ty.tuple [])
                     ]
-                    (Ty.tuple [])
                 ] :=
             M.alloc (|
               M.call_closure (|
@@ -95,23 +100,28 @@ Module instructions.
         (M.read (|
           let~ table :
               Ty.apply
-                (Ty.path "array")
-                [ Value.Integer IntegerKind.Usize 256 ]
+                (Ty.path "*")
+                []
                 [
-                  Ty.function
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
                     [
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
+                      Ty.function
                         [
                           Ty.apply
-                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            (Ty.path "&mut")
                             []
-                            [ WIRE ]
-                        ];
-                      Ty.apply (Ty.path "&mut") [] [ H ]
+                            [
+                              Ty.apply
+                                (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                []
+                                [ WIRE ]
+                            ];
+                          Ty.apply (Ty.path "&mut") [] [ H ]
+                        ]
+                        (Ty.tuple [])
                     ]
-                    (Ty.tuple [])
                 ] :=
             M.alloc (|
               repeat (|
@@ -130,7 +140,7 @@ Module instructions.
                 Value.Integer IntegerKind.Usize 256
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (|
@@ -148,7 +158,7 @@ Module instructions.
                   |))
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (|
@@ -166,7 +176,7 @@ Module instructions.
                   |))
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (|
