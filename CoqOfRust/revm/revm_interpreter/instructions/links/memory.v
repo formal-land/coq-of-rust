@@ -35,11 +35,6 @@ Instance run_mload
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -70,11 +65,6 @@ Instance run_mstore
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -109,11 +99,6 @@ Instance run_mstore8
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
@@ -142,11 +127,6 @@ Instance run_msize
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
